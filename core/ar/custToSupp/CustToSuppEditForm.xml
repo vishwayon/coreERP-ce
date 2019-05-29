@@ -1,0 +1,45 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="CustToSupp" type="Master"  bindingBO="custToSupp/CustToSupp">
+        <header>Extend Customer To Supplier</header>
+        <keyField>customer_id</keyField>    
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="customer_code" label="Customer Code" type="string" control="TextBox" size="ms" isOptional="true" readOnly="true"/>                         
+                <field id="customer" label="Customer Account" type="string" control="TextBox" size="4" readOnly="true"/> 
+                <nextRow/> 
+                <field id="customer_name" label="Customer Name" type="string" control="TextBox" size="6" isOptional="true" readOnly="true"/>         
+                <nextRow/> 
+                <field id="customer_code" label="Supplier Code" type="string" control="TextBox" size="ms" isOptional="true" readOnly="true"/>  
+                <field id="customer" label="Supplier Account" type="string" control="TextBox" size="4" readOnly="true"/>       
+                <nextRow/> 
+                <field id="customer_name" label="Supplier Name" type="string" control="TextBox" size="6" isOptional="true" readOnly="true"/>    
+                <nextRow/>                        
+                <field id="supp_type_id" label="Supplier Type" control="SmartCombo" type="int" size="ms">
+                    <lookup>
+                        <valueMember>supp_type_id</valueMember>
+                        <displayMember>supp_type</displayMember>
+                        <namedLookup>../core/ap/lookups/SupplierType.xml</namedLookup>
+                    </lookup>   
+                </field>  
+                <field id="supp_control_account_id" label="Control Account" type="int" control="SmartCombo"  size="s">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id=47</filter>
+                    </lookup>   
+                </field>   
+                <field id="supp_pay_term_id" label="Pay Term" type="int" control="SmartCombo"  size="s">
+                    <lookup>
+                        <valueMember>pay_term_id</valueMember>
+                        <displayMember>pay_term</displayMember>
+                        <namedLookup>../core/ap/lookups/SuppPayTerm.xml</namedLookup>
+                    </lookup>   
+                </field> 
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

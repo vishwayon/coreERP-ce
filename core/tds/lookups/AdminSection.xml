@@ -1,0 +1,18 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="Section">
+        <connectionType>
+            <mainDB/>
+        </connectionType>
+        <sql>
+            <command>                
+                select a.section_id, a.section, a.section_desc
+                from tds.section a
+                order by section
+            </command>
+        </sql>
+        <keyField id="section_id"/>
+    </lookup>
+</cwFramework>

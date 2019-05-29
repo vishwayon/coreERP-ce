@@ -1,0 +1,67 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="OverdueBillsInterest" type="Report" rptPath="/core/ar/reports/overdueBillsInterest" rptName="OverdueBillsInterest">
+        <header>Overdue Interest</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="ms" forConsolidated="true"> 
+                    <value>
+                        <session>branch_id</session>
+                    </value>
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>
+                    </lookup>  
+                </field>
+                <field id="preport_type" label="Report" type="int" control="SimpleCombo"  size="2">
+                    <options defaultValue="0">
+                        <option value="0">Overdue Interest</option>
+                        <option value="1">Overdue Interest Detailed</option>
+                    </options>  
+                </field>              
+                <field id="pcustomer_id" label="Customer" type="int" control="SmartCombo" size="3" >
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <valueMember>customer_id</valueMember>
+                        <displayMember>customer</displayMember>
+                        <namedLookup>../core/ar/lookups/CustomerWithAll.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="pcon_account_id" label="Control Account" type="int" control="SmartCombo" size="3">
+                    <value>
+                        <text>-99</text>
+                    </value>
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/BillsReceivableControlAccountWithAll.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <field id="pfrom_date" label="From" type="date" control="Date" size="ms" range="finYear">
+                    <value>
+                       <currentDate/>
+                    </value>
+                </field>
+                <field id="pto_date" label="To" type="date" control="Date" size="ms" range="finYear">                   
+                    <value>
+                        <currentDate/>
+                    </value>
+                </field>
+                <field id="ppercentage" label="Percentage" type="decimal" control="TextBox" size="1" >
+                    <value>
+                        <text>12</text>
+                    </value> 
+                </field>    
+                <param id="pcompany_id">                
+                    <session>company_id</session>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

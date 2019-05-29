@@ -1,0 +1,21 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    <collectionView id="UserToLedger" type="Master" bindingBO="UserToLedger" editView="userToLedger/UserToLedgerEditForm">
+        <header>User To Ledger</header>
+        <collectionSection>
+            <connectionType>
+                <mainDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select a.user_id , b.user_name from sys.user_to_company a inner join sys.user b on
+                    a.user_id= b.user_id Where company_id = {company_id} And is_owner = false And is_admin = false order by b.user_name
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="user_name" displayName="User"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

@@ -1,0 +1,156 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'>
+
+    <formView id="FinalSettlement" type="Document" bindingBO="finalSettlement/FinalSettlement">
+        <header>Final Settlement</header>
+        <keyField>final_settlement_id</keyField>
+        <printView rptOption="finalSettlement/FinalSettlementPrint">
+            <rptParams>
+                <param id="pfinal_settlement_id">final_settlement_id</param>
+            </rptParams>
+        </printView>
+        <newDocEnabled wizard="finalSettlement/FinalSettlementWizard" step="SelectEmployee">
+            <docType>FS</docType>
+        </newDocEnabled>
+        <deleteDocEnabled/>
+        <clientJsCode>finalSettlement/fin_set_clientcode.js</clientJsCode>  
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="final_settlement_id" label="Voucher No" type="string" control="TextBox" size="ms" maxLength="50" isOptional="true" readOnly="true" forStatus="true"/>
+                <field id="doc_date" label="Date" type="date" control="Date"  size="ms" range="finYear"/>
+                <nextRow/>
+                <field id="employee_id" label="Employee" type="int" control="SmartCombo" size="4" readOnly="true">
+                    <lookup>
+                        <valueMember>employee_id</valueMember>
+                        <displayMember>full_employee_name</displayMember>
+                        <namedLookup>../core/hr/lookups/Employee.xml</namedLookup>
+                     </lookup>   
+                </field>
+                <field id="emp_join_date" label="Emp Join Date" type="date" control="Date" size="ms" readOnly="true" />
+                <field id="emp_resign_date" label="Emp Resign Date" type="date" control="Date"  size="ms" range="finYear" readOnly="true"/>
+                
+                <nextRow/> 
+                <field id="fin_set_from_date" label="Fin Set Date From" type="date" control="Date" size="ms" range="finYear" mdata-event="subscribe:core_fin_set.fin_set_date_changed"/>
+                <field id="fin_set_to_date" label="Fin Set Date To" type="date" control="Date"  size="ms" range="finYear" mdata-event="subscribe:core_fin_set.fin_set_date_changed"/>
+             
+                <field id="en_resign_type" label="Resign Type" control="SimpleCombo" type="int" size="2">
+                    <options>
+                        <option value="1">Resigned</option>
+                        <option value="2">Terminated</option>                    
+                    </options>
+                </field>
+                <field id="notice_pay" label="Notice Pay" type="decimal" scale="amt" control="TextBox" size="ms" isOptional="true" cdata-enable-on="core_fin_set.enable_noticepay"  mdata-event="subscribe:core_fin_set.noticepay_changed"/>
+                <dummy/>
+                <cButton id="generate_fin_set" onClick="core_fin_set.generate_fin_set" label="Generate Final Settlement"/>
+                <nextRow/>
+                <field id="total_pay_amt" label="Total Pay Amt" type="decimal" control="TextBox" allowNegative="true" size="ms" readOnly="true"/>
+                <field id="total_gratuity_amt" label="Total Gratuity Amt" type="decimal" control="TextBox" allowNegative="true" size="ms" readOnly="true"/>
+                <field id="net_settlement_amt" label="Net Settlement Amt" type="decimal" control="TextBox" allowNegative="true" size="ms" readOnly="true"/>
+                    <computedField>                
+                       var netsetamt = new Number();
+                                                
+                       netsetamt = new Number(coreWebApp.ModelBo.total_pay_amt());
+                       
+                       return netsetamt
+                    </computedField>
+                <field id="net_amt_in_words" label="Amt in words" type="string" control="TextBox" size="7" maxLength="500" isOptional="true" readOnly="true"/>  
+           
+                <tranSection label="Fin Set Payroll Tran" editMode="Auto">
+                    <dataBinding dataProperty="fin_set_payroll_tran">
+                        <field id="employee_id" label="Employee" type="Hidden" control="Hidden" size="4" readOnly="true"/>
+                        <field id="pay_days" label="Pay Days" type="int" control="TextBox" size="xs" maxLength="250" isOptional="true" readOnly="true"/>  
+                        <field id="no_pay_days" label="No Pay Days" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>   
+                        <field id="half_pay_days" label="Half Pay Days" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>   
+                        <field id="tot_ot_hr" label="OT Hr" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/> 
+                        <field id="tot_ot_holiday_hr" label="OT Holiday Hr" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>  
+                        <field id="tot_ot_special_hr" label="OT Special Hr" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>                       
+                        <field id="tot_ot_amt" label="OT Amt" type="Hidden" scale="amt" control="Hidden" size="ms" isOptional="true" readOnly="true"/>
+                        <field id="tot_ot_holiday_amt" label="OT Holiday Amt" type="Hidden" scale="amt" control="Hidden" size="ms" isOptional="true" readOnly="true"/>
+                        <field id="tot_ot_special_amt" label="OT Special Amt" type="Hidden" scale="amt" control="Hidden" size="ms" isOptional="true" readOnly="true"/>
+                        <field id="tot_overtime_amt" label="Total Overtime Amt" type="Hidden" scale="amt" control="Hidden" size="ms" isOptional="true" readOnly="true"/>
+                        <field id="tot_emolument_amt" label="Total Emolument Amt" type="decimal" scale="amt" control="TextBox" size="ms" isOptional="true" readOnly="true"/>
+                        <field id="tot_deduction_amt" label="Total Deduction Amt" type="decimal" scale="amt" control="TextBox" size="ms" isOptional="true" readOnly="true"/>                         <nextRow/>                        
+                        <tranSection label="Fin Set Tran Detail" editMode="Auto" >
+                            <dataBinding dataProperty="fin_set_payroll_tran_detail"> 
+                                <field id="sl_no" label="Sl No" type="int" control="TextBox" size="xs" maxLength="5" isOptional="true" readOnly="true"/> 
+                                <field id="employee_id" label="Employee ID" type="Hidden" control="Hidden" size="ms" maxLength="250"/>
+                                <field id="payhead_id" label="Payhead ID" type="Hidden" control="Hidden" size="ms" maxLength="250"/>
+                                <field id="payhead" label="Payhead" type="string" control="TextBox" size="3" maxLength="50" isOptional="true" readOnly="true"/>  
+                                <field id="payhead_type" label="Payhead Type" control="SimpleCombo" type="string" size="ms" readOnly="true">      
+                                    <options>
+                                        <option value="E">Emoulment</option>
+                                        <option value="D">Deduction</option>
+                                    </options>
+                                </field>
+                                <field id="emolument_amt" label="Emolument Amt" type="decimal" scale="amt" control="TextBox" size="ms" isOptional="true"/>
+                                <field id="deduction_amt" label="Deduction Amt" type="decimal" scale="amt" control="TextBox" size="ms" isOptional="true"/>
+                            </dataBinding>
+                        </tranSection>  
+                    </dataBinding>
+                </tranSection> 
+                <tranSection label="Fin Set Gratuity Tran" editMode="Auto">
+                    <dataBinding dataProperty="fin_set_gratuity_tran">
+                        <field id="employee_id" label="Employee" type="Hidden" control="Hidden" size="4" readOnly="true"/>
+                        <field id="gratuity_from_date" label="From Date " type="date" control="Date"  size="ms" />
+                        <field id="gratuity_to_date" label="To Date" type="date" control="Date"  size="ms" />
+                        <field id="gratuity_days" label="Gratuity days" type="int" control="TextBox" allowNegative="true" size="ms" readOnly="true"/>
+                        <field id="reducible_amt" label="Reducible Amount" type="decimal" control="TextBox" allowNegative="true" size="ms" readOnly="true"/>
+                        <field id="gratuity_amt" label="Net Gratuity Amount" type="decimal" control="TextBox" allowNegative="true" size="ms" readOnly="true"/>
+                         <tranSection label="Fin Set Gratuity Tran Detail" editMode="Auto">
+                            <dataBinding dataProperty="fin_set_gratuity_tran_detail">
+                                <field id="sl_no" label="Sl No" type="int" control="TextBox" size="xs" maxLength="5" isOptional="true" readOnly="true"/> 
+                                <field id="slab_from_date" label="From " type="date" control="Date"  size="ms"/>
+                                <field id="slab_to_date" label="To" type="date" control="Date"  size="ms"/>
+                                <field id="unpaid_days" label="Unpaid Days" type="int" control="TextBox" size="xs" maxLength="50" isOptional="true" readOnly="true"/> 
+                                <field id="slab_days" label="Days" type="int" control="TextBox" size="xs" maxLength="50" isOptional="true" readOnly="true"/>  
+                                <field id="gratuity_days" label="Gratuity Days" type="int" control="TextBox" size="xs" maxLength="50" isOptional="true" readOnly="true"/>   
+                                <field id="gratuity_amt" label="Gratuity Amount" type="decimal" control="TextBox" scale="amt" allowNegative="true" size="ms" isOptional="true" readOnly="true"/>                           
+                            </dataBinding>
+                        </tranSection> 
+                    </dataBinding>
+                </tranSection>     
+                <nextRow/>
+                <field id="calculate_tran_total" label="Calculate Total" type="Hidden" control="Hidden"  scale="amt" size="ms" isOptional="true" readOnly="true">
+                    <computedField>
+                        var totemo = new Number();
+                        var totded = new Number();
+                        var emp_id = new Number();
+                        for(var i = 0; i &lt; coreWebApp.ModelBo.fin_set_payroll_tran().length; ++i)
+                        {
+                            emp_id=coreWebApp.ModelBo.fin_set_payroll_tran()[i].employee_id();
+                            totemo=0; 
+                            totded=0;
+                            for(var j = 0; j &lt; coreWebApp.ModelBo.fin_set_payroll_tran()[i].fin_set_payroll_tran_detail().length; ++j)
+                            {    
+                                if (emp_id=coreWebApp.ModelBo.fin_set_payroll_tran()[i].fin_set_payroll_tran_detail()[j].employee_id())
+                                {
+                                     totemo += new Number(coreWebApp.ModelBo.fin_set_payroll_tran()[i].fin_set_payroll_tran_detail()[j].emolument_amt());
+                                     totded += new Number(coreWebApp.ModelBo.fin_set_payroll_tran()[i].fin_set_payroll_tran_detail()[j].deduction_amt());
+                                }
+                            }
+                            coreWebApp.ModelBo.fin_set_payroll_tran()[i].tot_emolument_amt(totemo.toFixed(2));
+                            coreWebApp.ModelBo.fin_set_payroll_tran()[i].tot_deduction_amt(totded.toFixed(2));                           
+                        }
+                        coreWebApp.ModelBo.total_pay_amt(totemo.toFixed(2) - totded.toFixed(2));
+                        var totgratuity = new Number();
+                        for(var i = 0; i &lt; coreWebApp.ModelBo.fin_set_gratuity_tran().length; ++i)
+                        {
+                            emp_id=coreWebApp.ModelBo.fin_set_gratuity_tran()[i].employee_id();
+                            totgratuity=0;                           
+                            for(var j = 0; j &lt; coreWebApp.ModelBo.fin_set_gratuity_tran()[i].fin_set_gratuity_tran_detail().length; ++j)
+                            {    
+                               totgratuity += new Number(coreWebApp.ModelBo.fin_set_gratuity_tran()[i].fin_set_gratuity_tran_detail()[j].gratuity_amt());
+                            }                                                     
+                        }
+                        coreWebApp.ModelBo.total_gratuity_amt(totgratuity.toFixed(2));
+                        coreWebApp.ModelBo.net_settlement_amt(new Number(coreWebApp.ModelBo.total_pay_amt()) + new Number(coreWebApp.ModelBo.total_gratuity_amt()));
+                        return totemo.toFixed(2);
+                     </computedField>
+                </field>                
+                <field id="remarks" label="Remarks" type="string" control="TextArea" rows="3" size="8" maxLength="500" isOptional="True"/>
+                <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" size="m"  isOptional="true"/>  
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" size="m" readOnly="true" isOptional="true"/> 
+            </dataBinding>
+        </controlSection>  
+    </formView>
+</cwFramework>

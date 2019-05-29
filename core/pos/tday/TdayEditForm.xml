@@ -1,0 +1,48 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Tday" type="Master" bindingBO="tday/Tday">    
+        <header>POS Transaction Day</header>    
+        <keyField>tday_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <clientJsCode>pos_clientcode.js</clientJsCode>
+        <codeBehind>
+            <className>app\core\pos\tday\TdayWorker</className>
+        </codeBehind>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="terminal_id" label="Terminal" type="int" control="SmartCombo" size="s" cdata-enable-on="core_pos.tday_terminal_allow_select">
+                    <lookup>
+                        <valueMember>terminal_id</valueMember>
+                        <displayMember>terminal</displayMember>
+                        <namedLookup>../core/pos/lookups/Terminal.xml</namedLookup>
+                    </lookup>
+                </field>
+                <field id="tday_date" label="Txn. Date" type="date" control="Date" size="s" range="finYear" readOnly="true"/>
+                <field id="user_id" label="User" type="int" control="SmartCombo" size="s" readOnly="true">
+                    <lookup>
+                        <valueMember>user_id</valueMember>
+                        <displayMember>user_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/UserCompany.xml</namedLookup>
+                    </lookup>
+                </field>
+                <nextRow/>
+                <field id="tday_status" label="Status" type="int" control="SimpleCombo" size="s" readOnly="true">
+                    <options>
+                        <option value="0">Open</option>
+                        <option value="1">EOD Started</option>
+                        <option value="2">EOD Completed</option>
+                        <option value="3">Handover Started</option>
+                        <option value="5">Closed</option>
+                    </options>
+                </field>
+                <cButton id="btn_eod_start" label="Start EOD Process" class="btn-primary" onClick="core_pos.tday_eod_start"
+                    cdata-visible-on="core_pos.tday_eod_enable"/>
+                
+                <callMethod methodName="getViewForSettle"/>
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

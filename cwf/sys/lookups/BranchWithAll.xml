@@ -1,0 +1,24 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="BranchWithAll">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select a.branch_id, a.branch_name, a.branch_code 
+                from (        
+                Select 0 as branch_id, 'Consolidated' as branch_name, '' as branch_code
+                union All
+                (select branch_id, branch_name, branch_code 
+                from sys.branch 
+                where company_id={company_id}
+                order by branch_name asc)
+                ) a
+            </command>
+        </sql>
+        <keyField id="branch_id"/>
+    </lookup>
+</cwFramework>

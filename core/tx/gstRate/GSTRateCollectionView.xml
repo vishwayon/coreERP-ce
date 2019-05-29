@@ -1,0 +1,28 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="GSTRate" type="Master" bindingBO="GSTRate" editView="gstRate/GSTRateEditForm">        
+        <header>GST Rate</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select gst_rate_id, gst_rate_desc, sgst_pcnt, cgst_pcnt, igst_pcnt, cess_pcnt
+                    from tx.gst_rate
+                    Where company_id={company_id}
+                    order by gst_rate_desc
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="gst_rate_desc" displayName="GST Rate"/>
+                <displayField columnName="sgst_pcnt" displayName="State GST %" format="Amount"/>
+                <displayField columnName="cgst_pcnt" displayName="Central GST %" format="Amount"/>
+                <displayField columnName="igst_pcnt" displayName="Integrated GST %" format="Amount"/>
+                <displayField columnName="cess_pcnt" displayName="Cess %" format="Amount"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

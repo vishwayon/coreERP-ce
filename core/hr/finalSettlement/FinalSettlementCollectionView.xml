@@ -1,0 +1,39 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'>
+
+    <collectionView id="FinalSettlement" type="Document" bindingBO="FinalSettlement" editView="finalSettlement/FinalSettlementEditForm">
+        <header>FinalSettlement</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select final_settlement_id, doc_date, fin_set_from_date, fin_set_to_date, net_settlement_amt, status  From hr.fin_set_control                    
+                    Where doc_type='FS' and finyear=:pfinyear and company_id=:pcompany_id and branch_id=:pbranch_id
+                    Order by final_settlement_id
+                </command>
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                    <param id="pbranch_id">
+                        <session>branch_id</session>
+                    </param>
+                    <param id="pfinyear">
+                        <session>finyear</session>
+                    </param>
+                </params>
+            </sql>
+            <filters>
+                <useDefault/>
+            </filters>
+            <displayFields>
+                <displayField columnName="final_settlement_id" displayName="Document No"/>
+                <displayField columnName="fin_set_from_date" displayName="Fin Settle Date From" format="Date"/>
+                <displayField columnName="fin_set_to_date" displayName="Fin Settle Date To" format="Date"/>
+                <displayField columnName="net_settlement_amt" displayName="Net Settlement Amt" format="Amount"/>
+            </displayFields>
+      </collectionSection>
+    </collectionView>
+</cwFramework>

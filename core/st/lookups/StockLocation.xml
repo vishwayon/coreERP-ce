@@ -1,0 +1,21 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="StockLocation">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select stock_location_id, stock_location_name, branch_id, sl_type_id, COALESCE((jdata->>'allow_all_si')::boolean, false) allow_all_si,
+                    COALESCE((jdata->>'mat_ids')::text, '{}')::bigint[] mat_ids,
+                    COALESCE((jdata->>'mat_type_ids')::text, '{}')::bigint[] mat_type_ids 
+                from st.stock_location
+                Where company_id={company_id} and branch_id={branch_id}
+                order by stock_location_name
+            </command>
+        </sql>
+        <keyField id="stock_location_id"/>
+    </lookup>
+</cwFramework>

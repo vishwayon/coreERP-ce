@@ -1,0 +1,90 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <businessObject id="GstInvoice" type="Document">
+        <controlTable>
+            <tableName>ar.invoice_control</tableName>
+            <primaryKey>invoice_id</primaryKey>
+            <jsonField id="annex_info">
+                <jobject name="gst_output_info" type="simple">
+                    <jfield name="txn_type" type="string"/>
+                    <jfield name="customer_state_id" type="int"/>
+                    <jfield name="customer_gstin" type="string"/>
+                </jobject> 
+                <jfield name="advance_amt" type="decimal"/>  
+                <jfield name="advance_amt_fc" type="decimal"/>  
+                <jfield name="tax_amt" type="decimal"/>   
+                <jfield name="tax_amt_fc" type="decimal"/>    
+                <jfield name="net_credit_amt" type="decimal"/>   
+                <jfield name="net_credit_amt_fc" type="decimal"/> 
+                <jfield name="bt_amt" type="decimal"/>   
+                <jfield name="bt_amt_fc" type="decimal"/>
+                <jfield name="round_off_amt" type="decimal"/>   
+                <jfield name="round_off_amt_fc" type="decimal"/>      
+            </jsonField>
+            <customColumns>
+                <customColumn name="st_tran_amt" type="numeric" />  
+                <customColumn name="unstl_adv_amt" type="numeric" />
+            </customColumns>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save>    
+            <delete>
+                <useEntity/>
+            </delete> 
+            <tranTable id="invoice_tran">
+                <tableName>ar.invoice_tran</tableName>
+                <primaryKey>invoice_tran_id</primaryKey>   
+                <customColumns>
+                    <customColumn name="vtax_desc" type="string"/>
+                </customColumns>   
+                <relation linkType="OneToMany">
+                    <foreignKey>invoice_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{invoice_id}:{RowID}</primaryKeyPattern>
+                </save>      
+                <delete>
+                    <useEntity/>      
+                </delete>    
+                <tableElongate id="gtt" tableName="tx.gst_tax_tran" primaryKey="gst_tax_tran_id" foreignKey="voucher_id"
+                    tranGroup="tran_group"/>
+            </tranTable>
+            <tranTable id="receivable_ledger_alloc_tran">
+                <tableName>ac.rl_pl_alloc</tableName>
+                <primaryKey>rl_pl_alloc_id</primaryKey>  
+                <customColumns>
+                    <customColumn name="adv_ref_id" type="varchar" length="50"/>
+                    <customColumn name="adv_ref_date" type="date"/>
+                    <customColumn name="balance" type="numeric" />
+                    <customColumn name="balance_fc" type="numeric" />
+                </customColumns>    
+                <relation linkType="OneToMany">
+                    <foreignKey>voucher_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern type="md5">{invoice_id}:{RowID}</primaryKeyPattern>
+                    <fieldPattern field="vch_tran_id">{invoice_id}:{RowID}</fieldPattern>
+                </save>         
+                <delete>
+                    <useEntity/>      
+                </delete> 
+            </tranTable>
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\ar\gstInvoice\GstInvoiceEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

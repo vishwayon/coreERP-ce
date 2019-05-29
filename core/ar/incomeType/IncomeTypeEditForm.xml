@@ -1,0 +1,47 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="IncomeType" type="Master" bindingBO="incomeType/IncomeType">
+        <header>Income Type</header>
+        <keyField>income_type_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <clientJsCode>ar_clientcode.js</clientJsCode>      
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="income_type_name" label="Income Type" type="string" control="TextBox" size="s" maxLength="250" cdata-enable-on="core_ar.income_type_enable"  />               
+                <nextRow/>
+                <field id="tax_schedule_id" label="Tax Schedule" type="int" control="SmartCombo"  size="s"  isOptional="true">
+                    <lookup>
+                        <valueMember>tax_schedule_id</valueMember>
+                        <displayMember>tax_schedule</displayMember>
+                        <namedLookup>../core/tx/lookups/TaxSchedule.xml</namedLookup>
+                        <filter>applicable_to_customer = true</filter>
+                    </lookup>   
+                </field>    
+                <nextRow/>
+                <field id="seq_type" label="Invoice Sequence" type="string" control="TextBox" size="xs" maxLength="4" cdata-enable-on="core_ar.income_type_enable"/>
+                <tranSection label="Income Type Details"  editMode="Add|Edit|Delete" size="6">
+                    <dataBinding dataProperty="income_type_tran">
+                        <field id="account_id" label="Account" type="int" control="SmartCombo" size="6" maxLength="50" >
+                            <lookup>
+                                <valueMember>account_id</valueMember>
+                                <displayMember>account_head</displayMember>
+                                <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                                <filter>account_type_id in (23, 24, 18, 17, 21)</filter>
+                            </lookup>  
+                        </field>
+                        <field id="hsn_sc_id" label="HSN SC" type="int" control="SmartCombo" size="6" maxLength="50" >
+                            <lookup>
+                                <valueMember>hsn_sc_id</valueMember>
+                                <displayMember>hsn_sc_desc</displayMember>
+                                <namedLookup>../core/tx/lookups/HsnSc.xml</namedLookup>
+                            </lookup>  
+                        </field>
+                    </dataBinding>
+                </tranSection> 
+            </dataBinding>
+        </controlSection>   
+    </formView>
+</cwFramework>

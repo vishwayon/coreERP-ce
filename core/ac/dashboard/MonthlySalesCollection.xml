@@ -1,0 +1,42 @@
+<widget id="MonthlySalesCollection">
+	<title>Monthly Sales/Collection</title>
+        <widgetType>stack</widgetType>
+        <series id="collection">
+            <label>Collection</label>
+            <sql>
+                <command>
+                    select month_name, collection from sys.fn_monthly_sales_collection(:pcompany_id, :pfinyear)
+                </command>
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                    <param id="pfinyear">
+                        <session>finyear</session>
+                    </param>
+                </params>
+            </sql>
+            <seriesType>bars</seriesType>
+            <xField>month_name</xField>
+            <yField>collection</yField>
+	</series>
+	<series id="sales">
+            <label>Sales</label>
+            <sql>
+                <command>
+                    select month_name, sales from sys.fn_monthly_sales_collection(:pcompany_id, :pfinyear)
+                </command>
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                    <param id="pfinyear">
+                        <session>finyear</session>
+                    </param>
+                </params>
+            </sql>
+            <seriesType>bars</seriesType>
+            <xField>month_name</xField>
+            <yField>sales</yField>
+	</series>
+</widget>

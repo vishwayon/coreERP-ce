@@ -1,0 +1,11 @@
+<wizard id="Gratuity" name="Gratuity Wizard">
+    <codeBehind>
+        <className>\app\core\hr\employee\EmployeeWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectEmployee">
+        <path>employee/EmployeeWizard/SelectEmployee</path>
+    </wizardStep>
+    <postWizard id="Gratuity">
+        <path>gratuity/GratuityEditForm</path>
+    </postWizard>
+</wizard>

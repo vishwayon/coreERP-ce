@@ -1,0 +1,22 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="Material">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select material_id, material_name, material_code, (annex_info->'supp_info'->>'mfg_id')::bigint as mfg_id, material_type_id
+                from st.material 
+                Where company_id={company_id}
+                order by material_name
+            </command>
+        </sql>
+        <keyField id="material_id"/>
+        <aliasField id="material_code"/>
+    </lookup>
+</cwFramework>
+
+    

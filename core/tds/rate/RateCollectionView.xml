@@ -1,0 +1,32 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="Rate" type="Master" bindingBO="Rate" editView="rate/RateEditForm">        
+        <header>TDS Rate</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select a.rate_id, a.section_id, b.section, a.person_type_id,
+                    c.person_type_desc, a.base_rate_perc, a.ecess_perc, a.surcharge_perc, 
+                    a.effective_from , true as edit_not_allowed from tds.rate a
+                    inner join tds.section b on a.section_id = b.section_id
+                    inner join tds.person_type c on a.person_type_id = c.person_type_id
+                    order by b.section, c.person_type_desc
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="section" displayName="TDS Section"/>
+                <displayField columnName="person_type_desc" displayName="Person Type"/>
+                <displayField columnName="base_rate_perc" displayName="Base Rate" format="Amount"/>
+                <displayField columnName="ecess_perc" displayName="Education cess" format="Amount"/>
+                <displayField columnName="surcharge_perc" displayName="Surcharge %" format="Amount"/>
+                <displayField columnName="effective_from" displayName="Effective From" format="Date"/>
+            </displayFields>
+            <editNotAllowed field='edit_not_allowed'/>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

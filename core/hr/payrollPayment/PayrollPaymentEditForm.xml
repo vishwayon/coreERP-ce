@@ -1,0 +1,93 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="PayrollPayment" type="Document" bindingBO="payrollPayment/PayrollPayment">
+        <header>Payroll Payment</header>
+        <keyField>voucher_id</keyField>
+        <printView rptOption="payrollPayment/PayrollPaymentPrint">
+            <rptParams>
+                <param id="pvoucher_id">voucher_id</param>
+            </rptParams>
+        </printView>
+        <newDocEnabled wizard="payrollPayment/PayrollPaymentWizard" step="SelectPayItems">
+            <docType>PPT</docType>
+        </newDocEnabled>
+        <deleteDocEnabled/>
+        <clientJsCode>hr_clientcode.js</clientJsCode>     
+        <clientJsCodeRefs>    
+            <clientJsCodeRef>../core/ac/ac_clientcode.js</clientJsCodeRef>
+        </clientJsCodeRefs>
+        
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="voucher_id" label="Voucher No" type="string" control="TextBox" size="s" maxLength="50" isOptional="true" readOnly="true" forStatus="true" />
+                <dummy size="6"/>
+                <field id="doc_date" label="Date" type="date" control="Date" size="ms" range="finYear"/>
+                <nextRow/>     
+                <field id="txn_type" label="Settlement Type" type="int" control="SimpleCombo" size="ms">
+                    <options>
+                        <option value="0">Cash Bank</option>
+                        <option value="1">Journal</option>
+                    </options>
+                </field>   
+                <nextRow/>
+                <field id="account_id" label="Account" type="int" control="SmartCombo" size="3" >
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filterEvent>core_hr.ppt_acc_combo_filter</filterEvent>
+                    </lookup>   
+                </field>
+                <field id="liability_account_id" label="Liability Account" type="int" control="SmartCombo" size="3" >
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/hr/lookups/AccAccountInPayhead.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <tranSection label="Pay Items" editMode="Auto">
+                    <dataBinding dataProperty="pay_items_tran">
+                        <field id="pay_month" label="Pay Month" type="string" control="TextBox" size="xs" maxLength="10" readOnly="true"/>
+                        <field id="full_employee_name" label="Employee" type="string" control="TextBox" size="3" maxLength="320" readOnly="true"/>
+                        <field id="employee_no" label="Employee No" type="string" control="TextBox" size="2" maxLength="50" readOnly="true"/>
+                        <field id="tot_emolument_amt" label="Emoluments" type="decimal" control="TextBox" size="2" isOptional="true" readOnly="true"/>
+                        <field id="tot_deduction_amt" label="Deductions" type="decimal" control="TextBox" size="2" isOptional="true" readOnly="true"/>
+                        <field id="net_amt" label="Net Amount" type="decimal" control="TextBox" size="2" isOptional="true" readOnly="true"/>                        
+                        <field id="payroll_id" label="payroll_id" type="Hidden" control="Hidden" size="xs"/>                       
+                        <field id="payroll_tran_id" label="payroll_tran_id" type="Hidden" control="Hidden" size="xs"/>                             
+                    </dataBinding>
+                </tranSection>
+                <nextRow/>  
+
+                <nextRow/>                   
+                <field id="narration" label="Narration" type="string" rows="3" control="TextArea" 
+                       size="m" maxLength="500" isOptional="true" />
+                <dummy/> 
+                <field id="credit_amt" label="Amount Paid" type="decimal" control="TextBox" size="ms" scale="amt" readOnly="true">
+                    <computedField>
+                        var net_amt = new Number();
+                        var total = new Number();
+                        for(var p = 0; p &lt; this.pay_items_tran().length; ++p)
+                        {
+                        net_amt += new Number(this.pay_items_tran()[p].net_amt());
+                        }
+                        total = net_amt;
+                        return total.toFixed(2);
+                    </computedField>
+                </field>  
+                <nextRow/>
+                <field id="cheque_number" label="Cheque#" type="string" control="TextBox" isOptional="true" size="ms" maxLength="20"/>  
+                <field id="cheque_date" label="Cheque Date" type="date" control="Date" size="ms"/>                        
+                <field id="is_pdc" label="Post Dated" type="bool" control="CheckBox" size="2"/>    
+                <nextRow/>
+                <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" size="m"  isOptional="true"/>  
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" size="m" readOnly="true" isOptional="true"/> 
+            </dataBinding>
+        </controlSection>
+        <dmFiles multipleFiles="true"/> 
+        <!--   <dmFiles multipleFiles="true"/>   -->
+    </formView>
+</cwFramework>

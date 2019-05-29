@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <scriptInfo>
+        <companyDB>
+            <!-- Fixed Assets -->
+            <scriptFile>core/fa/scripts/Table_Schema.sql</scriptFile>
+            <scriptFile>core/fa/scripts/Procedure_Schema.sql</scriptFile>
+            <scriptFile>core/fa/scripts/Function_Schema.sql</scriptFile>
+            <scriptFile>core/fa/scripts/Menu_Entry.sql</scriptFile>
+        </companyDB>
+    </scriptInfo>
+</cwFramework>

@@ -1,0 +1,17 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="RemoteServer" type="Master" bindingBO="remoteServer/RemoteServer">    
+        <header>Remote Server</header>
+        <keyField>remote_server_id</keyField>
+        <newDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="remote_server_name" label="Server Name" type="string" control="TextBox" size="s" maxLength="20"/>
+                <field id="remote_server_user" label="User Name" type="string" control="TextBox" size="s" maxLength="20" isOptional="true"/>
+                <field id="remote_server_pass" label="User Pass" type="string" control="Password" size="s" maxLength="20" isOptional="true"/>                
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

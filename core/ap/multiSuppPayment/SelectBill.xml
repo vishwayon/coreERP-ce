@@ -1,0 +1,27 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    <allocView id="SeleBill" type="alloc" width="1000px">
+        <header>Select Bills</header>
+        <clientJsCode>ap_clientcode.js</clientJsCode> 
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="sele_bill-loading" control="Label" label="Loading ..." />
+                <nextRow/>
+                <field label="Supplier: " type="string" control="Label" size="1" inline="true"/>
+                <field id="supplier_account_id" label="" type="int" control="SmartCombo" size="m" inline="true" >
+                    <lookup>
+                        <valueMember>supplier_id</valueMember>
+                        <displayMember>supplier</displayMember>
+                        <namedLookup>../core/ap/lookups/Supplier.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <cButton id="get_bill_detail" onClick="msp.get_detail" label="Refresh" style="margin-top: 5px;" inline="true"/> 
+                <tranSection label="" editMode="Edit">
+                    <dataBinding dataProperty="bill_temp" bindMethod="datatable">
+                    </dataBinding>
+                </tranSection>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>

@@ -1,0 +1,242 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="AssetPurchase" type="Document" bindingBO="assetPurchase/AssetPurchase">
+        <header>Asset Purchase</header>
+        <keyField>ap_id</keyField>
+        <printView rptOption="assetPurchase/AssetPurchasePrint">
+            <rptParams>
+                <param id="pvoucher_id">ap_id</param>
+            </rptParams>
+        </printView>
+        <newDocEnabled>
+            <docType>AP</docType>
+        </newDocEnabled>
+        <deleteDocEnabled/>
+        <clientJsCode>fa_clientcode.js</clientJsCode>          
+        <clientJsCodeRefs>
+            <clientJsCodeRef>../core/tx/tx_clientcode.js</clientJsCodeRef>
+        </clientJsCodeRefs>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="ap_id" label="Voucher No" type="string" control="TextBox" size="s" maxLength="50" isOptional="true" readOnly="true" forStatus="true"/>
+                <dummy size="6"/>
+                <field id="doc_date" label="Date" type="date" control="Date"  size="ms" range="finYear"/>
+                <nextRow/>
+                <field id="en_purchase_type" label="Purchase Type" control="SimpleCombo" type="int" size="ms">
+                    <options>
+                        <option value="0">Cash</option>
+                        <option value="1">Bank</option>
+                        <option value="2">Credit</option>
+                        <option value="3">Journal</option>
+                    </options>
+                </field>
+                <dummy size="5"/>
+                <field id="bill_no" label="Bill No" type="string" control="TextBox" size="ms" maxLength="50" isOptional="true"/>
+                <field id="bill_date" label="Bill Date" type="date" control="Date"  size="ms" isOptional="true"/>
+                <nextRow/>
+                <field id="account_id" label="Supplier Account" type="int" control="SmartCombo" size="4" >
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/AccountWithDebtorsCreditors.xml</namedLookup>
+                        <filterEvent>core_fa.asset_purchase_account_combo_filter</filterEvent>
+                    </lookup>   
+                </field>
+                <tranSection label="Account Info (Items)" editMode="Add|Edit|Delete">
+                    <dataBinding dataProperty="ap_tran">
+                        <field id="asset_class_id" label="Asset Class" type="int" control="SmartCombo" size="ms" >
+                            <lookup>
+                                <valueMember>asset_class_id</valueMember>
+                                <displayMember>asset_class</displayMember>
+                                <namedLookup>../core/fa/lookups/AssetClass.xml</namedLookup>
+                            </lookup>   
+                        </field> 
+                        <field id="sub_class_id" label="Sub Class" type="int" control="SmartCombo" size="2" isOptional="true" >
+                            <lookup>
+                                <valueMember>sub_class_id</valueMember>
+                                <displayMember>sub_class_desc</displayMember>
+                                <namedLookup>../core/fa/lookups/SubClass.xml</namedLookup>
+                                <filterEvent>core_fa.subclass_filter</filterEvent>
+                            </lookup>  
+                        </field> 
+                        <field id="asset_location_id" label="Asset Location" type="int" control="SmartCombo" size="ms">
+                            <lookup>
+                                <valueMember>asset_location_id</valueMember>
+                                <displayMember>asset_location</displayMember>
+                                <namedLookup>../core/fa/lookups/AssetLocation.xml</namedLookup>
+                            </lookup>   
+                        </field> 
+                        <field id="asset_name" label="Asset name" type="string" control="TextBox" size="ms" maxLength="250"/>
+                        <field id="asset_qty" label="Asset Qty" type="int" control="TextBox" size="ms"/>
+                        <field id="use_start_date" label="Start Date" type="date" control="Date" size="1"/> 
+                        <field id="purchase_amt" label="Purchase Amt" type="decimal" scale="amt" control="TextBox" size="2"/>
+                        <addRowEvent>core_fa.ap_tran_add_new_row</addRowEvent>
+                    </dataBinding>
+                </tranSection>      
+                <tranSection label="Landed Cost" editMode="Add|Edit|Delete">
+                    <dataBinding dataProperty="ap_lc_tran">    
+                        <field id="supplier_paid" label="Paid By Supplier" type="bool" control="CheckBox" size="xs"/>
+                        <field id="account_affected_id" label="Liability Account" type="int" control="SmartCombo" size="s" 
+                               cdata-enable-on="core_fa.ap_liability_acc_enable" isOptional="true">
+                            <lookup>
+                                <valueMember>account_id</valueMember>
+                                <displayMember>account_head</displayMember>
+                                <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                                <filter>account_type_id=13</filter>
+                            </lookup>   
+                        </field>
+                        <field id="debit_amt" label="Amount" type="decimal" control="TextBox" size="ms"  isOptional="true"/>                        
+                        <field id="is_taxable" label="Taxable" type="bool" control="CheckBox" size="xs" cdata-enable-on="core_fa.ap_lc_taxable_enable"/>         
+                       
+                        <field id="bill_no" label="Bill No" type="string" control="TextBox" size="ms" maxLength="50"/>
+                        <field id="bill_date" label="Bill Date" type="date" control="Date" size="ms"/>
+                    </dataBinding>
+                </tranSection>  
+                <field label="Taxes" type="string" control="Label" size="2" inline="true" isOptional="true" style="font-size:14px;color:teal;width:50px;"/>  
+                <field id="tax_schedule_name" label="" type="string" control="TextBox" size="3" maxLength="50" readOnly="true" isOptional="True" inline="true"/>
+                <cButton id="tax_schedule" onClick="core_tx.SelectTax" label="Select Tax" cdata-enable-on="core_tx.select_clear_tax_enable" inline="true" 
+                         icon="glyphicon glyphicon-plus" tooltip="Select Tax" nolabel="true"/>
+                <cButton id="clear_tax_schedule" onClick="core_tx.ClearTax" label="Clear Tax" cdata-enable-on="core_tx.select_clear_tax_enable" inline="true" 
+                         icon="glyphicon glyphicon-trash" nolabel="true" tooltip="Clear Tax"/>
+                <tranSection editMode="Auto" size="8">      
+                    <dataBinding dataProperty="tax_tran">
+                        <field id="supplier_paid" label="Paid By Supplier" type="bool" control="CheckBox" size="xs"/>
+                        <field id="account_affected_id" label="Liability Account" type="int" control="SmartCombo" size="s"
+                               cdata-enable-on="core_tx.tax_liability_acc_enable" isOptional="true" >
+                            <lookup>
+                                <valueMember>account_id</valueMember>
+                                <displayMember>account_head</displayMember>
+                                <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                                <filter>account_type_id=13</filter>
+                            </lookup>   
+                        </field>
+                        <field id="description" label="Description" type="string" control="TextBox" size="s" maxLength="250" readOnly="true"/> 
+                        <field id="tax_amt" label="Amount" type="decimal" control="TextBox" size="ms"  readOnly="true"
+                               mdata-event="subscribe:core_tx.tx_tax_amt_changed" />
+                        <field id="tax_amt_fc" label="Amount FC" type="decimal" control="TextBox" size="ms"  readOnly="true"
+                               cdata-visible-on="core_tx.enable_visible_fc"/>
+                        <field id="include_in_lc" label="Include In LC" type="bool" control="CheckBox" size="xs"/> 
+                        <field id="account_id" label="Account_ID" type="Hidden" control="Hidden" size="xs"/> 
+                        <field id="custom_rate" label="custom_rate" type="Hidden" control="Hidden" size="xs"/> 
+                        <field id="tax_schedule_id" label="tax_schedule_id" type="Hidden" control="Hidden" size="xs"/> 
+                        <field id="tax_detail_id" label="tax_detail_id" type="Hidden" control="Hidden" size="xs"/> 
+                    </dataBinding>
+                </tranSection>  
+                <nextRow/> 
+                <xdiv id="narration_div" size="6"/>
+                    <field id="narration" label="Narration" type="string" rows="3" control="TextArea"  size="12" maxLength="500" isOptional="true"/>                 
+                <xdivEnd/>
+                <xdiv id="total_div" size="6"/>
+                    <dummy size="3"/>
+                    <field id="gross_total" label="Items Total" type="string" control="Label" size="3"  isOptional="true" inline="true"/>
+                    <customField id="gross_credit_amt" label="" type="decimal" control= "TextBox" size="4" isOptional="true"  inline="true" 
+                                 mdata-event="subscribe:core_fa.ap_calculate_before_tax_amt" readOnly="true" >
+                        <computedField>
+                            var total_item_amt = new Number();
+                            for(var p = 0; p &lt; this.ap_tran().length; ++p)
+                            {
+                            total_item_amt += new Number(this.ap_tran()[p].purchase_amt());
+                            }
+                            return total_item_amt.toFixed(2);
+                        </computedField>
+                    </customField> 
+                    <nextRow/> 
+                    <dummy size="3"/>          
+                    <field id="disc_is_value" label="Disc Value" type="bool" control="CheckBox" size="2" inline="true"/> 
+                    <field id="disc_pcnt" label="" type="decimal" control="TextBox" size="xs" isOptional="true" inline="true"
+                           mdata-event="subscribe:core_fa.ap_calculate_disc_amt" cdata-enable-on="core_fa.ap_discount_percent_enable"/>
+                    <field id="disc_amt" label="" type="decimal" control="TextBox" size="4" isOptional="true" inline="true"
+                           mdata-event="subscribe:core_fa.ap_calculate_total" cdata-enable-on="core_fa.ap_discount_enable"/>
+                    <nextRow/> 
+                    <dummy size="3"/>
+                    <field label="Round Off Amount" type="string" control="Label" size="3"  isOptional="true" inline="true"/>
+                    <field id="round_off_amt" label="" type="decimal" control="TextBox" size="4" allowNegative="true" isOptional="true" inline="true"
+                           mdata-event="subscribe:core_fa.ap_calculate_before_tax_amt"/>
+                    <field id="before_tax_amt" label="" type="Hidden" control="Hidden" size="4" readOnly="true"/>  
+                    <field id="misc_taxable_amt" label="" type="Hidden" control="Hidden" size="4" readOnly="true" isOptional="true"
+                            mdata-event="subscribe:core_fa.ap_calculate_before_tax_amt">    
+                        <computedField forceCalOnPost="true">
+                            var total_lc_amt = new Number();
+                            for(var p = 0; p &lt; this.ap_lc_tran().length; ++p)
+                            {
+                            if(this.ap_lc_tran()[p].is_taxable() == true)  {
+                            if(this.ap_lc_tran()[p].supplier_paid() == true){
+                            total_lc_amt += new Number(this.ap_lc_tran()[p].debit_amt());
+                            }
+                            }
+                            }
+                            return total_lc_amt.toFixed(2);
+                        </computedField>
+                    </field>
+                    <nextRow/> 
+                    <dummy size="3"/>  
+                    <field label="Landed Cost" type="string" control="Label" size="3" isOptional="true" inline="true"/>   
+                    <field id="lc_amt" label="" type="decimal" control="TextBox" size="4"  readOnly="true" inline="true"
+                           mdata-event="subscribe:core_fa.ap_calculate_before_tax_amt">    
+                        <computedField forceCalOnPost="true">
+                            var total_lc_amt = new Number();
+                            for(var p = 0; p &lt; this.ap_lc_tran().length; ++p)
+                            {
+                            total_lc_amt += new Number(this.ap_lc_tran()[p].debit_amt());
+                            }
+                            return total_lc_amt.toFixed(2);
+                        </computedField>
+                    </field>
+                    <nextRow/> 
+                    <dummy size="3"/> 
+                    <field label="Tax Amount" type="string" control="Label" size="3" isOptional="true" inline="true"/>          
+                    <field id="tax_amt" label="" type="decimal" control="TextBox" size="4" readOnly="true" inline="true">
+                        <computedField forceCalOnPost="true">
+                            var total_tax_amt = new Number();
+                            for(var p = 0; p &lt; this.tax_tran().length; ++p)
+                            {
+                            total_tax_amt += new Number(this.tax_tran()[p].tax_amt());
+                            }
+                            return total_tax_amt.toFixed(2);
+                        </computedField>
+                    </field>   
+                    <field id="misc_non_taxable_amt" label="" type="Hidden" control="Hidden" size="ms"  readOnly="true"
+                           mdata-event="subscribe:core_fa.ap_calculate_before_tax_amt">    
+                        <computedField forceCalOnPost="true">
+                            var total_lc_amt = new Number();
+                            for(var p = 0; p &lt; this.ap_lc_tran().length; ++p)
+                            {
+                            if(this.ap_lc_tran()[p].is_taxable() == false){
+                            if(this.ap_lc_tran()[p].supplier_paid() == true){
+                            total_lc_amt += new Number(this.ap_lc_tran()[p].debit_amt());
+                            }
+                            }
+                            }
+                            return total_lc_amt.toFixed(2);
+                        </computedField>
+                    </field>
+                    <nextRow/> 
+                    <dummy size="3"/>
+                    <field label="Total Purchase Amount" type="string" control="Label" size="3" isOptional="true" inline="true"/>  
+                    <field id="total_purchase_amt" label="" type="decimal" control="TextBox" size="4" readOnly="true" inline="true">   
+                        <computedField forceCalOnPost="true">
+                            var total_amt = new Number();
+                            total_amt = new Number(this.gross_credit_amt()) - new Number(this.disc_amt()) + new Number(this.round_off_amt()) +  new Number(this.tax_amt()) +  new Number(this.lc_amt());
+                            return total_amt.toFixed(2);
+                        </computedField>                    
+                    </field>
+                    <field id="credit_amt" label="" type="Hidden" control="Hidden" size="ms" readOnly="true">   
+                        <computedField>
+                            var total_amt = new Number();
+                            total_amt = new Number(this.before_tax_amt()) +  new Number(this.tax_amt()) +  new Number(this.misc_non_taxable_amt());
+                            return total_amt.toFixed(2);
+                        </computedField>                    
+                    </field>          
+                <xdivEnd/>
+                <nextRow/>
+
+                <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" size="m"  isOptional="true"/>  
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" size="m" readOnly="true" isOptional="true"/> 
+
+            </dataBinding>
+        </controlSection> 
+        <dmFiles multipleFiles="true"/>   
+    </formView>
+</cwFramework>

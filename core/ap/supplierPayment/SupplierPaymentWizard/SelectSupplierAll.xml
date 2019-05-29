@@ -1,0 +1,24 @@
+<wizardView>
+    <header>Select Supplier or Pay Cycle</header>
+    <sections>
+        <formSection id="SelectSupplierAll">
+            <displayFields>
+                <displayField id="account_id" label="Supplier" type="int" control="SmartCombo" size="s"  editMode="edit" >
+                    <lookup>
+                        <valueMember>supplier_id</valueMember>
+                        <displayMember>supplier</displayMember>
+                        <namedLookup>../core/ap/lookups/SupplierWithAll.xml</namedLookup>
+                    </lookup>   
+                </displayField> 
+                <dummy size="8"/>  
+                <displayField id="pay_cycle_id" label="Pay Cycle" type="int" control="SmartCombo" size="s"  editMode="edit" >
+                    <lookup>
+                        <valueMember>pay_cycle_id</valueMember>
+                        <displayMember>pay_cycle</displayMember>
+                        <namedLookup>../core/ap/lookups/PayCycle.xml</namedLookup>
+                    </lookup>    
+                </displayField>  
+            </displayFields>
+        </formSection>
+    </sections>
+</wizardView>

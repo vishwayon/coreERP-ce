@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2018-02-21T10:10:30 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AdvanceAllocTran" language="groovy" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="6f651d63-8f3c-4e22-ab83-213c4419ac79">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="hi_local"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pvoucher_id" class="java.lang.String"/>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_date_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["dd-MM-yyyy"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[Select a.voucher_id, a.doc_date, b.net_credit_amt
+From ac.rl_pl a
+Inner Join ac.rl_pl_alloc b ON a.rl_pl_id = b.rl_pl_id
+Where b.voucher_id = $P{pvoucher_id}]]>
+	</queryString>
+	<field name="voucher_id" class="java.lang.String"/>
+	<field name="doc_date" class="java.sql.Date"/>
+	<field name="net_credit_amt" class="java.math.BigDecimal"/>
+	<variable name="net_credit_amt1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{net_credit_amt}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="33">
+			<frame>
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="0" y="17" width="280" height="16" backcolor="#008080" uuid="ee5d7ec2-92da-407f-b8db-7eecad7911b1">
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<staticText>
+					<reportElement style="NormalLabel" mode="Transparent" x="0" y="0" width="100" height="16" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="16ca8257-75df-4b90-bdd5-f66d28dd4706"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Document Ref#]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" mode="Transparent" x="100" y="0" width="80" height="16" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="2bb5bf6a-f517-4369-86db-579946fbdbf0"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" mode="Transparent" x="180" y="0" width="100" height="16" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="64b175ed-2b72-4949-822b-c24030d44190"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Amount]]></text>
+				</staticText>
+			</frame>
+			<textField>
+				<reportElement style="NormalText" x="0" y="0" width="280" height="17" uuid="33d63859-cd82-4bcc-9796-e4ccaeebf10f"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Advance Settled"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField>
+				<reportElement style="NormalText" x="0" y="0" width="100" height="16" uuid="0cddbef3-1fa7-4698-967a-236151c02b52"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{voucher_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="NormalText" x="100" y="0" width="80" height="16" uuid="43bc456a-f259-4e13-880c-f30d1e1d01bc"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{doc_date}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_date_format}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement style="NormalText" x="180" y="0" width="100" height="16" uuid="0def78b1-307c-4bc4-95c7-f5cd6c5bd6f9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($F{net_credit_amt})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="16" splitType="Stretch">
+			<textField>
+				<reportElement style="CaptionLabel" x="180" y="0" width="100" height="16" uuid="cbb9a624-f14e-486e-81a5-96900ed2666e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.2"/>
+					<bottomPen lineWidth="0.2"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($V{net_credit_amt1})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="80" height="16" uuid="4713a7ef-fb0a-4a63-b701-c73cab06bbbb">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

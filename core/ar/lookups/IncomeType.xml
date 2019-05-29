@@ -1,0 +1,17 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <lookup id="IncomeType">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                SELECT income_type_id, income_type_name, is_with_estimate
+                FROM ar.income_type Where company_id={company_id} order by income_type_name  asc
+            </command>
+        </sql>
+        <keyField id="income_type_id"/>
+    </lookup>
+</cwFramework>

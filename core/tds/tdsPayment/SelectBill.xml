@@ -1,0 +1,16 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    <allocView id="SeleBill" type="alloc" width="800pt">
+        <header>Select Deductions for Payment</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="sele-bill-loading" control="Label" label="Loading ..." />
+                <tranSection label="" editMode="Edit">
+                    <dataBinding dataProperty="bill_temp" bindMethod="datatable">
+                    </dataBinding>
+                </tranSection>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>

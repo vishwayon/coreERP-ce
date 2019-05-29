@@ -1,0 +1,115 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="User" type="Master" bindingBO="user/User">    
+        <header>User</header>
+        <keyField>user_id</keyField>
+        <newDocEnabled/>
+        <clientJsCode>sys_clientcode.js</clientJsCode>
+        <clientJsCodeRefs>
+            <clientJsCodeRef>../cwf/sys/user/user_clientcode.js</clientJsCodeRef>
+        </clientJsCodeRefs>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <xdiv id="uinfo_div_parent" size="12"/>
+                    <xdiv id="uinfo_div" size="6"/>
+                        <field id="user_name" label="User Name" type="string" control="TextBox" size="6" maxLength="20"/>
+                        <field id="is_active" label="Active" type="bool" control="CheckBox" size="6"/>
+                        <nextRow/> 
+                        <field id="user_pass" label="Password" type="string" control="Password" size="6" maxLength="60"/>
+                        <nextRow/> 
+                        <field id="user_pass_confirm" label="Confirm Password" type="string" control="Password" size="6" maxLength="60"/>
+                        <field id="user_attr.pwd_force_change" label="Request password reset on next Logon" type="bool" control="CheckBox" size="6"/>
+                        <nextRow/> 
+                        <field id="full_user_name" label="Full User Name" type="string" control="TextBox" size="9" maxLength="100"/>
+                        <nextRow/> 
+                        <field id="email" label="Email Address" type="string" control="TextBox" size="9" editMode="View" maxLength="100"/>
+                        <nextRow/> 
+                        <field id="mobile" label="Mobile" type="string" control="TextBox" size="5" editMode="View" maxLength="50" isOptional="true"/>
+                        <field id="phone" label="Phone" type="string" control="TextBox" size="5" editMode="View" maxLength="50" isOptional="true"/>
+                        <nextRow/> 
+                    <xdivEnd/>
+                    <xdiv id="pwdinfo_div" size="6"/>
+                        <cHtml id="pwd_hint_view"  size="6" label="">
+                            <![CDATA[
+                                <div class="col-md-12" id="pwd_validator" style="margin-top:30px;" data-bind="visible: core_sys.user_cs.visibility()">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <span class="glyphicon" data-bind="css: core_sys.user_cs.min_8char() ? 'glyphicon-ok' : ''" style="padding-right: 3px;"></span>
+                                            Between 8-14 characters
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="glyphicon" data-bind="css: core_sys.user_cs.min_1upper() ? 'glyphicon-ok' : ''" style="padding-right: 3px;"></span>
+                                            Minimum 1 uppercase character
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="glyphicon" data-bind="css: core_sys.user_cs.min_1lower() ? 'glyphicon-ok' : ''" style="padding-right: 3px;"></span>
+                                            Minimum 1 lowercase character
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="glyphicon" data-bind="css: core_sys.user_cs.min_1numb() ? 'glyphicon-ok' : ''" style="padding-right: 3px;"></span>
+                                            Minimum 1 number
+                                        </li> 
+                                        <li class="list-group-item">
+                                            <span class="glyphicon" data-bind="css: core_sys.user_cs.min_1splchar() ? 'glyphicon-ok' : ''" style="padding-right: 3px;"></span>
+                                            Minimum 1 special char [!@#$%^&*]
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="glyphicon" data-bind="css: core_sys.user_cs.repeat() ? 'glyphicon-ok' : ''" style="padding-right: 3px;"></span>
+                                            Password Matched
+                                        </li>
+                                    </ul>
+                                </div>
+                            ]]>
+                        </cHtml>
+                    <xdivEnd/>
+                <xdivEnd/>
+                <xdiv id="branch_div" size="5"/> 
+                <tranSection label="Selected Branch(s)/Role(s)" editMode="Add|Edit|Delete">
+                    <dataBinding dataProperty="user_branch_role">
+                        <field id="branch_id" label="Branch" type="int" control="SmartCombo" size="6">
+                            <lookup> 
+                                <valueMember>branch_id</valueMember>
+                                <displayMember>branch_name</displayMember>
+                                <namedLookup>../cwf/sys/lookups/Branch.xml</namedLookup>
+                            </lookup>    
+                        </field> 
+                        <field id="role_id" label="Role" type="int" control="SmartCombo" size="5">
+                            <lookup> 
+                                <valueMember>role_id</valueMember>
+                                <displayMember>role_name</displayMember>
+                                <namedLookup>../cwf/sys/lookups/Role.xml</namedLookup>
+                            </lookup>    
+                        </field> 
+                    </dataBinding>
+                </tranSection>  
+                <xdivEnd/>
+                <dummy size="1"/>
+                <xdiv id="logon_addr_div" size="4"/>
+                    <field id="user_attr.otp_req" label="Req. OTP" type="bool" control="CheckBox" size="3"/>
+                    <field id="user_attr.en_otp_req_type" label="" type="int" control="SimpleCombo" size="9" isOptional="true"
+                        cdata-enable-on="core_sys.en_otp_req_type_enable" >
+                        <options defaultValue="101">
+                            <option value="101">Always</option>
+                            <option value="102">Not Within Restricted IP</option>
+                        </options>
+                    </field>
+                    <tranSection label="Logon Allowed From" editMode="Add|Edit|Delete" dataRelation="OneToMany" size="12">
+                        <dataBinding dataProperty="user_attr.logon_addr">
+                            <field id="ip" label="Ip-Address" type="string" control="TextBox" size="12" maxLength="50"  isOptional="true"/>
+                        </dataBinding>
+                    </tranSection>
+                <xdivEnd/>
+                <!--<xdiv id="mac_div" size="6"/>
+                <field id="is_mac_addr" label="Login requires MAC validation" type="bool" control="CheckBox" size="12"/>
+                <tranSection label="MAC Address" editMode="Add|Edit|Delete" dataRelation="OneToMany" size="12" noColHeader="true">
+                   <dataBinding dataProperty="mac_addr">
+                       <field id="item_value" label="MAC Address" type="string" control="TextBox" size="12" maxLength="12"/>
+                   </dataBinding>
+                </tranSection>
+                <xdivEnd/>-->
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

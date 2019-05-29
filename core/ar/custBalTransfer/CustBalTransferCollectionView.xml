@@ -1,0 +1,40 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="CustBalTransfer" type="Document" bindingBO="CustBalTransfer" editView="custBalTransfer/CustBalTransferEditForm">
+        <header>Customer Balance Transfer</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    Select a.voucher_id, a.doc_date, a.received_from, a.debit_amt, a.debit_amt_fc, a.status, b.customer, a.debit_amt, a.debit_amt_fc, a.net_settled, a.net_settled_fc
+                    from ar.rcpt_control a
+                    Inner Join ar.customer b on a.customer_account_id=b.customer_id
+                    Where a.doc_type='CBT' and a.finyear=:pfinyear and a.company_id=:pcompany_id and a.branch_id=:pbranch_id
+                    and a.trigger_id='core'
+                    Order by a.voucher_id
+                </command>
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                    <param id="pbranch_id">
+                        <session>branch_id</session>
+                    </param>
+                    <param id="pfinyear">
+                        <session>finyear</session>
+                    </param>
+                </params>
+            </sql>
+            <displayFields>
+                <displayField columnName="doc_date" displayName="Date" format="Date"/>
+                <displayField columnName="voucher_id" displayName="Document No"/>
+                <displayField columnName="customer" displayName="Customer"/>
+                <displayField columnName="net_settled" displayName="Amt Transfered" format="Amount"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

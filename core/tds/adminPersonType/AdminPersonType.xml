@@ -1,0 +1,26 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <businessObject id="AdminPersonType" type="Master">
+        <connectionType>
+            <mainDB/>
+        </connectionType>
+        <controlTable>
+            <tableName>tds.person_type</tableName>
+            <primaryKey>person_type_id</primaryKey>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save> 
+            <delete>
+                <useEntity/>
+            </delete>
+        </controlTable>  
+        <codeBehind>
+            <className>\app\core\tds\adminPersonType\AdminPersonTypeEventHandler</className>
+        </codeBehind>
+    </businessObject>  
+</cwFramework>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2018-05-16T09:09:08 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RLAllocTran" language="groovy" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="e0e21ccc-8083-44e3-95fa-670d5c02e550">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="hi_local"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pvoucher_id" class="java.lang.String"/>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.00"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pbranch_id" class="java.lang.Long"/>
+	<parameter name="pcwf_date_format" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["yyyy-MM-dd"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="paccount_id" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[Select a.voucher_id, a.doc_date, b.net_debit_amt, b.net_credit_amt
+From ac.rl_pl a
+Inner Join ac.rl_pl_alloc b On a.rl_pl_id = b.rl_pl_id
+Where b.voucher_id=$P{pvoucher_id} 
+	And (b.branch_id=$P{pbranch_id} Or $P{pbranch_id}=0)
+	And a.account_id = $P{paccount_id}
+Order by a.voucher_id, a.doc_date]]>
+	</queryString>
+	<field name="voucher_id" class="java.lang.String"/>
+	<field name="doc_date" class="java.sql.Date"/>
+	<field name="net_debit_amt" class="java.math.BigDecimal"/>
+	<field name="net_credit_amt" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="12">
+			<staticText>
+				<reportElement style="FineNotes" x="10" y="0" width="230" height="12" uuid="c041ff10-fba3-41b7-bd73-5b77f8a68a69">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="0.1"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Settlements]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField>
+				<reportElement style="NormalText" x="10" y="0" width="90" height="12" uuid="a4909a65-d493-41af-9dc9-5b3154c5e0d0">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box leftPadding="4"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{voucher_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="NormalText" x="180" y="0" width="60" height="12" uuid="81b33219-bfe9-423d-b8d2-fecdf59d97dd">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{net_debit_amt} > java.math.BigDecimal.ZERO ? CoreJSFormatUtils.Formatter.formatDecimal($F{net_debit_amt}) : CoreJSFormatUtils.Formatter.formatDecimal($F{net_credit_amt})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement style="NormalText" x="100" y="0" width="80" height="12" uuid="a37928ad-bfcf-4841-ba7e-07c37ae98b94"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{doc_date}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_date_format}]]></patternExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

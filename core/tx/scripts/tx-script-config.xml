@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'>
+
+    <scriptInfo>
+        <mainDB>
+        </mainDB> 
+        <companyDB>
+            <!-- tx -->
+            <scriptFile>core/tx/scripts/Table_Schema.sql</scriptFile>
+            <scriptFile>core/tx/scripts/Function_Schema.sql</scriptFile>
+            <scriptFile>core/tx/scripts/Procedure_Schema.sql</scriptFile>
+            <scriptFile>core/tx/scripts/Menu_Entry.sql</scriptFile>
+        </companyDB>
+    </scriptInfo>
+</cwFramework>

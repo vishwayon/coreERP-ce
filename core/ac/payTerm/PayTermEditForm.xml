@@ -1,0 +1,30 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="PayTerm" type="Master" bindingBO="payTerm/PayTerm">
+        <header>Pay Term</header>
+        <keyField>pay_term_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+        <dataBinding>
+            <field id="pay_term" label="Pay Term" type="string" control="TextBox" size="m" maxLength="50"/>
+            <nextRow/> 
+            <field id="pay_term_desc" label="Pay Term Description" type="string" control="TextBox" size="m" maxLength="250"/>
+            <nextRow/>     
+            <field id="calc_type" label="Calculation Type" type="int" control="SimpleCombo" size="ms">
+                <options>
+                    <option value="0">End of Month</option>
+                    <option value="1">Date of Document</option>
+                    <option value="2">Bill Date (Payable only)</option>
+                </options>
+            </field>      
+            <nextRow/>             
+            <field id="pay_days" label="Pay Days" type="int" control="TextBox" size="xs"/>  
+            <dummy size="m"/>
+            <field id="last_updated" label="Updated On" control="DateTimeText" size="s" readOnly="true" />         
+        </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

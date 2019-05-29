@@ -1,0 +1,48 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="VatType" type="Master" bindingBO="vatType/VatType">    
+        <header>VAT Type</header>
+        <keyField>vat_type_id</keyField>
+        <!-- Do not allow new VAT types. These are handled by the system -->
+        <controlSection editMode="Edit">
+            <dataBinding>               
+                <field id="vat_type_code" label="VAT Type Code" type="string" control="TextBox" size="s" maxLength="2" readOnly="true"/>
+                <field id="vat_type_desc" label="VAT Type Desc" type="string" control="TextBox" size="m" maxLength="100" readOnly="true"/> 
+                <nextRow/>
+                <field id="for_purchase" label="For Purchase" type="bool" control="CheckBox" size="2" readOnly="true" />
+                <field id="for_sale" label="For Sale" type="bool" control="CheckBox" size="2" readOnly="true" />
+                <nextRow/>
+                <field id="apply_item_tax" label="Apply Stock Item Tax" type="bool" control="CheckBox" size="s"/> 
+                <field id="apply_tax_schedule_id" label="Tax Schedule" type="int" control="SmartCombo" size="s" isOptional="true">
+                    <lookup>
+                        <displayMember>tax_schedule</displayMember>
+                        <valueMember>tax_schedule_id</valueMember>
+                        <namedLookup>../core/tx/lookups/TaxSchedule.xml</namedLookup>
+                    </lookup>
+                </field>
+                <nextRow/>
+                <nextRow/>
+                <tranSection label="Purchase Order Tax Override" editMode="Add|Edit|Delete" dataRelation="OneToMany" >
+                    <dataBinding dataProperty="annex_info.po_tax">
+                        <field id="ts_id" label="Tax Schedule" type="int" control="SmartCombo" size="2">
+                            <lookup>
+                                <displayMember>tax_schedule</displayMember>
+                                <valueMember>tax_schedule_id</valueMember>
+                                <namedLookup>../core/tx/lookups/TaxSchedule.xml</namedLookup>
+                            </lookup>
+                        </field>
+                        <field id="po_ts_id" label="Override Tax Schedule" type="int" control="SmartCombo" size="2">
+                            <lookup>
+                                <displayMember>tax_schedule</displayMember>
+                                <valueMember>tax_schedule_id</valueMember>
+                                <namedLookup>../core/tx/lookups/TaxSchedule.xml</namedLookup>
+                            </lookup>
+                        </field>
+                    </dataBinding>
+                </tranSection>     
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

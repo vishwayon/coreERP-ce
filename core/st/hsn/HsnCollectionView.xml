@@ -1,0 +1,25 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="Hsn" type="Master" bindingBO="Hsn" editView="hsn/HsnEditForm">        
+        <header>Harmonised System Codes</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select hsn_id, hsn_code, hsn
+                    From st.hsn
+                    Where company_id={company_id}
+                    order by hsn_code, hsn
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="hsn_code" displayName="HS Code"/>
+                <displayField columnName="hsn" displayName="HS Description"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

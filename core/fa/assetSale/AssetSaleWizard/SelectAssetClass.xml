@@ -1,0 +1,21 @@
+<wizardView>
+    <header>Select Asset Class</header>
+    <sections>
+        <formSection id="SelectAssetClass">
+            <displayFields>
+                <displayField id="asset_class_id" label="Asset Class" type="int" control="SmartCombo" size="m" editMode="edit" defaultValue="-1">
+                    <lookup>
+                        <valueMember>asset_class_id</valueMember>
+                        <displayMember>asset_class</displayMember>
+                        <namedLookup>../core/fa/lookups/AssetClass.xml</namedLookup>
+                    </lookup>   
+                </displayField>                
+                <displayField id="doc_date" label="Date" type="date" control="Date" size="ms" editMode="edit" range="finYear">
+                    <value>
+                        <currentDate/>
+                    </value>
+                </displayField>
+            </displayFields>
+        </formSection>
+    </sections>
+</wizardView>

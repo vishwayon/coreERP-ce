@@ -1,0 +1,49 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="Pdc" type="Report" rptPath="" rptName="">
+        <header>Post Dated Cheque details</header>
+        <controlSection editMode="Edit">
+            <dataBinding>                
+                <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="ms" > 
+                    <value>
+                        <session>branch_id</session>
+                    </value>
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>
+                    </lookup>  
+                </field>                               
+                <field id="pdoc_type" label="Document" type="int" control="SimpleCombo"  size="4">
+                    <options defaultValue="All">
+                        <!--<option value="0">All</option>-->
+                        <option value="All">All</option>
+                        <option value="BPV">Bank Payment</option>
+                        <option value="BRV">Bank Receipt</option>
+                        <option value="CV">Contra Voucher</option>                        
+                        <option value="PAYB">GST Bank Payment</option>
+                        <option value="PAYV">GST Payment Voucher</option>
+                        <option value="PPT">Payroll Payment</option>
+                        <option value="ASP">Advance Supplier Payment</option>
+                        <option value="MSP">Multi Supplier Payment</option>
+                        <option value="PYMT">Supplier Payment</option>
+                        <option value="SREC">Supplier Recipt</option>
+                        <option value="ACR">Advance Customer Receipt</option>
+                        <option value="MCR">Multi Customer Receipt</option>
+                        <option value="RCPT">Customer Receipt</option>
+                        <option value="CREF">Customer Refund</option> 
+                        <option value="AP">GST Asset Purchase</option>
+                        <option value="TDPY">TDS Payment</option>
+                    </options>  
+                </field>                
+                <field id="pto_date" label="Up To" type="date" control="Date" size="ms" range="finYear">                   
+                    <value>
+                        <currentDate/>
+                    </value>    
+                </field>                  
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

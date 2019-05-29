@@ -1,0 +1,23 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="RestrictIP" type="Master" bindingBO="RestrictIP" editView="restrictIP/RestrictIPEditForm">        
+        <header>Restrict IP</header>
+        <collectionSection>
+            <connectionType>
+                <mainDB/>
+            </connectionType>
+            <sql>
+                <command>   
+                    select restrict_ip_id, domain, ip from sys.restrict_ip a
+                    where a.domain = '{http_host}' order by a.domain
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="domain" displayName="Domain"/>
+                <displayField columnName="ip" displayName="IP"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

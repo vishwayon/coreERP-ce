@@ -1,0 +1,25 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="UserProfile" type="Master" bindingBO="UserProfile" editView="userProfile/UserProfileEditForm">    
+        <header>User Profile</header>
+        <collectionSection>
+            <connectionType>
+                <mainDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select user_id, user_name, full_user_name, 
+                    case when is_active = True then 'True' else 'False' end as is_active 
+                    From sys.user where user_id!=0 
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="user_name" displayName="Logon Name"/>
+                <displayField columnName="full_user_name" displayName="Full User Name"/>
+                <displayField columnName="is_active" displayName="Active"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

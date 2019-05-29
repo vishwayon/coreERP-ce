@@ -1,0 +1,48 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="AdminRate" type="Master" bindingBO="adminRate/AdminRate">
+        <header>TDS Rate</header>
+        <keyField>rate_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/> 
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="section_id" label="Section" type="int" control="SmartCombo" size="ms">
+                    <lookup>
+                        <valueMember>section_id</valueMember>
+                        <displayMember>section</displayMember>
+                        <namedLookup>../core/tds/lookups/AdminSection.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <nextRow/> 
+                <field id="person_type_id" label="Person Type" type="int" control="SmartCombo" size="3">
+                    <lookup>
+                        <valueMember>person_type_id</valueMember>
+                        <displayMember>person_type_desc</displayMember>
+                        <namedLookup>../core/tds/lookups/PersonType.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="en_round_type" label="Round Of" control="SimpleCombo" type="int" size="3">
+                    <options>
+                        <option value="0">Do Not Round</option>
+                        <option value="1">Round Off Tenth Decimal</option>
+                        <option value="2">Round Off Whole Digit</option>
+                        <option value="3">Round Up Whole Digit</option>
+                        <option value="4">Round Down Whole Digit</option>
+                    </options>
+                </field>   
+                <nextRow/>
+                <field id="base_rate_perc" label="Base Rate" type="decimal" control="TextBox" size="ms" /> 
+                <nextRow/> 
+                <field id="ecess_perc" label="Education cess" type="decimal" control="TextBox" size="ms" isOptional="true" /> 
+                <nextRow/>
+                <field id="surcharge_perc" label="Surcharge Percentage" type="decimal" control="TextBox" size="ms"  isOptional="true"/> 
+                <nextRow/>
+                <field id="effective_from" label="Effective From" type="date" control="Date" size="ms" /> 
+                <nextRow/> 
+            </dataBinding> 
+        </controlSection>
+    </formView>
+</cwFramework>

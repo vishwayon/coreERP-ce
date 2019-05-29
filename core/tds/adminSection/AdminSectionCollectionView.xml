@@ -1,0 +1,23 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="AdminSection" type="Master" bindingBO="AdminSection" editView="adminSection/AdminSectionEditForm">        
+        <header>TDS Section</header>
+        <collectionSection>
+            <connectionType>
+                <mainDB/>
+            </connectionType>
+            <sql>
+                <command>   
+                    select section_id, section, section_code, section_desc from tds.section order by section
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="section" displayName="Section"/>
+                <displayField columnName="section_code" displayName="Section Code"/>
+                <displayField columnName="section_desc" displayName="Section Description"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

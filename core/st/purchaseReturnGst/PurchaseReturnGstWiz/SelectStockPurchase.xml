@@ -1,0 +1,51 @@
+<wizardView>
+    <header>Select Stock Purchase</header>
+    <sections>
+        <collectionSection id="SelectStockPurchase">
+        <connectionType>
+          <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                Select a.doc_date, a.stock_id, a.tax_amt, a.gross_amt 
+                From st.stock_control a
+                Where a.status=5 
+                    And a.doc_type In ('SPG')
+                    And (a.account_id=:paccount_id or :paccount_id =0)
+                    And a.branch_id=:pbranch_id
+                    And a.doc_date between :pfrom_date and :pto_date
+                Order by a.doc_date, a.stock_id
+            </command>
+            <params>
+                <param id="pbranch_id">
+                    <session>branch_id</session>
+                </param>
+                <param id="paccount_id">
+                    <wizard step="SelectSupplier">account_id</wizard>
+                </param>
+                <param id="pfrom_date">
+                    <wizard step="SelectSupplier">from_date</wizard>
+                </param>
+                <param id="pto_date">
+                    <wizard step="SelectSupplier">to_date</wizard>
+                </param>
+            </params>
+        </sql>
+        <keyField id="stock_id"/>
+        <displayFields>
+            <displayField columnName="stock_id" displayName="Voucher No" 
+                          id="stock_id" label="Voucher No" type="string" 
+                          control="TextBox" size="s"/>
+            <displayField columnName="doc_date" displayName="Date" 
+                          id="doc_date" label="Date" type="date" 
+                          control="Date" size="s"/>
+            <displayField columnName="tax_amt" displayName="Tax Amt" 
+                        id="tax_amt" label="Tax Amt" type="decimal" 
+                        control="TextBox" size="s"/>
+            <displayField columnName="gross_amt" displayName="Invoice Amt" 
+                        id="gross_amt" label="Purchase Amt" type="decimal" 
+                        control="TextBox" size="s"/>
+        </displayFields>
+    </collectionSection>
+    </sections>
+</wizardView>

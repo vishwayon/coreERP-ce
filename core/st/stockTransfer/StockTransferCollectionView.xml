@@ -1,0 +1,39 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="StockTransfer" type="Document" bindingBO="StockTransfer" editView="stockTransfer/StockTransferEditForm">
+        <header>Stock Transfer</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    Select a.stock_id, a.doc_date, b.branch_name, a.total_amt, a.status 
+                    from st.stock_control a
+                    inner join sys.branch b on a.target_branch_id = b.branch_id
+                    Where doc_type='ST' and a.finyear=:pfinyear and a.company_id=:pcompany_id and a.branch_id=:pbranch_id
+                    Order by stock_id
+                </command>
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                    <param id="pbranch_id">
+                        <session>branch_id</session>
+                    </param>
+                    <param id="pfinyear">
+                        <session>finyear</session>
+                    </param>
+                </params>
+            </sql>
+            <displayFields>
+                <displayField columnName="doc_date" displayName="Date" format="Date"/>
+                <displayField columnName="stock_id" displayName="Document No"/>
+                <displayField columnName="branch_name" displayName="Target Branch"/>
+                <displayField columnName="total_amt" displayName="Gross Amount" format="Amount"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

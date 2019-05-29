@@ -1,0 +1,898 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2018-09-11T13:26:25 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Bill" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="523" leftMargin="36" rightMargin="36" topMargin="36" bottomMargin="36" uuid="4c307fb7-97ec-429f-a8e6-44533a037434">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="local_db_1"/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pcwf_header_template" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["cwf/report-templates/header-template.jasper"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_company_name" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["First Company Private Limtied"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_branch_name" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["First Branch"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_branch_address" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["First Floor, Technology Park, Pune"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_company_logo" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["/cwf/vsla/assets/coreerp_logo.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_ccy_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_txn_ccy" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["INR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_coreerp_ver" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["CoreERP Ver. 0.5.4"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_base_path" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcompany_id" class="java.lang.Long" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pbranch_id" class="java.lang.Long" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1000001]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_date_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["dd-MM-yyyy"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_qty_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_fc_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.#"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pvoucher_id" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["BL/HO/1516/47"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="preport_caption" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["Bill"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select a.*, 
+	h.entered_on  AT TIME ZONE 'UTC' as entered_on, 
+	h.posted_on AT TIME ZONE  'UTC' as posted_on from ap.fn_gst_bill_report
+(
+	$P{pvoucher_id}
+) a 
+left Join sys.doc_es h on a.bill_id = h.voucher_id;]]>
+	</queryString>
+	<field name="branch_id" class="java.lang.Long"/>
+	<field name="bill_id" class="java.lang.String"/>
+	<field name="doc_date" class="java.sql.Date"/>
+	<field name="fc_type_id" class="java.lang.Long"/>
+	<field name="fc_type" class="java.lang.String"/>
+	<field name="exch_rate" class="java.math.BigDecimal"/>
+	<field name="status" class="java.lang.Integer"/>
+	<field name="supplier_id" class="java.lang.Long"/>
+	<field name="supplier" class="java.lang.String"/>
+	<field name="bill_no" class="java.lang.String"/>
+	<field name="bill_date" class="java.sql.Date"/>
+	<field name="bill_amt" class="java.math.BigDecimal"/>
+	<field name="bill_amt_fc" class="java.math.BigDecimal"/>
+	<field name="bill_action" class="java.lang.String"/>
+	<field name="bt_amt" class="java.math.BigDecimal"/>
+	<field name="bt_amt_fc" class="java.math.BigDecimal"/>
+	<field name="round_off_amt" class="java.math.BigDecimal"/>
+	<field name="round_off_amt_fc" class="java.math.BigDecimal"/>
+	<field name="narration" class="java.lang.String"/>
+	<field name="amt_in_words" class="java.lang.String"/>
+	<field name="amt_in_words_fc" class="java.lang.String"/>
+	<field name="remarks" class="java.lang.String"/>
+	<field name="entered_by" class="java.lang.String"/>
+	<field name="posted_by" class="java.lang.String"/>
+	<field name="supplier_gst_state" class="java.lang.String"/>
+	<field name="supplier_gstin" class="java.lang.String"/>
+	<field name="tax_amt" class="java.math.BigDecimal"/>
+	<field name="tax_amt_fc" class="java.math.BigDecimal"/>
+	<field name="misc_amt" class="java.math.BigDecimal"/>
+	<field name="misc_amt_fc" class="java.math.BigDecimal"/>
+	<field name="entered_on" class="java.sql.Timestamp"/>
+	<field name="posted_on" class="java.sql.Timestamp"/>
+	<variable name="advance_amt" class="java.math.BigDecimal"/>
+	<variable name="advance_amt_fc" class="java.math.BigDecimal"/>
+	<variable name="tds_amt" class="java.math.BigDecimal"/>
+	<variable name="tds_amt_fc" class="java.math.BigDecimal"/>
+	<variable name="DateTimeFormatter" class="java.text.DateFormat">
+		<variableExpression><![CDATA[$P{REPORT_FORMAT_FACTORY}.createDateFormat($P{pcwf_date_format} + " HH:mm:ss z", $P{REPORT_LOCALE}, java.util.TimeZone.getTimeZone("IST"))]]></variableExpression>
+	</variable>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{bill_id}]]></groupExpression>
+		<groupHeader>
+			<band height="63">
+				<printWhenExpression><![CDATA[EXACT($P{preport_caption}, "Bill")]]></printWhenExpression>
+				<frame>
+					<reportElement mode="Transparent" x="351" y="0" width="172" height="63" isRemoveLineWhenBlank="true" backcolor="#FFFFFF" uuid="601e27ca-e5fa-445a-a0e4-a5d99bc03a49"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textField>
+						<reportElement style="NormalLabel" positionType="Float" x="0" y="0" width="102" height="11" isRemoveLineWhenBlank="true" uuid="32824c28-59d6-4702-93e6-13de4940953b">
+							<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Voucher #"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" x="0" y="11" width="102" height="10" isRemoveLineWhenBlank="true" uuid="78581b37-53b4-4047-adfd-e02b2f8b8c9b"/>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{bill_id}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalLabel" positionType="Float" x="102" y="0" width="70" height="11" isRemoveLineWhenBlank="true" uuid="8d250d90-35da-4c7b-beec-78070c0f6a3c"/>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Date"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" x="102" y="11" width="70" height="10" isRemoveLineWhenBlank="true" uuid="5bffc8d7-0a2e-4923-8be7-8065ea3f0b09"/>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{doc_date}]]></textFieldExpression>
+						<patternExpression><![CDATA[$P{pcwf_date_format}]]></patternExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalLabel" positionType="Float" x="0" y="21" width="102" height="11" isRemoveLineWhenBlank="true" uuid="c7d699f1-29b7-475a-bbb3-3f89ee2dad1b">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<printWhenExpression><![CDATA[$F{bill_no}!=""]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Bill #"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalLabel" positionType="Float" x="102" y="21" width="70" height="11" isRemoveLineWhenBlank="true" uuid="480061c0-510b-43fd-a99d-cd9439dc85de">
+							<printWhenExpression><![CDATA[$F{bill_no}!=""]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Bill Date"]]></textFieldExpression>
+					</textField>
+					<textField isBlankWhenNull="true">
+						<reportElement style="NormalText" x="0" y="32" width="102" height="10" isRemoveLineWhenBlank="true" uuid="a3b04bc7-8542-4b84-979f-f8f6fa776525">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<printWhenExpression><![CDATA[$F{bill_no}!=""]]></printWhenExpression>
+						</reportElement>
+						<textElement>
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{bill_no}]]></textFieldExpression>
+					</textField>
+					<textField pattern="" isBlankWhenNull="true">
+						<reportElement style="NormalText" x="102" y="32" width="70" height="10" isRemoveLineWhenBlank="true" uuid="daeec040-959e-448e-addf-2188af87899e">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<printWhenExpression><![CDATA[$F{bill_no}!=""]]></printWhenExpression>
+						</reportElement>
+						<textElement>
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{bill_date}]]></textFieldExpression>
+						<patternExpression><![CDATA[$P{pcwf_date_format}]]></patternExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalLabel" positionType="FixRelativeToBottom" x="102" y="42" width="70" height="11" isRemoveLineWhenBlank="true" uuid="62f89c98-aa7d-44d3-b552-2e07e9337e71"/>
+						<box topPadding="0"/>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Txn. Ccy"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="FixRelativeToBottom" x="102" y="53" width="70" height="10" isRemoveLineWhenBlank="true" uuid="1a26c6b4-2823-4172-8329-2442a0eb6854"/>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[($F{fc_type_id} == 0) ? $P{pcwf_txn_ccy} : ($F{fc_type} + "@" + new java.text.DecimalFormat($P{pcwf_fc_rate_format}).format($F{exch_rate}))]]></textFieldExpression>
+						<patternExpression><![CDATA[$P{pcwf_date_format}]]></patternExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalLabel" positionType="Float" x="0" y="42" width="102" height="11" isRemoveLineWhenBlank="true" uuid="76ba1057-c008-48d0-94ed-5b6db443d54e">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<printWhenExpression><![CDATA[$F{bill_no}!=""]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Bill Amount"]]></textFieldExpression>
+					</textField>
+					<textField isBlankWhenNull="true">
+						<reportElement style="NormalText" x="0" y="53" width="102" height="10" isRemoveLineWhenBlank="true" uuid="56dcddac-d656-4b10-85b7-3af4268a9838">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<printWhenExpression><![CDATA[$F{bill_no}!=""]]></printWhenExpression>
+						</reportElement>
+						<textElement>
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal(($F{fc_type_id}!= 0) ? $F{bill_amt_fc} : ($F{bill_amt}))]]></textFieldExpression>
+						<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement mode="Transparent" x="0" y="0" width="250" height="63" backcolor="#FFFFFF" uuid="fa13a98e-4824-4ca2-8495-96cdf053f956"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="NormalLabel" positionType="Float" x="0" y="0" width="59" height="11" isRemoveLineWhenBlank="true" uuid="051f8585-1720-40f5-b60a-3692b65532b3"/>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Supplier"]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="CaptionLabel" x="0" y="11" width="250" height="14" uuid="ca777674-f2ba-4147-a30d-81f4dd5e023b"/>
+						<textElement verticalAlignment="Middle">
+							<font isBold="false"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{supplier}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" x="0" y="25" width="250" height="11" uuid="53d91b94-6e15-4d54-8dd6-15f700a22ae0"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA["GSTIN: " + (LEN($F{supplier_gstin}) == 2 ? "Unregistered" : $F{supplier_gstin})]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="NormalLabel" positionType="Float" x="0" y="36" width="59" height="11" isRemoveLineWhenBlank="true" uuid="8e09118f-716c-451c-9de1-83fe62f8039a"/>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA["POS"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" x="0" y="47" width="250" height="11" uuid="2fa76071-9948-43bb-af06-0bdfbd35b794"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{supplier_gst_state}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="42">
+				<textField isStretchWithOverflow="true">
+					<reportElement style="FineNotes" positionType="Float" x="1" y="28" width="369" height="14" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="2f50b277-a946-481a-bf1a-e94186541b82"/>
+					<textFieldExpression><![CDATA[$F{narration}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalLabel" positionType="Float" x="0" y="14" width="100" height="14" isRemoveLineWhenBlank="true" uuid="1caeb507-a01b-464a-9a76-65af86abb2e8">
+						<printWhenExpression><![CDATA[$F{narration} != ""]]></printWhenExpression>
+					</reportElement>
+					<textFieldExpression><![CDATA["Narration"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalLabel" positionType="Float" x="0" y="0" width="77" height="14" isPrintWhenDetailOverflows="true" uuid="3050812b-77ad-4762-b7a4-1bc3db0d7656"/>
+					<textFieldExpression><![CDATA["Amt. In words"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" positionType="Float" x="77" y="0" width="16" height="14" uuid="60aa589b-ae10-4742-90e7-18b1ec109152"/>
+					<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="NormalText" positionType="Float" x="93" y="0" width="430" height="14" uuid="b12bac48-9745-4106-9e00-2f422ac4cebb"/>
+					<textFieldExpression><![CDATA[$F{fc_type_id} != 0 ? $F{amt_in_words_fc} : $F{amt_in_words}]]></textFieldExpression>
+				</textField>
+			</band>
+			<band height="40">
+				<subreport>
+					<reportElement positionType="Float" x="0" y="0" width="523" height="40" isRemoveLineWhenBlank="true" uuid="530154f8-13b6-4b76-9e49-e18404db5da6"/>
+					<subreportParameter name="pvoucher_id">
+						<subreportParameterExpression><![CDATA[$P{pvoucher_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pcwf_amt_format">
+						<subreportParameterExpression><![CDATA[$P{pcwf_amt_format}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pcwf_date_format">
+						<subreportParameterExpression><![CDATA[$P{pcwf_date_format}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["/core/ac/subHeadAlloc/SubHeadTran.jrxml"]]></subreportExpression>
+				</subreport>
+			</band>
+			<band height="39">
+				<subreport>
+					<reportElement positionType="Float" x="0" y="0" width="523" height="39" isRemoveLineWhenBlank="true" uuid="ff5e69ed-92c2-47fd-8a28-e26a0e635f62"/>
+					<subreportParameter name="pvoucher_id">
+						<subreportParameterExpression><![CDATA[$P{pvoucher_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pcwf_amt_format">
+						<subreportParameterExpression><![CDATA[$P{pcwf_amt_format}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pcwf_date_format">
+						<subreportParameterExpression><![CDATA[$P{pcwf_date_format}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["/core/ac/subHeadAlloc/RefLedgerTran.jrxml"]]></subreportExpression>
+				</subreport>
+			</band>
+			<band height="50">
+				<frame>
+					<reportElement positionType="Float" x="0" y="0" width="522" height="50" uuid="379455ae-11a6-4c8c-b2f3-081dbfe04476"/>
+					<staticText>
+						<reportElement style="NormalText" positionType="Float" x="378" y="36" width="144" height="14" uuid="791fdbab-5423-46b3-8ff3-d60822eb4ca3">
+							<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+						</reportElement>
+						<box>
+							<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textElement textAlignment="Center">
+							<font size="8" isBold="true"/>
+						</textElement>
+						<text><![CDATA[Receiver]]></text>
+					</staticText>
+					<textField>
+						<reportElement style="NormalLabel" positionType="Float" isPrintRepeatedValues="false" x="0" y="10" width="170" height="14" isRemoveLineWhenBlank="true" uuid="97d530d8-ac72-4b14-844f-ce4b438b9b67">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						</reportElement>
+						<box topPadding="0">
+							<topPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Left" verticalAlignment="Bottom">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Entered By"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" isPrintRepeatedValues="false" x="0" y="24" width="170" height="14" isRemoveLineWhenBlank="true" uuid="e73aaf3f-63c9-47de-b0ea-1611cc571d5b">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						</reportElement>
+						<box topPadding="0">
+							<topPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Left" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{entered_by}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" x="0" y="38" width="170" height="12" uuid="7664bb13-af0e-4c7a-ba78-7adf9be27a48"/>
+						<textElement>
+							<font size="8" isItalic="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA["On " +  $V{DateTimeFormatter}.format($F{entered_on})]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalLabel" positionType="Float" isPrintRepeatedValues="false" x="170" y="10" width="170" height="14" isRemoveLineWhenBlank="true" uuid="46312e3f-8db5-49ce-b2e9-9fededfee788">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<printWhenExpression><![CDATA[$F{posted_by}!=""]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="0">
+							<topPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Left" verticalAlignment="Bottom">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Posted By"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" isPrintRepeatedValues="false" x="170" y="24" width="170" height="14" isRemoveLineWhenBlank="true" uuid="13c36eaa-ec94-4fc3-ae53-afcb1e6f813f">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<printWhenExpression><![CDATA[$F{posted_by}!=""]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="0">
+							<topPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Left" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{posted_by}]]></textFieldExpression>
+					</textField>
+					<textField isBlankWhenNull="true">
+						<reportElement style="NormalText" x="170" y="38" width="170" height="12" uuid="60058b08-a635-43f9-8d5f-2470d9732797">
+							<printWhenExpression><![CDATA[$F{posted_by}!=""]]></printWhenExpression>
+						</reportElement>
+						<textElement>
+							<font size="8" isItalic="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA["On " +  $V{DateTimeFormatter}.format($F{posted_on})]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Group2">
+		<groupExpression><![CDATA[$F{bill_id}]]></groupExpression>
+		<groupHeader>
+			<band height="42">
+				<printWhenExpression><![CDATA[EXACT($P{preport_caption}, "Credit Note")]]></printWhenExpression>
+				<frame>
+					<reportElement mode="Transparent" x="0" y="0" width="250" height="42" backcolor="#FFFFFF" uuid="e2e0c717-0913-439a-9f9d-1935c3593dc5"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="NormalLabel" positionType="Float" x="0" y="0" width="59" height="11" isRemoveLineWhenBlank="true" uuid="bb8d2bb8-de1d-4b73-a865-fddcbd6c8618"/>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Supplier"]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="CaptionLabel" x="0" y="11" width="250" height="14" uuid="cb55b9c1-f24a-4445-ab96-a17a2b64ef49"/>
+						<textElement verticalAlignment="Middle">
+							<font isBold="false"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{supplier}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement mode="Transparent" x="351" y="0" width="172" height="42" isRemoveLineWhenBlank="true" backcolor="#FFFFFF" uuid="b6abbafb-e02b-4cf1-94b2-b267c6d27f9d"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textField>
+						<reportElement style="NormalLabel" positionType="Float" x="0" y="0" width="89" height="11" isRemoveLineWhenBlank="true" uuid="587b0e8f-1cc8-4bbc-a67f-0cdeb517f3c3">
+							<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Voucher #"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" x="0" y="11" width="102" height="10" isRemoveLineWhenBlank="true" uuid="b093aa7d-9fc5-451e-bad1-ae995f772f4d"/>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{bill_id}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalLabel" positionType="Float" x="102" y="0" width="70" height="11" isRemoveLineWhenBlank="true" uuid="9fcaea1d-f927-4939-9adc-e4f1315631c1"/>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Date"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" x="102" y="11" width="70" height="10" isRemoveLineWhenBlank="true" uuid="d0acec40-bdf9-4534-9a8f-25dae246cc20"/>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{doc_date}]]></textFieldExpression>
+						<patternExpression><![CDATA[$P{pcwf_date_format}]]></patternExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalLabel" positionType="FixRelativeToBottom" x="102" y="21" width="70" height="11" isRemoveLineWhenBlank="true" uuid="4af1d80e-999a-45db-926e-4605dc1ddb22"/>
+						<box topPadding="0"/>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Txn. Ccy"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="FixRelativeToBottom" x="102" y="32" width="70" height="10" isRemoveLineWhenBlank="true" uuid="7b56dc24-dc84-46db-98c4-0def151fad2f"/>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[($F{fc_type_id} == 0) ? $P{pcwf_txn_ccy} : ($F{fc_type} + "@" + new java.text.DecimalFormat($P{pcwf_fc_rate_format}).format($F{exch_rate}))]]></textFieldExpression>
+						<patternExpression><![CDATA[$P{pcwf_date_format}]]></patternExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalLabel" positionType="Float" x="0" y="21" width="102" height="11" isRemoveLineWhenBlank="true" uuid="943e9a5d-95e0-45c2-8006-ff6fd4e525ad">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<printWhenExpression><![CDATA[$F{bill_no}!=""]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Credit Amount"]]></textFieldExpression>
+					</textField>
+					<textField isBlankWhenNull="true">
+						<reportElement style="NormalText" x="0" y="32" width="102" height="10" isRemoveLineWhenBlank="true" uuid="49a8412f-94f3-42cb-8537-cf2aecf4e1d7">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<printWhenExpression><![CDATA[$F{bill_no}!=""]]></printWhenExpression>
+						</reportElement>
+						<textElement>
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal(($F{fc_type_id}!= 0) ? $F{bill_amt_fc} : $F{bill_amt})]]></textFieldExpression>
+						<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="57">
+				<textField isStretchWithOverflow="true">
+					<reportElement style="NormalText" positionType="Float" x="448" y="43" width="75" height="14" uuid="0933c92e-5957-49c1-be63-7e12de2cd84c"/>
+					<textElement textAlignment="Right">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fc_type_id} != 0 ? $F{bill_amt_fc} :$F{bill_amt}]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" positionType="Float" x="350" y="43" width="98" height="14" uuid="71221693-9ca8-44df-ac13-821fe10cc459"/>
+					<textElement textAlignment="Right">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Bill Amount"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" positionType="Float" x="350" y="28" width="98" height="14" isRemoveLineWhenBlank="true" uuid="d224eb26-4407-4888-b876-19070445de83">
+						<printWhenExpression><![CDATA[$F{round_off_amt}!=0]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Round Off Amount"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="NormalText" positionType="Float" x="448" y="28" width="75" height="14" isRemoveLineWhenBlank="true" uuid="a59cc041-fd66-4061-a75d-08c95c233c6c">
+						<printWhenExpression><![CDATA[$F{round_off_amt}!=0]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fc_type_id} != 0 ? $F{round_off_amt_fc} :$F{round_off_amt}]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+				<line>
+					<reportElement x="350" y="42" width="173" height="1" uuid="7644f11b-07fb-406a-8926-81e976d528a2"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<textField>
+					<reportElement style="NormalText" positionType="Float" x="350" y="0" width="98" height="14" isRemoveLineWhenBlank="true" uuid="44c61162-9aae-4b9e-ad07-b32d0465bf32">
+						<printWhenExpression><![CDATA[$F{tax_amt}!=0]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Tax Total"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="NormalText" positionType="Float" x="448" y="0" width="75" height="14" isRemoveLineWhenBlank="true" uuid="fe10640c-3f14-43b9-922a-bcd891b35816">
+						<printWhenExpression><![CDATA[$F{tax_amt}!=0]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fc_type_id} != 0 ? $F{tax_amt_fc} :$F{tax_amt}]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" positionType="Float" x="350" y="14" width="98" height="14" isRemoveLineWhenBlank="true" uuid="23657732-f351-4a24-a20a-267ae5120029">
+						<printWhenExpression><![CDATA[$F{misc_amt}!=0]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Misc Total"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="NormalText" positionType="Float" x="448" y="14" width="75" height="14" isRemoveLineWhenBlank="true" uuid="56d613ff-7685-43f8-9c4c-bbc7e651685d">
+						<printWhenExpression><![CDATA[$F{misc_amt}!=0]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fc_type_id} != 0 ? $F{misc_amt_fc} :$F{misc_amt}]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+			</band>
+			<band height="43">
+				<subreport>
+					<reportElement x="0" y="0" width="523" height="39" isRemoveLineWhenBlank="true" uuid="8c9c1152-aa3c-4041-90fe-a4269224434c"/>
+					<subreportParameter name="pcwf_amt_format">
+						<subreportParameterExpression><![CDATA[$P{pcwf_amt_format}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pcwf_date_format">
+						<subreportParameterExpression><![CDATA[$P{pcwf_date_format}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pcwf_fc_rate_format">
+						<subreportParameterExpression><![CDATA[$P{pcwf_fc_rate_format}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pcwf_qty_format">
+						<subreportParameterExpression><![CDATA[$P{pcwf_qty_format}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pcwf_rate_format">
+						<subreportParameterExpression><![CDATA[$P{pcwf_rate_format}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pvoucher_id">
+						<subreportParameterExpression><![CDATA[$P{pvoucher_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="preport_caption">
+						<subreportParameterExpression><![CDATA[$P{preport_caption}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pfc_type_id">
+						<subreportParameterExpression><![CDATA[$F{fc_type_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<returnValue subreportVariable="amt_total" toVariable="tds_amt"/>
+					<returnValue subreportVariable="amt_total_fc" toVariable="tds_amt_fc"/>
+					<subreportExpression><![CDATA["/core/ap/gstBill/GstBillTDSTran.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			<band height="16">
+				<textField>
+					<reportElement style="NormalText" positionType="Float" x="350" y="0" width="98" height="14" isRemoveLineWhenBlank="true" uuid="ee2338bd-0ebc-45f7-829a-f7e014d2a6fb">
+						<printWhenExpression><![CDATA[($F{bill_amt_fc} - $V{tds_amt_fc}) != null || ($F{bill_amt} - $V{tds_amt}) != null]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Net Payable"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="NormalText" positionType="Float" x="448" y="0" width="75" height="14" isRemoveLineWhenBlank="true" uuid="edc4026b-d8ca-43aa-924b-f4377a09cbee">
+						<printWhenExpression><![CDATA[($F{bill_amt_fc} - $V{tds_amt_fc}) != null || ($F{bill_amt} - $V{tds_amt}) != null]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fc_type_id} != 0 ? ($F{bill_amt_fc} - $V{tds_amt_fc}) : ($F{bill_amt} - $V{tds_amt})]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+				<line>
+					<reportElement x="350" y="-1" width="173" height="1" isRemoveLineWhenBlank="true" uuid="71073f52-0a5d-41bd-8884-fe3e40c078e6">
+						<printWhenExpression><![CDATA[($F{bill_amt_fc} - $V{tds_amt_fc}) != null || ($F{bill_amt} - $V{tds_amt}) != null]]></printWhenExpression>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+			</band>
+			<band height="41">
+				<subreport>
+					<reportElement x="0" y="0" width="523" height="39" isRemoveLineWhenBlank="true" uuid="e2299ab0-0195-4cdd-8d1c-2164cc5a0cff"/>
+					<subreportParameter name="pcwf_amt_format">
+						<subreportParameterExpression><![CDATA[$P{pcwf_amt_format}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pcwf_date_format">
+						<subreportParameterExpression><![CDATA[$P{pcwf_date_format}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pcwf_fc_rate_format">
+						<subreportParameterExpression><![CDATA[$P{pcwf_fc_rate_format}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pcwf_qty_format">
+						<subreportParameterExpression><![CDATA[$P{pcwf_qty_format}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pcwf_rate_format">
+						<subreportParameterExpression><![CDATA[$P{pcwf_rate_format}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pvoucher_id">
+						<subreportParameterExpression><![CDATA[$P{pvoucher_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="preport_caption">
+						<subreportParameterExpression><![CDATA[$P{preport_caption}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pbranch_id">
+						<subreportParameterExpression><![CDATA[$P{pbranch_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pcompany_id">
+						<subreportParameterExpression><![CDATA[$P{pcompany_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="pfc_type_id">
+						<subreportParameterExpression><![CDATA[$F{fc_type_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<returnValue subreportVariable="advance_total" toVariable="advance_amt"/>
+					<returnValue subreportVariable="advance_total_fc" toVariable="advance_amt_fc"/>
+					<subreportExpression><![CDATA["/core/ap/gstBill/GstBillAdvanceTran.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+			<band height="50">
+				<textField>
+					<reportElement key="" style="NormalText" positionType="Float" x="350" y="6" width="98" height="14" isRemoveLineWhenBlank="true" uuid="e02a065b-e707-44a9-890c-673e405051aa">
+						<printWhenExpression><![CDATA[$V{advance_amt} != null || $V{advance_amt_fc} != null]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Advance Paid"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement key="" style="NormalText" positionType="Float" x="448" y="6" width="75" height="14" isRemoveLineWhenBlank="true" uuid="68680114-d8eb-4537-adfa-e69dc150cbd8">
+						<printWhenExpression><![CDATA[$V{advance_amt} != null || $V{advance_amt_fc} != null]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fc_type_id} != 0 ? $V{advance_amt_fc} : $V{advance_amt}]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+				<line>
+					<reportElement x="350" y="5" width="173" height="1" uuid="3c9f0788-fe09-4065-90e1-a08ebf365be5">
+						<printWhenExpression><![CDATA[$V{advance_amt} != null || $V{advance_amt_fc} != null]]></printWhenExpression>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<textField>
+					<reportElement key="" style="NormalText" positionType="Float" x="350" y="21" width="98" height="14" isRemoveLineWhenBlank="true" uuid="408051b1-6557-4a4d-9208-653730f96393">
+						<printWhenExpression><![CDATA[$V{advance_amt} != null || $V{advance_amt_fc} != null]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Net Balance"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement key="" style="NormalText" positionType="Float" x="448" y="21" width="75" height="14" isRemoveLineWhenBlank="true" uuid="8ab310d3-518b-43ad-ab9c-a0eae80ce2be">
+						<printWhenExpression><![CDATA[$V{advance_amt} != null || $V{advance_amt_fc} != null]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fc_type_id} != 0 ? ($F{bill_amt_fc} - $V{tds_amt_fc} - $V{advance_amt_fc}) : ($F{bill_amt} - $V{tds_amt} - $V{advance_amt})]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+				<line>
+					<reportElement x="350" y="20" width="173" height="1" uuid="73206f3c-79c8-40ae-8f99-ed357515fa98">
+						<printWhenExpression><![CDATA[$V{advance_amt} != null || $V{advance_amt_fc} != null]]></printWhenExpression>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band height="400" splitType="Stretch">
+			<staticText>
+				<reportElement positionType="Float" x="90" y="50" width="350" height="350" isPrintWhenDetailOverflows="true" forecolor="#D3D3D3" uuid="d7401e33-f1b3-49ca-85d1-2923d82508f6">
+					<printWhenExpression><![CDATA[$F{status}!=5]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="74" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[DRAFT]]></text>
+			</staticText>
+		</band>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="523" height="40" uuid="fd573bde-26a5-467c-9601-ef6eedfc55d1"/>
+				<subreportParameter name="pcwf_company_name">
+					<subreportParameterExpression><![CDATA[$P{pcwf_company_name}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_branch_name">
+					<subreportParameterExpression><![CDATA[$P{pcwf_branch_name}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_branch_address">
+					<subreportParameterExpression><![CDATA[$P{pcwf_branch_address}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_company_logo">
+					<subreportParameterExpression><![CDATA[$P{pcwf_company_logo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{pcwf_header_template}]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement style="ReportTitle" positionType="Float" x="0" y="41" width="399" height="19" uuid="b683b080-0c74-4af7-bae8-2231bc5a13eb">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{preport_caption}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="42" splitType="Stretch">
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="523" height="40" uuid="7eef9737-08ff-4df2-99fa-934f7452755d"/>
+				<subreportParameter name="pvoucher_id">
+					<subreportParameterExpression><![CDATA[$P{pvoucher_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pfc_type_id">
+					<subreportParameterExpression><![CDATA[$F{fc_type_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_amt_format">
+					<subreportParameterExpression><![CDATA[$P{pcwf_amt_format}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_date_format">
+					<subreportParameterExpression><![CDATA[$P{pcwf_date_format}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_fc_rate_format">
+					<subreportParameterExpression><![CDATA[$P{pcwf_fc_rate_format}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_qty_format">
+					<subreportParameterExpression><![CDATA[$P{pcwf_qty_format}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_rate_format">
+					<subreportParameterExpression><![CDATA[$P{pcwf_rate_format}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["/core/ap/gstBill/GstBillTran.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="2" width="522" height="18" uuid="f076449a-5000-4e68-939b-02c04c801cea"/>
+				<box topPadding="0">
+					<topPen lineWidth="0.2"/>
+				</box>
+				<textField>
+					<reportElement style="CoreERPVer" x="0" y="2" width="170" height="15" uuid="8e97d3c7-b3d7-4f3d-8447-4af7aa72f166">
+						<propertyExpression name="net.sf.jasperreports.export.html.id"><![CDATA["version_no"]]></propertyExpression>
+					</reportElement>
+					<textFieldExpression><![CDATA[$P{pcwf_coreerp_ver}]]></textFieldExpression>
+				</textField>
+				<textField pattern="">
+					<reportElement style="FooterPageNo" x="403" y="2" width="72" height="15" uuid="644eb7ad-acec-43c2-ba68-8e776b3da650"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report">
+					<reportElement style="FooterPageNo" x="475" y="2" width="44" height="16" uuid="18705ccc-3218-4d82-a399-f0338af0bb03"/>
+					<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+</jasperReport>

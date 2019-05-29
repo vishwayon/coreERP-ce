@@ -1,0 +1,151 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+     <businessObject id="PayrollGeneration" type="Document">  
+      <controlTable>
+        <tableName>hr.payroll_control</tableName>
+        <primaryKey>payroll_id</primaryKey>
+           <customColumns>   
+                <customColumn name="calculate_tran_total" type="numeric"/>
+                <customColumn name="pay_month" type="date" /> 
+           </customColumns>         
+        <fetchOrCreate>
+          <useEntity/>
+        </fetchOrCreate>
+        <save>
+          <useEntity/>
+        </save> 
+        <delete>
+          <useEntity/>
+        </delete> 
+       <tranTable id="payroll_tran">
+            <tableName>hr.payroll_tran</tableName>
+            <primaryKey>payroll_tran_id</primaryKey> 
+            <customColumns>
+                <customColumn name="employee_fullname" type="varchar" length="500"/> 
+                <customColumn name="employee_no" type="varchar" length="50"/>
+                <cusotmColumn name="payroll_group_id" type="bigint"/> 
+                <customColumn name="pay_from_date" type="date" />
+                <customColumn name="pay_to_date" type="date" />
+                <customColumn name="total_days" type="numeric"/>
+                <customColumn name="ot_payhead_id" type="bigint" />  
+                <customColumn name="ot_from_date" type="date" />
+                <customColumn name="ot_to_date" type="date" />  
+                <customColumn name="tot_ot_hr" type="numeric"/>      
+                <customColumn name="tot_ot_holiday_hr" type="numeric"/>  
+                <customColumn name="tot_ot_special_hr" type="numeric"/>  
+                <customColumn name="tot_ot_amt" type="numeric"/>  
+                <customColumn name="tot_ot_holiday_amt" type="numeric"/>  
+                <customColumn name="tot_ot_special_amt" type="numeric"/>  
+                <customColumn name="tot_overtime_amt" type="numeric"/>     
+                <customColumn name="net_amt" type="numeric"/> 
+                <customColumn name="en_mode_pay_generation" type="varchar" length="50"/>
+                <customColumn name="en_resign_type" type="varchar" length="50"/>
+                <customColumn name="gratuity_from_date" type="date" />
+                <customColumn name="gratuity_to_date" type="date" />  
+                <customColumn name="gratuity_days" type="int"/>  
+                <customColumn name="gratuity_amt" type="numeric"/>  
+                <customColumn name="reducible_amt" type="numeric"/>     
+                <customColumn name="net_gratuity_amt" type="numeric"/>
+                
+           </customColumns>         
+           <relation linkType="OneToMany">
+                <foreignKey>payroll_id</foreignKey>
+            </relation>
+            <fetchOrCreate>
+                <useEntity orderby="sl_no"/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+                <primaryKeyPattern>{payroll_id}:{RowID}</primaryKeyPattern>
+            </save>  
+            <delete>
+                <useEntity/>
+            </delete> 
+            <tranTable id="payroll_tran_detail">
+                <tableName>hr.payroll_tran_detail</tableName>
+                <primaryKey>payroll_tran_detail_id</primaryKey> 
+                <customColumns>       
+                    <customColumn name="employee_fullname" type="varchar" length="500"/>            
+                    <customColumn name="emp_payplan_id" type="bigint" />
+                    <customColumn name="payhead" type="varchar" length="50"/> 
+                    <customColumn name="total_days" type="numeric" />
+                    <customColumn name="pay_days" type="numeric" />
+                    <customColumn name="no_pay_days" type="numeric" />
+                    <customColumn name="incl_in_nopay" type="boolean"/>                   
+                    <customColumn name="calc_eff_from_date" type="date" />
+                    <customColumn name="calc_eff_to_date" type="date" />
+                    <customColumn name="ot_hr" type="numeric" />
+                    <customColumn name="ot_holiday_hr" type="numeric" />
+                    <customColumn name="ot_special_hr" type="numeric" />
+                    <customColumn name="ot_amt" type="numeric" />
+                    <customColumn name="ot_holiday_amt" type="numeric" />
+                    <customColumn name="ot_special_amt" type="numeric" />
+                </customColumns> 
+                <relation linkType="OneToOne">
+                      <foreignKey>payroll_tran_id</foreignKey>
+                      <rootForeignKey>payroll_id</rootForeignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{payroll_tran_id}:{RowID}</primaryKeyPattern>
+                </save>   
+                <delete>
+                    <useEntity/>      
+                </delete>  
+                <tranTable id="loan_repayment_tran">
+                    <tableName>hr.loan_repayment</tableName>
+                    <primaryKey>loan_repayment_id</primaryKey> 
+                    <customColumns>       
+                        <customColumn name="employee_fullname" type="varchar" length="500"/> 
+                        <customColumn name="payhead" type="varchar" length="50"/>   
+                        <customColumn name="payhead_id" type="bigint"/>   
+                    </customColumns>
+                    <relation linkType="OneToOne">
+                          <foreignKey>payroll_tran_detail_id</foreignKey>
+                          <rootForeignKey>payroll_id</rootForeignKey>
+                    </relation>
+                    <fetchOrCreate>
+                        <useEntity/>
+                    </fetchOrCreate>
+                    <save>
+                        <useEntity/>
+                        <primaryKeyPattern>{payroll_tran_detail_id}:{RowID}</primaryKeyPattern>
+                    </save>   
+                    <delete>
+                        <useEntity/>      
+                    </delete>    
+                </tranTable>    
+            </tranTable>  
+        </tranTable>          
+        <tranTable id="payroll_custom_tran">
+            <tableName>hr.payroll_custom_tran</tableName>
+            <primaryKey>payroll_custom_tran_id</primaryKey> 
+            <customColumns>       
+                <customColumn name="employee_fullname" type="varchar" length="500"/> 
+                <customColumn name="payhead" type="varchar" length="50"/>    
+            </customColumns>
+            <relation linkType="OneToMany">
+                  <foreignKey>payroll_id</foreignKey>
+            </relation>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+                <primaryKeyPattern>{payroll_id}:{RowID}</primaryKeyPattern>
+            </save>   
+            <delete>
+                <useEntity/>      
+            </delete>    
+        </tranTable>   
+       </controlTable>
+      <codeBehind>
+          <className>\app\core\hr\payrollGeneration\PayrollGenerationEventHandler</className>
+      </codeBehind>
+    </businessObject>
+</cwFramework>

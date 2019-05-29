@@ -1,0 +1,144 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Ptn" type="Document" bindingBO="ptn/Ptn">
+        <header>Production Transfer Note</header>
+        <keyField>stock_id</keyField>
+        <printView rptOption="ptn/PtnPrint">
+            <rptParams>
+                <param id="pstock_id">stock_id</param>
+            </rptParams>
+        </printView>
+        <newDocEnabled>
+            <docType>PTN</docType>
+        </newDocEnabled>
+        <deleteDocEnabled/>
+        <clientJsCode>ptn/Ptn_clientcode.js</clientJsCode>         
+        <clientJsCodeRefs>            
+            <clientJsCodeRef>../core/st/st_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/st/lotAlloc/lot_alloc.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/st/ptnReceipt/PtnReceipt_cc.js</clientJsCodeRef>
+        </clientJsCodeRefs>
+        <jsEvents>
+            <afterLoadEvent>core_ptn.after_load</afterLoadEvent>               
+        </jsEvents>     
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="stock_id" label="PTN No" type="string" control="TextBox" size="s" maxLength="50" isOptional="true" readOnly="true" forStatus="true"/>
+                <dummy size="4"/>
+                <field id="doc_date" label="Date" type="date" control="Date" size="ms" range="finYear"/>
+                <nextRow/>
+                <xdiv size="6"/>                          
+                    <field id="annex_info.source_dept_id" label="Source Department" type="int" control="SmartCombo" size="4" cdata-enable-on="core_ptn.br_enable">
+                        <lookup>
+                            <valueMember>dept_id</valueMember>
+                            <displayMember>dept_name</displayMember>
+                            <namedLookup>../core/sm/lookups/Dept.xml</namedLookup>
+                            <filterEvent>core_ptn.source_dept_filter</filterEvent>
+                        </lookup>
+                    </field>   
+                    <field id="target_branch_id" label="Target Branch" type="int" control="SmartCombo" size="4" cdata-enable-on="core_ptn.tb_enable">
+                        <lookup>
+                            <valueMember>branch_id</valueMember>
+                            <displayMember>branch_name</displayMember>
+                            <namedLookup>../cwf/sys/lookups/Branch.xml</namedLookup>
+                        </lookup>   
+                    </field>                 
+                    <field id="annex_info.target_dept_id" label="Target Department" type="int" control="SmartCombo" size="4">
+                        <lookup>
+                            <valueMember>dept_id</valueMember>
+                            <displayMember>dept_name</displayMember>
+                            <namedLookup>../core/sm/lookups/Dept.xml</namedLookup>
+                            <filterEvent>core_ptn.target_dept_filter</filterEvent>
+                        </lookup>
+                    </field>
+                <xdivEnd/>
+                <dummy size="1"/>
+                <xdiv size="5"/>                  
+                    <field id="annex_info.is_ib" label="" type="bool" control="Toggle" toggleOn="Inter Branch" toggleOff="Normal" size="C90"  cdata-enable-on="core_ptn.br_enable"/> 
+                <xdivEnd/>
+                <tranSection label="Stock Items" editMode="Add|Edit|Delete" afterDeleteMethod="core_ptn.st_tran_delete" fixedWidth="800">
+                    <dataBinding dataProperty="stock_tran">
+                        <field id="sl_no" label="#" type="int" control="TextBox" size="1" inline="true" readOnly="true" isOptional="true" style="border: none; background: none;"/>
+                        <field id="bar_code" label="Bar Code" type="string" control="TextBox" size="2" isOptional="true" cdata-enable-on="core_ptn.mat_info_enable"/>
+                        <field id="material_type_id" label="Type" type="int" control="SmartCombo" size="3"  cdata-enable-on="core_ptn.mat_info_enable" >
+                            <lookup>
+                                <valueMember>material_type_id</valueMember>
+                                <displayMember>material_type</displayMember>
+                                <namedLookup>../core/st/lookups/MaterialType.xml</namedLookup>
+                                
+                            </lookup>
+                        </field>
+                        <field id="material_id" label="Stock Item" type="int" control="SmartCombo" size="8"  cdata-enable-on="core_ptn.mat_info_enable"
+                            mdata-event="subscribe: core_ptn.fetch_mat_info" > 
+                            <lookup>
+                                <valueMember>material_id</valueMember>
+                                <displayMember>material_name</displayMember>
+                                <namedLookup>../core/st/lookups/Material.xml</namedLookup>
+                                <filterEvent>core_ptn.material_filter</filterEvent>
+                            </lookup>   
+                        </field>
+                        <field id="stock_location_id" label="Source Stock Loc." type="int" control="SmartCombo" size="4" cdata-enable-on="core_ptn.mat_info_enable"
+                               mdata-event="subscribe: core_ptn.fetch_avl_qty" > >
+                            <lookup>
+                                <valueMember>stock_location_id</valueMember>
+                                <displayMember>stock_location_name</displayMember>
+                                <namedLookup>../prod/lookups/DeptSlWithBranch.xml</namedLookup>
+                                <filterEvent>core_ptn.source_stock_loc_combo_filter</filterEvent>
+                            </lookup>   
+                        </field>
+                        <cButton id="btnStAlloc" label="..." size="1" onClick="core_st.lot_alloc.select_lot($data, $parent.stock_tran)"                                 
+                                cdata-enable-on="core_ptn.enable_sl_lot" ignore-edit="true"/>
+                        <field id="issued_qty" label="Qty" type="decimal" control="TextBox" size="3" scale="qty" cdata-enable-on="core_ptn.mat_info_enable"/>
+                       
+                        <field id="has_qc" label="" type="bool" control="Hidden" size="1"/> 
+                       <nextRow/>
+                        <dummy/>
+                        <dummy/>
+                        <dummy/>
+                        <xdiv colspan="6"/> 
+                            <field label="UoM" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true"/>                                                  
+                            <field id="uom_id" label="UoM" type="int" control="SmartCombo" size="3" readOnly="true">
+                                <lookup>
+                                    <valueMember>uom_id</valueMember>
+                                    <displayMember>uom_desc</displayMember>
+                                    <namedLookup>../core/st/lookups/UoM.xml</namedLookup>
+                                    <filterEvent>core_ptn.uom_combo_filter</filterEvent>
+                                </lookup>   
+                            </field>
+                            <field id="bal_qty" label="" type="string" control="TextBox" size="2" readOnly="true" inline="true" class="fg-total" style="font-style: italic; font-size: small;" 
+                                     cdata-bind="style: { color: has_bal() ? 'green' : 'red' }"/>
+                            <field id="has_bal" label="" type="bool" control="Hidden" readOnly="true" isOptional="true"/>
+                            
+                            <field label="Target Stock Loc." type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true"/>
+                            <field id="target_stock_location_id" label="" type="int" control="SmartCombo" size="4" >
+                                <lookup>
+                                    <valueMember>stock_location_id</valueMember>
+                                    <displayMember>stock_location_name</displayMember>
+                                    <namedLookup>../prod/lookups/DeptSlWithBranch.xml</namedLookup>
+                                    <filterEvent>core_ptn.target_stock_loc_combo_filter</filterEvent>
+                                </lookup>   
+                            </field>
+                        <xdivEnd/>
+                        
+                        <tranSection label="" editMode="Auto"  cdata-visible-on="core_st.show_sl_lot_alloc" >
+                            <dataBinding dataProperty="sl_lot_alloc">
+                                <field id="sl_lot_alloc_id" label="" type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="sl_lot_id" label="" type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="material_id" label="" type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="lot_issue_qty" label="" type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                            </dataBinding>
+                        </tranSection>
+                        <addRowEvent>core_ptn.st_tran_add</addRowEvent>
+                    </dataBinding>
+                </tranSection>
+                <nextRow/>
+                <field id="narration" label="Narration" type="string" control="TextArea" size="m" maxLength="500" rows="3" isOptional="true"/>                  
+                <nextRow/>
+                <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" size="m"  isOptional="true"/>  
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" size="m" readOnly="true" isOptional="true"/> 
+            </dataBinding>   
+        </controlSection>
+    </formView>
+</cwFramework>

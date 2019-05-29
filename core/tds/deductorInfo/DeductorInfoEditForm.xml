@@ -1,0 +1,91 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="DeductorInfo" type="Master" bindingBO="deductorInfo/DeductorInfo">
+        <header>Deductor Info</header>
+        <keyField>deductor_info_id</keyField>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="" label="Particulars of Deductor" type="string" control="Label" size="l"/>
+                <dummy/>
+                <nextRow/> 
+                <field id="deductor_name" label="Deductor Name" type="string" control="TextBox" size="m" maxLength="75" />
+                <nextRow/> 
+                <field id="deductor_type_id" label="Deductor Type" type="int" control="SmartCombo"  size="s">
+                    <lookup>
+                        <valueMember>deductor_type_id</valueMember>
+                        <displayMember>deductor_type</displayMember>
+                        <namedLookup>../core/tds/lookups/DeductorType.xml</namedLookup>
+                    </lookup>   
+                </field> 
+                <nextRow/> 
+                <field id="tan" label="Tax Deduction and collection  Account No.(TAN)" type="string" control="TextBox" size="m" maxLength="10" />
+                <field id="pan" label="Permanent Account Number" type="string" control="TextBox" size="s" maxLength="10" />
+                <nextRow/> 
+                <field id="branch_division" label="Branch/Division (if any)" type="string" control="TextBox" size="m" isOptional="true" maxLength="75" />
+                <field id="tan_registration_no" label="TAN Registration Number" type="string" control="TextBox" size="s" maxLength="12" />
+                <nextRow/> 
+                <field id="flat_no" label="Flat No." type="string" control="TextBox" size="s" maxLength="25" />
+                <field id="building_premises" label="Name of Premises/Building" type="string" control="TextBox" size="s" isOptional="true" maxLength="25" />
+                <field id="area_location" label="Area/Location" type="string" control="TextBox" size="s" isOptional="true" maxLength="25" />
+                <field id="road_street_lane" label="Road/Street/Lane" type="string" control="TextBox" size="s" isOptional="true" maxLength="25" />
+                <nextRow/> 
+                <field id="town_city_district" label="Town/City/District" type="string" control="TextBox" size="s" isOptional="true" maxLength="25" />
+                <field id="state_id" label="State" type="int" control="SmartCombo"  size="s">
+                    <lookup>
+                        <valueMember>deductor_state_id</valueMember>
+                        <displayMember>deductor_state</displayMember>
+                        <namedLookup>../core/tds/lookups/DeductorState.xml</namedLookup>
+                    </lookup>   
+                </field> 
+                <field id="pin_code" label="PIN code" type="string" control="TextBox" size="s" maxLength="6" />
+                <nextRow/> 
+                <field id="std_code" label="STD" type="string" control="TextBox" size="xs" isOptional="true" maxLength="5" />
+                <field id="telephone_no" label="Telephone No." type="string" control="TextBox" size="s" isOptional="true" maxLength="10" />
+                <nextRow/> 
+                <field id="std_code_alternate" label="STD" type="string" control="TextBox" size="xs" isOptional="true" maxLength="5" />
+                <field id="telephone_no_alternate" label="Telephone No. (Alternate)" type="string" control="TextBox" size="s" isOptional="true" maxLength="10" />
+                <nextRow/> 
+                <field id="email" label="E-mail" type="string" control="TextBox" size="m" isOptional="true" maxLength="75" />
+                <field id="email_alternate" label="E-mail (Alternate)" type="string" control="TextBox" size="m" isOptional="true" maxLength="75" />
+                <nextRow/>
+                <dummy/> 
+                <nextRow/>
+                <field id="" label="Particulars of the Person Responsible for Deduction of Tax" type="string" control="Label" size="l"/>
+                <nextRow/>
+                <dummy/> 
+                <nextRow/>
+                <field id="p_deductor_name" label="Name of person" type="string" control="TextBox" size="m" maxLength="75" />
+                <nextRow/> 
+                <field id="p_designation" label="Designation of person" type="string" control="TextBox" size="m" maxLength="20" />
+                <nextRow/> 
+                <field id="p_flat_no" label="Flat No." type="string" control="TextBox" size="s" maxLength="25" />
+                <field id="p_building_premises" label="Name of Premises/Building" type="string" control="TextBox" size="s" isOptional="true" maxLength="25" />
+                <field id="p_area_location" label="Area/Location" type="string" control="TextBox" size="s" isOptional="true" maxLength="25" />
+                <field id="p_road_street_lane" label="Road/Street/Lane" type="string" control="TextBox" size="s" isOptional="true" maxLength="25" />
+                <nextRow/> 
+                <field id="p_town_city_district" label="Town/City/District" type="string" control="TextBox" size="s" isOptional="true" maxLength="25" />
+                <field id="p_state_id" label="State" type="int" control="SmartCombo"  size="s">
+                    <lookup>
+                        <valueMember>deductor_state_id</valueMember>
+                        <displayMember>deductor_state</displayMember>
+                        <namedLookup>../core/tds/lookups/DeductorState.xml</namedLookup>
+                    </lookup>   
+                </field> 
+                <field id="p_pin_code" label="PIN code" type="string" control="TextBox" size="s" maxLength="6" />
+                <field id="p_mobile_no" label="Mobile No." type="string" control="TextBox" size="s" isOptional="true" maxLength="10" />
+                <nextRow/> 
+                <field id="p_std_code" label="STD" type="string" control="TextBox" size="xs" isOptional="true" maxLength="5" />
+                <field id="p_telephone_no" label="Telephone No." type="string" control="TextBox" size="s" isOptional="true" maxLength="10" />
+                <nextRow/> 
+                <field id="p_std_code_alternate" label="STD" type="string" control="TextBox" size="xs" isOptional="true" maxLength="25" />
+                <field id="p_telephone_no_alternate" label="Telephone No. (Alternate)" type="string" control="TextBox" size="s" isOptional="true" maxLength="10" />
+                <nextRow/> 
+                <field id="p_email" label="E-mail" type="string" control="TextBox" size="m" isOptional="true" maxLength="75" />
+                <field id="p_email_alternate" label="E-mail (Alternate)" type="string" control="TextBox" size="m" isOptional="true" maxLength="75" />
+                <nextRow/> 
+            </dataBinding> 
+        </controlSection>
+    </formView>
+</cwFramework>

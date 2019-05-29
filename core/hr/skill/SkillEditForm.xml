@@ -1,0 +1,21 @@
+
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Skill" type="Master"  bindingBO="skill/Skill">
+        <header>Skill</header>
+        <keyField>skill_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>              
+                <field id="skill" label="Skill" type="string" control="TextBox" size="4" maxLength="50" /> 
+            </dataBinding>  
+        </controlSection>
+    </formView>
+</cwFramework>
+              
+              
+ 
+ 

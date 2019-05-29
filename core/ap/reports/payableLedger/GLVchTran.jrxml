@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2018-05-15T13:44:36 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="GLVchTran" language="groovy" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="e0e21ccc-8083-44e3-95fa-670d5c02e550">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mrr_local"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pvoucher_id" class="java.lang.String"/>
+	<parameter name="paccount_id" class="java.lang.Long"/>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.00"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pbranch_id" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[Select a.account_id, b.account_head, a.debit_amt, a.credit_amt
+From ac.general_ledger a
+Inner Join ac.account_head b On a.account_id = b.account_id
+Where a.voucher_id=$P{pvoucher_id} 
+	And a.account_id!=$P{paccount_id}
+	And (a.branch_id=$P{pbranch_id} Or $P{pbranch_id}=0)
+Order by b.account_head]]>
+	</queryString>
+	<field name="account_id" class="java.lang.Long"/>
+	<field name="account_head" class="java.lang.String"/>
+	<field name="debit_amt" class="java.math.BigDecimal"/>
+	<field name="credit_amt" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="11" splitType="Stretch">
+			<textField>
+				<reportElement style="NormalText" x="0" y="0" width="160" height="11" uuid="a4909a65-d493-41af-9dc9-5b3154c5e0d0"/>
+				<box leftPadding="4"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{account_head}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="NormalText" x="180" y="0" width="60" height="11" uuid="81b33219-bfe9-423d-b8d2-fecdf59d97dd">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{debit_amt} > java.math.BigDecimal.ZERO ? CoreJSFormatUtils.Formatter.formatDecimal($F{debit_amt}) : CoreJSFormatUtils.Formatter.formatDecimal($F{credit_amt})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement style="NormalText" x="160" y="0" width="20" height="11" uuid="d0f3da6b-d2ba-4e13-94fd-11864a5db467">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{debit_amt} > java.math.BigDecimal.ZERO ? "Dr" : "Cr"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

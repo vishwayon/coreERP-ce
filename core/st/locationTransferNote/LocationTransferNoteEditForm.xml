@@ -1,0 +1,110 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="LocationTransferNote" type="Document" bindingBO="locationTransferNote/LocationTransferNote">
+        <header>Location Transfer Note</header>
+        <keyField>stock_id</keyField>
+        <printView rptOption="locationTransferNote/LocationTransferNotePrint">
+            <rptParams>
+                <param id="pstock_id">stock_id</param>
+            </rptParams>
+        </printView>
+        <newDocEnabled>
+            <docType>LTN</docType>
+        </newDocEnabled>
+        <deleteDocEnabled/>
+        <clientJsCode>locationTransferNote/LocationTransferNote_clientcode.js</clientJsCode>         
+        <clientJsCodeRefs>            
+            <clientJsCodeRef>../core/st/st_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/st/lotAlloc/lot_alloc.js</clientJsCodeRef>
+        </clientJsCodeRefs>
+        <jsEvents>
+            <afterLoadEvent>core_locationtransfer.after_load</afterLoadEvent>               
+        </jsEvents>     
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="stock_id" label="LTN No" type="string" control="TextBox" size="s" maxLength="50" isOptional="true" readOnly="true" forStatus="true"/>
+                <dummy size="6"/>
+                <field id="doc_date" label="Date" type="date" control="Date" size="ms" range="finYear"/>
+                <nextRow/>
+                <tranSection label="Stock Items" editMode="Add|Edit|Delete" afterDeleteMethod="core_locationtransfer.st_tran_delete" fixedWidth="800">
+                    <dataBinding dataProperty="stock_tran">
+                        <field id="sl_no" label="#" type="int" control="TextBox" size="1" inline="true" readOnly="true" isOptional="true" style="border: none; background: none;"/>
+                        <field id="bar_code" label="Bar Code" type="string" control="TextBox" size="2" isOptional="true"/>
+                        <field id="material_type_id" label="Type" type="int" control="SmartCombo" size="3"  >
+                            <lookup>
+                                <valueMember>material_type_id</valueMember>
+                                <displayMember>material_type</displayMember>
+                                <namedLookup>../core/st/lookups/MaterialType.xml</namedLookup>
+                                
+                            </lookup>
+                        </field>
+                        <field id="material_id" label="Stock Item" type="int" control="SmartCombo" size="8" 
+                            mdata-event="subscribe: core_locationtransfer.fetch_mat_info" > 
+                            <lookup>
+                                <valueMember>material_id</valueMember>
+                                <displayMember>material_name</displayMember>
+                                <namedLookup>../core/st/lookups/Material.xml</namedLookup>
+                                <filterEvent>core_locationtransfer.material_filter</filterEvent>
+                            </lookup>   
+                        </field>
+                        <field id="stock_location_id" label="Source Stock Loc." type="int" control="SmartCombo" size="4" mdata-event="subscribe: core_locationtransfer.fetch_avl_qty" > >
+                            <lookup>
+                                <valueMember>stock_location_id</valueMember>
+                                <displayMember>stock_location_name</displayMember>
+                                <namedLookup>../core/st/lookups/StockLocation.xml</namedLookup>
+                                <filterEvent>core_locationtransfer.stock_loc_combo_filter</filterEvent>
+                            </lookup>   
+                        </field>
+                       <cButton id="btnStAlloc" label="..." size="1" onClick="core_st.lot_alloc.select_lot($data, $parent.stock_tran)"/>
+                       <field id="issued_qty" label="Qty" type="decimal" control="TextBox" size="3" scale="qty"/>
+                       <nextRow/>
+                        <dummy/>
+                        <dummy/>
+                        <dummy/>
+                        <xdiv colspan="6"/> 
+                            <field label="UoM" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true"/>                                                  
+                            <field id="uom_id" label="UoM" type="int" control="SmartCombo" size="3">
+                                <lookup>
+                                    <valueMember>uom_id</valueMember>
+                                    <displayMember>uom_desc</displayMember>
+                                    <namedLookup>../core/st/lookups/UoM.xml</namedLookup>
+                                    <filterEvent>core_locationtransfer.uom_combo_filter</filterEvent>
+                                </lookup>   
+                            </field>
+                            <field id="bal_qty" label="" type="string" control="TextBox" size="2" readOnly="true" inline="true" class="fg-total" style="font-style: italic; font-size: small;" 
+                                     cdata-bind="style: { color: has_bal() ? 'green' : 'red' }"/>
+                            <field id="has_bal" label="" type="bool" control="Hidden" readOnly="true" isOptional="true"/>
+                            
+                            <field label="Target Stock Loc." type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true"/>
+                            <field id="target_stock_location_id" label="" type="int" control="SmartCombo" size="4" >
+                                <lookup>
+                                    <valueMember>stock_location_id</valueMember>
+                                    <displayMember>stock_location_name</displayMember>
+                                    <namedLookup>../core/st/lookups/StockLocationWithoutBranch.xml</namedLookup>
+                                    <filterEvent>core_locationtransfer.stock_loc_combo_filter</filterEvent>
+                                </lookup>   
+                            </field>
+                        <xdivEnd/>
+                        
+                        <tranSection label="" editMode="Auto"  cdata-visible-on="core_st.show_sl_lot_alloc" >
+                            <dataBinding dataProperty="sl_lot_alloc">
+                                <field id="sl_lot_alloc_id" label="" type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="sl_lot_id" label="" type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="material_id" label="" type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="lot_issue_qty" label="" type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                            </dataBinding>
+                        </tranSection>
+                        <addRowEvent>core_locationtransfer.st_tran_add</addRowEvent>
+                    </dataBinding>
+                </tranSection>
+                <nextRow/>
+                <field id="narration" label="Narration" type="string" control="TextArea" size="m" maxLength="500" rows="3" isOptional="true"/>                  
+                <nextRow/>
+                <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" size="m"  isOptional="true"/>  
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" size="m" readOnly="true" isOptional="true"/> 
+            </dataBinding>   
+        </controlSection>
+    </formView>
+</cwFramework>

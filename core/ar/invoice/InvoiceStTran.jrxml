@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.1.final using JasperReports Library version 6.1.1  -->
+<!-- 2017-02-09T14:35:29 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InvoiceStTran" language="groovy" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Error" uuid="ac6da939-5316-4db9-92d7-ede217e5b437">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="fusion DB"/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="inch"/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="pvoucher_id" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["INV/HO/1516/56"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pfc_type_id" class="java.lang.Long" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from tx.fn_tax_tran_report
+(
+	$P{pvoucher_id}
+) order by step_id;]]>
+	</queryString>
+	<field name="voucher_id" class="java.lang.String"/>
+	<field name="step_id" class="java.lang.Short"/>
+	<field name="tax_tran_id" class="java.lang.String"/>
+	<field name="tax_detail_id" class="java.lang.Long"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="tax_perc" class="java.math.BigDecimal"/>
+	<field name="tax_amt" class="java.math.BigDecimal"/>
+	<field name="tax_amt_fc" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="15">
+			<frame>
+				<reportElement x="0" y="0" width="530" height="14" forecolor="#6B6B6B" uuid="775a72a5-d816-441d-967b-4f98acd643aa"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+				</box>
+				<textField isStretchWithOverflow="true" evaluationTime="Report">
+					<reportElement style="NormalLabel" positionType="Float" x="47" y="0" width="350" height="14" uuid="aa262496-cf24-4100-92fa-7d9347bd5239">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<box leftPadding="4">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					</box>
+					<textFieldExpression><![CDATA["Tax Details"]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="-1" width="530" height="14" uuid="a4a55d20-3e7c-4ceb-a00e-5832841d74b5">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+				</box>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="FineNotes" x="47" y="0" width="350" height="14" uuid="3d222dd1-d97e-4c3d-ab3a-4685613f21a1">
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					</reportElement>
+					<box leftPadding="4">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					</box>
+					<textFieldExpression><![CDATA[$F{description} + " @ " + new java.text.DecimalFormat($P{pcwf_amt_format}).format($F{tax_perc}) + "%"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="NormalText" positionType="Float" x="403" y="0" width="113" height="14" uuid="360231e2-1380-4e0f-a68f-97a7605a0675">
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[($P{pfc_type_id} != 0) ? CoreJSFormatUtils.Formatter.formatDecimal($F{tax_amt_fc}) : CoreJSFormatUtils.Formatter.formatDecimal($F{tax_amt})]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+</jasperReport>

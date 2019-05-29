@@ -1,0 +1,25 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <allocView id="LotAlloc" type="alloc" width="900px">
+        <header>Stock Lot(s)</header>
+        <clientJsCodeRef>../core/st/lotAlloc/lot_alloc.js</clientJsCodeRef>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="mat_name" label="Stock Item" type="string" control="TextArea" size="5" readOnly="true"/>
+                <field id="issued_qty" label="Issue Qty" type="decimal" control="TextBox" size="2" scale="qty" readOnly="true"/>
+                <field id="uom" label="UoM" type="string" control="TextBox" size="2" readOnly="true"/>
+                <field id="alloc_bal" label="Alloc Req." type="decimal" control="TextBox" size="2" scale="qty" readOnly="true"
+                    cdata-bind="style: {color: alloc_bal() != 0 ? &quot;red&quot; : &quot;green&quot; }" />
+                <cButton id="btnStAlloc" label="Auto" size="1" onClick="core_st.lot_alloc.select_auto"/>  
+                <nextRow/>
+                <field id="sl-loading" control="Label" type="string" size="m" label="Loading ..." />
+                <tranSection label="" editMode="Edit" >
+                    <dataBinding dataProperty="lot_temp" bindMethod="datatable">
+                    </dataBinding>
+                </tranSection>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework> 

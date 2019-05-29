@@ -1,0 +1,23 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="AccountGroup" type="Master">
+        <controlTable>
+            <tableName>ac.account_group</tableName>
+            <primaryKey>group_id</primaryKey>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save>  
+            <delete>
+                <useEntity/>
+            </delete>
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\ac\accountGroup\AccountGroupEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

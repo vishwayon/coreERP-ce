@@ -1,0 +1,29 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <allocView id="RefLedgerAllocUI" type="alloc" width="850px">
+        <header>Reference</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="acc_head" label="Account" type="string" control="TextArea" size="6" readOnly="true"/>
+                <field id="debit_amt" label="Amount" type="decimal" control="TextBox" size="2" scale="qty" readOnly="true"/>
+                <field id="alloc_bal" label="Alloc Req." type="decimal" control="TextBox" size="2" scale="qty" readOnly="true"
+                    cdata-bind="style: {color: alloc_bal() != 0 ? &quot;red&quot; : &quot;green&quot; }" />
+                <nextRow/>
+                <field id="rl-loading" control="Label" type="string" size="m" label="Loading ..." />
+                <tranSection label="" editMode="Edit">
+                    <dataBinding dataProperty="ref_alloc_temp" bindMethod="datatable">
+                    </dataBinding>
+                 <!--   <dataBinding dataProperty="ref_ledger_temp">
+                        <displayField columnName="affect_voucher_id" displayName="Reference" id="affect_voucher_id" label="Voucher #" type="string" control="TextBox" size="ms" readOnly="true"/>
+                        <displayField columnName="affect_doc_date" displayName="Date" format="Date" id="affect_doc_date" label="Date" type="date" control="Date" size="xs" maxLength="50" readOnly="true"/>
+                        <displayField columnName="balance" displayName="Balance" format="Amount" id="balance" label="Balance" type="decimal" control="TextBox" size="ms"  readOnly="true"/>
+                        <displayField columnName="ref_no" displayName="Reference" id="ref_no" label="Reference No" type="string" control="TextBox" size="ms" readOnly="true"/>
+                        <field id="alloc_amt" label="Amount" type="decimal" control="TextBox" size="ms"/>
+                     </dataBinding>-->
+                </tranSection>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>    

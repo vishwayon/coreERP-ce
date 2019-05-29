@@ -1,0 +1,29 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="Terminal" type="Master" bindingBO="Terminal" editView="terminal/TerminalEditForm">        
+        <header>POS Terminal(s)</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    Select a.terminal_id, a.terminal_code, a.terminal, a.terminal_loc, a.is_remote, b.remote_server_name
+                    From pos.terminal a
+                    Inner Join sys.remote_server b On a.remote_server_id=b.remote_server_id
+                    Where a.company_id={company_id}
+                    order by a.terminal_code, a.terminal
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="terminal_code" displayName="Code"/>
+                <displayField columnName="terminal" displayName="Terminal"/>
+                <displayField columnName="terminal_loc" displayName="Location"/>
+                <displayField columnName="is_remote" displayName="Is Remote"/>
+                <displayField columnName="remote_server_name" displayName="Connected Server"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

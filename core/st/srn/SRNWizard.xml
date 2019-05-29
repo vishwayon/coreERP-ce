@@ -1,0 +1,11 @@
+<wizard id="PRN" name="Purchase Return Note Wizard">
+    <codeBehind>
+        <className>\app\core\st\srn\SRNWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectVatType">
+        <path>srn/SRNWizard/SelectVatType</path>
+    </wizardStep>
+    <postWizard id="SRN">
+        <path>srn/SRNEditForm</path>
+    </postWizard>
+</wizard>

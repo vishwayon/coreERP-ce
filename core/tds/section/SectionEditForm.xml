@@ -1,0 +1,27 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Section" type="Master" bindingBO="section/Section">
+        <header>TDS Section</header>
+        <keyField>section_id</keyField>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="section" label="Section" type="string" control="TextBox" size="ms" maxLength="50" readOnly="OnEdit" />
+                <nextRow/>
+                <field id="section_code" label="Section Code" type="string" control="TextBox" size="ms" maxLength="3" readOnly="OnEdit" />
+                <nextRow/>
+                <field id="section_desc" label="Section Description" type="string" control="TextBox" size="m" maxLength="250"  readOnly="OnEdit" />
+                <nextRow/> 
+                <field id="tds_account_id" label="TDS Account" type="int" control="SmartCombo"  size="s">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id = 44</filter>
+                    </lookup>   
+                </field> 
+            </dataBinding> 
+        </controlSection>
+    </formView>
+</cwFramework>

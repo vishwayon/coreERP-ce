@@ -1,0 +1,18 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="RemoteServer">
+        <connectionType>
+            <mainDB/>
+        </connectionType>
+        <sql>
+            <command>
+                Select remote_server_id, remote_server_name 
+                From sys.remote_server
+                Order by remote_server
+            </command>
+        </sql>
+        <keyField id="remote_server_id"/>
+    </lookup> 
+</cwFramework>

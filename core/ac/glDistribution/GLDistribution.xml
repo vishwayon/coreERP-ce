@@ -1,0 +1,42 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <allocView id="GlDistribution" type="alloc" width="1000px">
+        <header>GL Distribution</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="gl_distribution-loading" control="Label" label="Loading ..." />
+                <tranSection label="" editMode="Edit">
+                    <dataBinding dataProperty="gl_temp">
+                        <displayField columnName="index" displayName="SL No" id="index" label="SL No" type="int" control="TextBox" size="1" readOnly="true"/>
+                        <displayField columnName="branch_code" displayName="Branch Code" id="branch_code" label="Branch Code" type="string" control="TextBox" size="1" readOnly="true"/>
+                        <displayField columnName="account_head" displayName="Account" id="account_head" label="Account" type="string" control="TextBox" size="2" readOnly="true"/>
+                        <displayField columnName="debit_amt" displayName="Debit Amount" id="debit_amt" label="Debit Amount" type="decimal"  format="Amount" control="TextBox" size="1"  />
+                        <displayField columnName="credit_amt" displayName="Credit Amount" id="credit_amt" label="Credit Amount" type="decimal"  format="Amount" control="TextBox" size="1"  />                        
+                    </dataBinding>
+                </tranSection>
+
+                <field id="gl_debit_total" label="Total Debits" type="decimal" control="TextBox" size="ms"  readOnly="true">                
+                    <computedField forceCalOnPost="true">          
+                        var total = new Number();                   
+                        ko.utils.arrayForEach(this.gl_temp(),function(item){                              
+                            total+=new Number(item.debit_amt());
+                        });
+                        return total.toFixed(2);                   
+                    </computedField>
+                </field>
+
+                <field id="gl_credit_total" label="Total Credits" type="decimal" control="TextBox" size="ms"  readOnly="true">                
+                    <computedField forceCalOnPost="true">           
+                        var total = new Number();                   
+                        ko.utils.arrayForEach(this.gl_temp(),function(item){                              
+                            total+=new Number(item.credit_amt());
+                        });
+                        return total.toFixed(2);                    
+                    </computedField>
+                </field>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>    

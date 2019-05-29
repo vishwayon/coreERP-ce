@@ -1,0 +1,28 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    <allocView id="PayScheduleAlloc" type="alloc"  width="900px">
+        <header>Select Pay Schedule</header>
+        <clientJsCode>paySchedule/payschedule_clientcode.js</clientJsCode>  
+        <controlSection>
+            <dataBinding>
+                <field id="pay_schedule_copy_id" label="Pay Schedule" type="int" control="SmartCombo" size="4">
+                    <lookup>
+                        <valueMember>pay_schedule_id</valueMember>
+                        <displayMember>description</displayMember>
+                        <namedLookup>../core/hr/lookups/PaySchedule.xml</namedLookup>
+                    </lookup> 
+                </field>
+                <cButton id="get_pay_schedule_detail" onClick="core_payschedule.get_pay_schedule_detail" label="Get Pay Schedule Details"/>
+                <tranSection label="">
+                    <dataBinding dataProperty="detail_temp_for_copy">
+                        <field id="step_id" label="Step" type="int" control="TextBox" size="xs" readOnly="true"/>
+                        <field id="description" label="Pay Detail" type="string" control="TextBox" size="s" maxLength="5000"  readOnly="true"/>
+                        <field id="pay_perc" label="Pay Rate" type="decimal" control="TextBox" size="ms" scale="rate"  readOnly="true"/>
+                        <field id="amt" label="Amount" type="decimal" control="TextBox" size="s" scale="amt"  readOnly="true"/> 
+                    </dataBinding>
+                </tranSection>  
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>

@@ -1,0 +1,87 @@
+<div class="row">
+    <div class="row">
+        <div class="col-md-4 kpi-s">
+            <small class="text-muted">Business Current Year</small>
+            <span id="cust_det_tov_cy" class="h4 font-bold" >...</span>     
+        </div>
+        <div class="col-md-4 kpi-s">
+            <small class="text-muted">Business Previous Period</small>
+            <span id="cust_det_tov_pp" class="h4 font-bold" >...</span>     
+        </div>
+        <div class="col-md-4 kpi-s">
+            <small class="text-muted">Business Previous Year</small>
+            <span id="cust_det_tov_py" class="h4 font-bold" >...</span>     
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 kpi-s">
+            <small class="text-muted">Current Outstanding</small>
+            <span id="cust_det_os" class="h4 font-bold" >...</span>     
+        </div>
+        <div class="col-md-4 kpi-s">
+            <small class="text-muted">Average Collection Period</small>
+            <span id="cust_det_avg_coll" class="h4 font-bold" >...</span>     
+        </div>
+        <div class="col-md-4 kpi-s">
+            <small class="text-muted">Pay Terms</small>
+            <span id="cust_det_pay_term" class="h4 font-bold" >...</span>     
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 kpi-s">
+            <small class="text-muted">Overdue</small>
+            <span id="cust_det_overdue" class="h4 font-bold" style="color: " >...</span>     
+        </div>
+        <div class="col-md-4 kpi-s">
+            <small class="text-muted">Credit Limit</small>
+            <span id="cust_det_credit_limit" class="h4 font-bold" >...</span>     
+        </div>
+        <div class="col-md-4 kpi-s">
+            <small class="text-muted">Room Available</small>
+            <span id="cust_det_room_avl" class="h4 font-bold" >...</span>     
+        </div>
+    </div>
+    <div class="row" style="padding-left: 15px;">
+        <div class="btn-group btn-group-xs btn-group-justified" id="cust_opt" cust_id="" role="group">
+            <a href="#" class="btn btn-default" role="group" onclick="ac_db.custMon.cust_detail_opt_click(this, 'outst')">Outstanding</a>
+            <a href="#" class="btn btn-default" role="group" onclick="ac_db.custMon.cust_detail_opt_click(this, 'inv')">Invoicing & Collections</a>
+            <!--<a href="#" class="btn btn-default" role="group" onclick="ac_db.custMon.cust_detail_opt_click(this, 'orders')">Open Orders</a>-->
+        </div>
+    </div>
+    <div class="row" id="cust_det_os_cont" style="overflow-y: auto; max-height: 120px; padding-left: 15px;">
+        <table id="cust_det_os_list" class="table table-condensed">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Invoice #</th>
+                    <th>Days</th>
+                    <th style="text-align: right;">Not Due</th>
+                    <th>< 30 Days</th>
+                    <th>30-60 Days</th>
+                    <th>61-90 Days</th>
+                    <th>91-180 Days</th>
+                    <th>> 180 Days</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+    <div class="row" id="cust_det_inv_cont" style="overflow-y: auto; max-height: 120px; padding-left: 15px;">
+        <table id="cust_det_inv_list" class="table table-condensed">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Invoice/Collection #</th>
+                    <th>Settled Date</th>
+                    <th>Debits</th>
+                    <th>Credits</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</div>

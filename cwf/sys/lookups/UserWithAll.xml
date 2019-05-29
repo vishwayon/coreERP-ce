@@ -1,0 +1,23 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="UserWithAll">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select a.user_id, a.user_name,a.full_user_name
+                from (        
+                Select -99 as user_id, 'All' as user_name,'All' as full_user_name
+                union All
+                (select user_id, user_name,full_user_name
+                from sys.user where user_id != 0 And is_owner = false
+                order by user_name asc)
+                ) a
+            </command>
+        </sql>
+        <keyField id="user_id"/>
+    </lookup>
+</cwFramework>

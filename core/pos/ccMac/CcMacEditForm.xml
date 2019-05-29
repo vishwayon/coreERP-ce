@@ -1,0 +1,27 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="CcMac" type="Master" bindingBO="ccMac/CcMac">    
+        <header>Card Machine</header>    
+        <keyField>cc_mac_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="cc_mac_code" label="Card Machine" type="string" control="TextBox" size="s" maxLength="20" />
+                <nextRow/>
+                <field id="account_id" label="Associated Ledger Account" type="int" control="SmartCombo" size="m">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id = 14</filter>
+                    </lookup>
+                </field>
+                <nextRow/>
+                <field id="is_discontinued" label="Discontinued" type="bool" control="CheckBox" size="s"/>
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

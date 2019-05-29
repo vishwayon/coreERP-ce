@@ -1,0 +1,26 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="AssetLocation" type="Master" bindingBO="assetLocation/AssetLocation">    
+        <header>Asset Location</header>  
+        <keyField>asset_location_id</keyField>   
+        <newDocEnabled/>
+        <deleteDocEnabled/>  
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="branch_id" label="Branch" type="int" control="SmartCombo" size="s" >
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/Branch.xml</namedLookup>
+                    </lookup>
+                </field>
+                <nextRow/>
+                <field id="asset_location_code" label="Asset Location Code" type="string" control="TextBox" size="ms" maxLength="4" isOptional="true" />
+                <nextRow/>
+                <field id="asset_location" label="Asset Location" type="string" control="TextBox" size="s" maxLength="50"/>
+            </dataBinding>
+        </controlSection> 
+    </formView>
+</cwFramework>

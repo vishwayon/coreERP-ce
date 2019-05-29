@@ -1,0 +1,31 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'> 
+    
+    <collectionView id="HSNRate" type="Master" bindingBO="HSNRate" editView="hsnRate/HSNRateEditForm">        
+        <header>HSN Rate</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select a.hsn_sc_id, a.hsn_sc_code, 
+                        a.hsn_sc_desc, 
+                        COALESCE(b.gst_rate_id, -1) as gst_rate_id, COALESCE(c.gst_rate_desc, '') gst_rate_desc
+                    from tx.hsn_sc a 
+                    left join tx.hsn_sc_rate b on a.hsn_sc_id = b.hsn_sc_id
+                    left Join tx.gst_rate c on b.gst_rate_id =c.gst_rate_id
+                    order by a.hsn_sc_desc
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="hsn_sc_code" displayName="HSN SC Code"/>
+                <displayField columnName="hsn_sc_desc" displayName="HSN SC Desc" 
+                              wrapIn="textarea" style="width: 650px; border: none; resize: none;"/>
+                <displayField columnName="gst_rate_desc" displayName="GST Rate Desc"/>
+            </displayFields>
+        </collectionSection>       
+    </collectionView>    
+</cwFramework>   
+

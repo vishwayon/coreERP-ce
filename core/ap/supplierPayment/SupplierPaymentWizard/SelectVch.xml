@@ -1,0 +1,56 @@
+<wizardView>
+    <header>Select Bills</header>
+    <sections>
+        
+        <collectionSection id="SelectVch" bindMethod="datatable" renderEvent="core_pymt.pymt_wiz.select_vch_init">
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select a.rl_pl_id, a.account_id, a.voucher_id, a.doc_date, a.bill_no, 
+                    case when a.bill_no = '' then '1970-01-01' else a.bill_date end as bill_date, 
+                    case when a.due_date &lt;= :pto_date then a.balance else 0 end as over_due, case when a.due_date &lt;= :pto_date then a.balance_fc else 0 end as over_due_fc, 
+                    case when a.due_date &gt; :pto_date then a.balance else 0 end as not_due, case when a.due_date &gt; :pto_date then a.balance_fc else 0 end as not_due_fc,
+                    a.fc_type_id, a.fc_type, a.due_date, a.branch_id
+                    from ap.fn_payable_ledger_balance(:pcompany_id, :pbranch_id, :paccount_id, :pto_date, :pvoucher_id, :pdc) a
+                    order by a.doc_date, a.voucher_id
+                </command>
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                    <param id="pbranch_id">
+                        <wizard step="SelectSupplier">branch_id</wizard>
+                    </param>
+                    <param id="paccount_id">
+                        <wizard step="SelectSupplier">account_id</wizard>
+                    </param>
+                    <param id="pto_date">
+                        <currentDate/>
+                    </param>
+                    <param id="pvoucher_id">
+                        <text></text>
+                    </param>
+                    <param id="pdc">
+                        <text>C</text>
+                    </param>
+                </params>
+            </sql>
+            <keyField id="account_id"/>
+            <displayFields>
+                <!--Using datatable rendering. Therefore commented
+                <displayField columnName="voucher_id" id="voucher_id" label="Voucher No" type="string" control="TextBox" size="m"/>
+                <displayField columnName="doc_date" id="doc_date" label="Date" type="date" control="Date" size="s"/>
+                <displayField columnName="fc_type" id="fc_type" label="Txn Ccy" type="string" control="TextBox" size="s"/>
+                <displayField columnName="bill_no" id="bill_no" label="Bill No" type="string" control="TextBox" size="s"/>
+                <displayField columnName="bill_date" id="bill_date" label="Bill Date" type="date" control="Date" size="s"/>
+                <displayField columnName="over_due" id="over_due" label="Overdue" type="decimal" control="TextBox" size="s" scale="amt"/>
+                <displayField columnName="over_due_fc" id="over_due_fc" label="Overdue FC" type="decimal" control="TextBox" size="s" scale="amt"/>
+                <displayField columnName="not_due" id="not_due" label="Not Due" type="decimal" control="TextBox" size="s" scale="amt"/>
+                <displayField columnName="not_due_fc" id="not_due_fc" label="Not Due FC" type="decimal" control="TextBox" size="s" scale="amt"/>
+                <displayField columnName="due_date" id="due_date" label="Due Date" type="date" control="Date" size="s"/>-->
+            </displayFields>
+        </collectionSection>
+    </sections>
+</wizardView>

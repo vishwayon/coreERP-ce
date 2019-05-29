@@ -1,0 +1,25 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="MatCat" type="Master" bindingBO="MatCat" editView="matCat/MatCatEditForm">
+        <header>Stock Item Categories</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select a.mat_cat_id, a.mat_cat, substring(mat_cat_desc for 30) mat_cat_desc
+                    from st.mat_cat a
+                    Where a.company_id={company_id}
+                    order by a.mat_cat 
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="mat_cat" displayName="Stock Category"/>
+                <displayField columnName="mat_cat_desc" displayName="Stock Category Desc"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

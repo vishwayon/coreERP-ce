@@ -1,0 +1,25 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="FinancialYear" type="Master"  bindingBO="financialyear/FinancialYear">
+        <header>Financial Year</header>
+        <keyField>finyear_id</keyField>
+        <newDocEnabled/>
+        <clientJsCode>sys_clientcode.js</clientJsCode> 
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="finyear_code" label="Year Code" type="string" control="TextBox" size="s" maxLength="4"  cdata-enable-on="core_sys.fy_enable_visible"/>
+                <nextRow/> 
+                <field id="year_begin" label="Year Begins From" type="date" control="Date" size="s" readOnly="True"/>
+                <field id="year_end" label="Year Ends On" type="date" control="Date" size="s" cdata-enable-on="core_sys.fy_enable_visible"/>
+                <nextRow/> 
+                <field id="year_close" label="Year Close" type="bool" control="CheckBox" size="s"/>
+                
+                <nextRow/>
+                <field id="note1" label="Note : Financial Year once created cannot be edited." type="string" control="Label" size="l"/>
+
+            </dataBinding> 
+        </controlSection>
+    </formView>
+</cwFramework>

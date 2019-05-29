@@ -1,0 +1,30 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    <allocView id="SeleInv" type="alloc"  width="1000px" >
+        <header>Select Invoices</header>
+        <clientJsCode>supplierPayment/SupplierPayment_clientcode.js</clientJsCode> 
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="sele_inv-loading" control="Label" label="Loading ..." />
+                <tranSection label="" editMode="Edit">
+                    <dataBinding dataProperty="inv_temp" bindMethod="datatable">
+                       <!-- <field id="is_select" label="..." type="bool" control="CheckBox" size="1"/>
+                        <field id="voucher_id" label="Voucher No" type="string" control="TextBox" size="2" readOnly="true" maxLength="50" />
+                        <field id="doc_date" label="Date" type="date" control="Date" size="1" readOnly="true"/>
+                        <field id="fc_type" label="FC Type" type="string" control="TextBox" size="1" readOnly="true" maxLength="20" />
+                        <field id="over_due" label="Overdue" type="decimal" control="TextBox" size="1"  readOnly="true"/>
+                        <field id="over_due_fc" label="Overdue FC" type="decimal" control="TextBox" size="1"  readOnly="true"  cdata-visible-on="core_ar.ar_enable_visible_fc" />
+                        <field id="not_due" label="Not Due" type="decimal" control="TextBox" size="1"  readOnly="true"/>
+                        <field id="not_due_fc" label="Not Due FC" type="decimal" control="TextBox" size="1"  readOnly="true" cdata-visible-on="core_ar.ar_enable_visible_fc" />
+                        <field id="due_date" label="Due Date" type="date" control="Date" size="1" readOnly="true"/>-->
+                    </dataBinding>
+                </tranSection>
+                <nextRow/>
+                <dummy size ="8"/>
+                <field label="Gross Total: " type="string" control="Label" size="2" inline="true"/>
+                <field id="item_tot" label="" type="decimal" control="TextBox" format="Amount" size="2" isOptional="true" class="fg-total" inline="true" />
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>

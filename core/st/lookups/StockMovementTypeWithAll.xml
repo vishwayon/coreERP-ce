@@ -1,0 +1,22 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="ConsType">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select a.stock_movement_type_id, a.stock_movement_type_group, a.stock_movement_type
+                from (        
+                Select 0 as stock_movement_type_id, 'All' as stock_movement_type_group, 'All' stock_movement_type
+                union All
+                    (select stock_movement_type_id, stock_movement_type_group, stock_movement_type
+                    from st.stock_movement_type
+                    order by stock_movement_type)) a
+            </command>
+        </sql>
+        <keyField id="stock_movement_type_id"/>
+    </lookup>
+</cwFramework>

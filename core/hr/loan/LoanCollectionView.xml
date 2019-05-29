@@ -1,0 +1,37 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="Loan" type="Document" bindingBO="Loan" editView="loan/LoanEditForm">
+        <header>Loan</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select loan_id, doc_date, loan_from_date, loan_to_date, loan_principal, status  From hr.loan_control                    
+                    Where doc_type='LN' and finyear=:pfinyear and company_id=:pcompany_id and branch_id=:pbranch_id
+                    Order by loan_id
+                </command>
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                    <param id="pbranch_id">
+                        <session>branch_id</session>
+                    </param>
+                    <param id="pfinyear">
+                        <session>finyear</session>
+                    </param>
+                </params>
+            </sql>
+            <displayFields>
+                <displayField columnName="loan_id" displayName="Document No"/>
+                <displayField columnName="loan_from_date" displayName="Loan Date From" format="Date"/>
+                <displayField columnName="loan_to_date" displayName="Loan Date To" format="Date"/>
+                <displayField columnName="loan_principal" displayName="Loan Amt" format="Amount"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

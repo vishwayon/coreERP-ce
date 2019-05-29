@@ -1,0 +1,1194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2017-05-12T12:37:21 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SaleRegisterV2" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="770" leftMargin="36" rightMargin="36" topMargin="36" bottomMargin="36" uuid="4c307fb7-97ec-429f-a8e6-44533a037434">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mrr_prod"/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="inch"/>
+	<property name="net.sf.jasperreports.export.xls.white.page.background" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.columns" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>        
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<style name="Crosstab_CH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CG" mode="Opaque" backcolor="#BFFFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CT" mode="Opaque" backcolor="#008400">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 1_CH" mode="Opaque" backcolor="#008B8B">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 1_CG" mode="Opaque" backcolor="#BFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 1_CT" mode="Opaque" backcolor="#006161">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 1_CD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 2_CH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 2_CG" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 2_CT" mode="Opaque" backcolor="#005FB3">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 2_CD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 3_CH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 3_CG" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 3_CT" mode="Opaque" backcolor="#005FB3">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 3_CD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 4_CH" mode="Opaque" backcolor="#20B2AA">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 4_CG" mode="Opaque" backcolor="#BFFFFC">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 4_CT" mode="Opaque" backcolor="#007D76">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 4_CD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 5_CH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 5_CG" mode="Opaque" backcolor="#BFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 5_CT" mode="Opaque" backcolor="#00B3B3">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 5_CD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 6_CH" mode="Opaque" backcolor="#8B0000">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 6_CG" mode="Opaque" backcolor="#FFBFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 6_CT" mode="Opaque" backcolor="#610000">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 6_CD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="SaleRetData" uuid="461d350b-8b86-44e8-aa07-be1cca98bfdf">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mrr_prod"/>
+		<parameter name="pcompany_id" class="java.lang.Long" isForPrompting="false">
+			<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+		</parameter>
+		<parameter name="pbranch_id" class="java.lang.Long" isForPrompting="false">
+			<defaultValueExpression><![CDATA[1000001]]></defaultValueExpression>
+		</parameter>
+		<parameter name="pfrom_date" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA["2015-04-01"]]></defaultValueExpression>
+		</parameter>
+		<parameter name="pto_date" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA["2016-03-31"]]></defaultValueExpression>
+		</parameter>
+		<parameter name="pcwf_date_format" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA["dd-MM-yyyy"]]></defaultValueExpression>
+		</parameter>
+		<parameter name="pcwf_amt_format" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[Select *
+From st.fn_sale_register_v2(
+     $P{pcompany_id} ,
+     $P{pbranch_id} ,
+    $P{pfrom_date}::date  ,
+     $P{pto_date} ::date
+ )
+ Where doc_type = Any ('{SR, SRN, PSR}');]]>
+		</queryString>
+		<field name="doc_type" class="java.lang.String"/>
+		<field name="doc_date" class="java.sql.Date"/>
+		<field name="customer_id" class="java.lang.Long"/>
+		<field name="customer" class="java.lang.String"/>
+		<field name="voucher_id" class="java.lang.String"/>
+		<field name="customer_tin" class="java.lang.String"/>
+		<field name="origin_inv_id" class="java.lang.String"/>
+		<field name="origin_inv_date" class="java.sql.Date"/>
+		<field name="sale_amt" class="java.math.BigDecimal"/>
+		<field name="misc_amt" class="java.math.BigDecimal"/>
+		<field name="vat_type_id" class="java.lang.Long"/>
+		<field name="vat_type_desc" class="java.lang.String"/>
+		<field name="tax_type_id" class="java.lang.Long"/>
+		<field name="tax_type" class="java.lang.String"/>
+		<field name="tax_detail_id" class="java.lang.Long"/>
+		<field name="tax_detail" class="java.lang.String"/>
+		<field name="bt_amt" class="java.math.BigDecimal"/>
+		<field name="tax_amt" class="java.math.BigDecimal"/>
+	</subDataset>
+	<parameter name="pcwf_header_template" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["cwf/report-templates/header-template.jasper"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_company_name" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["First Company Private Limtied"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_branch_name" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["First Branch"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_branch_address" class="java.lang.String">
+		<defaultValueExpression><![CDATA["First Floor, Technology Park, Pune"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_company_logo" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["/cwf/vsla/assets/coreerp_logo.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_ccy_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_txn_ccy" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["INR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_coreerp_ver" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["CoreERP Ver. 0.5.4"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_base_path" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcompany_id" class="java.lang.Long" isForPrompting="false">
+		<defaultValueExpression><![CDATA[4]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pbranch_id" class="java.lang.Long" isForPrompting="false">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pfrom_date" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2017-04-01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pto_date" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2017-04-30"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="preport_period" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["As On 31-03-2015"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_date_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["dd-MM-yyyy"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_qty_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_fc_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.#"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[Select 1 as tval;]]>
+	</queryString>
+	<field name="tval" class="java.lang.Integer"/>
+	<group name="group_tax_type" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{tval}]]></groupExpression>
+		<groupHeader>
+			<band height="84">
+				<crosstab>
+					<reportElement x="0" y="5" width="759" height="60" isPrintWhenDetailOverflows="true" uuid="9e3de447-1515-4c4c-9aeb-d7a75d661c9a"/>
+					<crosstabDataset>
+						<dataset>
+							<datasetRun subDataset="SaleRetData" uuid="98445c4c-8b96-4330-867d-51f7e4a53eae">
+								<datasetParameter name="pcompany_id">
+									<datasetParameterExpression><![CDATA[$P{pcompany_id}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="pbranch_id">
+									<datasetParameterExpression><![CDATA[$P{pbranch_id}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="pfrom_date">
+									<datasetParameterExpression><![CDATA[$P{pfrom_date}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="pto_date">
+									<datasetParameterExpression><![CDATA[$P{pto_date}]]></datasetParameterExpression>
+								</datasetParameter>
+								<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+							</datasetRun>
+						</dataset>
+					</crosstabDataset>
+					<crosstabHeaderCell>
+						<cellContents>
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="20" width="50" height="10" forecolor="#FFFFFF" backcolor="#8B0000" uuid="e8331871-ea20-4c20-8215-95b64c653eb4"/>
+								<textElement textAlignment="Center">
+									<font size="8"/>
+								</textElement>
+								<text><![CDATA[Doc Date]]></text>
+							</staticText>
+							<staticText>
+								<reportElement mode="Opaque" x="50" y="20" width="100" height="10" forecolor="#FFFFFF" backcolor="#8B0000" uuid="2c78667f-041b-458c-ba82-03cdaeb85d3d"/>
+								<textElement textAlignment="Center">
+									<font size="8"/>
+								</textElement>
+								<text><![CDATA[Customer]]></text>
+							</staticText>
+							<staticText>
+								<reportElement mode="Opaque" x="150" y="20" width="59" height="10" forecolor="#FFFFFF" backcolor="#8B0000" uuid="8df05549-0b87-4419-b12b-84fea257b2d3"/>
+								<textElement textAlignment="Center">
+									<font size="8"/>
+								</textElement>
+								<text><![CDATA[VAT TIN]]></text>
+							</staticText>
+							<staticText>
+								<reportElement mode="Opaque" x="209" y="20" width="70" height="10" forecolor="#FFFFFF" backcolor="#8B0000" uuid="d17fa21d-8ff8-477a-8706-d11f5033f1ad"/>
+								<textElement textAlignment="Center">
+									<font size="8"/>
+								</textElement>
+								<text><![CDATA[Doc #]]></text>
+							</staticText>
+							<staticText>
+								<reportElement style="CaptionText" mode="Opaque" x="389" y="20" width="60" height="10" forecolor="#FFFFFF" backcolor="#8B0000" uuid="7e057112-9a09-49fa-8a81-0a4a8bf9f16a"/>
+								<textElement textAlignment="Center">
+									<font size="8"/>
+								</textElement>
+								<text><![CDATA[Ret Amt]]></text>
+							</staticText>
+							<staticText>
+								<reportElement style="CaptionText" mode="Opaque" x="449" y="20" width="40" height="10" forecolor="#FFFFFF" backcolor="#8B0000" uuid="ede31cd7-9401-4d39-b05c-7f31d64fc522"/>
+								<textElement textAlignment="Center">
+									<font size="8"/>
+								</textElement>
+								<text><![CDATA[Misc. Amt]]></text>
+							</staticText>
+							<staticText>
+								<reportElement mode="Opaque" x="279" y="20" width="70" height="10" forecolor="#FFFFFF" backcolor="#8B0000" uuid="61eaac94-c477-4ae7-8fdc-73ab9de60cf7"/>
+								<textElement textAlignment="Center">
+									<font size="8"/>
+								</textElement>
+								<text><![CDATA[Origin Doc #]]></text>
+							</staticText>
+							<staticText>
+								<reportElement mode="Opaque" x="349" y="20" width="40" height="10" forecolor="#FFFFFF" backcolor="#8B0000" uuid="8d6ffb76-3932-46e5-a511-cfea69b05cef"/>
+								<textElement textAlignment="Center">
+									<font size="8"/>
+								</textElement>
+								<text><![CDATA[Dt.]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabHeaderCell>
+					<rowGroup name="doc_date1" width="50" totalPosition="End">
+						<bucket class="java.sql.Date">
+							<bucketExpression><![CDATA[$F{doc_date}]]></bucketExpression>
+						</bucket>
+						<crosstabRowHeader>
+							<cellContents backcolor="#FFFFFF" mode="Opaque" style="Crosstab 6_CH">
+								<textField pattern="dd-MM-yyyy">
+									<reportElement style="NormalText" mode="Opaque" x="0" y="0" width="50" height="10" forecolor="#000000" backcolor="#FFFFFF" uuid="1b874789-520d-4ba9-8ead-42b961aea41a"/>
+									<textElement verticalAlignment="Middle">
+										<font size="7"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{doc_date1}]]></textFieldExpression>
+								</textField>
+							</cellContents>
+						</crosstabRowHeader>
+						<crosstabTotalRowHeader>
+							<cellContents mode="Opaque" style="Crosstab 6_CT">
+								<staticText>
+									<reportElement x="0" y="0" width="480" height="11" forecolor="#FFFFFF" uuid="5a6946b2-a5aa-41d2-9dda-52fbbec107f5"/>
+									<textElement textAlignment="Center">
+										<font size="8"/>
+									</textElement>
+									<text><![CDATA[Total]]></text>
+								</staticText>
+							</cellContents>
+						</crosstabTotalRowHeader>
+					</rowGroup>
+					<rowGroup name="customer1" width="99">
+						<bucket class="java.lang.String">
+							<bucketExpression><![CDATA[$F{customer}]]></bucketExpression>
+						</bucket>
+						<crosstabRowHeader>
+							<cellContents backcolor="#FFFFFF" mode="Opaque" style="Crosstab 6_CH">
+								<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+								<textField>
+									<reportElement style="NormalText" mode="Opaque" x="0" y="0" width="99" height="10" forecolor="#000000" backcolor="#FFFFFF" uuid="b9671dd7-83e0-4c5a-ba4e-5f481befa932"/>
+									<textElement verticalAlignment="Middle">
+										<font size="7"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{customer1}]]></textFieldExpression>
+								</textField>
+							</cellContents>
+						</crosstabRowHeader>
+						<crosstabTotalRowHeader>
+							<cellContents mode="Opaque" style="Crosstab 6_CG">
+								<staticText>
+									<reportElement x="0" y="0" width="420" height="20" uuid="2e37a531-3257-45b8-857f-54dc59951fe5"/>
+									<text><![CDATA[Total customer1]]></text>
+								</staticText>
+							</cellContents>
+						</crosstabTotalRowHeader>
+					</rowGroup>
+					<rowGroup name="customer_tin1" width="60">
+						<bucket class="java.lang.String">
+							<bucketExpression><![CDATA[$F{customer_tin}]]></bucketExpression>
+						</bucket>
+						<crosstabRowHeader>
+							<cellContents backcolor="#FFFFFF" mode="Opaque" style="Crosstab 6_CH">
+								<textField>
+									<reportElement style="NormalText" mode="Opaque" x="0" y="0" width="60" height="10" forecolor="#000000" backcolor="#FFFFFF" uuid="1ecbf51a-fa4e-48d3-9b97-9e97944b8e78"/>
+									<textElement verticalAlignment="Middle">
+										<font size="7"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{customer_tin1}]]></textFieldExpression>
+								</textField>
+							</cellContents>
+						</crosstabRowHeader>
+						<crosstabTotalRowHeader>
+							<cellContents mode="Opaque" style="Crosstab 6_CG">
+								<staticText>
+									<reportElement x="0" y="0" width="360" height="20" uuid="bf9c11a1-19cb-4b3e-b594-0fb684315bee"/>
+									<text><![CDATA[Total customer_tin1]]></text>
+								</staticText>
+							</cellContents>
+						</crosstabTotalRowHeader>
+					</rowGroup>
+					<rowGroup name="voucher_id1" width="70">
+						<bucket class="java.lang.String">
+							<bucketExpression><![CDATA[$F{voucher_id}]]></bucketExpression>
+						</bucket>
+						<crosstabRowHeader>
+							<cellContents backcolor="#FFFFFF" mode="Opaque" style="Crosstab 6_CH">
+								<textField>
+									<reportElement style="NormalText" mode="Opaque" x="0" y="0" width="70" height="10" forecolor="#000000" backcolor="#FFFFFF" uuid="3a5f7e34-4410-4cdb-898f-7c7ef0fd28de"/>
+									<textElement verticalAlignment="Middle">
+										<font size="7"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{voucher_id1}]]></textFieldExpression>
+								</textField>
+							</cellContents>
+						</crosstabRowHeader>
+						<crosstabTotalRowHeader>
+							<cellContents mode="Opaque" style="Crosstab 6_CG">
+								<staticText>
+									<reportElement x="0" y="0" width="300" height="20" uuid="b6eb8681-573d-4aa7-b363-680c2b347ad5"/>
+									<text><![CDATA[Total voucher_id1]]></text>
+								</staticText>
+							</cellContents>
+						</crosstabTotalRowHeader>
+					</rowGroup>
+					<rowGroup name="origin_inv_id1" width="70">
+						<bucket class="java.lang.String">
+							<bucketExpression><![CDATA[$F{origin_inv_id}]]></bucketExpression>
+						</bucket>
+						<crosstabRowHeader>
+							<cellContents mode="Opaque" style="Crosstab 6_CH">
+								<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+								<textField>
+									<reportElement style="NormalText" mode="Opaque" x="0" y="0" width="70" height="10" forecolor="#000000" backcolor="#FFFFFF" uuid="31028e6f-48e0-4159-b694-f2b24d7874cf"/>
+									<textElement verticalAlignment="Middle">
+										<font size="7"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{origin_inv_id1}]]></textFieldExpression>
+								</textField>
+							</cellContents>
+						</crosstabRowHeader>
+						<crosstabTotalRowHeader>
+							<cellContents mode="Opaque" style="Crosstab 6_CG">
+								<staticText>
+									<reportElement x="0" y="0" width="240" height="20" uuid="8a9d230a-823f-4148-ab9b-e4e098f83319"/>
+									<text><![CDATA[Total origin_inv_id1]]></text>
+								</staticText>
+							</cellContents>
+						</crosstabTotalRowHeader>
+					</rowGroup>
+					<rowGroup name="origin_inv_date1" width="40">
+						<bucket class="java.sql.Date">
+							<bucketExpression><![CDATA[$F{origin_inv_date}]]></bucketExpression>
+						</bucket>
+						<crosstabRowHeader>
+							<cellContents mode="Opaque" style="Crosstab 6_CH">
+								<textField pattern="dd-MM-yyyy">
+									<reportElement style="NormalText" mode="Opaque" x="0" y="0" width="40" height="10" forecolor="#000000" backcolor="#FFFFFF" uuid="3602f203-fafe-4eef-8a5b-375db84c0159"/>
+									<textElement verticalAlignment="Middle">
+										<font size="7"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{origin_inv_date1}]]></textFieldExpression>
+								</textField>
+							</cellContents>
+						</crosstabRowHeader>
+						<crosstabTotalRowHeader>
+							<cellContents mode="Opaque" style="Crosstab 6_CG">
+								<staticText>
+									<reportElement x="0" y="0" width="180" height="20" uuid="573d1d7f-8927-4df8-9905-a9e8d910e1cc"/>
+									<text><![CDATA[Total origin_inv_date1]]></text>
+								</staticText>
+							</cellContents>
+						</crosstabTotalRowHeader>
+					</rowGroup>
+					<rowGroup name="sale_amt1" width="60">
+						<bucket class="java.math.BigDecimal">
+							<bucketExpression><![CDATA[$F{sale_amt}]]></bucketExpression>
+						</bucket>
+						<crosstabRowHeader>
+							<cellContents backcolor="#FFFFFF" mode="Opaque" style="Crosstab 6_CH">
+								<textField pattern="#,##0.00">
+									<reportElement style="NormalText" mode="Opaque" x="0" y="0" width="60" height="10" forecolor="#000000" backcolor="#FFFFFF" uuid="3c7a6fcd-eee2-4441-863c-37afd404e970"/>
+									<textElement textAlignment="Right" verticalAlignment="Middle">
+										<font size="7"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{sale_amt1}]]></textFieldExpression>
+								</textField>
+							</cellContents>
+						</crosstabRowHeader>
+						<crosstabTotalRowHeader>
+							<cellContents mode="Opaque" style="Crosstab 6_CG">
+								<staticText>
+									<reportElement x="0" y="0" width="120" height="20" uuid="486ded9a-3a44-44db-8b6b-6372968259f8"/>
+									<text><![CDATA[Total sale_amt1]]></text>
+								</staticText>
+							</cellContents>
+						</crosstabTotalRowHeader>
+					</rowGroup>
+					<rowGroup name="misc_amt1" width="40">
+						<bucket class="java.math.BigDecimal">
+							<bucketExpression><![CDATA[$F{misc_amt}]]></bucketExpression>
+						</bucket>
+						<crosstabRowHeader>
+							<cellContents backcolor="#FFFFFF" mode="Opaque" style="Crosstab 6_CH">
+								<textField pattern="#,##0.00">
+									<reportElement style="NormalText" mode="Opaque" x="0" y="0" width="40" height="10" forecolor="#000000" backcolor="#FFFFFF" uuid="d4ae6650-ded5-4fca-a640-0d09d5b1938c"/>
+									<textElement textAlignment="Right" verticalAlignment="Middle">
+										<font size="7"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{misc_amt1}]]></textFieldExpression>
+								</textField>
+							</cellContents>
+						</crosstabRowHeader>
+						<crosstabTotalRowHeader>
+							<cellContents mode="Opaque" style="Crosstab 6_CG">
+								<staticText>
+									<reportElement x="0" y="0" width="60" height="20" uuid="402e7e3d-a92f-441c-81a8-5e4117f261d7"/>
+									<text><![CDATA[Total misc_amt1]]></text>
+								</staticText>
+							</cellContents>
+						</crosstabTotalRowHeader>
+					</rowGroup>
+					<columnGroup name="tax_type1" height="10">
+						<bucket class="java.lang.String">
+							<bucketExpression><![CDATA[$F{tax_type}]]></bucketExpression>
+						</bucket>
+						<crosstabColumnHeader>
+							<cellContents mode="Opaque" style="Crosstab 6_CH">
+								<textField>
+									<reportElement x="0" y="0" width="111" height="10" forecolor="#FFFFFF" uuid="55cf330e-8aa4-4952-8e4a-15f06511d75f"/>
+									<textElement textAlignment="Center">
+										<font size="8"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{tax_type1}]]></textFieldExpression>
+								</textField>
+							</cellContents>
+						</crosstabColumnHeader>
+						<crosstabTotalColumnHeader>
+							<cellContents mode="Opaque" style="Crosstab 6_CT">
+								<staticText>
+									<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="5e93412f-0e87-44d5-82d2-fdce935badd3"/>
+									<textElement textAlignment="Center"/>
+									<text><![CDATA[Total tax_type1]]></text>
+								</staticText>
+							</cellContents>
+						</crosstabTotalColumnHeader>
+					</columnGroup>
+					<columnGroup name="tax_detail1" height="20">
+						<bucket class="java.lang.String">
+							<bucketExpression><![CDATA[$F{tax_detail}]]></bucketExpression>
+						</bucket>
+						<crosstabColumnHeader>
+							<cellContents mode="Opaque" style="Crosstab 6_CH">
+								<textField>
+									<reportElement x="0" y="0" width="111" height="10" forecolor="#FFFFFF" uuid="c389eb81-b8ce-4cfd-9023-d9b347b0594e"/>
+									<textElement textAlignment="Center">
+										<font size="8"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{tax_detail1}]]></textFieldExpression>
+								</textField>
+								<staticText>
+									<reportElement style="NormalText" mode="Transparent" x="0" y="10" width="60" height="9" forecolor="#FFFFFF" backcolor="#9E0300" uuid="78d42a9c-fc69-48e6-820a-2ee172d857fa"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font size="6" isBold="true"/>
+									</textElement>
+									<text><![CDATA[Basic Amt]]></text>
+								</staticText>
+								<staticText>
+									<reportElement style="NormalText" mode="Transparent" x="60" y="10" width="51" height="10" forecolor="#FFFFFF" backcolor="#9E0300" uuid="3cc88c0c-df48-4e39-8b7f-ee6d803ad55d"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font size="6" isBold="true"/>
+									</textElement>
+									<text><![CDATA[Tax Amt]]></text>
+								</staticText>
+							</cellContents>
+						</crosstabColumnHeader>
+						<crosstabTotalColumnHeader>
+							<cellContents mode="Opaque" style="Crosstab 6_CG">
+								<staticText>
+									<reportElement x="0" y="0" width="60" height="20" uuid="b1e3c071-f4b6-402c-98ed-41da473a9b78"/>
+									<text><![CDATA[Total tax_detail1]]></text>
+								</staticText>
+							</cellContents>
+						</crosstabTotalColumnHeader>
+					</columnGroup>
+					<measure name="bt_amt_MEASURE1" class="java.math.BigDecimal" calculation="Sum">
+						<measureExpression><![CDATA[$F{bt_amt}]]></measureExpression>
+					</measure>
+					<measure name="tax_amt_MEASURE1" class="java.math.BigDecimal" calculation="Sum">
+						<measureExpression><![CDATA[$F{tax_amt}]]></measureExpression>
+					</measure>
+					<crosstabCell width="111" height="10">
+						<cellContents mode="Opaque" style="Crosstab 6_CD">
+							<textField pattern="#,##0.00">
+								<reportElement x="0" y="0" width="60" height="10" uuid="f0130e2f-3864-47ac-8a2f-a9ad2f1a7660">
+									<printWhenExpression><![CDATA[$V{bt_amt_MEASURE1}!=java.math.BigDecimal.ZERO]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="7"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField pattern="#,##0.00">
+								<reportElement x="60" y="0" width="51" height="10" uuid="31474675-3c6c-4793-a37b-9a591b444b1b">
+									<printWhenExpression><![CDATA[$V{tax_amt_MEASURE1}!=java.math.BigDecimal.ZERO]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="7"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="10" columnTotalGroup="tax_type1">
+						<cellContents mode="Opaque" style="Crosstab 6_CT">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" forecolor="#FFFFFF" uuid="317711c2-64e9-42ea-9114-e8bdfe12a9ce"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" forecolor="#FFFFFF" uuid="70be1e09-6c49-4fed-b04c-0bbccddfbeb8"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" forecolor="#FFFFFF" uuid="80026575-a107-4f1f-92f6-53da0f0564d0"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" columnTotalGroup="tax_detail1">
+						<cellContents mode="Opaque" style="Crosstab 6_CG">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" uuid="166de116-d1de-45f0-a9aa-0febf89bc936"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" uuid="88d9ec0b-acfe-45b2-b115-aaeb7a6e1ca4"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="111" height="11" rowTotalGroup="doc_date1">
+						<cellContents mode="Opaque" style="Crosstab 6_CT">
+							<textField pattern="#,##0.00">
+								<reportElement x="0" y="0" width="60" height="10" forecolor="#FFFFFF" uuid="e38c16c9-05d8-45ea-ac04-dc58637548f7"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="6" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField pattern="#,##0.00">
+								<reportElement x="60" y="1" width="51" height="10" forecolor="#FFFFFF" uuid="b75f69f2-05a6-4baf-9bd4-35fca0aa2af1"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="6" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="doc_date1" columnTotalGroup="tax_type1">
+						<cellContents mode="Opaque" style="Crosstab 6_CT">
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" forecolor="#FFFFFF" uuid="1e4d4e5e-2ea3-4c9d-ac93-943dd2085bbf"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="doc_date1" columnTotalGroup="tax_detail1">
+						<cellContents mode="Opaque" style="Crosstab 6_CT">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" forecolor="#FFFFFF" uuid="8a902f8a-f68c-4742-8a6f-5ba710cd371a"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" forecolor="#FFFFFF" uuid="c74dc6e2-6fe8-47cb-8d5c-2b313b01da2a"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="customer1">
+						<cellContents mode="Opaque" style="Crosstab 6_CG">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" uuid="59b09975-af8b-496c-9b95-1eeb71804a49"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" uuid="14816290-c633-46a1-b143-7ff47d6a4c12"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="customer1" columnTotalGroup="tax_type1">
+						<cellContents mode="Opaque" style="Crosstab 6_CT">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" forecolor="#FFFFFF" uuid="e4e5d7a4-9da1-4aca-9219-db8b0eaebf80"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" forecolor="#FFFFFF" uuid="511017b1-9462-4bff-9b7f-69d83c7f4d5d"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="customer1" columnTotalGroup="tax_detail1">
+						<cellContents mode="Opaque" style="Crosstab 6_CG">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" uuid="a4cf57e8-8835-4e74-a654-69822f2c686b"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" uuid="b7707402-4dbc-4645-8a51-b686d997e0a2"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="customer_tin1">
+						<cellContents mode="Opaque" style="Crosstab 6_CG">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" uuid="42bd100f-2cc9-49a4-9a45-bbec66f3e367"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" uuid="491fc0e5-70d6-474e-8708-f54a92c5a13f"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="customer_tin1" columnTotalGroup="tax_type1">
+						<cellContents mode="Opaque" style="Crosstab 6_CT">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" forecolor="#FFFFFF" uuid="d3b77264-85f6-418c-8255-214e9cd616d2"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" forecolor="#FFFFFF" uuid="b70f5ef5-30d3-4b9a-9a65-a75620fe2493"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="customer_tin1" columnTotalGroup="tax_detail1">
+						<cellContents mode="Opaque" style="Crosstab 6_CG">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" uuid="1d95303d-c70e-4ca0-903d-f24a315192a1"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" uuid="84e6dfdd-b461-49f9-b61a-8f3cf660dabc"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="voucher_id1">
+						<cellContents mode="Opaque" style="Crosstab 6_CG">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" uuid="23e15453-6afa-4262-b199-d04248c35d8c"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" uuid="97190d12-19ec-491c-8bc0-2cb25abe739f"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="voucher_id1" columnTotalGroup="tax_type1">
+						<cellContents mode="Opaque" style="Crosstab 6_CT">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" forecolor="#FFFFFF" uuid="4d18558d-551a-45d1-ab0e-63bf852aaa03"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" forecolor="#FFFFFF" uuid="beb3fb44-1ae5-44d2-a6a9-3ea7aa314e8d"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="voucher_id1" columnTotalGroup="tax_detail1">
+						<cellContents mode="Opaque" style="Crosstab 6_CG">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" uuid="d581da9c-f954-42a5-a3c6-b4a8ce53aa52"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" uuid="5f006d5a-b276-4060-80bc-53b1800bb7c6"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="origin_inv_id1">
+						<cellContents mode="Opaque" style="Crosstab 6_CG">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" uuid="3005ae68-3516-4ec2-87df-41f5e53ccaca"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" uuid="6d994ed4-036b-4eaa-8c4a-6eec41453196"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="origin_inv_id1" columnTotalGroup="tax_type1">
+						<cellContents mode="Opaque" style="Crosstab 6_CT">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" forecolor="#FFFFFF" uuid="3851d1aa-8741-4580-a06d-6c7985426e80"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" forecolor="#FFFFFF" uuid="c5b47199-e497-4b6a-8b26-2270ec983d9f"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="origin_inv_id1" columnTotalGroup="tax_detail1">
+						<cellContents mode="Opaque" style="Crosstab 6_CG">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" uuid="d941bce2-a216-4b66-83ab-f30309e608c3"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" uuid="05214446-c10b-4c23-b199-d698b1061c00"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="origin_inv_date1">
+						<cellContents mode="Opaque" style="Crosstab 6_CG">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" uuid="6ba122e1-de3b-48fb-985f-0669d2011180"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" uuid="5a49cd70-54f3-4ff9-812f-99c713a95d8b"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="origin_inv_date1" columnTotalGroup="tax_type1">
+						<cellContents mode="Opaque" style="Crosstab 6_CT">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" forecolor="#FFFFFF" uuid="b5b566bf-23f0-4b50-a5b9-9e1556f7fc90"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" forecolor="#FFFFFF" uuid="b995d2a3-4f8f-44d9-9bda-48e4eb608380"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="origin_inv_date1" columnTotalGroup="tax_detail1">
+						<cellContents mode="Opaque" style="Crosstab 6_CG">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" uuid="3269f61a-7972-4bc1-8149-0e6549a9bfa0"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" uuid="a4cb04a6-d655-4726-9458-e43e2cd73db9"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="sale_amt1">
+						<cellContents mode="Opaque" style="Crosstab 6_CG">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" uuid="8008cae5-2856-4393-a100-3580e58a5abe"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" uuid="f72ae731-a359-4b86-b5b6-2110afbed28c"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="sale_amt1" columnTotalGroup="tax_type1">
+						<cellContents mode="Opaque" style="Crosstab 6_CT">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" forecolor="#FFFFFF" uuid="2c2714c9-d329-475b-a2b3-9770f84a9179"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" forecolor="#FFFFFF" uuid="ca39bf37-700f-4e0c-908d-fba5a787db2f"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="sale_amt1" columnTotalGroup="tax_detail1">
+						<cellContents mode="Opaque" style="Crosstab 6_CG">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" uuid="8370a699-3ea9-46af-b087-325e4abb580d"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" uuid="3bcfb9e8-a581-4af1-a7a4-23dacbe05b19"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="misc_amt1">
+						<cellContents mode="Opaque" style="Crosstab 6_CG">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" uuid="93055979-b207-48fc-82f3-73b3afd01e26"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" uuid="e2d74738-03fe-495d-a3dc-90084f9d70db"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="misc_amt1" columnTotalGroup="tax_type1">
+						<cellContents mode="Opaque" style="Crosstab 6_CT">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" forecolor="#FFFFFF" uuid="19c6fca0-c202-47c2-8772-dde83633d788"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" forecolor="#FFFFFF" uuid="b94f77d9-4612-49fe-87ef-ab8db9a2f4cf"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="misc_amt1" columnTotalGroup="tax_detail1">
+						<cellContents mode="Opaque" style="Crosstab 6_CG">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="10" uuid="27c7d564-e4a0-4b79-8682-a1811facaa4c"/>
+								<textFieldExpression><![CDATA[$V{bt_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="0" y="10" width="60" height="10" uuid="a12044ca-59bd-4089-91b6-eb4d0225547d"/>
+								<textFieldExpression><![CDATA[$V{tax_amt_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+				</crosstab>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="74" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="523" height="40" uuid="fd573bde-26a5-467c-9601-ef6eedfc55d1"/>
+				<subreportParameter name="pcwf_company_name">
+					<subreportParameterExpression><![CDATA[$P{pcwf_company_name}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_branch_name">
+					<subreportParameterExpression><![CDATA[$P{pcwf_branch_name}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_branch_address">
+					<subreportParameterExpression><![CDATA[$P{pcwf_branch_address}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_company_logo">
+					<subreportParameterExpression><![CDATA[$P{pcwf_company_logo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{pcwf_header_template}]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement style="ReportTitle" positionType="Float" x="0" y="41" width="523" height="19" forecolor="#8B0000" uuid="b683b080-0c74-4af7-bae8-2231bc5a13eb">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Sale Return Register"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="CaptionLabel" positionType="Float" x="0" y="60" width="80" height="14" uuid="1707e88e-524d-4cec-8a58-99f375c2d490"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Report Period :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="CaptionText" positionType="Float" x="80" y="60" width="340" height="14" uuid="cbba0ceb-c9ad-4af5-bc9d-f71c273a3909"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{preport_period}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="NormalText" positionType="Float" x="420" y="60" width="96" height="14" uuid="a46d567d-bcd8-4170-9c25-6a4fe27b9c7b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Txn. Ccy: " + $P{pcwf_txn_ccy}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement style="CaptionLabel" x="0" y="1" width="80" height="14" isRemoveLineWhenBlank="true" uuid="7b54df1d-ea5b-4717-afa7-be6209eb548c">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER}!=1]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Report Title"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="CaptionText" positionType="Float" x="80" y="1" width="340" height="14" uuid="43c14c5f-6843-4a35-9570-51de46199d71">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER}!=1]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{preport_period}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="NormalText" positionType="Float" x="420" y="1" width="96" height="14" uuid="73299d75-40c1-4576-99bb-a1cee7072aa9">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER}!=1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Txn. Ccy: " + $P{pcwf_txn_ccy}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="4" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="5" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="2" width="522" height="18" uuid="f076449a-5000-4e68-939b-02c04c801cea"/>
+				<box topPadding="0">
+					<topPen lineWidth="0.2"/>
+				</box>
+				<textField>
+					<reportElement style="CoreERPVer" x="0" y="2" width="170" height="15" uuid="8e97d3c7-b3d7-4f3d-8447-4af7aa72f166">
+						<propertyExpression name="net.sf.jasperreports.export.html.id"><![CDATA["version_no"]]></propertyExpression>
+					</reportElement>
+					<textFieldExpression><![CDATA[$P{pcwf_coreerp_ver}]]></textFieldExpression>
+				</textField>
+				<textField pattern="">
+					<reportElement style="FooterPageNo" x="403" y="2" width="72" height="15" uuid="644eb7ad-acec-43c2-ba68-8e776b3da650"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report">
+					<reportElement style="FooterPageNo" x="475" y="2" width="44" height="16" uuid="18705ccc-3218-4d82-a399-f0338af0bb03"/>
+					<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+</jasperReport>

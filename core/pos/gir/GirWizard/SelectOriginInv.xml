@@ -1,0 +1,11 @@
+<wizardView>
+    <header>Enter Original Invoice No.</header>
+    <sections>
+        <formSection id="SelectOriginInv">
+            <displayFields>
+                <displayField id="origin_inv_id" label="Original Invoice #" type="string" control="Textbox" size="m" editMode="edit" />
+            </displayFields>
+        </formSection>
+    </sections>
+</wizardView>
+

@@ -1,0 +1,23 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <businessObject id="Section" type="Master">
+        <controlTable>
+            <tableName>tds.section</tableName>
+            <primaryKey>section_id</primaryKey>
+            <fetchOrCreate>
+                <useOnFetch/>
+            </fetchOrCreate>
+            <save>
+                <useOnSave/>
+            </save> 
+            <delete>
+                <useEntity/>
+            </delete>
+        </controlTable>  
+        <codeBehind>
+            <className>\app\core\tds\section\SectionEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

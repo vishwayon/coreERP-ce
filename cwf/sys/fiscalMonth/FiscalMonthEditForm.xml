@@ -1,0 +1,24 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="FiscalMonth" type="Master"  bindingBO="fiscalMonth/FiscalMonth">
+        <header>Fiscal Month</header>
+        <keyField>fiscal_month_id</keyField>
+        <clientJsCode>sys_clientcode.js</clientJsCode> 
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="fiscal_month_desc" label="Fiscal Month" type="string" control="TextBox" size="s" maxLength="50"/>
+                <nextRow/> 
+                <field id="month_begin" label="Month Begins From" type="date" control="Date" size="s" readOnly="True"/>
+                <field id="month_end" label="Month Ends On" type="date" control="Date" size="s" readOnly="True"/>
+                <nextRow/> 
+                <field id="month_close" label="Month is Closed" type="bool" control="CheckBox" size="s"/>
+                
+                <nextRow/>
+                <field id="note1" label="Note : Fiscal months can only be edited for Close/Open." type="string" control="Label" size="l"/>
+
+            </dataBinding> 
+        </controlSection>
+    </formView>
+</cwFramework>

@@ -1,0 +1,19 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="ConsType">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select cons_type_id, cons_type_desc
+                from st.cons_type
+                Where company_id={company_id}
+                order by cons_type_desc
+            </command>
+        </sql>
+        <keyField id="cons_type_id,"/>
+    </lookup>
+</cwFramework>

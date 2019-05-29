@@ -1,0 +1,25 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="Account">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select account_id, account_head, account_code, account_type_id 
+                from ac.account_head a        
+                where account_type_id not in (0)
+                    And not exists (Select account_id from ac.account_head_hidden b where branch_id=:pbranch_id and a.account_id=b.account_id)
+                order by account_head asc
+            </command>
+            <params>
+                <param id="pbranch_id" >
+                    <session>branch_id</session>
+                </param>
+            </params>
+        </sql>
+        <keyField id="account_id"/>
+    </lookup>
+</cwFramework>

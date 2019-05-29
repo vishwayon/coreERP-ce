@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2018-12-19T11:28:41 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LotStateTran" language="groovy" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="ae5c7359-1fb2-4294-b49c-6b8f8356d028">
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="inch"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="local_mrr_db_4"/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pbranch_id" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1000001]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT * from st.lot_state
+order by lot_state_id]]>
+	</queryString>
+	<field name="lot_state_id" class="java.lang.Integer"/>
+	<field name="lot_state" class="java.lang.String"/>
+	<field name="state_desc" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="14">
+			<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+			<textField>
+				<reportElement style="NormalText" positionType="Float" x="2" y="0" width="101" height="14" uuid="35f359fa-c283-40d6-94fe-f2de7af07e1f">
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<box topPadding="0" bottomPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.2"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["LS Legend"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField>
+				<reportElement style="FineNotes" positionType="Float" x="2" y="0" width="23" height="14" isRemoveLineWhenBlank="true" uuid="78ed8c2d-95ba-4cf7-9fd2-17de089dfcc8"/>
+				<box topPadding="2"/>
+				<textFieldExpression><![CDATA[$F{lot_state_id} + " - "]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="FineNotes" positionType="Float" x="25" y="0" width="78" height="14" isRemoveLineWhenBlank="true" uuid="915955d8-d503-4583-8f10-b6bdba592102">
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<box topPadding="2"/>
+				<textFieldExpression><![CDATA[$F{lot_state}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="1"/>
+	</columnFooter>
+</jasperReport>

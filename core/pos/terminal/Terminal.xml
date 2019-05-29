@@ -1,0 +1,32 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <businessObject id="Terminal" type="Master">
+        <connectionType>
+            <companyDB/>
+        </connectionType> 
+        <controlTable>
+            <tableName>pos.terminal</tableName>
+            <primaryKey>terminal_id</primaryKey>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save> 
+            <delete>
+                <useEntity/>
+            </delete>
+            <jsonField id="annex_info">
+                <jfield name="customer_id" type="int"/>
+                <jobject name="users" type="array">
+                    <jfield name="user_id" type="int"/>
+                </jobject>
+            </jsonField>
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\pos\terminal\TerminalEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

@@ -1,0 +1,24 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="MaterialType" type="Master" bindingBO="MaterialType" editView="materialType/MaterialTypeEditForm">        
+        <header>Stock Type</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select material_type_id, material_type, material_type_code from st.material_type 
+                    Where company_id={company_id}
+                    order by material_type
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="material_type" displayName="Stock Type"/>
+                <displayField columnName="material_type_code" displayName="Stock Type Code"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

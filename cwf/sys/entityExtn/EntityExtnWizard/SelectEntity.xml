@@ -1,0 +1,24 @@
+<wizardView>
+    <header>Select Entity</header>
+    <sections>
+        <formSection id="SelectEntity">
+            <displayFields>
+                <displayField id="entity_type" label="Type" type="int" control="SimpleCombo" size="2">
+                    <options>
+                        <option value="1">Docuement</option>
+                        <option value="2">Master</option>
+                    </options>
+                </displayField>
+                <displayField id="bo_id" label="Entity" type="string" control="SmartCombo" size="3" editMode="edit" defaultValue="-1">
+                    <lookup>
+                        <valueMember>bo_id</valueMember>
+                        <displayMember>menu_text</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BOlist.xml</namedLookup>
+                        <filter>bo_id NOT IN (SELECT bo_id FROM sys.entity_extn)</filter>
+                        <filterEvent>cwf_entityextn.bolist_filter</filterEvent>
+                    </lookup>   
+                </displayField>
+            </displayFields>
+        </formSection>
+    </sections>
+</wizardView>

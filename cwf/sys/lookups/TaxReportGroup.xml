@@ -1,0 +1,21 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="TaxReportGroup">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select tax_report_group_id, tax_report_group, en_tax_register_ref from sys.tax_report_group Where company_id=:pcompany_id 
+            </command>
+            <params>
+                <param id="pcompany_id">
+                    <session>company_id</session>
+                </param>
+            </params>
+        </sql>
+        <keyField id="tax_report_group_id"/>
+    </lookup> 
+</cwFramework>

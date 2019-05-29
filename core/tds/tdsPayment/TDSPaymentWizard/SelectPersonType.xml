@@ -1,0 +1,16 @@
+<wizardView>
+    <header>Select Person Type</header>
+    <sections>
+        <formSection id="SelectPersonType">
+            <displayFields>
+                <displayField id="person_type_id" label="Person Type" type="int" control="SmartCombo" size="m" editMode="edit" defaultValue="-1">
+                    <lookup>
+                        <valueMember>person_type_id</valueMember>
+                        <displayMember>person_type_desc</displayMember>
+                        <namedLookup>../core/tds/lookups/PersonType.xml</namedLookup>
+                    </lookup>   
+                </displayField> 
+            </displayFields>
+        </formSection>
+    </sections>
+</wizardView>

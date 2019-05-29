@@ -1,0 +1,17 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="PaidTo">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select distinct vch_caption from ac.vch_control 
+                Order by vch_caption asc
+            </command>
+        </sql>
+        <keyField id=""/>
+    </lookup>
+</cwFramework>

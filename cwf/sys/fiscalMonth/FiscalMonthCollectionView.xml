@@ -1,0 +1,28 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="FiscalMonth" type="Master" bindingBO="FiscalMonth" editView="fiscalMonth/FiscalMonthEditForm">        
+        <header>Fiscal Months</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    Select fiscal_month_id, fiscal_month_desc, month_begin, month_end, 
+                        Case When month_close Then 'Closed' Else 'Open' End as month_close
+                    From sys.fiscal_month 
+                    Where finyear='{finyear}'
+                    Order By month_begin
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="month_begin" displayName="Month Begins From" format="Date"/>
+                <displayField columnName="month_end" displayName="Month Ends On" format="Date"/>
+                <displayField columnName="fiscal_month_desc" displayName="Fiscal Month"/>
+                <displayField columnName="month_close" displayName="Open/Closed"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>   
+</cwFramework>

@@ -1,0 +1,32 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="AssetBook" type="Master" bindingBO="assetBook/AssetBook">    
+        <header>Asset Book</header>
+        <keyField>asset_book_id</keyField>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="asset_book_desc" label="Description" type="string" control="TextBox" size="m"  maxLength="50" readOnly="true"/>
+                <nextRow/>
+                <field id="is_accounting_asset_book" label="Is accounting asset book" type="bool" control="CheckBox" size="m" readOnly="true"/>
+                <!--field id="accs" label="Accounts" type="array" control="CheckList" size="3">
+                    <options>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                        <option value="4">Four</option>
+                        <option value="5">Five</option>
+                    </options>
+                </field>
+                <field id="atypes" label="Types" type="array" control="CheckList" size="3">
+                    <lookup>
+                        <valueMember>group_id</valueMember>
+                        <displayMember>group_name</displayMember>
+                        <namedLookup>../core/ac/lookups/AccountGroup.xml</namedLookup>
+                    </lookup>
+                </field-->
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

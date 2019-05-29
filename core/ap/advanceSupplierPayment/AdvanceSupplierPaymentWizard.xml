@@ -1,0 +1,11 @@
+<wizard id="AdvanceSupplierPayment" name="Advance Supplier Payment Wizard">
+    <codeBehind>
+        <className>\app\core\ap\advanceSupplierPayment\AdvanceSupplierPaymentWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectPO">
+        <path>advanceSupplierPayment/AdvanceSupplierPaymentWizard/SelectPO</path>
+    </wizardStep>
+    <postWizard id="AdvanceSupplierPayment">
+        <path>advanceSupplierPayment/AdvanceSupplierPaymentEditForm</path>
+    </postWizard>
+</wizard>

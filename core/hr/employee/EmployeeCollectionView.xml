@@ -1,0 +1,22 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>             
+    
+    <collectionView id="Employee" type="Master" bindingBO="Employee" editView="employee/EmployeeEditForm">        
+        <header>Employee</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select employee_id, employee_no, full_employee_name from hr.employee order by employee
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="employee_no" displayName="Employee No"/>
+                <displayField columnName="full_employee_name" displayName="Full Employee Name"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

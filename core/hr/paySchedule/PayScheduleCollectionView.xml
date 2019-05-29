@@ -1,0 +1,25 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="PaySchedule" type="Master" bindingBO="PaySchedule" editView="paySchedule/PayScheduleEditForm">        
+        <header>Pay Schedule</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select pay_schedule_id , pay_schedule_code , description
+                    from hr.pay_schedule
+                    Where company_id={company_id}
+                    order by pay_schedule_code
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="pay_schedule_code" displayName="Schedule Code"/>
+                <displayField columnName="description" displayName="Pay Schedule"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

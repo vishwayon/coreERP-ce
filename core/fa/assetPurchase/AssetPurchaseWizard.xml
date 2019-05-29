@@ -1,0 +1,11 @@
+<wizard id="AssetPurchase" name="Asset Purchase Wizard">
+    <codeBehind>
+        <className>\app\core\fa\assetPurchase\AssetPurchaseWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectSupplierAccount">
+        <path>assetPurchase/AssetPurchaseWizard/SelectSupplierAccount</path>
+    </wizardStep>
+    <postWizard id="AssetPurchase">
+        <path>assetPurchase/AssetPurchaseEditForm</path>
+    </postWizard>
+</wizard>

@@ -1,0 +1,45 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Feedback" type="Master"  bindingBO="feedback/Feedback">
+        <header>Support/Issue</header>
+        <keyField>feedback_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <clientJsCode>sys_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="category_id" label="Category" type="int" control="SmartCombo" size="s" >
+                    <lookup> 
+                        <valueMember>category_id</valueMember>
+                        <displayMember>category</displayMember>
+                        <namedLookup>../cwf/sys/lookups/Category.xml</namedLookup>
+                    </lookup>    
+                </field> 
+
+                <field id="priority_id" label="Priority" type="int" control="SmartCombo"  size="s">
+                    <lookup> 
+                        <valueMember>priority_id</valueMember>
+                        <displayMember>description</displayMember>
+                        <namedLookup>../cwf/sys/lookups/Priority.xml</namedLookup>
+                    </lookup>    
+                </field> 
+                <nextRow/> 
+                <field id="menu" label="Subject" type="string" control="TextBox" size="m" maxLength="240" />
+                <nextRow/> 
+                <field id="feedback" label="Description" type="string" rows="6" control="TextArea" size="m" maxLength="8000" />    
+                <nextRow/> 
+                <field id="username" label="Entered By" type="string" control="TextBox" size="m" maxLength="50" readOnly="True"/>
+                <nextRow/> 
+                <field id="is_closed" label="Closed" type="bool" control="CheckBox" size="xs"/>
+                <nextRow/> 
+                <field id="closed_by" label="Closed By" type="string" control="TextBox" size="m" maxLength="50" isOptional="true"
+                       cdata-enable-on="core_sys.sys_enable_feedback_close"/>  
+                <nextRow/>   
+                <field id="remarks" label="Closure Remarks" type="string" rows="2" control="TextArea" size="m" isOptional="true"  maxLength="8000"
+                       cdata-enable-on="core_sys.sys_enable_feedback_close"/> 
+            </dataBinding> 
+        </controlSection>
+    </formView>
+</cwFramework>

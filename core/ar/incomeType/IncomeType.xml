@@ -1,0 +1,41 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <businessObject id="IncomeType" type="Master">
+        <controlTable>
+            <tableName>ar.income_type</tableName>
+            <primaryKey>income_type_id</primaryKey>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save>    
+            <delete>
+                <useEntity/>
+            </delete> 
+
+            <tranTable id="income_type_tran">
+                <tableName>ar.income_type_tran</tableName>
+                <primaryKey>income_type_tran_id</primaryKey>      
+                <relation linkType="OneToMany">
+                    <foreignKey>income_type_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{income_type_id}:{RowID}</primaryKeyPattern>
+                </save>      
+                <delete>
+                    <useEntity/>      
+                </delete>    
+            </tranTable>
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\ar\incomeType\IncomeTypeEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

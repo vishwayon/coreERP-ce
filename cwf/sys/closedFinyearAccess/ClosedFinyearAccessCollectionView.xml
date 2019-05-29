@@ -1,0 +1,23 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="ClosedFinyearAccess" type="Master" bindingBO="ClosedFinyearAccess" editView="closedFinyearAccess/ClosedFinyearAccessEditForm">    
+        <header>Closed FInancial Year</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    SELECT finyear_id,finyear_code,year_begin,year_end,year_close FROM sys.finyear Where year_close=true order by year_begin
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="finyear_code" displayName="Financial Year"/>
+                <displayField columnName="year_begin" displayName="Year Begins From" format="Date"/>
+                <displayField columnName="year_end" displayName="Year Ends On" format="Date"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

@@ -1,0 +1,11 @@
+<wizard id="FinalSettlement" name="Final Settlement Wizard">
+    <codeBehind>
+        <className>\app\core\hr\finalSettlement\FinalSettlementWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectEmployee">
+        <path>finalSettlement/FinalSettlementWizard/SelectEmployee</path>
+    </wizardStep>
+    <postWizard id="FinalSettlement">
+        <path>finalSettlement/FinalSettlementEditForm</path>
+    </postWizard>
+</wizard>

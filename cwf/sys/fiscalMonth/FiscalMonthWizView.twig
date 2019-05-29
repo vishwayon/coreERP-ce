@@ -1,0 +1,36 @@
+<div>
+    <div id="contentholder" class="view-min-width view-window2">
+        <div id="contents" style="padding: 5px; margin: 5px;">
+            <div class="row cformheader">
+                <h3>Fiscal Months</h3>
+            </div>
+            <div>
+                <p>You have not defined Fiscal Months for the connected Financial Year ({{model.finyear}}).</p> 
+                <p>Click on create to define Fiscal Months.</p>
+                <br/>
+                <a id="btncreateFiscal" class="btn btn-primary" href="#" onclick="create_fiscal_month();">Create</a>
+                <br/>
+                <br/>
+                <div id="statusMsg"></div>
+            </div>
+
+            <script type="text/javascript">
+            function create_fiscal_month() {
+                $('#btncreateFiscal').addClass('disabled');
+                $.ajax({
+                    url: '?r=cwf/sys/form/fiscal-month-create',
+                    method: 'POST',
+                    success: function(data) {
+                        var result = $.parseJSON(data);
+                        if (result.status == 'OK') {
+                            $('#statusMsg').html('Sccessfully created fiscal months. Click on menu to view');
+                        } else {
+                            $('#statusMsg').html('There was an error creating Fiscal Months.' + result.errMsg);
+                        }
+                    }
+                });
+            }    
+            </script>
+        </div>
+    </div>
+</div>

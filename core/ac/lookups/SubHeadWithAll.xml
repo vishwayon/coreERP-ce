@@ -1,0 +1,26 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="SubHead">
+        <connectionType>
+            <companyDB/>
+          </connectionType>
+        <sql>
+            <command>                
+                Select sub_head_id, sub_head, sub_head_dim_id, account_id 
+                from (
+                    select 0 as sub_head_id, 'All' as sub_head, -1 as sub_head_dim_id, -1 as account_id 
+                    union all 
+                    ( select a.sub_head_id, a.sub_head, a.sub_head_dim_id, c.account_id
+                        from ac.sub_head a 
+                        inner join ac.sub_head_dim b on a.sub_head_dim_id = b.sub_head_dim_id
+                        inner join ac.account_head c on b.sub_head_dim_id = c.sub_head_dim_id
+                        Where a.company_id={company_id}
+                        Order By a.sub_head)
+                ) a
+            </command>
+        </sql>
+        <keyField id="sub_head_id"/>
+    </lookup>
+</cwFramework>

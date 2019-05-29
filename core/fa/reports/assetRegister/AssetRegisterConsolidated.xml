@@ -1,0 +1,43 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="AssetRegisterConsolidated" type="Report" rptPath="/core/fa/reports/assetRegister" rptName="AssetRegister">
+        <header>Asset Register Consolidated</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="s" forConsolidated="true">
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="passet_class_id" label="Asset Class" type="int" control="SmartCombo" size="m">
+                    <lookup>
+                        <valueMember>asset_class_id</valueMember>
+                        <displayMember>asset_class</displayMember>
+                        <namedLookup>../core/fa/lookups/AssetClassWithAll.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="ppurchase_date" label="As On" type="date" control="Date" size="s" range="finYear">                   
+                    <value>
+                        <currentDate/>
+                    </value>    
+                </field> 
+                <field id="pis_summarized" label="Type" type="int" control="SimpleCombo"  size="s">
+                    <options defaultValue="0">
+                        <option value="0">Detailed</option>
+                        <option value="1">Summarized</option>
+                    </options>   
+                </field>  
+                <param id="pcompany_id">
+                    <session>company_id</session>
+                </param>
+                <param id="pyear">
+                    <session>finyear</session>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

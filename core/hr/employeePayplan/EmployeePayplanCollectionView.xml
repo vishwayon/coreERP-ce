@@ -1,0 +1,28 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>             
+    
+    <collectionView id="EmployeePayplan" type="Master" bindingBO="EmployeePayplan" editView="employeePayplan/EmployeePayplanEditForm">        
+        <header>Employee Payplan</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select b.employee_no, employee_payplan_id, full_employee_name, effective_from_date, 
+                    case when a.effective_to_date is null then '1970-01-01' else a.effective_to_date end as effective_to_date 
+                    from hr.employee_payplan a 
+                    inner join hr.employee b on a.employee_id=b.employee_id 
+                    order by full_employee_name, effective_from_date
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="employee_no" displayName="Employee No"/>
+                <displayField columnName="full_employee_name" displayName="Employee Name"/>
+                <displayField columnName="effective_from_date" displayName="Effective From" format="Date"/>
+                <displayField columnName="effective_to_date" displayName="Effective To" format="Date"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

@@ -1,0 +1,68 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="PurchaseVsSales" type="Report" rptPath="/core/st/reports/purchaseVsSales" rptName="PurchaseVsSalesByStockType">
+        <header>Purchase Vs Sales</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="ms" forConsolidated="true"> 
+                    <value>
+                        <session>branch_id</session>
+                    </value>
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>
+                    </lookup>  
+                </field>
+                <field id="ptype" label="Report" type="int" control="SimpleCombo"  size="s">
+                    <options defaultValue="0">
+                        <option value="0">By Stock Type</option>
+                        <option value="1">By Stock Item</option>
+                    </options>
+                </field>
+                <field id="pfrom_date" label="From" type="date" control="Date" size="ms" range="finYear">
+                    <value>
+                        <session>year_begin</session>
+                    </value>
+                </field>
+                <field id="pto_date" label="To" type="date" control="Date" size="ms" range="finYear">                   
+                    <value>
+                        <session>year_end</session>
+                    </value>    
+                </field>
+                <field id="pmaterial_type_id" label="Stock Type" type="int" control="SmartCombo"  size="s">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <displayMember>material_type</displayMember>
+                        <valueMember>material_type_id</valueMember>
+                        <namedLookup>../core/st/lookups/MaterialTypeWithAll.xml</namedLookup>
+                    </lookup>
+                </field>
+                <nextRow/>
+                <field id="pmaterial_id" label="Stock Item" type="int" control="SmartCombo" size="5" >
+                    <value>
+                        <text>-2</text>
+                    </value>
+                    <lookup>
+                        <valueMember>material_id</valueMember>
+                        <displayMember>material_name</displayMember>
+                        <namedLookup>../core/st/lookups/MaterialWithAll.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <param id="pcompany_id">                
+                    <session>company_id</session>
+                </param>
+                <param id="pwhere_condition">
+                    <text></text>
+                </param>
+                <param id="panalysis">
+                    <text>SI</text>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

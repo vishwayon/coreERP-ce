@@ -1,0 +1,178 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="PayrollGeneration" type="Document" bindingBO="payrollGeneration/PayrollGeneration">
+        <header>Payroll Generation</header>
+        <keyField>payroll_id</keyField>
+        <printView rptOption="payrollGeneration/PayrollGenerationPrint">
+            <rptParams>
+                <param id="payroll_id">voucher_id</param>
+            </rptParams>
+        </printView>
+        <newDocEnabled wizard="payrollGeneration/PayrollGenerationWizard" step="SelectPayrollGroup">
+            <docType>PRL</docType>
+        </newDocEnabled>
+        <deleteDocEnabled/>
+        <clientJsCode>payrollGeneration/payrollgeneration_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="payroll_id" label="Voucher No" type="string" control="TextBox" size="ms" maxLength="50" isOptional="true" readOnly="true" forStatus="true"/>
+
+                <field id="doc_date" label="Date" type="date" control="Date"  size="ms" range="finYear"/>
+                <nextRow/>
+                <field id="payroll_group_id" label="Payroll Group" type="int" control="SmartCombo" size="4" mdata-event="subscribe:core_payrollgeneration.change_payroll_group"
+                       readOnly="true">
+                    <lookup>
+                        <valueMember>payroll_group_id</valueMember>
+                        <displayMember>payroll_group</displayMember>
+                        <namedLookup>../core/hr/lookups/Payrollgroup.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <field id="pay_from_date" label="Pay Date From" type="date" control="Date" size="ms" range="finYear" readOnly="true" mdata-event="subscribe:core_payrollgeneration.payroll_date_changed"/>
+                <field id="pay_to_date" label="Pay Date To" type="date" control="Date"  size="ms" range="finYear" readOnly="true" mdata-event="subscribe:core_payrollgeneration.payroll_date_changed"/>
+                <dummy/>
+                <cButton id="generate_payroll" onClick="core_payrollgeneration.generate_payroll" label="Generate Payroll" cdata-enable-on="core_payrollgeneration.enable_pr_gen"/>
+                <nextRow/>
+                <field id="gross_overtime_amt" label="Total Overtime Amount" type="decimal" control="TextBox" allowNegative="true" size="ms" readOnly="true">
+                    <computedField>                        
+                        var totalovertime = new Number();                       
+                        for(var p = 0; p &lt; coreWebApp.ModelBo.payroll_tran().length; ++p)
+                        {
+                            totalovertime += new Number(coreWebApp.ModelBo.payroll_tran()[p].tot_overtime_amt());
+                        }
+                        return totalovertime.toFixed(2);
+                    </computedField>
+                </field> 
+                <field id="gross_emolument_amt" label="Total Emoulment Amount" type="decimal" control="TextBox" allowNegative="true" size="ms" readOnly="true">
+                    <computedField> 
+                        var totalemoulment = new Number();
+                       
+                        for(var p = 0; p &lt; coreWebApp.ModelBo.payroll_tran().length; ++p)
+                        {
+                            totalemoulment += new Number(coreWebApp.ModelBo.payroll_tran()[p].tot_emolument_amt());
+                        }
+                        return totalemoulment.toFixed(2);
+                    </computedField>
+                </field> 
+                <field id="gross_deduction_amt" label="Total Deduction Amount" type="decimal" control="TextBox" allowNegative="true" size="ms" readOnly="true">
+                    <computedField>                
+                        var totaldeduction = new Number();
+                       
+                        for(var p = 0; p &lt; coreWebApp.ModelBo.payroll_tran().length; ++p)
+                        {
+                            totaldeduction += new Number(coreWebApp.ModelBo.payroll_tran()[p].tot_deduction_amt());
+                        }
+                        return totaldeduction.toFixed(2);
+                    </computedField>
+                </field>
+                <nextRow/>                
+                <tranSection label="Payroll Tran" editMode="Auto" fixedWidth="1125" editMethod="core_payrollgeneration.view_method">
+                    <dataBinding dataProperty="payroll_tran">
+                        <field id="employee_id" label="Employee ID" type="Hidden" control="Hidden" size="1" maxLength="250" isOptional="true" readOnly="true"/>
+                        <field id="employee_no" label="Employee No" type="string" control="TextBox" size="1" maxLength="500" isOptional="true" readOnly="true"/> 
+                        <field id="employee_fullname" label="Employee Name" type="string" control="TextBox" size="2" maxLength="500" isOptional="true" readOnly="true"/>  
+                        <field id="pay_days" label="Pay Days" type="int" control="TextBox" size="1" maxLength="250" isOptional="true" readOnly="true"/>  
+                        <field id="no_pay_days" label="No Pay Days" type="Hidden" control="Hidden" size="1" maxLength="250" isOptional="true" readOnly="true"/>   
+                        <field id="half_pay_days" label="Half Pay Days" type="Hidden" control="Hidden" size="1" maxLength="250" isOptional="true" readOnly="true"/>   
+                        <field id="tot_ot_hr" label="OT Hr" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/> 
+                        <field id="tot_ot_holiday_hr" label="OT Holiday Hr" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>  
+                        <field id="tot_ot_special_hr" label="OT Special Hr" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>                       
+                        <field id="tot_ot_amt" label="OT Amt" type="Hidden" scale="amt" control="Hidden" size="2" isOptional="true" readOnly="true"/>
+                        <field id="tot_ot_holiday_amt" label="OT Holiday Amt" type="Hidden" scale="amt" control="Hidden" size="ms" isOptional="true" readOnly="true"/>
+                        <field id="tot_ot_special_amt" label="OT Special Amt" type="Hidden" scale="amt" control="Hidden" size="ms" isOptional="true" readOnly="true"/>
+                        <field id="tot_overtime_amt" label="Total Overtime Amt" type="Hidden" scale="amt" control="Hidden" size="ms" isOptional="true" readOnly="true"/>
+                        <field id="tot_emolument_amt" label="Total Emolument Amt" type="decimal" scale="amt" control="TextBox" size="2" isOptional="true" readOnly="true"/>
+                        <field id="tot_deduction_amt" label="Total Deduction Amt" type="decimal" scale="amt" control="TextBox" size="2" isOptional="true" readOnly="true"/>
+                        <field id="net_amt" label="Net Amt" type="decimal" control="TextBox" allowNegative="true" size="2" readOnly="true"/>
+                        <field id="amt_in_words" label="Amt in words" type="Hidden" control="Hidden" size="8" maxLength="500" isOptional="true" readOnly="true"/>  
+                        <field id="block_payment" label="Block Payment" type="Hidden"  control="Hidden" size="ms" isOptional="true" readOnly="true"/>
+                       
+                        <tranSection label="Tran Detail" editMode="Auto" cdata-visible-on="core_payrollgeneration.hide_tran" >
+                            <dataBinding dataProperty="payroll_tran_detail"> 
+                                <field id="employee_id" label="Employee ID" type="Hidden" control="Hidden" size="ms" maxLength="250"/>
+                                <!--<field id="payhead_id" label="Payhead" type="int" control="SmartCombo" size="4" mdata-event="subscribe:core_payrollgeneration.get_payhead_detail" cdata-enable-on="core_payrollgeneration.enable_payhead" >
+                                    <lookup>
+                                        <valueMember>payhead_id</valueMember>
+                                        <displayMember>payhead</displayMember>
+                                        <namedLookup>../core/hr/lookups/Payhead.xml</namedLookup>
+                                        <filterEvent> core_payrollgeneration.payhead_combo_filter </filterEvent>                                    
+                                    </lookup>   
+                                </field>-->
+                                <field id="payhead_id" label="Payhead ID" type="Hidden" control="Hidden" size="3" maxLength="50" isOptional="true" readOnly="true"/>  
+                                
+                                <field id="payhead" label="Payhead" type="string" control="TextBox" size="3" maxLength="50" isOptional="true" readOnly="true"/>  
+                                <field id="payhead_type" label="Payhead Type" control="SimpleCombo" type="string" size="ms" readOnly="true">      
+                                    <options>
+                                        <option value="E">Emoulment</option>
+                                        <option value="D">Deduction</option>
+                                        <option value="C">Company Contribution</option>
+                                    </options>
+                                </field>
+                                <field id="emolument_amt" label="Emolument Amt" type="decimal" scale="amt" control="TextBox" size="ms" isOptional="true" cdata-enable-on="core_payrollgeneration.enable_emo_amt"/>
+                                <field id="deduction_amt" label="Deduction Amt" type="decimal" scale="amt" control="TextBox" size="ms" isOptional="true" cdata-enable-on="core_payrollgeneration.enable_ded_amt"/>
+                                <field id="monthly_or_onetime" label="Monthly/Onetime" type="bool" control="CheckBox" size="xs" readOnly="true"/>      
+ 
+                                <tranSection label="Loan" editMode="Auto" cdata-visible-on="core_payrollgeneration.hide_tran">
+                                    <dataBinding dataProperty="loan_repayment_tran"> 
+                                        <field id="employee_id" label="Employee ID" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>
+                                        <field id="installment_principal" label="Payhead" type="Hidden" control="Hidden" size="4"  isOptional="true" readOnly="true" >
+                                        </field>
+                                        <field id="installment_interest" label="payhead_type" type="Hidden" control="Hidden" size="3" maxLength="50" isOptional="true" readOnly="true"/>  
+
+                                        <field id="installment_amount" label="Emolument Amt" type="Hidden" scale="amt" control="TextBox" size="ms"  isOptional="true" readOnly="true"/>
+                                        <field id="loan_tran_id" label="Deduction Amt" type="Hidden" scale="amt" control="TextBox" size="ms" isOptional="true" readOnly="true"/>
+                                        <field id="loan_id" label="Monthly/Onetime" type="Hidden" control="Hidden" size="xs"  isOptional="true" readOnly="true"/>      
+
+                                    </dataBinding>
+                                </tranSection>  
+                            </dataBinding>
+                        </tranSection>  
+                    </dataBinding>
+                </tranSection> 
+                <field id="calculate_tran_total" label="Calculate Total" type="Hidden" control="Hidden"  scale="amt" size="ms" isOptional="true" readOnly="true">
+                    <computedField>
+                        var totemo = new Number();
+                        var emp_id = new Number();
+                        for(var i = 0; i &lt; coreWebApp.ModelBo.payroll_tran().length; ++i)
+                        {
+                            emp_id=coreWebApp.ModelBo.payroll_tran()[i].employee_id();
+                            totemo=0; 
+                            totded=0;
+                            for(var j = 0; j &lt; coreWebApp.ModelBo.payroll_tran()[i].payroll_tran_detail().length; ++j)
+                            {    
+                                if (emp_id=coreWebApp.ModelBo.payroll_tran()[i].payroll_tran_detail()[j].employee_id())
+                                {
+                                    if(coreWebApp.ModelBo.payroll_tran()[i].payroll_tran_detail()[j].payhead_type() != 'C'){
+                                        totemo += new Number(coreWebApp.ModelBo.payroll_tran()[i].payroll_tran_detail()[j].emolument_amt());
+                                    }
+                                    totded += new Number(coreWebApp.ModelBo.payroll_tran()[i].payroll_tran_detail()[j].deduction_amt());
+                                }
+                            }
+                            coreWebApp.ModelBo.payroll_tran()[i].tot_emolument_amt(totemo.toFixed(2));
+                            coreWebApp.ModelBo.payroll_tran()[i].tot_deduction_amt(totded.toFixed(2));
+                            coreWebApp.ModelBo.payroll_tran()[i].net_amt(totemo.toFixed(2) - totded.toFixed(2));
+                        }
+                        return totemo.toFixed(2);
+                    </computedField>
+                </field>
+                <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" size="m"  isOptional="true"/>  
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" size="m" readOnly="true" isOptional="true"/> 
+                
+                              
+                <tranSection label="Payroll Tran" editMode="Auto" cdata-visible-on="core_payrollgeneration.hide_tran">
+                    <dataBinding dataProperty="payroll_custom_tran">
+                        <field id="employee_id" label="Employee ID" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>
+                        <field id="payhead_id" label="Payhead_id" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>   
+                        <field id="payhead_type" label="payhead_type" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>   
+                        <field id="emolument_amt" label="emolument_amt" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/> 
+                        <field id="deduction_amt" label="deduction_amt" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>  
+                        <field id="employee_payplan_detail_id" label="employee_payplan_detail_id" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>  
+                        
+                    </dataBinding>
+                </tranSection>
+            </dataBinding>
+        </controlSection>  
+    </formView>
+</cwFramework>

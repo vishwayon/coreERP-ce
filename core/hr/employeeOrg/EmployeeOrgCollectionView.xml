@@ -1,0 +1,29 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>             
+    
+    <collectionView id="EmployeeOrg" type="Master" bindingBO="EmployeeOrg" editView="employeeOrg/EmployeeOrgEditForm">        
+        <header>Employee Organization Detail</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>                    
+                    select b.employee_no, a.employee_org_id, b.full_employee_name, a.effective_date,  
+                    d.full_employee_name as manager, c.designation from hr.employee_org_detail a 
+                    inner join hr.employee b on a.employee_id=b.employee_id 
+                    inner join hr.designation c on a.designation_id=c.designation_id
+                    inner join hr.employee d on a.manager_id= d.employee_id  order by b.full_employee_name        
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="employee_no" displayName="Employee No"/>
+                <displayField columnName="full_employee_name" displayName="Employee Name"/>
+                <displayField columnName="effective_date" displayName="Effective Date"/>
+                <displayField columnName="manager" displayName="Manager"/>
+                <displayField columnName="designation" displayName="Designation"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

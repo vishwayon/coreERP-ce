@@ -1,0 +1,18 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <allocView id="UoMScheduleAlloc" type="alloc">
+        <header>Select UoM Schedule</header>
+        <controlSection>
+            <dataBinding>
+                <tranSection label="">
+                    <dataBinding dataProperty="material_uom_schedule_temp">
+                        <field id="is_select" label="Select" type="bool" control="CheckBox" size="xs"/>
+                        <field id="uom_sch_desc" label="Description" type="string" control="TextBox" size="s" readOnly="true"/>
+                    </dataBinding>
+                </tranSection>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>

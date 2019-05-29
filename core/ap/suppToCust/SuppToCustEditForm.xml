@@ -1,0 +1,53 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="SuppToCust" type="Master"  bindingBO="suppToCust/SuppToCust">
+        <header>Extend Supplier To Customer</header>
+        <keyField>supplier_id</keyField>    
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="supplier_code" label="Supplier Code" type="string" control="TextBox" size="ms" isOptional="true" readOnly="true"/>                         
+                <field id="supplier" label="Supplier Account" type="string" control="TextBox" size="4" readOnly="true"/> 
+                <nextRow/> 
+                <field id="supplier_name" label="Supplier Name" type="string" control="TextBox" size="6" isOptional="true" readOnly="true"/>         
+                <nextRow/> 
+                <field id="supplier_code" label="Customer Code" type="string" control="TextBox" size="ms" isOptional="true" readOnly="true"/>  
+                <field id="supplier" label="Customer Account" type="string" control="TextBox" size="4" readOnly="true"/>       
+                <nextRow/> 
+                <field id="supplier_name" label="Customer Name" type="string" control="TextBox" size="6" isOptional="true" readOnly="true"/>    
+                <nextRow/>                      
+                <field id="cust_salesman_id" label="Salesman" type="int" control="SmartCombo"  size="ms">
+                    <lookup>
+                        <valueMember>salesman_id</valueMember>
+                        <displayMember>salesman_name</displayMember>
+                        <namedLookup>../core/ar/lookups/Salesman.xml</namedLookup>
+                    </lookup>
+                </field> 
+                <field id="cust_segment_id" label="Segment" type="int" control="SmartCombo"  size="ms">
+                    <lookup>
+                        <valueMember>segment_id</valueMember>
+                        <displayMember>segment</displayMember>
+                        <namedLookup>../core/ar/lookups/Segment.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="cust_pay_term_id" label="Pay Term" type="int" control="SmartCombo"  size="ms">
+                    <lookup>
+                        <valueMember>pay_term_id</valueMember>
+                        <displayMember>pay_term</displayMember>
+                        <namedLookup>../core/ar/lookups/CustPayTerm.xml</namedLookup>
+                    </lookup>   
+                </field> 
+                <nextRow/> 
+                <field id="cust_control_account_id" label="Control Account" type="int" control="SmartCombo"  size="4">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id=46</filter>
+                    </lookup>   
+                </field> 
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

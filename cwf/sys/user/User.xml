@@ -1,0 +1,51 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="User" type="Master">
+        <connectionType>
+            <mainDB/>
+        </connectionType>
+        <controlTable>
+            <tableName>sys.user</tableName>
+            <primaryKey>user_id</primaryKey>   
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useOnSave/>
+            </save> 
+            <delete>
+                <useOnDelete/>
+            </delete>
+            <jsonField id="user_attr">
+                <jfield name="pwd_force_change" type="bool"/>
+                <jobject name="logon_addr" type="array">
+                    <jfield name="ip" type="string"/>
+                </jobject>
+                <jfield name="otp_req" type="bool" />
+                <jfield name="en_otp_req_type" type="int" />
+            </jsonField>
+            <!--tranTable id="user_branch_role">
+                <tableName>sys.user_branch_role</tableName>
+                <primaryKey>user_branch_role_id</primaryKey>      
+                <relation linkType="OneToMany">
+                    <foreignKey>user_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{user_id}:{branch_id}:{role_id}</primaryKeyPattern>
+                </save>   
+                <delete>
+                    <useEntity/>
+                </delete>  
+            </tranTable-->
+        </controlTable> 
+        <codeBehind>
+            <className>\app\cwf\sys\user\UserEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

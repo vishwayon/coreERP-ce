@@ -1,0 +1,19 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Segment" type="Master" bindingBO="segment/Segment">
+        <header>Segment</header>
+        <keyField>segment_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <clientJsCode>ar_clientcode.js</clientJsCode>      
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="segment" label="Segment" type="string" control="TextBox" size="s" maxLength="50"/>               
+                <nextRow/>
+                <field id="segment_desc" label="Segment Description" type="string" control="TextBox" size="s" maxLength="250"/>   
+            </dataBinding>
+        </controlSection>   
+    </formView>
+</cwFramework>

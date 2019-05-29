@@ -1,0 +1,25 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="FCType" type="Master" bindingBO="FCType" editView="fcType/FCTypeEditForm">        
+        <header>Foreign Currency</header>
+        <collectionSection>
+            <connectionType>
+              <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    SELECT  fc_type_id, fc_type, currency, sub_currency, exch_rate FROM ac.fc_type where fc_type_id > 0
+                </command>
+            </sql>
+            <displayFields>
+              <displayField columnName="fc_type" displayName="FC type"/>
+              <displayField columnName="exch_rate" displayName="Exch Rate" format="FC"/>
+              <displayField columnName="currency" displayName="Currency"/>
+              <displayField columnName="sub_currency" displayName="Sub Currency"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>
+

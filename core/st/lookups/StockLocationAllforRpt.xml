@@ -1,0 +1,30 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="StockLocationAllforRpt">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select a.branch_id, a.stock_location_id, a.stock_location_name,  a.sl_type_id, a.all_sl_branch_id
+                from (        
+                    Select 0 as branch_id, 0 as stock_location_id, 'All' as stock_location_name,  0 as sl_type_id, 0 as all_sl_branch_id
+                    union All
+                    Select distinct branch_id, 0 as stock_location_id, 'All' as stock_location_name,  0 as sl_type_id , -99 as all_sl_branch_id
+                    from st.stock_location    
+                    union all 
+                    select  branch_id, stock_location_id, stock_location_name, sl_type_id, 0 as all_sl_branch_id
+                    from st.stock_location
+                    Where company_id={company_id}
+                    order by stock_location_name 
+                ) a
+            </command>
+        </sql>
+        <keyField id="stock_location_id"/>
+    </lookup>
+</cwFramework>
+
+
+    

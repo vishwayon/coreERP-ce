@@ -1,0 +1,26 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="UserToLedger" type="Master">
+        <connectionType>
+            <mainDB/>
+        </connectionType>
+        <controlTable>
+            <tableName>sys.user</tableName>
+            <primaryKey>user_id</primaryKey>   
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useOnSave/>
+            </save> 
+            <delete>
+                <useOnDelete/>
+            </delete> 
+        </controlTable> 
+        <codeBehind>
+            <className>\app\cwf\sys\userToLedger\UserToLedgerEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

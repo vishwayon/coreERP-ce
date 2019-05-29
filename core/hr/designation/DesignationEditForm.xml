@@ -1,0 +1,25 @@
+
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Designation" type="Master"  bindingBO="designation/Designation">
+        <header>Designation</header>
+        <keyField>designation_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="designation" label="Designation" type="string" control="TextBox" size="4" maxLength="100" />
+                <nextRow/> 
+                <field id="rank" label="Rank" type="int" control="TextBox" size="xs"/>
+                <nextRow/> 
+                <field id="is_training_reqd" label="Is Training Required" type="bool" control="CheckBox" size="ms"/>          
+            </dataBinding>  
+        </controlSection>
+    </formView>
+</cwFramework>
+              
+              
+ 
+ 

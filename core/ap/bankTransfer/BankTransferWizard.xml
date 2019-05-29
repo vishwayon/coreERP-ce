@@ -1,0 +1,18 @@
+<wizard id="BankTransfer" name="Bank Transfer Wizard">
+    <clientJsCode>ap_clientcode.js</clientJsCode>
+    <clientJsCodeRefs>
+        <clientJsCodeRef>../core/ap/bankTransfer/BankTransfer_clientcode.js</clientJsCodeRef>
+    </clientJsCodeRefs>
+    <codeBehind>
+        <className>\app\core\ap\bankTransfer\BankTransferWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectPayCycle">
+        <path>bankTransfer/BankTransferWizard/SelectPayCycle</path>
+    </wizardStep>
+    <wizardStep id="SelectVch">
+        <path>bankTransfer/BankTransferWizard/SelectVch</path>
+    </wizardStep>
+    <postWizard id="BankTransfer">
+        <path>bankTransfer/BankTransferEditForm</path>
+    </postWizard>
+</wizard>

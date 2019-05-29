@@ -1,0 +1,31 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="StockLocation" type="Master" bindingBO="StockLocation" editView="stockLocation/StockLocationEditForm">        
+        <header>Stock Location</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select a.stock_location_id, a.stock_location_code, a.stock_location_name,
+                    b.branch_name, c.sl_type
+                    from st.stock_location a 
+                    inner join sys.branch b on a.branch_id = b.branch_id
+                    inner join st.sl_type c on a.sl_type_id = c.sl_type_id
+                    Where a.company_id={company_id}
+                        And a.branch_id = {branch_id}
+                    order by b.branch_name, a.stock_location_name
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="stock_location_code" displayName="Code"/>
+                <displayField columnName="stock_location_name" displayName="Name"/>
+                <displayField columnName="branch_name" displayName="Branch"/>
+                <displayField columnName="sl_type" displayName="Stock Location Type"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

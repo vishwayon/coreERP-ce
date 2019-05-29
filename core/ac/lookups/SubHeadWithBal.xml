@@ -1,0 +1,28 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="SubHeadWithBal">
+        <connectionType>
+            <companyDB/>
+          </connectionType>
+        <sql>
+            <command>
+                With sh_bal
+                As
+                (   Select a.account_id, a.sub_head_id, Sum(a.debit_amt-a.credit_amt) curr_bal
+                    From ac.sub_head_ledger a
+                    Where a.finyear = '{finyear}'
+                        And a.status = 5
+                    Group by a.account_id, a.sub_head_id
+                )
+                Select a.sub_head_id, a.sub_head, a.sub_head_dim_id, b.account_id, b.curr_bal,
+                    a.sub_head || ' [' || Case When curr_bal >= 0 Then curr_bal || ' Dr' Else -curr_bal || ' Cr' End || ']' as sub_head_bal
+                From ac.sub_head a
+                Left Join sh_bal b On a.sub_head_id = b.sub_head_id
+                Order By sub_head
+            </command>
+        </sql>
+        <keyField id="sub_head_id"/>
+    </lookup>
+</cwFramework>

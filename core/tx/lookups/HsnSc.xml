@@ -1,0 +1,19 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="HsnSc">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                Select a.hsn_sc_id , '&lt;div style="max-width: 280px;"&gt;&lt;strong&gt;' || b.hsn_sc_code || '&lt;/strong&gt;-' || b.hsn_sc_desc || '&lt;/div&gt;' as hsn_sc_desc, b.hsn_sc_code
+                From tx.hsn_sc_rate a
+                Inner Join tx.hsn_sc b On a.hsn_sc_id = b.hsn_sc_id
+                order by b.hsn_sc_code || '-' || b.hsn_sc_desc
+            </command>
+        </sql>
+        <keyField id="hsn_sc_id"/>
+    </lookup>
+</cwFramework>

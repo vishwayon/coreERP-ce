@@ -1,0 +1,33 @@
+<widget id="BankBalance2">
+    <title>Bank Balance2</title>
+    <series id="acctype1">
+        <label>Debit Opening Balance</label>
+        <sql>
+            <command>
+                select a.* from ac.fn_tb_report(:pcompany_id, :pbranch_id, :pfinyear, :pyear_begin, :pyear_end) a
+                inner join ac.account_head b on a.account_id=b.account_id
+                where b.account_type_id=1
+            </command>
+            <params>
+                <param id="pcompany_id">
+                    <session>company_id</session>
+                </param>
+                <param id="pbranch_id">
+                    <session>branch_id</session>
+                </param>
+                <param id="pfinyear">
+                    <session>finyear</session>
+                </param>
+                <param id="pyear_begin">
+                    <session>year_begin</session>
+                </param>
+                <param id="pyear_end">
+                    <session>year_end</session>
+                </param>
+            </params>
+        </sql>
+        <seriesType>pie</seriesType>
+        <xField>account_head</xField>
+        <yField>debit_opening_balance</yField>
+    </series>
+</widget>

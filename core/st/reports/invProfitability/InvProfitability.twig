@@ -1,0 +1,68 @@
+<div id="twig_rpt" name="twig_rpt" class="col-md-12" style="background-color: #ffffff;border-radius: 5px;">
+    <style>
+        #twig_rpt>table td {word-wrap:break-word;}
+    </style>
+    <div class="cformheader">
+        <h3>Invoice Profitability</h3>
+    </div>
+    <div class="row col-md-12">
+        <h4>{{ model.branchName }}</h4>
+        <h5 class="col-md-5 nopadding">{{ "Report Period: Between " ~ model.fromDate ~ " And " ~ model.toDate}}</h5>
+        <h5 class="pull-right">{{ "Txn. Ccy:" ~ model.txn_ccy}}</h5>
+    </div>
+    <div class="row">
+        <table id="tcons" style="margin: 10px auto auto;">
+            <style type="text/css">
+                td {padding: 0.55em;}
+                tr {padding: 0.55em;}
+            </style>
+            <thead style="background-color: lightgrey;line-height: 2.75em;">
+                <tr >
+                    <th class="col-md-2">Customer</th>
+                    <th class="col-md-2">Invoice</th>
+                    <th class="col-md-1">Date</th>
+                    <th class="col-md-2">Sales Value</th>
+                    <th class="col-md-2">Landed Cost</th>
+                    <th class="col-md-2">Gross Margin</th>
+                    <th class="col-md-1">Gross Margin(%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                {% for key, val in model.getCustGrp %}
+                    <tr>
+                        <td colspan="3" style="font-weight: bold;">{{key }}</td>
+                        <td class="datatable-col-right" style="font-weight: bold;">{{model.getSum(val, 'sale_amt')|number_format(2,'.',',')}}</td>
+                        <td class="datatable-col-right" style="font-weight: bold;">{{model.getSum(val, 'mat_cost')|number_format(2,'.',',')}}</td>
+                        <td class="datatable-col-right" style="font-weight: bold;">{{model.getSum(val, 'profit')|number_format(2,'.',',')}}</td>
+                        <td class="datatable-col-right" style="font-weight: bold;">{{((model.getSum(val, 'profit')/model.getSum(val, 'sale_amt'))*100)|number_format(2,'.',',')}}</td>
+                    </tr>
+                        {% for item in val %}
+                        <tr>
+                            <td style="padding-left: 25px;">{{item.salesman_name}}</td>
+                            <td>{{ item.voucher_id }}</td>
+                            <td>{{formatHelper.FormatDateForDisplay(item.doc_date)}}</td>
+                            <td class="datatable-col-right">{{item.sale_amt|number_format(2,'.',',')}}</td>
+                            <td class="datatable-col-right">{{item.mat_cost|number_format(2,'.',',')}}</td>
+                            <td class="datatable-col-right">{{item.profit|number_format(2,'.',',')}}</td>
+                            <td class="datatable-col-right">{{item.gp|number_format(2,'.',',')}}</td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+                    <tr>
+                        <td colspan="3"></td>
+                        <td class="datatable-col-right" style="font-weight: bold; border-top: 1pt solid; border-bottom: 1pt double">{{model.getSum(model.getTotal, 'sale_amt')|number_format(2,'.',',')}}</td>
+                        <td class="datatable-col-right" style="font-weight: bold; border-top: 1pt solid; border-bottom: 1pt double">{{model.getSum(model.getTotal, 'mat_cost')|number_format(2,'.',',')}}</td>
+                        <td class="datatable-col-right" style="font-weight: bold; border-top: 1pt solid; border-bottom: 1pt double">{{model.getSum(model.getTotal, 'profit')|number_format(2,'.',',')}}</td>
+                        <td class="datatable-col-right" style="font-weight: bold; border-top: 1pt solid; border-bottom: 1pt double">
+                            {% if model.getSum(model.getTotal, 'sale_amt') == 0 %}
+                                0
+                            {% else %}
+                                {{((model.getSum(model.getTotal, 'profit')/model.getSum(model.getTotal, 'sale_amt'))*100)|number_format(2,'.',',')}}
+                            {% endif %} 
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

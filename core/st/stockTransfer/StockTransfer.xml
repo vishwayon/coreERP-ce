@@ -1,0 +1,111 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <businessObject id="StockTransfer" type="Document">
+        <controlTable>
+            <tableName>st.stock_control</tableName>
+            <primaryKey>stock_id</primaryKey>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save>    
+            <delete>
+                <useEntity/>
+            </delete>
+            <jsonField id="annex_info">
+                <jfield name="target_sl_id" type="int"/>
+                <jobject name="gst_output_info" type="simple">
+                    <jfield name="txn_type" type="string"/>
+                    <jfield name="target_branch_state_id" type="int"/>
+                    <jfield name="target_branch_gstin" type="string"/>
+                    <jfield name="target_branch_addr" type="string"/>
+                    <jfield name="eway_ref" type="string"/>
+                </jobject>
+                <jfield name="item_cnt" type="decimal"/>
+                <jfield name="unit_cnt" type="decimal"/>
+            </jsonField>
+            <customColumns>
+                <customColumn name="vbt_amt_tot" type="decimal" />
+                <customColumn name="st_reference" type="string" />
+                <customColumn name="st_received_on" type="date" />
+            </customColumns>
+            <tranTable id="stock_tran">
+                <tableName>st.stock_tran</tableName>
+                <primaryKey>stock_tran_id</primaryKey>      
+                <relation linkType="OneToMany">
+                    <foreignKey>stock_id</foreignKey>
+                </relation>
+                <customColumns>
+                    <customColumn name="bal_qty" type="decimal"/>
+                    <customColumn name="has_bal" type="bool"/>
+                    <customColumn name="receipt_sl_id" type="int"/>
+                    <customColumn name="receipt_qty" type="numeric"/>
+                    <customColumn name="short_qty" type="numeric"/>
+                    <customColumn name="vtax_desc" type="string"/>
+                    <customColumn name="vfat_snf" type="string"/>
+                    <customColumn name="vqc_fat_snf" type="string"/>
+                    <customColumn name="has_qc" type="bool"/>
+                    <customColumn name="has_ts" type="bool"/>
+                    <customColumn name="qc_snf" type="numeric"/>
+                    <customColumn name="qc_fat" type="numeric"/>
+                    <customColumn name="qc_clr" type="numeric"/>
+                </customColumns>
+                <fetchOrCreate>
+                    <useEntity  orderby="sl_no"/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{stock_id}:{RowID}</primaryKeyPattern>
+                </save>         
+                <delete>
+                    <useEntity/>      
+                </delete>
+                <tableElongate id="gtt" tableName="tx.gst_tax_tran" primaryKey="gst_tax_tran_id" foreignKey="voucher_id"
+                    tranGroup="tran_group"/>
+                <tableElongate id="ts" tableName="md.ts_tran" primaryKey="ts_tran_id" foreignKey="voucher_id"
+                               tranGroup="tran_group"/>
+                <tranTable id="sl_lot_alloc">
+                    <tableName>st.sl_lot_alloc</tableName>
+                    <primaryKey>sl_lot_alloc_id</primaryKey>
+                    <relation  linkType="OneToMany">
+                        <foreignKey>vch_tran_id</foreignKey>
+                        <rootForeignKey>voucher_id</rootForeignKey>
+                    </relation>
+                    <fetchOrCreate>
+                        <useEntity/>
+                    </fetchOrCreate>
+                    <save>
+                        <useEntity/>
+                        <primaryKeyPattern type="md5">{vch_tran_id}:{RowID}</primaryKeyPattern>
+                    </save>
+                    <delete>
+                        <useEntity/>
+                    </delete>
+                </tranTable>
+            </tranTable>
+            <tranTable id="stock_tran_qc">
+                <tableName>st.stock_tran_qc</tableName>
+                <primaryKey>stock_tran_qc_id</primaryKey>
+                <relation linkType="OneToMany">
+                    <foreignKey>stock_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{stock_id}:{RowID}</primaryKeyPattern>
+                </save>
+                <delete>
+                    <useEntity/>
+                </delete>
+            </tranTable>
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\st\stockTransfer\StockTransferEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

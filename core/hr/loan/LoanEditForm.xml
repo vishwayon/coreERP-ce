@@ -1,0 +1,58 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Loan" type="Document" bindingBO="loan/Loan">
+        <header>Loan</header>
+        <keyField>loan_id</keyField>
+        <newDocEnabled wizard="loan/LoanWizard" step="SelectEmployee">
+            <docType>LN</docType>
+        </newDocEnabled>
+        <deleteDocEnabled/>
+        <clientJsCode>loan/loan_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="loan_id" label="Voucher No" type="string" control="TextBox" size="ms" maxLength="50" isOptional="true" readOnly="true"/>
+                <field id="doc_date" label="Date" type="date" control="Date"  size="ms" range="finYear"/>
+                <field id="employee_id" label="Employee" type="int" control="SmartCombo" size="4" readOnly="true">
+                    <lookup>
+                        <valueMember>employee_id</valueMember>
+                        <displayMember>full_employee_name</displayMember>
+                        <namedLookup>../core/hr/lookups/Employee.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <field id="loan_desc" label="Loan Description" type="string" control="TextBox" size="6" maxLength="20" /> 
+                <nextRow/>             
+                <field id="loan_principal" label="Loan Principal" type="decimal" control="TextBox" size="ms" maxLength="50" isOptional="true" mdata-event="subscribe:core_loan.calc_loan_detail"/>   
+                <field id="interest_percentage" label=" Rate of Interest (%)" type="decimal" control="TextBox" size="xs" maxLength="50" isOptional="true"/>   
+                <field id="no_of_installments" label="No of Install." type="int" control="TextBox" size="xs" mdata-event="subscribe:core_loan.calc_loan_detail"/>                 
+                <field id="loan_from_date" label="Loan Dispersed On" type="date" control="Date" size="ms" range="finYear"/>
+                <nextRow/>
+                <field id="loan_recovery_from" label="Loan Recovery From" type="date" control="Date" size="ms"  readOnly="true"/>
+                
+                <field id="loan_interest" label="Loan Interest" type="decimal" control="TextBox" size="ms" maxLength="50" isOptional="true" readOnly="true"/> 
+                <field id="total_recovery" label="Total Recovery" type="decimal" control="TextBox" size="ms" maxLength="50" isOptional="true" readOnly="true"/> 
+           
+                <dummy/>
+                <cButton id="Installments" onClick="core_loan.calc_installment" label="Installment"/>
+                <nextRow/>
+                <tranSection label="Loan Tran" editMode="Add|Edit|Delete" beforeDeleteMethod="core_loan.loan_tran_detail_before_delete">
+                    <dataBinding dataProperty="loan_tran">
+                        <field id="sl_no" label="Sl No" type="int" control="TextBox" size="xs" maxLength="5" isOptional="true" readOnly="true"/> 
+                        <field id="installment_date" label="Installment Date From" type="date" control="Date"  size="1" cdata-enable-on="core_loan.enable_loan_tran"/>
+                        <field id="loan_principal_amt" label="Loan Principal" type="decimal" control="TextBox" size="1" maxLength="50" isOptional="true" cdata-enable-on="core_loan.enable_loan_tran"  readOnly="true"/>   
+                        <field id="installment_interest" label="Interest Amt" type="decimal" control="TextBox" size="1" maxLength="50" isOptional="true" cdata-enable-on="core_loan.enable_loan_tran"/>   
+                        <field id="installment_principal" label="Principal Amt" type="decimal" control="TextBox" size="ms" maxLength="50" isOptional="true" cdata-enable-on="core_loan.enable_loan_tran"/>   
+                        <field id="os_amt" label="O/s" type="decimal" control="TextBox" size="ms" maxLength="50" isOptional="true" cdata-enable-on="core_loan.enable_loan_tran"  readOnly="true"/>   
+                        <field id="installment" label="Installment" type="decimal" control="TextBox" size="ms" maxLength="50" isOptional="true" cdata-enable-on="core_loan.enable_loan_tran"  readOnly="true"/>   
+                        <field id="cl_balance" label="Cl. Balance" type="decimal" control="TextBox" size="ms" maxLength="50" isOptional="true" cdata-enable-on="core_loan.enable_loan_tran"  readOnly="true"/>   
+
+                    </dataBinding>
+                </tranSection> 
+                <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" size="m"  isOptional="true"/>  
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" size="m" readOnly="true" isOptional="true"/> 
+            </dataBinding>
+        </controlSection>  
+    </formView>
+</cwFramework>

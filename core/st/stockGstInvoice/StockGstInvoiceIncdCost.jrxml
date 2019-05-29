@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2017-08-25T15:47:21 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StockGstInvoiceIncdCost" language="groovy" pageWidth="595" pageHeight="842" columnWidth="523" leftMargin="0" rightMargin="72" topMargin="0" bottomMargin="0" uuid="842d9047-688e-4d77-befd-72bacff78ecb">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mrr_local"/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="inch"/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pstock_id" class="java.lang.String"/>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[Select a.stock_id, ic->>'desc' as desc, (ic->>'incd_amt')::Numeric as incd_amt
+From st.stock_control a, jsonb_array_elements(a.annex_info->'incd_cost') ic
+Where a.stock_id =  $P{pstock_id} ;]]>
+	</queryString>
+	<field name="stock_id" class="java.lang.String"/>
+	<field name="desc" class="java.lang.String"/>
+	<field name="incd_amt" class="java.math.BigDecimal"/>
+	<variable name="incd_amt1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{incd_amt}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="17" splitType="Stretch">
+			<frame>
+				<reportElement positionType="Float" mode="Opaque" x="0" y="2" width="195" height="15" backcolor="#008080" uuid="06c5e5d6-d238-40f2-8a36-929364c178d9">
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<staticText>
+					<reportElement style="NormalLabel" positionType="Float" mode="Transparent" x="126" y="0" width="69" height="15" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="364871ff-d215-4e32-b488-5397d94356ef">
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Amount]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" positionType="Float" mode="Transparent" x="0" y="0" width="126" height="15" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="99388ce3-b0fa-40c8-851f-7e9e808327b5">
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Incidental Expenses Summary]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" x="0" y="0" width="126" height="13" uuid="f0d02f8b-2571-40af-bf02-ebf3675be04c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{desc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="NormalText" x="126" y="0" width="69" height="13" uuid="59508b5d-43f6-4fdd-9105-e230f2a0ba9a">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($F{incd_amt})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement style="NormalText" x="126" y="0" width="69" height="13" uuid="e8a0964c-eca0-4f5c-99a3-b7e91f693de3"/>
+				<box>
+					<topPen lineWidth="0.1"/>
+					<bottomPen lineWidth="0.1"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($V{incd_amt1})]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

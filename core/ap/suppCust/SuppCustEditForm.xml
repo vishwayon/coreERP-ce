@@ -1,0 +1,26 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="SuppCust" type="Master"  bindingBO="suppCust/SuppCust">
+        <header>Supplier to Customer</header>
+        <keyField>supplier_id</keyField>
+        <controlSection editMode="Edit">
+          <dataBinding>
+                <field id="supplier_code" label="Supplier Code" type="string" control="TextBox" size="ms" isOptional="true" readOnly="true"/>                         
+                <field id="supplier" label="Supplier Account" type="string" control="TextBox" size="4" readOnly="true"/> 
+                <nextRow/> 
+                <field id="supplier_name" label="Supplier Name" type="string" control="TextBox" size="6" isOptional="true" readOnly="true"/>         
+                <nextRow/> 
+                <nextRow/>
+                <field id="customer_id" label="Customer" type="int" control="SmartCombo" size="6" >
+                    <lookup>
+                        <valueMember>customer_id</valueMember>
+                        <displayMember>customer</displayMember>
+                        <namedLookup>../core/ar/lookups/Customer.xml</namedLookup>
+                    </lookup>
+                </field>              
+          </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

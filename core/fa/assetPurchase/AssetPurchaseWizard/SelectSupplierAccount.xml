@@ -1,0 +1,16 @@
+<wizardView>
+    <header>Select Supplier Account</header>
+    <sections>
+        <formSection id="SelectSupplierAccount">
+            <displayFields>
+                <displayField id="account_id" label="Supplier Account" type="int" control="SmartCombo" size="m" editMode="edit" defaultValue="-1">
+                    <lookup>
+                        <valueMember>supplier_id</valueMember>
+                        <displayMember>supplier</displayMember>
+                        <namedLookup>../core/ap/lookups/Supplier.xml</namedLookup>
+                    </lookup>   
+                </displayField>
+            </displayFields>
+        </formSection>
+    </sections>
+</wizardView>

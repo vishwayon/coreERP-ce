@@ -1,0 +1,54 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <allocView id="RefLedAllocCredit" type="alloc" width="850px">
+        <header>Reference</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <cButton id="create_ref" onClick="core_ac.create_ref_alloc" label="Create Reference" tooltip="Create Reference"/>
+                <cButton id="alloc_ref" onClick="core_ac.ref_alloc" label="Allocate Reference" tooltip="Allocate Reference"/>
+                <nextRow/>
+                <field id="ref_no" label="Reference No" type="string" control="TextBox" size="3" maxLength="50" isOptional="true"
+                         cdata-visible-on="core_ac.visible_create_ref"/>
+                <nextRow/>
+                <field id="ref_desc" label="Reference Desc" type="string" control="TextBox" size="4" maxLength="250" isOptional="true"
+                         cdata-visible-on="core_ac.visible_create_ref"/>
+                
+                <tranSection label="" editMode="Edit" cdata-visible-on="core_ac.visible_alloc_ref">
+                    <dataBinding dataProperty="ref_ledger_alloc_temp">
+                        <displayField columnName="affect_voucher_id" displayName="Reference" id="affect_voucher_id" label="Voucher #" type="string" control="TextBox" size="ms" readOnly="true"/>
+                        <displayField columnName="affect_doc_date" displayName="Date" format="Date" id="affect_doc_date" label="Date" type="date" control="Date" size="xs" maxLength="50" readOnly="true"/>
+                        <displayField columnName="balance" displayName="Balance" format="Amount" id="balance" label="Balance" type="decimal" control="TextBox" size="ms"  readOnly="true"/>
+                        <displayField columnName="ref_no" displayName="Reference" id="ref_no" label="Reference No" type="string" control="TextBox" size="ms" readOnly="true"/>
+                        <field id="net_credit_amt" label="Amount" type="decimal" control="TextBox" size="ms"/>
+                     </dataBinding>
+                </tranSection>
+
+                <field id="vch_tran_credit" label="Credits" type="decimal" control="TextBox" size="3"  readOnly="true" 
+                       cdata-visible-on="core_ac.visible_alloc_ref"/>
+                <dummy/>
+                <field id="total_credit_amt" label="Total" type="decimal" control="TextBox" size="3"  readOnly="true"
+                         cdata-visible-on="core_ac.visible_alloc_ref" >                
+                    <computedField forceCalOnPost="true"> 
+                            var total = new Number();
+                            ko.utils.arrayForEach(this.ref_ledger_alloc_temp(),function(item){                              
+                                total+=new Number(item.net_credit_amt());
+                            });
+                            console.log('total' + total.toFixed(2));
+                            return total.toFixed(2);                        
+                    </computedField>
+                </field>
+                <nextRow/>
+                <field id="balance_credit_total" label="Balance" type="decimal" control="TextBox" size="3"  readOnly="true"
+                         cdata-visible-on="core_ac.visible_alloc_ref">
+                    <computedField forceCalOnPost="true"> 
+                        var balance_total = new Number();                             
+                        balance_total = new Number(this.vch_tran_credit())- new Number(this.total_credit_amt());
+                        return balance_total.toFixed(2); 
+                    </computedField>
+                </field>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>    

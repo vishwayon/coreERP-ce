@@ -1,0 +1,11 @@
+<wizard id="PayrollPaymentWizard" name="Payroll Payment Wizard">
+    <codeBehind>
+        <className>app\core\hr\payrollPayment\PayrollPaymentWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectPayItems">
+        <path>payrollPayment/SelectPayItems</path>
+    </wizardStep>
+    <postWizard id="PayrollPayment">
+        <path>payrollPayment/PayrollPaymentEditForm</path>
+    </postWizard>
+</wizard>

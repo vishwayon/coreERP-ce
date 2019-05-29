@@ -1,0 +1,785 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 30 Jan, 2015, 3:14:36 PM
+    Author     : girish
+*/
+
+
+@font-face {
+    font-family: Liberation Sans;
+    src: url(font/LiberationSans-Regular.ttf);
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: Liberation Sans;
+    src: url(font/LiberationSans-Bold.ttf);
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: Liberation Sans;
+    src: url(font/LiberationSans-Italic.ttf);
+    font-style: italic;
+}
+
+@font-face {
+    font-family: Liberation Sans;
+    src: url(font/LiberationSans-BoldItalic.ttf);
+    font-style: italic;
+    font-weight: bold;
+}
+
+.auth-clients .auth-client .auth-link {
+    width: 191px;
+}
+
+.auth-icon {
+    display: block;
+    width: 191px;
+    height: 46px;
+    background: url(google_signin.png) no-repeat;
+}
+
+.auth-icon.google, 
+.auth-icon.google_openid,
+.auth-icon.google_oauth {
+    background-position: 0 0px;
+}
+
+.auth-title {
+    display: none !important;
+}
+
+body {
+    line-height: 1;
+    font-size: 12px;
+    font-family: "Open Sans",Arial,Helvetica,sans-serif;
+}
+
+.form-group {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    padding-left: 0px;
+}
+
+.form-control {
+    height: 24px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    padding-right: 2px;
+    font-size: 12px;
+    color:#111;
+}
+
+h3 {
+    /*border-bottom: black solid 1px;*/
+    padding-bottom: 2px;
+    padding-left: 15px;
+}
+
+form label {
+    font-weight: normal;
+}
+
+.select2-container .select2-choice  {
+    line-height: 22px;
+    padding-left: 5px;
+}
+
+.select2-container-active {
+    border-color: rgb(91, 192, 222);
+    border-width: 1px;
+}
+
+.table-condensed tbody tr td {
+    vertical-align: middle;
+    padding: 3px;
+}
+
+.table{
+    margin-bottom: 5px;
+}
+
+.table thead tr th {
+    border-bottom: none;
+    font-weight: normal;
+}
+
+.table tbody tr {
+    border-bottom: 1px solid lightgray; 
+}
+
+.wrap .container {
+    padding-left: 0px;
+}
+
+.tran{
+    margin: 15px 0 5px 14px;width:96%;
+}
+
+caption h5{
+    font-weight: bold;
+    text-decoration: underline;
+    margin-bottom: 0;
+}
+
+caption{
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.myglyphz-newfile {
+    background-position: 0 -192px;
+}
+.myglyphz {
+    background-image: url("main.png");
+    background-repeat: no-repeat;
+    display: inline-block;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    height: 16px;width: 16px;
+    position: relative;
+    top: 1px;
+    font-family: "Glyphicons Halflings";
+}
+
+a small, .small {
+    font-size: 70%;
+}
+
+.row h3{
+    margin-top:0px;
+}
+
+.formoptions {
+    float: right;
+    margin-left:10px;
+    font-size:12px;
+}
+
+.navbar-inverse {
+    background-color: #2c383b;
+    border-color: #080808;
+    color:white;
+}
+
+input[type=checkbox], input[type=radio] {
+    vertical-align: middle;
+    position: relative;
+    bottom: 1px;
+    margin: 0px;
+}
+
+.editRow{}
+.datetime{}
+.fc-x-rate{}
+html,body{height:100%;}
+.container {}
+
+.form-horizontal .form-group {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.form-horizontal .control-label{text-align: left;}
+.smartcombo{padding: 0;}
+.select2-container .select2-choice{border:0;height: 100%;}
+
+.wrap > .container{
+    min-height: 100%;height: 100%;padding-bottom: 0px;
+}
+
+small, .small {font-size: 60%;}
+.navbar-header {width: 20%;}
+.wrap{padding-bottom: 0px; background-color: #FAFAFA;}
+.kv-sidenav li a {
+    border-bottom: none;
+    /*background: linear-gradient(to right, #2c383b 93%, #2a2725 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);*/
+    color: #9d9d9d;
+    background-color: #2c383b;
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+    /*background: linear-gradient(to right, #2c383b 93%, #2a2725 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);*/
+    color: whitesmoke;
+    background-color: #2c383b;
+}
+
+.nav > li > a:hover, .nav > li > a:focus{
+    background-color: #2c383b;
+    color: whitesmoke;
+}
+
+aside {
+    /*background: linear-gradient(to right, #2c383b 93%, #2a2725 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);*/
+    display: block;
+    min-height: 100%;
+    background-color: #2c383b;
+}
+
+.nav-stacked > li + li { margin-top: 0;}
+#sidemenu .panel{border: none;}
+.headerlogo {
+    background-image: url("coreerp_logo.png");
+    background-repeat: no-repeat;
+    /*background-size: cover;*/
+    display: block;
+    float: left;
+    height: 68px;
+    width: 204px;
+}
+
+.navbar-header a{
+    padding: 0px 0px 0px 15px; margin-top: -5px;
+}
+.container{left: 0px;}
+a:focus{outline: none;}
+
+#overlay2, #formoverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    filter:alpha(opacity=50);
+    -moz-opacity:0.5;
+    -khtml-opacity: 0.5;
+    opacity: 0.5;
+    z-index: 10000;
+    text-align: center; 
+}
+
+.Centerer
+{
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+.Centered
+{
+    display: inline-block;
+    vertical-align: middle;
+}
+#sidemenu .panel{margin-bottom: 0px;}
+
+.loading {
+    background-image: url("loading.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+    height: inherit;
+}
+
+.toast-top-center {
+    top: 55px;
+    right: 0;
+    width: 100%;
+}
+
+input[type=checkbox]{
+    height: 15px;
+}
+
+#details .form-control{
+    margin-top: 0px;box-shadow: none !important;
+}
+
+.dbwidget{margin:0px;padding:0;}
+.dbcwidget{margin-top:10px;padding: 0;}
+
+.dbwidgetmain{
+    float: left;
+    padding: 0;
+    /*    padding: 1px 0 3px 0; */
+    margin: 15px 0;
+    background-color: white;overflow: auto;
+    /*width:97%;*/
+    border:1px solid rgb(194,194,194);
+}
+
+.nopadding {
+    padding: 0;
+}
+
+.nopaddingright {
+    padding-right: 0;
+}
+
+.nopaddingleft {
+    padding-left: 0;
+}
+
+.dbwidgetheaderdiv{
+    display: table-cell; 
+    vertical-align: middle;
+    border-bottom:1px solid #c2c2c2;
+    padding:2px 5px 0;
+    box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.05) inset;
+    background-color: #2c383b;
+    color: whitesmoke;
+}
+
+.dbwidgetheadcolor{
+    background-color: #2c383b;
+    color: whitesmoke;
+}
+
+.dbwidgetheadcolorinverse{
+    background-color: whitesmoke;
+    color: #2c383b;
+}
+
+.dbwidgetheader{
+    line-height: 17px;
+    font-size: 14px;
+}
+
+.dbwidget table.dataTable thead th {
+    border-bottom-color: #c2c2c2 ; 
+    color: #333;
+}
+
+#cgrid table,th{
+    text-align: center;
+}
+
+.dataTables_wrapper .dataTables_filter{
+
+}
+
+.dataTables_wrapper .dataTables_filter label{
+    float: left;
+}
+
+.ui-dialog .ui-dialog-title{
+    line-height: 20px;
+}
+
+.ui-dialog .ui-dialog-buttonpane{
+    padding: 0;
+}
+
+.ui-dialog-buttonset .btn{
+    padding: 0;
+}
+
+.ui-dialog .form-control{
+    margin-top: 0;
+}
+
+.cSectionHeader{
+    font-size: 1.225em; font-weight: bold;
+    bottom: -2px; position: absolute; 
+    background-color: white;  
+    padding-right: 5px; padding-left: 2px; 
+}
+
+table caption h5{
+    background-color: white;
+    border-bottom: 1px solid lightgray;
+    font-size: 1.3em;
+    margin-bottom: 0.4em;
+    text-decoration:none;
+}
+
+.ch5{
+    font-size: 1.3em;
+    border-bottom: 1px solid lightgray;
+    margin-bottom: 0.4em;
+    text-decoration:none;
+    font-weight: normal;
+    color:#777;
+}
+
+.reportLink {
+    cursor: pointer; cursor: hand;
+}
+
+.click_link {
+    cursor: url("hand.png"),context-menu;
+}
+
+.print-format {
+    font-size: 9pt;
+    font-family: "Helvetica Neue", Helvetica, Arial, "Open Sans", sans-serif;
+    -webkit-print-color-adjust:exact;
+    box-sizing: border-box;
+}
+
+.form-print-wrapper {
+    border: 1px solid #d1d8dd;
+    border-top: none;
+}
+.print-preview-wrapper {
+    padding: 30px 0px 5px;
+    background-color: #f5f7fa;
+    height: 100%;
+    overflow: auto;
+}
+.twig-preview-wrapper {
+    padding: 5px;
+    background-color: #f5f7fa;
+    height: 100%;
+    overflow: auto;
+}
+
+.navbar-inverse .navbar-nav > .active > a, 
+.navbar-inverse .navbar-nav > .active > a:hover, 
+.navbar-inverse .navbar-nav > .active > a:focus {
+    background-color: transparent;
+    color: #fff;
+}
+
+.dataTables_wrapper.no-footer .dataTables_scrollBody {
+    border-bottom: solid 1px lightslategray;
+    background-color: white;
+}
+
+.cformheader{
+    padding-bottom: 5px;
+    border-bottom: 1px solid lightslategray;
+    margin:0 0 5px 0;
+}
+
+.ctranheader{
+    margin:0 0 5px 0;
+}
+
+.cformheader h3{
+    margin: 7px 0 0;
+    color:teal;
+    padding:0;
+}
+
+.ctranheader h5{
+    margin: 7px 0 0;
+    color:teal;
+    padding:0;
+}
+
+.cformheaderbuttons{
+    float: right;
+    margin:4px 0 0;
+    padding-right: 0;
+}
+
+.cformfooter{
+    height: 40px;
+    border-top: 1px solid lightslategray;
+}
+
+form .row{
+    margin-left: 0;margin-right: 0;
+}
+
+#cboformbodyin{
+    border-bottom: teal solid 1px;
+}
+
+.clabel{
+    margin-top:30px;
+    color: lightslategray;
+    font-weight: normal;
+    display: inline-block;
+    margin-bottom: 5px;
+    max-width: 100%;
+}
+
+.fileinput-button {
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+}
+.fileinput-button input {
+    cursor: pointer;
+    direction: ltr;
+    font-size: 20px;
+    margin: 0;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.datatable-col-right {
+    text-align: right;
+}
+
+.datatable-col-center {
+    text-align: center;
+}
+
+@media only screen and (min-device-width: 768px) {
+    .view-min-width {
+        min-width: 819px;
+    }
+}
+.view-window1 {    
+    background-color: white;
+    border-radius: 5px;
+    width: 95%;
+    margin: 20px auto;
+}
+
+.view-window2 {
+    background-color: white;
+    margin: auto;
+    width: 99%;
+    /*border-radius: 5px;
+    width: 95%;
+    margin: 20px 0 0 20px;*/
+}
+
+.view-window-twig {
+    min-height: 90%;
+    background-color: #f6f6f6;
+    border-radius: 5px;
+    width: 95%;
+    margin: 20px 0 0 20px;
+}
+
+.rw-number-notification {
+    position: absolute;
+    top: -7px;
+    right: -6px;
+    padding: 3px 3px 2px 3px;
+    background-color: lightcoral;
+    color: white;
+    font-family: arial;
+    font-weight: bold;
+    font-size: 10px;
+    border-radius: 4px;
+}
+
+#sidemenu .nav > li > a {
+    padding: 10px 15px 10px 10px;
+}
+
+.minimisemenu {
+    background: #566062 none repeat scroll 0 0;
+    border-bottom: 1px solid #302f2f;
+    border-radius: 5px 0 0 5px;
+    color: #a8a8a8;
+    cursor: pointer;
+    display: block;
+    font-size: 19px;
+    height: 28px;
+    margin-top: 7px;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    transition: all 0.1s linear 0s;
+    width: 30px;
+}
+
+#smallmenu > div {
+    height: 32px;
+}
+
+td.details-control {
+    background: url('details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url('details_close.png') no-repeat center center;
+}
+
+.simple-button {
+    font-size: 12px;
+    margin-top: 5px;
+    padding: 5px 10px 3px;
+}
+
+.xtab {
+    padding-bottom: 5px;
+    border-bottom: 1px solid lightgrey;
+}
+
+.fieldclasstest {
+    font-style: italic;
+    font-weight: bolder !important;
+}
+
+#collectiondata {
+    color: #111;
+}
+
+.select2-container .select2-choice {
+    color: #111;
+}
+
+.btn-default {
+    color: #111 !important;
+}
+
+.cf-color {
+    color: #111;
+}
+
+.fld-readonly {
+    background-color: transparent !important;
+    border: none;
+    border-radius: 0;
+}
+
+.fg-total {
+    background-color: transparent !important;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid lightgray;
+    box-shadow: none;
+}
+
+.fg-bold{    
+    font-weight: bold;
+}
+
+.no-border {
+    background-color: transparent !important;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+/*#collectiondata table {
+    table-layout: fixed;
+    white-space: nowrap;
+    width:100%;
+}
+
+#collectiondata table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}*/
+
+.stagewizard-step p {
+    margin-top: 10px;    
+}
+
+.stagewizard-row {
+    display: table-row;
+}
+
+.stagewizard {
+    display: table;     
+    width: 80%;
+    position: relative;
+}
+
+.stagewizard-step button[disabled] {
+    opacity: 1 !important;
+    filter: alpha(opacity=100) !important;
+}
+
+.stagewizard-row:before {
+    top: 14px;
+    bottom: 0;
+    position: absolute;
+    content: " ";
+    width: 100%;
+    height: 1px;
+    background-color: #ccc;
+    z-order: 0;
+
+}
+
+.stagewizard-step {    
+    display: table-cell;
+    text-align: center;
+    position: relative;
+}
+
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 1.428571429;
+    border-radius: 15px;
+}
+.stagewizard-content{
+    border:none !important;
+    float: left !important;
+    margin-top: 0 !important;
+    padding: 15px !important;
+    width: 100% !important;
+
+}
+
+.li-disabled {
+    pointer-events:none;
+    opacity:0.6;
+}
+
+.menu-cnt-badge{
+
+}
+
+.tran-table{
+    display:block;
+}
+
+.tran-header{
+    display:block;
+}
+
+.tran-body{
+    overflow-y: scroll;
+    display:block;
+}
+
+.cmd_addnewrowb{
+
+}
+
+.select2-container-multi{
+    border:none !important;
+    background-color: #f0f0f0;
+    box-shadow: unset;
+    padding: 0;
+}
+
+.select2-choices{
+    border-radius: 5px;
+}
+
+/* Absolute Center Spinner */
+.loadingdiv {
+    position: absolute;
+    z-index: 999;
+    height: 3em;
+    width: 3em;
+    overflow: show;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    color: lightcoral;
+}
+
+
+/* Transparent Overlay */
+
+.loadingdiv-ct {
+    display: block;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.col-teal{
+    background-color: teal;
+    color: white;
+}

@@ -1,0 +1,81 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="BankTransfer" type="Document" bindingBO="bankTransfer/BankTransfer">
+        <header>Bank Transfer</header>
+        <keyField>voucher_id</keyField>
+        <printView rptOption="bankTransfer/BankTransferPrint">
+            <rptParams>
+                <param id="pvoucher_id">voucher_id</param>
+            </rptParams>
+        </printView>
+        <newDocEnabled wizard="bankTransfer/BankTransferWizard" step="SelectPayCycle"> 
+            <docType>BT</docType>
+        </newDocEnabled>
+        <deleteDocEnabled/>
+        <clientJsCode>bankTransfer/BankTransfer_clientcode.js</clientJsCode>        
+        <clientJsCodeRefs>
+            <clientJsCodeRef>../core/ap/ap_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/ac/ac_clientcode.js</clientJsCodeRef>
+        </clientJsCodeRefs>
+        <jsEvents>
+            <afterLoadEvent>core_bank_trs.afterload_wiz</afterLoadEvent>
+        </jsEvents>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="voucher_id" label="Voucher No" type="string" control="TextBox" size="s" maxLength="50" isOptional="true" readOnly="true" forStatus="true"/>
+                <dummy size="1"/>
+                <field id="doc_date" label="Date" type="date" control="Date" size="ms" range="finYear"/>
+                <nextRow/>         
+                <field id="annex_info.pay_cycle_id" label="Pay Cycle" type="int" control="SmartCombo"  size="s" readOnly="true">
+                    <lookup>
+                        <valueMember>pay_cycle_id</valueMember>
+                        <displayMember>pay_cycle</displayMember>
+                        <namedLookup>../core/ap/lookups/PayCycle.xml</namedLookup>
+                    </lookup>   
+                </field> 
+                <dummy size="1"/>
+                <field id="annex_info.bank_account_id" label="Bank Account" type="int" control="SmartCombo" size="s" readOnly="true">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filterEvent>core_ap.pymt_account_combo_filter</filterEvent>
+                    </lookup>   
+                </field>
+                <cButton id="download_csv" onClick="core_bank_trs.pymt_wiz.file_download" label="Download Bank File" 
+                         cdata-visible-on="core_bank_trs.pymt_wiz.file_btn_visible" ignore-edit="true"/>
+                <nextRow/>                                
+                <tranSection label="Bank Transfer Detail" editMode="Add|Edit|Delete" fixedWidth="800"
+                             afterDeleteMethod="core_bank_trs.after_tran_delete">
+                    <dataBinding dataProperty="pymt_tran">
+                        <field id="sl_no" label="#" type="int" control="TextBox" size="1" inline="true" readOnly="true" isOptional="true"
+                                       style="border: none; background: none;"/>
+                        <field id="reference_id" label="Voucher #" type="string" control="TextBox" size="ms" maxLength="50" readOnly="true"/>                        
+                        <field id="vch_date" label="Vch Date" type="date" control="Date" size="2"  readOnly="true"/> 
+                        <field id="account_id" label="Supplier" type="int" control="SmartCombo" size="m" readOnly="true">              
+                        <lookup>
+                            <valueMember>supplier_id</valueMember>
+                            <displayMember>supplier</displayMember>
+                            <namedLookup>../core/ap/lookups/Supplier.xml</namedLookup>
+                        </lookup>    
+                        </field>
+                        <field id="debit_amt" label="Net Pay" type="decimal" control="TextBox" size="2"  isOptional="true" mdata-event="subscribe:core_bank_trs.total_calc" readOnly="true" />
+                        <!--<addRowEvent>core_bank_trs.pymt_tran_add</addRowEvent>-->
+                    </dataBinding>
+                </tranSection> B
+                <cButton id="seleBill" onClick="core_bank_trs.SelectBill" label="Add" icon="glyphicon glyphicon-plus" inline="true"/>                            
+                <nextRow/>     
+                <field id="narration" label="Narration" type="string" rows="3" control="TextArea" size="m" maxLength="500" isOptional="true"/> 
+                <xdiv id="tot_div" size="5"/>
+                    <nextRow/>  
+                    <field id="credit_amt" label="Total Amount" type="decimal" control="TextBox" allowNegative="true" size="4" readOnly="true"/> 
+                <xdivEnd/>
+                <nextRow/> 
+                <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" size="m"  isOptional="true"/>  
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" size="m" readOnly="true" isOptional="true"/> 
+             </dataBinding>
+        </controlSection>  
+    </formView>
+</cwFramework>

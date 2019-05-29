@@ -1,0 +1,22 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="UserBranchAssociation" type="Master" bindingBO="UserBranchAssociation" editView="userBranchAssociation/UserBranchAssociationEditForm">        
+        <header>User Branch Association</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select  branch_id, branch_name, branch_code from  sys.branch order by branch_name
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="branch_name" displayName="Branch Name"/>
+                <displayField columnName="branch_code" displayName="Branch Code"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

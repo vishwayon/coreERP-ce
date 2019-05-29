@@ -1,0 +1,32 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="AdminUser" type="Master" bindingBO="adminUser/AdminUser">    
+        <header>Admin User</header>
+        <keyField>user_id</keyField>
+        <newDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="user_name" label="User Name" type="string" control="TextBox" size="s" maxLength="20"/>
+                <field id="is_active" label="Active" type="bool" control="CheckBox" size="s"/>
+                <nextRow/> 
+                <field id="user_pass" label="Password" type="string" control="Password" size="s" maxLength="60"/>
+                <nextRow/> 
+                <field id="user_pass_confirm" label="Confirm Password" type="string" control="Password" size="s" maxLength="60"/>
+                <nextRow/> 
+                <field id="full_user_name" label="Full User Name" type="string" control="TextBox" size="m" maxLength="100"/>
+                <nextRow/> 
+                <field id="email" label="Email Address" type="string" control="TextBox" size="m" editMode="View" maxLength="100"/>
+                <nextRow/> 
+                <field id="is_mac_addr" label="Login requires MAC validation" type="bool" control="CheckBox" size="s"/>
+                
+                <tranSection label="MAC Address" editMode="Add|Edit|Delete" dataRelation="OneToMany" size="3" noColHeader="true">
+                   <dataBinding dataProperty="mac_addr">
+                       <field id="item_value" label="MAC Address" type="string" control="TextBox" size="12" maxLength="12"/>
+                   </dataBinding>
+                </tranSection>
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

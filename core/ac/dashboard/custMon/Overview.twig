@@ -1,0 +1,150 @@
+<link href="{{ ScriptHelper.registerScript('@app/core/ac/dashboard/css/custMon.css') }}" rel="stylesheet"/></link>
+
+<div class="row col-md-12" onload="window.ac_db.custMon.overview_pageload()" >
+    <!-- Turnover Widget -->
+    <div id="tov_widget" class="db-widget col-md-4">        
+        <div id="div_tov" class="db-widget-cont">
+            <div id="div_tov_head" class="row">
+                <h4>Turnover</h4>                
+            </div>
+            <div class="graph row">
+                <div id="div_tov_ph" ></div>
+            </div>  
+            <div id="div_tov_foot" class="row">
+                <div class="col-md-4 kpi-s">
+                    <small class="text-muted">Previous Year</small>
+                    <span id="py_tov" class="h4 font-bold" >...</span>                    
+                </div>
+                <div class="col-md-4 kpi-s">
+                    <small class="text-muted">Current Year</small>
+                    <span id="cy_tov" class="h4 font-bold">...</span>                    
+                </div>
+                <div  class="col-md-4 kpi-s">
+                    <small class="text-muted">Current Month</small>
+                    <span id="cm_tov" class="h4 font-bold">...</span>                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Receivable Widget -->
+    <div id="os_widget" class="db-widget col-md-4">        
+        <div id="div_os" class="db-widget-cont">
+            <div id="div_os_head" class="row">
+                <h4>Receivable</h4>
+            </div>
+            <div class="graph row">
+                <div id="div_os_ph"></div>
+            </div>
+            <div id="div_os_foot" class="row">
+                <div class="col-md-4 kpi-s">
+                    <small class="text-muted">Outstanding</small>
+                    <span id="os_tot" class="h4 font-bold">...</span>                    
+                </div>
+                <div class="col-md-4 kpi-s">
+                    <small class="text-muted">Not due</small>
+                    <span id="os_not_due_tot" class="h4 font-bold">...</span>                    
+                </div>
+                <div  class="col-md-4 kpi-s">
+                    <small class="text-muted">Overdue</small>
+                    <span id="os_overdue_tot" class="h4 font-bold" style="color: rgb(150, 0, 0);">...</span>                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Receivable By Branch Widget -->
+    <div id="os_widget" class="db-widget col-md-4">        
+        <div id="div_os_br" class="db-widget-cont">
+            <div id="div_os_br_head" class="row">
+                <h4>Receivable - By Branch</h4>
+            </div>
+            <div class="graph row" style="height: 175px;">
+                <div id="div_os_br_ph"></div>
+            </div>            
+        </div>
+    </div>
+</div>
+<div class="row col-md-12" >    
+    <div id="cust_widget" class="db-widget col-md-8 auto-height-content-root"> 
+        <div id="div_cust" class="db-widget-cont">
+            <div id="div_cust_head" class="row" >
+                <div class="col-md-3">
+                    <h4 style="border-bottom: none; margin-left: 0px;">Top Customers</h4>
+                </div>
+                <div id="div_cust_filter" class="col-md-9 text-right" style="margin-top: 5px;" >
+                    <span class="inline">Sort By: &nbsp;</span>
+                    <label class="radio-inline"><input type="radio" id="opt_cust_sort" name="opt_cust_sort" value="tov" checked="checked" onclick="ac_db.custMon.cust_sort_opt_click(this.value);">Turnover</label>
+                    <label class="radio-inline"><input type="radio" id="opt_cust_sort" name="opt_cust_sort" value="os" onclick="ac_db.custMon.cust_sort_opt_click(this.value);">Outstanding</label>
+                    <label class="radio-inline"><input type="radio" id="opt_cust_sort" name="opt_cust_sort" value="overdue" onclick="ac_db.custMon.cust_sort_opt_click(this.value);">Overdue</label>
+                </div>  
+                <div class="col-md-12" style="padding-right: 10px;">
+                    <div style="border-bottom: 1px solid silver;"></div>
+                </div>
+            </div>
+            <div id="div_cust_data" class="row auto-height-parent" style="overflow-y: auto; height: 100%; margin-right: 10px;" 
+                 data-bind="template: { name: 'tmpl-top-customer' }">
+
+            </div>
+        </div>
+    </div>
+    <div id="other_widget" class="db-widget col-md-4 auto-height-content-root">
+        <div id="div_other" class="db-widget-cont">
+            <div id="div_other_head" class="row">
+                <h4>KPI(s)</h4>
+            </div>
+            <div class="row auto-height-parent">
+                <ul class="list-group" style="margin-left: 15px; margin-right: 12px;">
+                    <li class="list-group-item" style="border-bottom: 1px dotted silver;">
+                        <h2 class="no-margins" id="today_tov"></h2>
+                        <small class="text-muted">Today's Turnover</small>
+                    </li>
+                    <li class="list-group-item" style="border-bottom: 1px dotted silver;">
+                        <h2 class="no-margins" id="avr_coll_period"></h2>
+                        <small class="text-muted">Average Collection Period</small>
+                    </li>
+                    <li class="list-group-item" style="border-bottom: 1px dotted silver;">
+                        <h2 class="no-margins" id="rec_tov_ratio"></h2>
+                        <small class="text-muted">Receivable Turnover Ratio</small>
+                    </li>
+                    <li class="list-group-item" style="border-bottom: 1px dotted silver;">
+                        <h2 class="no-margins" id="bad_os" style="color: rgb(150,0,0);"></h2>
+                        <small class="text-muted">Overdues greater than 180 days</small>
+                    </li>
+                </ul>
+                <div>
+                    <a href="#" class="btn btn-default hidden" onclick="ac_db.custMon.dbexport('pdf');">pdf</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="tmpl-top-customer">
+    <ul id="cust_ul" data-bind="foreach: cust_data" class="list-group" style="margin-left: 15px; margin-right: 12px;">
+        <li class="list-group-item" style="border-bottom: 1px dotted silver">
+            <span class="pull-right">
+                <span  data-bind="text: coreWebApp.formatNumber(gross_amt(), 0)"></span>    
+                <span class="label label-info" data-bind="text: coreWebApp.formatNumber(pcnt_of_tot(), 2) + '%'"></span>
+            </span>                        
+            <span class="label label-success" data-bind="text: rank"></span>
+            <a  href="#"  data-bind="text: customer, click: function() { ac_db.custMon.cust_detail_click($data); }, attr: { id: 'cust_name_' + customer_id() }"></a>                        
+            <div class="row hidden" style="margin: 12px 10px 10px 10px; padding-left: 10px; border-left: 3px solid green;" data-bind="attr: { id: 'cust_detail_cont_' + customer_id() }"></div>
+        </li>
+    </ul>    
+</script>
+
+<script src="{{ ScriptHelper.registerScript('@app/core/ac/dashboard/custMon/custMon.js') }}"></script>
+<script type="text/javascript">
+                        window.ac_db.custMon.overview_pageload();
+                        $('body').children('#tooltip').remove();
+                        $("<div id='tooltip'></div>").css({
+                            position: "absolute",
+                            display: "none",
+                            border: "1px solid #fdd",
+                            padding: "2px",
+                            "background-color": "#fee",
+                            opacity: 0.80,
+                            "line-height": 1.2
+                        }).appendTo("body");
+
+</script>
+
+

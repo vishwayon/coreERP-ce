@@ -1,0 +1,43 @@
+<wizardView>
+    <header>Select Asset Items</header>
+    <sections>     
+        <collectionSection id="SelectAssetItem">
+            <connectionType>
+              <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    Select a.voucher_tran_id, a.asset_item_id, a.asset_class_id, a.asset_code, a.asset_name, a.purchase_amt, 
+                        coalesce(sum(b.dep_amt), 0) as dep_amt, a.asset_qty, a.asset_location_id, a.purchase_date, 0 as sale_amt, 0 as sale_amt_fc
+                    From fa.asset_item a
+                    left Join fa.asset_dep_ledger b on b.asset_class_id=a.asset_class_id and b.asset_item_id=a.asset_item_id
+                    where a.branch_id={branch_id}
+                            and a.company_id={company_id}
+                            and a.asset_class_id = :passet_class_id
+                            and a.asset_item_id not in (Select a.asset_item_id from fa.as_tran a where a.as_id&lt;&gt;'')
+                            and a.use_start_date &lt;= :pto_date
+                    group by a.voucher_tran_id, a.asset_item_id, a.asset_class_id, a.asset_code, a.asset_name, a.purchase_amt, a.asset_qty, a.asset_location_id, a.purchase_date
+                </command>
+                <params>
+                    <param id="passet_class_id">
+                        <wizard step="SelectAssetClass">asset_class_id</wizard>
+                    </param>
+                    <param id="pto_date">
+                        <wizard step="SelectAssetClass">doc_date</wizard>
+                    </param>
+                </params>
+            </sql>
+            <keyField id="asset_item_id"/>
+            <displayFields>
+                <displayField columnName="voucher_tran_id" displayName="Purchase #" id="voucher_tran_id" label="Purchase #" type="string" control="TextBox" size="s"/>
+                <displayField columnName="purchase_date" id="purchase_date" label="Purchase Date" type="date" control="Date" size="s"/>
+                <displayField columnName="asset_name" displayName="Asset Name" id="asset_name" label="Asset Name" type="string" control="TextBox" size="s"/>
+                <displayField columnName="purchase_amt" displayName="Purchase Amt" id="purchase_amt" label="Purchase Amt" type="decimal" control="TextBox" size="s"/>
+                <displayField columnName="dep_amt" displayName="Dep Amt" id="dep_amt" label="Dep Amt" type="decimal" control="TextBox" size="s" scale="amt"/>
+                <displayField columnName="sale_amt" displayName="Sale Amt" id="sale_amt" label="Sale Amt" type="decimal" control="TextBox" size="s" editMode="Edit"
+                     cdata-enable-on="core_fa.enable_sale_amt" scale="amt"/>
+                <displayField columnName="asset_qty" displayName="Asset Qty" id="asset_qty" label="Asset Qty" type="decimal" control="TextBox" size="s" scale="qty"/>            
+            </displayFields>
+        </collectionSection>
+    </sections>
+</wizardView>

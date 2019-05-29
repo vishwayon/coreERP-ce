@@ -1,0 +1,91 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <businessObject id="StockAdjustmentNote" type="Document">
+        <controlTable>
+            <tableName>st.stock_control</tableName>
+            <primaryKey>stock_id</primaryKey>
+            <jsonField id="annex_info">
+                <jfield name="adj_opbl" type="bool"/>
+            </jsonField>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save>    
+            <delete>
+                <useEntity/>      
+            </delete>
+            <customColumns>
+                <customColumn name="total_receipts" type="numeric"/>
+                <customColumn name="total_issues" type="numeric"/>
+            </customColumns>
+            <tranTable id="stock_tran">
+                <tableName>st.stock_tran</tableName>
+                <primaryKey>stock_tran_id</primaryKey>                
+                <customColumns>
+                    <customColumn name="ir" type="varchar" length="1"/>
+                    <customColumn name="bal_qty" type="decimal"/>
+                    <customColumn name="has_bal" type="bool"/>
+                    <customColumn name="has_qc" type="bool"/>
+                    <customColumn name="has_ts" type="bool"/>
+                </customColumns>
+                <relation linkType="OneToMany">
+                    <foreignKey>stock_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity orderby="sl_no"/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{stock_id}:{RowID}</primaryKeyPattern>
+                </save>         
+                <delete>
+                    <useEntity/>      
+                </delete>
+                <tableElongate id="ts" tableName="md.ts_tran" primaryKey="ts_tran_id" foreignKey="voucher_id"
+                               tranGroup="tran_group"/>
+                <tranTable id="sl_lot_alloc">
+                    <tableName>st.sl_lot_alloc</tableName>
+                    <primaryKey>sl_lot_alloc_id</primaryKey>
+                    <relation  linkType="OneToMany">
+                        <foreignKey>vch_tran_id</foreignKey>
+                        <rootForeignKey>voucher_id</rootForeignKey>
+                    </relation>
+                    <fetchOrCreate>
+                        <useEntity/>
+                    </fetchOrCreate>
+                    <save>
+                        <useEntity/>
+                        <primaryKeyPattern type="md5">{vch_tran_id}:{RowID}</primaryKeyPattern>
+                    </save>
+                    <delete>
+                        <useEntity/>
+                    </delete>
+                </tranTable>
+            </tranTable>
+            <tranTable id="stock_tran_qc">
+                <tableName>st.stock_tran_qc</tableName>
+                <primaryKey>stock_tran_qc_id</primaryKey>
+                <relation linkType="OneToMany">
+                    <foreignKey>stock_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{stock_id}:{RowID}</primaryKeyPattern>
+                </save>
+                <delete>
+                    <useEntity/>
+                </delete>
+            </tranTable>
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\st\stockAdjustmentNote\StockAdjustmentNoteEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

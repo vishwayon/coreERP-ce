@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.1.final using JasperReports Library version 6.1.1  -->
+<!-- 2016-10-15T14:19:21 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pay_slip" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="523" leftMargin="36" rightMargin="36" topMargin="36" bottomMargin="36" uuid="4c307fb7-97ec-429f-a8e6-44533a037434">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PostgresDA"/>
+	<property name="net.sf.jasperreports.export.xls.white.page.background" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.columns" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pcwf_header_template" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["cwf/report-templates/header-template.jasper"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_company_name" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["First Company Private Limtied"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_branch_name" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["First Branch"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_branch_address" class="java.lang.String">
+		<defaultValueExpression><![CDATA["First Floor, Technology Park, Pune"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_company_logo" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_ccy_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_txn_ccy" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["INR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_coreerp_ver" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["CoreERP Ver. 0.5.4"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_base_path" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcompany_id" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pbranch_id" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1000001]]></defaultValueExpression>
+	</parameter>
+	<parameter name="preport_period" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["As On 31-03-2015"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_date_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["dd-MM-yyyy"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_qty_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_fc_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.#"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pfrom_date" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="pto_date" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="pemployee_id" class="java.lang.Long" isForPrompting="false"/>
+	<parameter name="ppayroll_group_id" class="java.lang.Long" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[Select *
+From hr.payslip_report
+	(
+        $P{pbranch_id},
+		$P{ppayroll_group_id},
+		$P{pemployee_id},
+		$P{pfrom_date}::Date, 
+		$P{pto_date}::Date
+	)]]>
+	</queryString>
+	<field name="full_employee_name" class="java.lang.String"/>
+	<field name="employee_no" class="java.lang.String"/>
+	<field name="employee_id" class="java.lang.Long"/>
+	<field name="branch_name" class="java.lang.String"/>
+	<field name="doc_date" class="java.sql.Date"/>
+	<field name="tot_working_days" class="java.lang.Short"/>
+	<field name="pay_days" class="java.lang.Short"/>
+	<field name="no_pay_days" class="java.lang.Short"/>
+	<field name="entered_by" class="java.lang.String"/>
+	<field name="posted_by" class="java.lang.String"/>
+	<field name="designation" class="java.lang.String"/>
+	<field name="join_date" class="java.sql.Date"/>
+	<field name="bank_account_no" class="java.lang.String"/>
+	<field name="amt_in_words" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pf_acc_no" class="java.lang.String"/>
+	<field name="esic_acc_no" class="java.lang.String"/>
+	<field name="pan" class="java.lang.String"/>
+	<variable name="net_amt_payable" class="java.math.BigDecimal"/>
+	<group name="grp_employee" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{employee_id}]]></groupExpression>
+		<groupHeader>
+			<band height="65">
+				<frame>
+					<reportElement x="0" y="8" width="523" height="57" isRemoveLineWhenBlank="true" uuid="12e5c33c-f19f-49d2-a068-5e67cb8f67e3"/>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" x="0" y="0" width="90" height="14" isRemoveLineWhenBlank="true" uuid="45e514ec-360c-4774-8326-28381055e101">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA["Employee ID"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" isPrintRepeatedValues="false" x="100" y="0" width="190" height="14" isRemoveLineWhenBlank="true" uuid="93dc99e0-9242-4a60-a85a-934592f29aaf">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<printWhenExpression><![CDATA[$F{employee_no} != null]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{employee_no}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" x="90" y="0" width="10" height="14" isRemoveLineWhenBlank="true" uuid="9cf0b70c-bb81-4c5f-acba-deae1f10bb67">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" x="90" y="14" width="10" height="14" isRemoveLineWhenBlank="true" uuid="81570b70-7d13-436c-9915-e0d025ebcacc">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" x="0" y="14" width="90" height="14" isRemoveLineWhenBlank="true" uuid="ec45c0cb-6e14-4430-9d7d-200b83bf79c8">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA["Employee Name"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalLabel" positionType="Float" isPrintRepeatedValues="false" x="100" y="14" width="190" height="14" isRemoveLineWhenBlank="true" uuid="42c4b00c-bbd6-47db-8699-e3a27d699e05">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<printWhenExpression><![CDATA[$F{full_employee_name} != null]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{full_employee_name}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" isPrintRepeatedValues="false" x="100" y="28" width="190" height="14" isRemoveLineWhenBlank="true" uuid="6209f334-1698-4d40-b4aa-452efb980cd0">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<printWhenExpression><![CDATA[$F{designation} !=null]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{designation}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" x="90" y="28" width="10" height="14" isRemoveLineWhenBlank="true" uuid="80947ad5-32e2-4f0a-bc66-961233369cb3">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" x="0" y="28" width="90" height="14" isRemoveLineWhenBlank="true" uuid="aafc2cd6-b7b4-4eb1-968a-a24eaaa40315">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA["Designation"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement key="" style="NormalText" positionType="Float" isPrintRepeatedValues="false" x="390" y="14" width="132" height="14" isRemoveLineWhenBlank="true" uuid="71e6c3be-2677-42c3-8811-e9ff5fc77eb2">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{esic_acc_no}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" x="380" y="14" width="10" height="14" isRemoveLineWhenBlank="true" uuid="90cc5971-e1f3-42ef-9a8d-d5aed4095c54">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" x="291" y="14" width="89" height="14" isRemoveLineWhenBlank="true" uuid="ed0f42a5-de4e-4aa0-8f5b-1552818fec58">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA["ESIC A/c Number"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" x="291" y="28" width="89" height="14" isRemoveLineWhenBlank="true" uuid="5a2802fb-f824-4104-ade6-bfb3f1249214">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA["PF A/c Number"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" x="380" y="28" width="10" height="14" isRemoveLineWhenBlank="true" uuid="b956d67d-0ccd-45ff-abcd-f53fca6c8aea">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" isPrintRepeatedValues="false" x="390" y="28" width="132" height="14" isRemoveLineWhenBlank="true" uuid="595ce7d1-0e2c-4678-b49b-00d3f5e339df">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<printWhenExpression><![CDATA[$F{branch_name} !=null]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{pf_acc_no}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" x="0" y="42" width="90" height="14" isRemoveLineWhenBlank="true" uuid="1baf755f-d712-4f47-82ad-421744c5c6ca">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA["Branch"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" isPrintRepeatedValues="false" x="100" y="42" width="132" height="14" isRemoveLineWhenBlank="true" uuid="64fa74bc-ddd9-45fd-9407-ea4b147f3f7b">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<printWhenExpression><![CDATA[$F{branch_name} !=null]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{branch_name}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" x="90" y="42" width="10" height="14" isRemoveLineWhenBlank="true" uuid="8b6f138f-ea92-4386-a728-82880f6d06ec">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" x="291" y="42" width="89" height="14" isRemoveLineWhenBlank="true" uuid="a985a6ca-56d2-4ff7-a907-dd38bd34f919">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA["Bank A/c Number"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" x="380" y="42" width="10" height="14" isRemoveLineWhenBlank="true" uuid="3f3e48ab-3bc7-4312-abf8-8d57981a89f6">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" isPrintRepeatedValues="false" x="390" y="42" width="132" height="14" isRemoveLineWhenBlank="true" uuid="f00d1ea1-430d-45b5-9d59-1399ecdcd96f">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<printWhenExpression><![CDATA[$F{bank_account_no} != null]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{bank_account_no}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" isPrintRepeatedValues="false" x="390" y="0" width="132" height="14" isRemoveLineWhenBlank="true" uuid="95bf7004-e7aa-41db-861b-cdccc7a50901">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<printWhenExpression><![CDATA[$F{join_date} !=null]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{join_date}]]></textFieldExpression>
+						<patternExpression><![CDATA[$P{pcwf_date_format}]]></patternExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" x="380" y="0" width="10" height="14" isRemoveLineWhenBlank="true" uuid="8ca14810-1ed5-43b3-ad0a-eca88e03bc3b">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" x="291" y="0" width="89" height="14" isRemoveLineWhenBlank="true" uuid="4ced6bc0-111f-4481-a36b-2cd4b5c85c60">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA["Date Of Joining"]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+			<band height="46">
+				<frame>
+					<reportElement positionType="Float" x="0" y="18" width="261" height="28" uuid="a4ee3e7d-a89e-4987-98ac-3f199ed98cf1"/>
+					<box>
+						<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+					</box>
+					<textField>
+						<reportElement style="NormalLabel" positionType="Float" x="0" y="2" width="79" height="14" uuid="74927b59-7470-4030-b233-573a9ac8e215"/>
+						<box leftPadding="4"/>
+						<textFieldExpression><![CDATA["Emoluments"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalLabel" positionType="Float" x="189" y="2" width="71" height="14" uuid="3963c852-26fc-42ab-857d-505526860254"/>
+						<box leftPadding="0" rightPadding="2"/>
+						<textElement textAlignment="Right"/>
+						<textFieldExpression><![CDATA["Amount"]]></textFieldExpression>
+					</textField>
+					<textField pattern="">
+						<reportElement style="FineNotes" positionType="Float" x="189" y="16" width="71" height="10" uuid="a2b71a0c-6dbb-4756-ae6d-6da0bfbea770"/>
+						<box rightPadding="2"/>
+						<textElement textAlignment="Right" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA["("  + $P{pcwf_txn_ccy} + ")"]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="261" y="18" width="262" height="28" uuid="18eaef91-547c-475b-a4e5-060bbdb72cfa"/>
+					<box>
+						<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+					</box>
+					<textField>
+						<reportElement style="NormalLabel" positionType="Float" x="0" y="2" width="79" height="14" uuid="9f46f215-ddbc-4aed-9fd8-e23fb026c356"/>
+						<box leftPadding="4"/>
+						<textFieldExpression><![CDATA["Deductions"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalLabel" positionType="Float" x="189" y="2" width="71" height="14" uuid="cb9f688a-ed5d-4b58-8c49-d1f4564a5350"/>
+						<box leftPadding="0" rightPadding="2"/>
+						<textElement textAlignment="Right"/>
+						<textFieldExpression><![CDATA["Amount"]]></textFieldExpression>
+					</textField>
+					<textField pattern="">
+						<reportElement style="FineNotes" positionType="Float" x="189" y="16" width="71" height="10" uuid="44e01e57-b115-43de-9707-66826019a389"/>
+						<box rightPadding="2"/>
+						<textElement textAlignment="Right" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA["("  + $P{pcwf_txn_ccy} + ")"]]></textFieldExpression>
+					</textField>
+				</frame>
+				<textField>
+					<reportElement style="NormalText" positionType="Float" x="291" y="2" width="89" height="14" isRemoveLineWhenBlank="true" uuid="97eaf5ca-b3d6-474f-a4e4-428fcab85d55">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<box topPadding="0"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["Total Working Days"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" positionType="Float" x="423" y="2" width="50" height="14" isRemoveLineWhenBlank="true" uuid="65002938-daae-4648-943c-dcd47a84a9d2">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<box topPadding="0"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["Days Paid"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" positionType="Float" x="473" y="2" width="10" height="14" isRemoveLineWhenBlank="true" uuid="1228dda5-5900-4268-b66c-14f83623e3c5">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<box topPadding="0"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" positionType="Float" x="380" y="2" width="10" height="14" isRemoveLineWhenBlank="true" uuid="755a24e1-134a-4360-979a-95c2058509c0">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+					</reportElement>
+					<box topPadding="0"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" positionType="Float" x="390" y="2" width="19" height="14" isRemoveLineWhenBlank="true" uuid="cc9a2390-b8fe-4438-98bb-f5711ef2e7f5">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<box topPadding="0"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{tot_working_days}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" positionType="Float" x="483" y="2" width="19" height="14" isRemoveLineWhenBlank="true" uuid="61789048-bec8-49cb-a2cb-e48cefdec2ca">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+						<printWhenExpression><![CDATA[$F{join_date} !=null]]></printWhenExpression>
+					</reportElement>
+					<box topPadding="0"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{pay_days}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="36">
+				<frame>
+					<reportElement positionType="Float" x="0" y="0" width="523" height="36" isRemoveLineWhenBlank="true" uuid="471ec269-67d1-48df-a281-f3ab4c0023e2">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+					</box>
+					<textField pattern="">
+						<reportElement style="NormalLabel" positionType="Float" x="324" y="5" width="120" height="14" uuid="041e7cc1-0221-4930-b1dd-91e9c2096eb1">
+							<printWhenExpression><![CDATA[$V{net_amt_payable} != null]]></printWhenExpression>
+						</reportElement>
+						<box leftPadding="4"/>
+						<textElement textAlignment="Right"/>
+						<textFieldExpression><![CDATA["Net Salary :"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalLabel" positionType="Float" x="444" y="5" width="70" height="14" uuid="6cc6dc8c-7ab7-4247-b8b9-c12650f0d3d1">
+							<printWhenExpression><![CDATA[$V{net_amt_payable} != null]]></printWhenExpression>
+						</reportElement>
+						<box leftPadding="4"/>
+						<textElement textAlignment="Right"/>
+						<textFieldExpression><![CDATA[$V{net_amt_payable}]]></textFieldExpression>
+						<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="NormalText" x="0" y="21" width="519" height="14" isRemoveLineWhenBlank="true" uuid="02ea67d5-fdbe-4c5b-90e9-6b6780530218">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						</reportElement>
+						<box topPadding="0" leftPadding="4"/>
+						<textElement verticalAlignment="Top">
+							<font isBold="false"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Net Salary Paid is " + $F{amt_in_words}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" x="0" y="5" width="324" height="14" isRemoveLineWhenBlank="true" uuid="0391cafd-4495-4b67-b770-d869877b809f">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						</reportElement>
+						<box topPadding="0" leftPadding="4"/>
+						<textElement textAlignment="Left" verticalAlignment="Top"/>
+						<textFieldExpression><![CDATA["Paid Through A/c Transfer."]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+			<band height="61">
+				<frame>
+					<reportElement positionType="Float" x="0" y="0" width="523" height="61" isRemoveLineWhenBlank="true" uuid="41894605-949b-4777-8d59-31897a785f3b">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+					</box>
+					<textField pattern="">
+						<reportElement style="NormalText" positionType="Float" x="144" y="0" width="79" height="14" uuid="a14017f2-a15c-469e-9afa-a5877175d788">
+							<printWhenExpression><![CDATA[$V{net_amt_payable} != null]]></printWhenExpression>
+						</reportElement>
+						<box leftPadding="0"/>
+						<textElement textAlignment="Center"/>
+						<textFieldExpression><![CDATA["Checked By"]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement style="NormalText" positionType="Float" x="0" y="0" width="143" height="14" isRemoveLineWhenBlank="true" uuid="0a3fdf7e-45d6-4609-9d59-52e839776514">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						</reportElement>
+						<box topPadding="0" leftPadding="0"/>
+						<textElement textAlignment="Center" verticalAlignment="Top"/>
+						<textFieldExpression><![CDATA["Employee's Signature"]]></textFieldExpression>
+					</textField>
+					<textField pattern="">
+						<reportElement style="NormalText" positionType="Float" x="143" y="47" width="79" height="14" uuid="a21b9bac-95bd-4280-a2c5-880b7fbe2e92">
+							<printWhenExpression><![CDATA[$V{net_amt_payable} != null]]></printWhenExpression>
+						</reportElement>
+						<box leftPadding="0">
+							<topPen lineWidth="0.2"/>
+						</box>
+						<textElement textAlignment="Center"/>
+						<textFieldExpression><![CDATA["A/c Head"]]></textFieldExpression>
+					</textField>
+					<line>
+						<reportElement x="143" y="0" width="1" height="60" uuid="ffb08fe9-865f-400b-8171-d9f104799155">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						</reportElement>
+					</line>
+					<line>
+						<reportElement x="223" y="0" width="1" height="60" uuid="129811d6-8539-4ff6-8a5e-189127a6f21c">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						</reportElement>
+					</line>
+					<textField pattern="">
+						<reportElement style="NormalText" positionType="Float" x="224" y="0" width="299" height="14" uuid="02049bb0-9d82-4b8b-bee4-c51215a5e97e">
+							<printWhenExpression><![CDATA[$V{net_amt_payable} != null]]></printWhenExpression>
+						</reportElement>
+						<box leftPadding="0"/>
+						<textElement textAlignment="Center"/>
+						<textFieldExpression><![CDATA["Company Stamp And Signature"]]></textFieldExpression>
+					</textField>
+					<textField pattern="">
+						<reportElement style="NormalText" positionType="Float" x="224" y="46" width="299" height="14" uuid="0cdc7edb-da2d-4c30-9f36-a6c55f00be97">
+							<printWhenExpression><![CDATA[$V{net_amt_payable} != null]]></printWhenExpression>
+						</reportElement>
+						<box leftPadding="0">
+							<topPen lineWidth="0.2"/>
+						</box>
+						<textElement textAlignment="Center"/>
+						<textFieldExpression><![CDATA["Accountant"]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="60" splitType="Stretch">
+			<textField>
+				<reportElement style="ReportTitle" positionType="Float" x="0" y="41" width="399" height="19" uuid="b683b080-0c74-4af7-bae8-2231bc5a13eb">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{preport_period}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="0" width="523" height="40" uuid="fd573bde-26a5-467c-9601-ef6eedfc55d1"/>
+				<subreportParameter name="pcwf_company_name">
+					<subreportParameterExpression><![CDATA[$P{pcwf_company_name}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_branch_name">
+					<subreportParameterExpression><![CDATA[$P{pcwf_branch_name}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_branch_address">
+					<subreportParameterExpression><![CDATA[$P{pcwf_branch_address}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_company_logo">
+					<subreportParameterExpression><![CDATA[$P{pcwf_company_logo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{pcwf_header_template}]]></subreportExpression>
+			</subreport>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="29" splitType="Stretch">
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="523" height="29" backcolor="#FFFFFF" uuid="3edc4769-4549-4818-833c-ec1adb97d952"/>
+				<subreportParameter name="pcwf_amt_format">
+					<subreportParameterExpression><![CDATA[$P{pcwf_amt_format}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pemployee_id">
+					<subreportParameterExpression><![CDATA[$F{employee_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pfrom_date">
+					<subreportParameterExpression><![CDATA[$P{pfrom_date}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pto_date">
+					<subreportParameterExpression><![CDATA[$P{pto_date}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pbranch_id">
+					<subreportParameterExpression><![CDATA[$P{pbranch_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="NetAmount" toVariable="net_amt_payable"/>
+				<subreportExpression><![CDATA["/core/hr/reports/paySlip/PaySlipTran.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="21" splitType="Stretch"/>
+	</summary>
+</jasperReport>

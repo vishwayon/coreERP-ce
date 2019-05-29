@@ -1,0 +1,21 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="MaterialType">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select material_type_id, material_type
+                from st.material_type 
+                Where company_id={company_id}
+                order by material_type
+            </command>
+        </sql>
+        <keyField id="material_type_id"/>
+    </lookup>
+</cwFramework>
+
+    

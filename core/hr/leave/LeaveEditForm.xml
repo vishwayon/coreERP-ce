@@ -1,0 +1,69 @@
+
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Leave" type="Master"  bindingBO="leave/Leave">
+        <header>Leave</header>
+        <keyField>leave_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <clientJsCode>leave/leave_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="employee_id" label="Employee" type="int" control="SmartCombo" size="4">
+                    <lookup>
+                        <valueMember>employee_id</valueMember>
+                        <displayMember>full_employee_name</displayMember>
+                        <namedLookup>../core/hr/lookups/Employee.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="finyear" label="Fin Year" type="string" control="TextBox" size="1" maxLength="4" readOnly="true"/>
+                <field id="applied_on" label="Applied On" type="date" control="Date" size="ms"/>
+                <nextRow/>
+                <field id="leave_type_id" label="Leave Type" type="int" control="SmartCombo" size="2">
+                    <lookup>
+                        <valueMember>leave_type_id</valueMember>
+                        <displayMember>leave_type</displayMember>
+                        <namedLookup>../core/hr/lookups/LeaveType.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="from_date" label="Leave From" type="date" control="Date" size="ms"/>
+                <field id="to_date" label="Leave To" type="date" control="Date" size="ms"/>
+                <nextRow/>
+                <field id="replacement_required" label="Replacement Required" type="bool" control="CheckBox" size="ms"/>
+                <field id="replacing_emp_id" label="Replaced by" type="int" control="SmartCombo" size="4" isOptional="true" cdata-enable-on ="core_leave.replacement_req">
+                    <lookup>
+                        <valueMember>employee_id</valueMember>
+                        <displayMember>full_employee_name</displayMember>
+                        <namedLookup>../core/hr/lookups/Employee.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <field id="is_authorised_on" label="Authorised Date" type="bool" control="CheckBox" size="2" isOptional="true"/>                         
+                <field id="authorised_on" label="" type="date" control="Date" size="2"  isOptional="true" 
+                       cdata-enable-on="core_leave.enable_authorised_date"/>
+
+                <nextRow/>
+                <field id="authorised_by_emp_id" label="Authorised by" type="int" control="SmartCombo" size="4" isOptional="true" cdata-enable-on="core_leave.enable_authorised_date">
+                    <lookup>
+                        <valueMember>employee_id</valueMember>
+                        <displayMember>full_employee_name</displayMember>
+                        <namedLookup>../core/hr/lookups/Employee.xml</namedLookup>
+                        <filterEvent>core_leave.leave_authorised_combo_filter</filterEvent>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <field id="is_rejoin_date" label="Rejoin Date" type="bool" control="CheckBox" size="2" isOptional="true"/>                         
+                <field id="rejoin_date" label="" type="date" control="Date" size="2"  isOptional="true" 
+                       cdata-enable-on="core_leave.enable_rejoin_date"/>         
+                <nextRow/>
+                
+            </dataBinding>  
+        </controlSection>
+    </formView>
+</cwFramework>
+              
+              
+ 
+ 

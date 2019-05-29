@@ -1,0 +1,55 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Salesman" type="Master" bindingBO="salesman/Salesman">    
+        <header>Salesman</header>    
+        <keyField>salesman_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <clientJsCode>ar_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="salesman_name" label="Salesman" type="string" control="TextBox" size="s" maxLength="50" />
+                <nextRow/>   
+                <field id="salesman_type" label="Salesman Type" type="int" control="SimpleCombo" size="ms">
+                    <options>
+                        <option value="0">Internal</option>
+                        <option value="2">Relationship Manager</option>
+                        <option value="1">Independent Representative</option>
+                    </options>
+                </field>  
+                <field id="parent_salesman_id" label="Parent Salesman" type="int" control="SmartCombo"  size="3" isOptional="true">
+                    <lookup>
+                        <valueMember>salesman_id</valueMember>
+                        <displayMember>salesman_name</displayMember>
+                        <namedLookup>../core/ar/lookups/Salesman.xml</namedLookup>
+                        <filterEvent>core_ar.parent_sm_combo_filter</filterEvent>
+                    </lookup>   
+                </field>                          
+                <field id="user_id" label="User" type="int" control="SmartCombo" size="2" isOptional="true">                   
+                    <lookup> 
+                        <valueMember>user_id</valueMember>
+                        <displayMember>full_user_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/UserCompany.xml</namedLookup>
+                    </lookup>    
+                </field>    
+                <tranSection label="Address Details"  editMode="Edit" dataRelation="OneToOne">
+                    <dataBinding dataProperty="salesman_address_tran">
+                        <field id="mobile" label="Mobile No" type="string" control="TextBox" size="s" maxLength="50" isOptional="true" />               
+                        <field id="phone" label="Phone" type="string" control="TextBox" size="s" maxLength="50"  isOptional="true"/> 
+                        <field id="email" label="Email" type="string" control="TextBox" size="s" maxLength="50"  isOptional="true"/>        
+                        <nextRow/>                       
+                        <field id="address" label="Address" type="string" rows="4" control="TextArea" size="m" maxLength="500" isOptional="true" /> 
+                        <nextRow/>
+                        <field id="city" label="City" type="string" control="TextBox" size="s" maxLength="50" isOptional="true"/>                
+                        <field id="pin" label="Pin" type="string" control="TextBox" size="ms" maxLength="8" isOptional="true"/>          
+                        <nextRow/>   
+                        <field id="state" label="State" type="string" control="TextBox" size="s" maxLength="50" isOptional="true"/>                                 
+                        <field id="country" label="Country" type="string" control="TextBox" size="s" maxLength="50" isOptional="true"/> 
+                    </dataBinding>
+                </tranSection>    
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

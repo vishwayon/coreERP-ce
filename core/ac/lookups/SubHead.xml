@@ -1,0 +1,16 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="SubHead">
+        <connectionType>
+            <companyDB/>
+          </connectionType>
+        <sql>
+            <command>
+               select sub_head_id, sub_head, sub_head_dim_id from ac.sub_head Order By sub_head
+            </command>
+        </sql>
+        <keyField id="sub_head_id"/>
+    </lookup>
+</cwFramework>

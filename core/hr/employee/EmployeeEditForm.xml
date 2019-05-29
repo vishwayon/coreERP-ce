@@ -1,0 +1,134 @@
+
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Employee" type="Master"  bindingBO="employee/Employee">
+        <header>Employee</header>
+        <keyField>employee_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <clientJsCode>employee/employee_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>                        
+                <field id="title" label="Title" type="string" control="TextBox" size="1" maxLength="10" />
+                <field id="firstname" label="First Name" type="string" control="TextBox" size="3" maxLength="100"/>
+                <field id="middlename" label="Middle Name" type="string" control="TextBox" size="3" isOptional="true"  maxLength="100"/>
+                <field id="lastname" label="Last Name" type="string" control="TextBox" size="3" maxLength="100" />
+                <nextRow/> 
+                <field id="employee_no" label="Employee No" type="string" control="TextBox" size="2" maxLength="50" />
+                <customField id="full_employee_name" label="Full Name" type="string" control= "TextBox" size="8"   
+                             readOnly="true" cdata-bind="style: {color: full_employee_name != 0 ? &quot;blue&quot; : &quot;inherit&quot; }"  >
+                    <computedField>
+                        var fullname = new String();                        
+                        fullname = new String(this.firstname()+' ' +this.middlename() + ' ' +this.lastname());
+                        return fullname;
+                    </computedField>
+                </customField> 
+                <nextRow/>
+                <field id="report_to_employee_id" label="Report To" type="int" control="SmartCombo" size="3" isOptional="true">
+                    <lookup>
+                        <valueMember>employee_id</valueMember>
+                        <displayMember>full_employee_name</displayMember>
+                        <namedLookup>../core/hr/lookups/Employee.xml</namedLookup>
+                    </lookup>   
+                </field> 
+                <field id="payroll_group_id" label="Payroll Group" type="int" control="SmartCombo" size="2">
+                    <lookup>
+                        <valueMember>payroll_group_id</valueMember>
+                        <displayMember>payroll_group</displayMember>
+                        <namedLookup>../core/hr/lookups/Payrollgroup.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="join_date" label="Date of Joining" type="date" control="Date" size="2"/>
+                <field id="is_resign_date" label="Resigned On" type="bool" control="CheckBox" size="2" isOptional="true"/>                         
+                <field id="resign_date" label="" type="date" control="Date" size="2"  isOptional="true" cdata-enable-on="core_employee.enable_resign_date"/>
+                <nextRow/>
+                <sectionHeader label="Personal Information"/> 
+                <field id="fathername" label="Father Name" type="string" control="TextBox" size="4" maxLength="100" isOptional="true"  />
+                <field id="gender" label="Gender" control="SimpleCombo" type="string" size="2">
+                    <options>
+                        <option value="1">Male</option>
+                        <option value="2">Female</option>                    
+                    </options>
+                </field>  
+                <field id="dob" label="Date Of Birth" type="date" control="Date" size="ms"/>
+                <nextRow/>
+                <field id="birthplace" label="Birth Place" type="string" control="TextBox" size="2" maxLength="50" isOptional="true"/>      
+                <field id="marital_status" label="Marital Status" control="SimpleCombo" type="string" size="2">
+                    <options>
+                        <option value="Single">Single</option>
+                        <option value="Married">Married</option>                    
+                    </options>
+                </field>  
+                <field id="height" label="Height" type="string" control="TextBox" size="2" maxLength="50"  isOptional="true"/>
+                <field id="weight" label="Weight" type="string" control="TextBox" size="2" maxLength="50"  isOptional="true"/>
+                <nextRow/>
+                <field id="bloodgroup" label="Blood Group" type="string" control="TextBox" size="2" maxLength="4"  isOptional="true"/>
+                <field id="nationality" label="Nationality" type="string" control="TextBox" size="2" maxLength="50"  isOptional="true"/>
+                <field id="religion" label="Religion" type="string" control="TextBox" size="2" maxLength="50"  isOptional="true"/>
+                <field id="skill_id" label="Skill" type="int" control="SmartCombo"  size="ms" isOptional="true">
+                    <lookup>
+                        <valueMember>skill_id</valueMember>
+                        <displayMember>skill</displayMember>
+                        <namedLookup>../core/hr/lookups/Skill.xml</namedLookup>
+                    </lookup>   
+                </field> 
+                <nextRow/> 
+                <tranSection label="Employee Stat Info"  editMode="Edit" dataRelation="OneToOne">
+                    <dataBinding dataProperty="employee_stat_regn">
+                        <field id="pf_acc_no" label="PF A/c No" type="string" control="TextBox" size="2" maxLength="50"  isOptional="true"/>
+                        <field id="esic_acc_no" label="ESIC A/c No" type="string" control="TextBox" size="2" maxLength="50"  isOptional="true"/>
+                        <field id="pan" label="PAN" type="string" control="TextBox" size="2" maxLength="10"  isOptional="true"/>
+                    </dataBinding>
+                </tranSection> 
+                <nextRow/>               
+                <tranSection label="Employee Bank Details"  editMode="Add|Edit|Delete" fixedWidth="1050">
+                    <dataBinding dataProperty="employee_bank_info_tran">
+                        <field id="bank_name" label="Bank Name" type="string" control="TextBox" size="2" maxLength="250"/> 
+                        <field id="bank_branch" label="Bank Branch" type="string" control="TextBox" size="2" maxLength="250"/> 
+                        <field id="bank_address" label="Bank Address" type="string" control="TextBox" size="3" maxLength="500"/>
+                        <field id="bank_account_no" label="Bank Account No" type="string" control="TextBox" size="2" maxLength="50"/>
+                        <field id="cb_id_code" label="CB ID Code" type="string" control="TextBox" size="1" maxLength="8" isOptional="true"/>
+                        <field id="routing_code" label="Routing Code" type="string" control="TextBox" size="1" maxLength="9" isOptional="true"/>
+                        <field id="other_bank_info" label="Other Bank Datails" type="string" control="TextBox" size="2" maxLength="500" isOptional="true"/>
+                        <field id="default_bank" label="Default Bank" type="bool" control="CheckBox" size="1"/> 
+                    </dataBinding>
+                </tranSection>    
+                <nextRow/>
+                <tranSection label="Employee Address"  editMode="Edit" dataRelation="OneToOne">
+                    <dataBinding dataProperty="employee_address_tran">
+                        <field id="address_type_id" label="Address Type" type="int" control="SmartCombo" size="s">
+                            <lookup>
+                                <valueMember>address_type_id</valueMember>
+                                <displayMember>address_type</displayMember>
+                                <namedLookup>../cwf/sys/lookups/AddressType.xml</namedLookup>
+                            </lookup>   
+                        </field>                
+                        <field id="contact_person" label="Contact Person" type="string" control="TextBox" size="s" maxLength="50" />      
+                        <field id="fax" label="Fax" type="string" control="TextBox" size="s" maxLength="50"  isOptional="true"/>       
+                        <nextRow/>                       
+                        <field id="mobile" label="Mobile No" type="string" control="TextBox" size="s" maxLength="50" />               
+                        <field id="phone" label="Phone" type="string" control="TextBox" size="s" maxLength="50"  isOptional="true"/> 
+                        <field id="email" label="Email" type="string" control="TextBox" size="s" maxLength="50"  isOptional="true"/>        
+                        <nextRow/>                       
+                        <field id="address" label="Address" type="string" rows="4" control="TextArea" size="m" maxLength="500" /> 
+                        <nextRow/>
+                        <field id="city" label="City" type="string" control="TextBox" size="s" maxLength="50" isOptional="true"/>                
+                        <field id="pin" label="Pin" type="string" control="TextBox" size="ms" maxLength="8" isOptional="true"/>          
+                        <nextRow/>   
+                        <field id="state" label="State" type="string" control="TextBox" size="s" maxLength="50" isOptional="true"/>                                 
+                        <field id="country" label="Country" type="string" control="TextBox" size="s" maxLength="50" isOptional="true"/> 
+                    </dataBinding>
+                </tranSection> 
+                <nextRow/>
+                <field id="remarks" label="Remarks" type="string" control="TextArea" rows="3" size="8" maxLength="500" isOptional="true"/>
+                <nextRow/>
+            </dataBinding>  
+        </controlSection>
+    </formView>
+</cwFramework>
+              
+              
+ 
+ 

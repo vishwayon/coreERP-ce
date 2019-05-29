@@ -1,0 +1,119 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Gratuity" type="Document" bindingBO="gratuity/Gratuity">
+        <header>Gratuity</header>
+        <keyField>gratuity_id</keyField>
+        <printView rptOption="gratuity/GratuityPrint">
+            <rptParams>
+                <param id="pgratuity_id">gratuity_id</param>
+            </rptParams>
+        </printView>
+        <newDocEnabled wizard="gratuity/GratuityWizard" step="SelectEmployee">
+            <docType>GR</docType> 
+        </newDocEnabled>
+        <deleteDocEnabled/>
+        <clientJsCode>gratuity/gratuity_clientcode.js</clientJsCode>
+        <jsEvents>
+            <afterLoadEvent>core_gratuity.gratuity_afterload</afterLoadEvent>
+        </jsEvents> 
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="gratuity_id" label="Voucher No" type="string" control="TextBox" size="ms" maxLength="50" isOptional="true" readOnly="true" forStatus="true"/>
+                <field id="doc_date" label="Date" type="date" control="Date"  size="ms" range="finYear"/>
+                <nextRow/>
+                <field id="employee_id" label="Employee" type="int" control="SmartCombo" size="4" readOnly="true">
+                    <lookup>
+                        <valueMember>employee_id</valueMember>
+                        <displayMember>full_employee_name</displayMember>
+                        <namedLookup>../core/hr/lookups/Employee.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <field id="gratuity_from_date" label="From Date " type="date" control="Date"  size="ms" />
+                <field id="gratuity_to_date" label="To Date" type="date" control="Date"  size="ms" range="finYear"/>
+                <dummy/>                
+                <cButton id="calc_gratuity" onClick="core_gratuity.calculate_gratuity" label="Calculate Gratuity" />
+                <tranSection label="Gratuity Tran" editMode="Auto">
+                    <dataBinding dataProperty="gratuity_tran">
+                        <field id="sl_no" label="Sl No" type="int" control="TextBox" size="xs" maxLength="5" isOptional="true" readOnly="true"/> 
+                        <field id="slab_from_date" label="From " type="date" control="Date"  size="ms"/>
+                        <field id="slab_to_date" label="To" type="date" control="Date"  size="ms"/>
+                        <field id="unpaid_days" label="Unpaid Days" type="int" control="TextBox" size="xs" maxLength="50" isOptional="true" readOnly="true"/> 
+                        <field id="slab_days" label="Days" type="int" control="TextBox" size="xs" maxLength="50" isOptional="true" readOnly="true"/>  
+                        <field id="gratuity_days" label="Gratuity Days" type="int" control="TextBox" size="xs" maxLength="50" isOptional="true" readOnly="true"/>   
+                        <field id="amount" label="Amount" type="decimal" control="TextBox" size="ms" maxLength="50" isOptional="true" readOnly="true"/>                           
+                    </dataBinding>
+                </tranSection> 
+                <nextRow/>
+                
+                <customField id="total_days" label="Total days" type="int" control="TextBox" allowNegative="true" size="ms" readOnly="true">
+                    <computedField> 
+                        var totaldays = new Number();
+                       
+                        for(var p = 0; p &lt; coreWebApp.ModelBo.gratuity_tran().length; ++p)
+                        {
+                        totaldays += new Number(coreWebApp.ModelBo.gratuity_tran()[p].slab_days());
+                        }
+                        return totaldays;
+                    </computedField>
+                </customField> 
+                
+                <customField id="gratuity_days" label="Gratuity days" type="int" control="TextBox" allowNegative="true" size="ms" readOnly="true">
+                   <computedField> 
+                       var gratuitydays = new Number();
+
+                        for(var p = 0; p &lt; coreWebApp.ModelBo.gratuity_tran().length; ++p)
+                        {
+                            gratuitydays += new Number(coreWebApp.ModelBo.gratuity_tran()[p].gratuity_days());
+
+                        }
+                        return gratuitydays;
+                        
+                    </computedField>
+                </customField> 
+                
+                <field id="total_amt" label="Total Amount" type="decimal" control="TextBox" allowNegative="true" size="ms" readOnly="true">
+                    <computedField> 
+                        var total = new Number();
+                       
+                        for(var p = 0; p &lt; coreWebApp.ModelBo.gratuity_tran().length; ++p)
+                        {
+                        total += new Number(coreWebApp.ModelBo.gratuity_tran()[p].amount());
+                        }
+                        
+                        return total.toFixed(2);
+                    </computedField>
+                </field> 
+                <field id="two_years_wages_amt" label="Two Yrs Wages Amt" type="decimal" control="TextBox" allowNegative="true" size="ms" readOnly="true" />
+                <field id="reducible_amt" label="Reducible Amount" type="decimal" control="TextBox" allowNegative="true" size="ms" readOnly="true">
+                    <computedField> 
+                       
+                        var reducible_amount=  new Number();
+                       
+                        if (this.total_amt() > coreWebApp.ModelBo.two_years_wages_amt)
+                        {
+                        reducible_amount = coreWebApp.ModelBo.total_amt - coreWebApp.ModelBo.two_year_wages_amt;
+                        }
+                                            
+                        return reducible_amount.toFixed(2);
+                          
+                    </computedField>    
+                </field> 
+                <field id="net_gratuity_amt" label="Net Gratuity Amount" type="decimal" control="TextBox" allowNegative="true" size="ms" readOnly="true">
+                    <computedField> 
+                        var net_gratuity = new Number();
+                       
+                        net_gratuity = new Number(this.total_amt()) - new Number(this.two_years_wages_amt());
+                        
+                        return net_gratuity.toFixed(2);
+                    </computedField>
+                </field> 
+                <nextRow/>
+                <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" size="m"  isOptional="true"/>  
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" size="m" readOnly="true" isOptional="true"/> 
+            </dataBinding>
+        </controlSection>  
+    </formView>
+</cwFramework>

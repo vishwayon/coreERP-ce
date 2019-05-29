@@ -1,0 +1,16 @@
+<dashboard id="home" name="Home">
+    <widgets>
+        <widget id="pendingApprovals">
+            <title>Pending Approvals</title>
+            <path>../cwf/sys/userDashboard/PendingApprovals</path>
+            <widgetType>grid</widgetType>
+            <size>full</size>
+        </widget>
+        <widget id="pendingDocuments">
+            <title>Pending Documents</title>
+            <path>../cwf/sys/userDashboard/PendingDocuments</path>
+            <widgetType>grid</widgetType>
+            <size>full</size>
+        </widget>
+    </widgets>
+</dashboard>

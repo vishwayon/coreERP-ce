@@ -1,0 +1,24 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="SegmentWithAll">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select a.segment_id, a.segment
+                from (        
+                Select 0 as segment_id, 'All' as segment
+                union All
+                (select segment_id, segment
+                from ar.segment
+                where company_id={company_id}
+                order by segment asc)
+                ) a
+            </command>
+        </sql>
+        <keyField id="segment_id"/>
+    </lookup>
+</cwFramework>

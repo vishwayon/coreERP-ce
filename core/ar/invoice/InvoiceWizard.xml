@@ -1,0 +1,11 @@
+<wizard id="Invoice" name="Invoice Wizard">
+    <codeBehind>
+        <className>\app\core\ar\invoice\InvoiceWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectIncomeType">
+        <path>invoice/InvoiceWizard/SelectIncomeType</path>
+    </wizardStep>
+    <postWizard id="Invoice">
+        <path>invoice/InvoiceEditForm</path>
+    </postWizard>
+</wizard>

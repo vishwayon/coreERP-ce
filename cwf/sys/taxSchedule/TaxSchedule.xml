@@ -1,0 +1,37 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>    
+    
+    <businessObject id="TaxSchedule" type="Master">
+        <controlTable>
+            <tableName>sys.tax_schedule</tableName>
+            <primaryKey>tax_schedule_id</primaryKey>    
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save>
+            <delete>
+                <useEntity/>
+            </delete> 
+            <tranTable id="tax_schedule_detail">
+                <tableName>sys.tax_schedule_detail</tableName>
+                <primaryKey>tax_detail_id</primaryKey>
+                <relation linkType="OneToMany">
+                    <foreignKey>tax_schedule_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{tax_schedule_id}:{step_id}</primaryKeyPattern>
+                </save>    
+                <delete>
+                    <useEntity/>
+                </delete>  
+            </tranTable>  
+        </controlTable>
+    </businessObject>
+</cwFramework>

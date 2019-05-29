@@ -1,0 +1,66 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <businessObject id="GstSi" type="Document">
+        <controlTable>
+            <tableName>ac.vch_control</tableName>
+            <primaryKey>voucher_id</primaryKey>
+            <jsonField id="annex_info">
+                <jfield name="bill_no" type="string"/>
+                <jfield name="bill_date" type="date"/>
+                <jfield name="bill_amt" type="decimal"/>
+                <jobject name="gst_input_info" type="simple">
+                    <jfield name="vat_type_id" type="int"/>
+                    <jfield name="supplier_name" type="string"/>
+                    <jfield name="supplier_address" type="string"/>
+                    <jfield name="supplier_state_id" type="int"/>
+                    <jfield name="supplier_gstin" type="string"/>
+                </jobject>
+                <jobject name="gst_rc_info" type="simple">
+                    <jfield name="apply_rc" type="bool"/>
+                    <jfield name="rc_sec_id" type="int"/>
+                </jobject>
+                <jfield name="bt_amt" type="decimal"/>
+                <jfield name="tax_amt" type="decimal"/>
+                <jobject name="si_info" type="simple">
+                    <jfield name="is_auto" type="bool"/>
+                    <jfield name="gst_ret_id" type="int"/>
+                    <jfield name="ref_doc_id" type="string"/>
+                    <jfield name="ref_doc_date" type="date"/>
+                </jobject>
+            </jsonField> 
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save>    
+            <delete>
+                <useEntity/>      
+            </delete>
+            <tranTable id="si_tran">
+                <tableName>ac.si_tran</tableName>
+                <primaryKey>si_tran_id</primaryKey>  
+                <relation linkType="OneToMany">
+                    <foreignKey>voucher_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{voucher_id}:{RowID}</primaryKeyPattern>
+                </save>
+                <delete>
+                    <useEntity/>
+                </delete>
+                <tableElongate id="gtt" tableName="tx.gst_tax_tran" primaryKey="gst_tax_tran_id" foreignKey="voucher_id"
+                               tranGroup="tran_group"/>
+            </tranTable>
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\ac\gstSi\GstSiEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

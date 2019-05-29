@@ -1,0 +1,20 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="CustomerWithCode">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                SELECT customer_id, customer, customer_code, 
+                    case when customer_code = '' then customer Else (customer_code || ' - ' || customer) End cust_with_code 
+                FROM ar.customer Where company_id={company_id} 
+                order by case when customer_code = '' then customer Else (customer_code || ' - ' || customer) End asc
+            </command>
+        </sql>
+        <keyField id="customer_id"/>
+        <aliasField id="customer_code"/>
+    </lookup>
+</cwFramework>

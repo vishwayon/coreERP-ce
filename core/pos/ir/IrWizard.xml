@@ -1,0 +1,11 @@
+<wizard id="IrWizard" name="Sales Return Wizard">
+    <codeBehind>
+        <className>\app\core\pos\ir\IrWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectOriginInv">
+        <path>ir/IrWizard/SelectOriginInv</path>
+    </wizardStep>
+    <postWizard id="InvRet">
+        <path>ir/InvRetEditForm</path>
+    </postWizard>
+</wizard>

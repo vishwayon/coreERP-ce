@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2017-07-18T16:06:50 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SupplierPaymentTran" language="groovy" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="35290539-0491-4524-bf92-bfd0c9a6554a">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="local db_1"/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="inch"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pvoucher_id" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["PYMT/HO/1516/48"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pfc_type_id" class="java.lang.Long" isForPrompting="false"/>
+	<parameter name="pcwf_date_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["dd-MM-yyyy"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_qty_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_fc_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.#"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from ap.fn_pymt_tds_tran_report
+(
+	$P{pvoucher_id}
+);]]>
+	</queryString>
+	<field name="voucher_id" class="java.lang.String"/>
+	<field name="bill_id" class="java.lang.String"/>
+	<field name="doc_date" class="java.sql.Date"/>
+	<field name="bill_amt" class="java.math.BigDecimal"/>
+	<field name="amt_for_tds" class="java.math.BigDecimal"/>
+	<field name="bill_tds_tran_id" class="java.lang.String"/>
+	<field name="person_type_id" class="java.lang.Long"/>
+	<field name="person_type_desc" class="java.lang.String"/>
+	<field name="section_id" class="java.lang.Long"/>
+	<field name="section" class="java.lang.String"/>
+	<field name="tds_base_rate_perc" class="java.math.BigDecimal"/>
+	<field name="tds_base_rate_amt" class="java.math.BigDecimal"/>
+	<field name="tds_base_rate_amt_fc" class="java.math.BigDecimal"/>
+	<field name="tds_ecess_perc" class="java.math.BigDecimal"/>
+	<field name="tds_ecess_amt" class="java.math.BigDecimal"/>
+	<field name="tds_ecess_amt_fc" class="java.math.BigDecimal"/>
+	<field name="tds_surcharge_perc" class="java.math.BigDecimal"/>
+	<field name="tds_surcharge_amt" class="java.math.BigDecimal"/>
+	<field name="tds_surcharge_amt_fc" class="java.math.BigDecimal"/>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{voucher_id}]]></groupExpression>
+		<groupHeader>
+			<band height="26">
+				<textField isStretchWithOverflow="true" evaluationTime="Report">
+					<reportElement style="NormalLabel" positionType="Float" x="0" y="0" width="422" height="14" uuid="53fffc5d-e1ab-46e4-8ae6-7f533de5fc98">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<box leftPadding="0">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					</box>
+					<textFieldExpression><![CDATA["Tax Deducted/Withheld"]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="25" width="422" height="1" forecolor="#6B6B6B" uuid="cd3f5516-8bda-4695-8cfb-b97bdc335f00">
+						<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+				</line>
+				<textField>
+					<reportElement style="NormalText" x="212" y="15" width="70" height="10" uuid="9eb62a0e-c8dc-4a47-8aaf-c556fd7c4dc9"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Ecess @" + new java.text.DecimalFormat($P{pcwf_amt_format}).format($F{tds_ecess_perc})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" x="282" y="15" width="70" height="10" uuid="780fd035-2403-49f2-b65a-17749b5ff799"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Surcharge @" + new java.text.DecimalFormat($P{pcwf_amt_format}).format($F{tds_surcharge_perc})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalLabel" x="0" y="15" width="72" height="10" uuid="a9b7ee9a-49f7-4aa4-92cf-a4f877278247">
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Voucher #"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalLabel" x="72" y="15" width="70" height="10" uuid="90c07161-aee7-4bb6-8082-fb532011a377">
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Bill Amt"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" x="142" y="15" width="70" height="10" uuid="eca25ae0-8370-4f47-aef8-3659a3d77572"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Base @" + new java.text.DecimalFormat($P{pcwf_amt_format}).format($F{tds_base_rate_perc})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" x="352" y="15" width="70" height="10" uuid="753aebb9-1ef0-431d-b507-31068d429a0a"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["TDS Amount"]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="12">
+			<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" x="2" y="0" width="70" height="10" uuid="dfc9c0e2-1600-4737-8956-061ad4533ccb">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bill_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="NormalText" x="72" y="0" width="70" height="10" uuid="3c10dac2-e5d3-4914-9aab-0daa6334f390">
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($F{bill_amt})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" x="212" y="0" width="70" height="10" uuid="f663dceb-e269-49d1-b0ca-8fc943190714"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pfc_type_id}==0 ? $F{tds_ecess_amt} : $F{tds_ecess_amt_fc}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" x="282" y="0" width="70" height="10" uuid="34a757fa-c4a8-4b83-9b10-407fa833b21e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pfc_type_id}==0 ? $F{tds_surcharge_amt} : $F{tds_surcharge_amt_fc}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement style="NormalText" positionType="Float" x="142" y="0" width="70" height="10" uuid="cbdc78b3-211c-4345-81a9-1acd75b2e9d4"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pfc_type_id} ==0 ? $F{tds_base_rate_amt} : $F{tds_base_rate_amt_fc}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" x="352" y="0" width="70" height="10" uuid="0951805f-85f2-422f-bd62-9e0a87c47bd8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pfc_type_id}==0 ? ($F{tds_surcharge_amt} +$F{tds_base_rate_amt}+$F{tds_ecess_amt}) : $F{tds_surcharge_amt_fc}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

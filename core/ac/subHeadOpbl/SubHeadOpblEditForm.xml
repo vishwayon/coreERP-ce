@@ -1,0 +1,68 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="SubHeadOpbl" type="Master"  bindingBO="subHeadOpbl/SubHeadOpbl">
+        <header>Sub Head Opening Balance Ref</header>
+        <keyField>account_id</keyField>
+        <clientJsCode>ac_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>               
+                <field id="sub_head_dim_id" label="Sub Head Dimension" type="int" control="SmartCombo" size="3"  readOnly="true">
+                    <lookup>
+                        <valueMember>sub_head_dim_id</valueMember>
+                        <displayMember>sub_head_dim</displayMember>
+                        <namedLookup>../core/ac/lookups/SubHeadDimension.xml</namedLookup>
+                    </lookup>   
+                </field>    
+                <field id="account_head" label="Ledger Account" type="string" control="TextBox" size="3" maxLength="250"  readOnly="true"/> 
+                <field id="branch_id" label="Branch" type="int" control="SmartCombo" size="2"  readOnly="true">
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/Branch.xml</namedLookup>
+                    </lookup>   
+                </field>    
+                <nextRow/>
+                <tranSection label="Details"  editMode="Auto"  fixedWidth="800">
+                    <dataBinding dataProperty="sub_head_ledger">
+                        <field id="sl_no" label="Sl No." type="int" control="TextBox" isOptional="true" size="1" readOnly="true"/>
+                        <field id="sub_head" label="Sub Head" type="string" control="TextBox" size="4" readOnly="true"/>
+                        <field id="doc_date" label="Balance Date" type="date" control="Date" size="2" readOnly="true" />
+                        <field id="debit_amt" label="Debit Amt" type="decimal" control="TextBox" size="2"  isOptional="true"/>
+                        <field id="credit_amt" label="Credit Amt" type="decimal" control="TextBox" size="2"  isOptional="true"/>
+                        <field id="narration" label="Narration" type="string" control="TextArea" rows="2" maxLength="500" isOptional="true" size="4"/>
+                        <field id="sub_head_id" label="Sub Head ID" type="int" control="Hidden" size="1" readOnly="true"/>
+                        <field id="fc_type_id" label="fc type ID" type="int" control="Hidden" size="1" readOnly="true"/>
+                        <field id="exch_rate" label="Exch rate" type="int" control="Hidden" size="1" readOnly="true"/>
+                        <field id="sub_head_ledger_id" label="Sub Head ID" type="string" control="Hidden" size="1" readOnly="true"/>
+                        <field id="voucher_id" label="Voucher ID" type="string" control="Hidden" size="1" readOnly="true"/>
+                    </dataBinding>
+                </tranSection>
+                <dummy size="3"/>
+                <field id="debit_total_label" label="Debit Total" type="string" control="Label" size="1"  isOptional="true"/>
+                <customField id="debit_total" label="" type="decimal" control= "TextBox" size="2" isOptional="true" readOnly="true" >
+                    <computedField>
+                        var total_debit_amt = new Number();
+                        for(var p = 0; p &lt; this.sub_head_ledger().length; ++p)
+                        {
+                        total_debit_amt += new Number(this.sub_head_ledger()[p].debit_amt());
+                        }
+                        return total_debit_amt.toFixed(2);
+                    </computedField>
+                </customField>   
+                <field id="credit_total_label" label="Credit Total" type="string" control="Label" size="1"  isOptional="true"/>
+                <customField id="credit_total" label="" type="decimal" control= "TextBox" size="2" isOptional="true" readOnly="true" >
+                    <computedField>
+                        var total_debit_amt = new Number();
+                        for(var p = 0; p &lt; this.sub_head_ledger().length; ++p)
+                        {
+                        total_debit_amt += new Number(this.sub_head_ledger()[p].credit_amt());
+                        }
+                        return total_debit_amt.toFixed(2);
+                    </computedField>
+                </customField>   
+            </dataBinding> 
+        </controlSection>
+    </formView>
+</cwFramework>

@@ -1,0 +1,15 @@
+<wizard id="AssetSale" name="Asset Sale Wizard">
+    <clientJsCode>fa_clientcode.js</clientJsCode>   
+    <codeBehind>
+        <className>\app\core\fa\assetSale\AssetSaleWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectAssetClass">
+        <path>assetSale/AssetSaleWizard/SelectAssetClass</path>
+    </wizardStep>
+    <wizardStep id="SelectAssetItem">
+        <path>assetSale/AssetSaleWizard/SelectAssetItem</path>
+    </wizardStep>
+    <postWizard id="AssetSale">
+        <path>assetSale/AssetSaleEditForm</path>
+    </postWizard>
+</wizard>

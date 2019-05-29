@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperTemplate PUBLIC "-//JasperReports//DTD Template//EN" "http://jasperreports.sourceforge.net/dtds/jaspertemplate.dtd">
+
+<jasperTemplate>
+	<style name="CompanyName" forecolor="#872F2E" fontName="Liberation Sans" fontSize="18">
+		<box>
+			<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#872F2E"/>
+		</box>
+	</style>
+	<style name="BranchName" forecolor="#0D0101" fontName="Liberation Sans" fontSize="12"/>
+	<style name="BranchAddress" forecolor="#0D0101" fontName="Liberation Sans" fontSize="10"/>
+	<style name="ReportTitle" forecolor="#008080" fontName="Liberation Sans" fontSize="14" isBold="true"/>
+	<style name="CaptionLabel" fontName="Liberation Sans" fontSize="10" isBold="true"/>
+	<style name="CaptionText" fontName="Liberation Sans" fontSize="10"/>
+	<style name="NormalLabel" fontName="Liberation Sans" fontSize="10" isBold="true"/>
+	<style name="NormalText" fontName="Liberation Sans" fontSize="10"/>
+	<style name="FineNotes" fontName="Liberation Sans" fontSize="8"/>
+	<style name="FooterPageNo" forecolor="#0D0101" fontName="Liberation Sans" fontSize="8" isItalic="true"/>
+	<style name="CoreERPVer" forecolor="#0D0101" fontName="Liberation Sans" fontSize="8"/>
+</jasperTemplate>

@@ -1,0 +1,21 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <allocView id="AddrSelect" type="alloc" width="850px">
+        <header>Supplier Address</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="addr-loading" control="Label" type="string" size="m" label="Loading ..." />
+                <tranSection label="" editMode="Edit">
+                    <dataBinding dataProperty="addr_temp">
+                        <field id="select" label="" type="bool" control="CheckBox" size="1"/>
+                        <field id="gst_state" label="GST State" type="string" control="TextBox" size="2" readOnly="true"/>
+                        <field id="gstin" label="GSTIN" type="string" control="TextBox" size="2" readOnly="true"/>
+                        <field id="addr" label="Address" type="string" control="TextArea" size="2" maxLength="50" readOnly="true"/>
+                    </dataBinding>
+                </tranSection>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>    

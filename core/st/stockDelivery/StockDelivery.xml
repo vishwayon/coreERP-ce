@@ -1,0 +1,90 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <businessObject id="StockDelivery" type="Document" wfType="multiStage">
+        <controlTable>
+            <tableName>st.stock_control</tableName>
+            <primaryKey>stock_id</primaryKey>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save>
+            <delete>
+                <useEntity/>
+            </delete>
+            <jsonField id="annex_info"> 
+                <jobject name="ship_info" type="simple">
+                    <jfield name="is_ship_addr" type="bool"/>
+                    <jfield name="ship_addr" type="string"/>
+                </jobject>
+            </jsonField>
+            <tranTable id="stock_tran">
+                <tableName>st.stock_tran</tableName>
+                <customColumns>
+                    <customColumn name="bal_qty" type="decimal"/>
+                    <customColumn name="has_bal" type="bool"/>
+                </customColumns>
+                <primaryKey>stock_tran_id</primaryKey>
+                <relation linkType="OneToMany">
+                    <foreignKey>stock_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{stock_id}:{RowID}</primaryKeyPattern>
+                </save>
+                <delete>
+                    <useEntity/>
+                </delete>
+                <tranTable id="stock_tran_war">
+                    <tableName>st.stock_tran_war</tableName>
+                    <primaryKey>stock_tran_war_id</primaryKey>
+                    <relation linkType="OneToMany">
+                        <foreignKey>stock_tran_id</foreignKey>
+                        <rootForeignKey>stock_id</rootForeignKey>
+                    </relation>
+                    <fetchOrCreate>
+                        <useEntity/>
+                    </fetchOrCreate>
+                    <save>
+                        <useEntity/>
+                        <primaryKeyPattern>{stock_tran_id}:{RowID}</primaryKeyPattern>
+                    </save>
+                    <delete>
+                        <useEntity/>
+                    </delete>
+                </tranTable>
+            </tranTable>
+            <tranTable id="stock_misc_tran">
+                <tableName>st.stock_lc_tran</tableName>
+                <primaryKey>stock_lc_tran_id</primaryKey>
+                <relation linkType="OneToMany">
+                    <foreignKey>stock_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{stock_id}:{RowID}</primaryKeyPattern>
+                </save>
+                <delete>
+                    <useEntity/>
+                </delete>
+            </tranTable>
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\st\stockDelivery\StockDeliveryEventHandler</className>
+        </codeBehind>
+        <docStageInfo>
+            <stage id="pick-list" desc="Pick List"/>
+            <stage id="dispatch-ready" desc="Dispatch Ready"/>
+            <stage id="dispatched" desc="Dispatched"/>
+        </docStageInfo>
+    </businessObject>
+</cwFramework>

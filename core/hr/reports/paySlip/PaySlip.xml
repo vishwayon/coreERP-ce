@@ -1,0 +1,55 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'>
+
+    <reportView id="PaySlip" type="Report" rptPath="/core/hr/reports/paySlip" rptName="PaySlip">
+        <header>Pay Slip</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="ms" forConsolidated="true"> 
+                    <value>
+                        <session>branch_id</session>
+                    </value>
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>
+                    </lookup>  
+                </field>
+                <field id="pemployee_id" label="Employee" type="int" control="SmartCombo" size="4">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <valueMember>employee_id</valueMember>
+                        <displayMember>full_employee_name</displayMember>
+                        <namedLookup>../core/hr/lookups/EmployeeWithAll.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="ppayroll_group_id" label="Payroll Group" type="int" control="SmartCombo" size="4">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <valueMember>payroll_group_id</valueMember>
+                        <displayMember>payroll_group</displayMember>
+                        <namedLookup>../core/hr/lookups/PayrollGroupWithAll.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="ppay_month" label="Month" type="date" control="Date" size="ms" range="finYear">                   
+                    <value>
+                        <currentDate/>
+                    </value>    
+                </field>  
+                <param id="pcompany_id">                
+                    <session>company_id</session>
+                </param>
+                <param id="pyear">
+                    <session>finyear</session>
+                </param>
+                <param id="preport_caption">
+                    <text>Payslip</text>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

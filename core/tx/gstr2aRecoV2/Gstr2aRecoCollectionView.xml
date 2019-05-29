@@ -1,0 +1,36 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="Gstr2aReco" type="Master" bindingBO="Gstr2aReco" editView="gstr2aRecoV2/Gstr2aRecoEditForm">
+        <header>GSTR 2A Reconciliation</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select a.gst_ret_id, b.gst_state_code || ' - ' || b.state_name as gst_state, a.ret_period, a.ret_period_from, a.ret_period_to, 
+                        Case a.ret_status 
+                            When 0 Then 'Pre-process' 
+                            When 1 Then 'Created'
+                            When 2 Then 'Uploaded'
+                        End as ret_status_desc
+                    from tx.gst_ret a
+                    inner join tx.gst_state b on a.gst_state_id = b.gst_state_id
+                    Where a.gst_ret_type_id = 102
+                        And a.gst_state_id in (Select gst_state_id From sys.branch Where branch_id = {branch_id})
+                    Order by a.ret_period_from desc
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="gst_state" displayName="GST State" />
+                <displayField columnName="ret_period" displayName="Return Period" />
+                <displayField columnName="ret_period_from" displayName="Start Date" />
+                <displayField columnName="ret_period_to" displayName="End Date" />
+                <displayField columnName="ret_status_desc" displayName="Status" />
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>
+

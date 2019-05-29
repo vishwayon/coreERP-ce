@@ -1,0 +1,40 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="Grade" type="Master">  
+        <controlTable>
+            <tableName>hr.grade</tableName>
+            <primaryKey>grade_id</primaryKey>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save> 
+            <delete>
+                <useEntity/>
+            </delete> 
+            <tranTable id="grade_detail">
+                <tableName>hr.grade_detail</tableName>
+                <primaryKey>grade_detail_id</primaryKey>      
+                <relation linkType="OneToOne">
+                    <foreignKey>grade_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{grade_id}:{RowID}</primaryKeyPattern>
+                </save>  
+                <delete>
+                    <useEntity/>
+                </delete>   
+            </tranTable> 
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\hr\grade\GradeEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

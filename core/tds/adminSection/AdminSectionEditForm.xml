@@ -1,0 +1,20 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="AdminSection" type="Master" bindingBO="adminSection/AdminSection">
+        <header>TDS Section</header>
+        <keyField>section_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/> 
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="section" label="Section" type="string" control="TextBox" size="ms" maxLength="50"/>
+                <nextRow/>
+                <field id="section_code" label="Section Code" type="string" control="TextBox" size="ms" maxLength="3"/>
+                <nextRow/>
+                <field id="section_desc" label="Section Description" type="string" control="TextBox" size="m" maxLength="250"/>
+            </dataBinding> 
+        </controlSection>
+    </formView>
+</cwFramework>

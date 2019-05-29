@@ -1,0 +1,20 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="UserProfile" type="Master" bindingBO="userProfile/UserProfile">    
+        <header>Change Password</header>
+        <keyField>user_id</keyField>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="user_name" label="User Name" type="string" control="TextBox" size="s" maxLength="20" readOnly="true"/>
+                <nextRow/> 
+                <field id="old_entered_pass" label="Old Password" type="string" control="Password" size="s" maxLength="20"/>
+                <nextRow/> 
+                <field id="user_pass" label="New Password" type="string" control="Password" size="s" maxLength="20"/>
+                <nextRow/> 
+                <field id="user_pass_confirm" label="Confirm Password" type="string" control="Password" size="s" maxLength="20"/>
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

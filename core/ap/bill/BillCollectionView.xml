@@ -1,0 +1,39 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'> 
+    
+    <collectionView id="Bill" type="Document" bindingBO="Bill" editView="bill/BillEditForm">
+        <header>Bill</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    SELECT a.bill_id, a.doc_date, a.supplier_id, b.supplier, a.bill_no, a.bill_amt, a.status
+                    FROM ap.bill_control a INNER JOIN ap.supplier b ON a.supplier_id = b.supplier_id
+                    WHERE doc_type='BL' and a.finyear=:pfinyear and a.company_id=:pcompany_id and a.branch_id=:pbranch_id
+                    Order by a.bill_id
+                </command>
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                    <param id="pbranch_id">
+                        <session>branch_id</session>
+                    </param>
+                    <param id="pfinyear">
+                        <session>finyear</session>
+                    </param>
+                </params>
+            </sql>
+            <displayFields>
+                <displayField columnName="doc_date" displayName="Date" format="Date"/>
+                <displayField columnName="bill_id" displayName="Document No"/>
+                <displayField columnName="bill_no" displayName="Bill No"/>
+                <displayField columnName="bill_amt" displayName="Bill Amount" format="Amount"/>
+                <displayField columnName="supplier" displayName="Supplier"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

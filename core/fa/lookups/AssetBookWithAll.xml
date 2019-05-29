@@ -1,0 +1,23 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="AssetBookWithAll">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select asset_book_id, asset_book_desc 
+                from ( 
+                Select 0 as asset_book_id, 'All' as asset_book_desc
+                union All
+                (select asset_book_id, asset_book_desc from fa.asset_book 
+                where company_id={company_id}
+                order by asset_book_desc asc)
+                ) a
+            </command>
+        </sql>
+        <keyField id="asset_book_id"/>
+    </lookup>
+</cwFramework>

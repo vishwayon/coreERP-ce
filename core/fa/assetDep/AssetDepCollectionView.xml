@@ -1,0 +1,38 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="AssetDep" type="Document" bindingBO="AssetDep" editView="assetDep/AssetDepEditForm">
+        <header>Asset Depreciation</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select ad_id, doc_date, dep_date_from, dep_date_to, status
+                    From fa.ad_control
+                    Where finyear=:pfinyear and company_id=:pcompany_id and branch_id=:pbranch_id
+                    Order by ad_id
+                </command>
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                    <param id="pbranch_id">
+                        <session>branch_id</session>
+                    </param>
+                    <param id="pfinyear">
+                        <session>finyear</session>
+                    </param>
+                </params>
+            </sql>
+            <displayFields>
+                <displayField columnName="doc_date" displayName="Date" format="Date"/>
+                <displayField columnName="ad_id" displayName="Document No"/>
+                <displayField columnName="dep_date_from" displayName="Dep. Date From" format="Date"/>
+                <displayField columnName="dep_date_to" displayName="Dep. Date To" format="Date"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

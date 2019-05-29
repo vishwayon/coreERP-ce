@@ -1,0 +1,205 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="StockTransfer" type="Document" bindingBO="stockTransfer/StockTransfer">
+        <header>Stock Transfer</header>
+        <keyField>stock_id</keyField>
+        <printView rptOption="stockTransfer/StockTransferPrint">
+            <rptParams>
+                <param id="pstock_id">stock_id</param>
+            </rptParams>
+            <printOptions>
+                <printOption desc="Transporter Copy" rptOption="stockTransfer/StockTransferTransportPrint"/>
+            </printOptions>
+        </printView>
+        <newDocEnabled>
+            <docType>ST</docType>
+        </newDocEnabled>
+        <deleteDocEnabled/>
+        <clientJsCode>stockTransfer/StockTransfer_clientcode.js</clientJsCode>
+        <clientJsCodeRefs>
+            <clientJsCodeRef>../cwf/sys/sys_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/tx/tx_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/st/st_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/st/lotAlloc/lot_alloc.js</clientJsCodeRef>
+        </clientJsCodeRefs>
+        <jsEvents>
+            <afterLoadEvent>core_stocktransfer.after_load</afterLoadEvent>      
+        </jsEvents>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="stock_id" label="Stock Transfer No" type="string" control="TextBox" size="s" maxLength="50" isOptional="true" readOnly="true" forStatus="true"/>
+                <field id="vat_type_id" label="VAT/GST Type" type="int" control="SmartCombo" size="3" readOnly="true" >
+                    <lookup>
+                        <valueMember>vat_type_id</valueMember>
+                        <displayMember>vat_type_desc</displayMember>
+                        <namedLookup>../core/tx/lookups/VatTypeSale.xml</namedLookup>
+                    </lookup>
+                </field>
+                <dummy size="1"/>
+                <field id="doc_date" label="Date" type="date" control="Date" size="ms" range="finYear"/>
+                <nextRow/>
+                <xdiv size="6"/>
+                    <field id="target_branch_id" label="Target Branch" type="int" control="SmartCombo" size="9"
+                        mdata-event="subscribe: core_stocktransfer.fetch_trg_branch_info">
+                        <lookup>
+                            <valueMember>branch_id</valueMember>
+                            <displayMember>branch_name</displayMember>
+                            <namedLookup>../cwf/sys/lookups/Branch.xml</namedLookup>
+                            <filterEvent>core_stocktransfer.target_branch_filter</filterEvent>
+                        </lookup>   
+                    </field>
+                    <nextRow/>
+                    <field id="annex_info.gst_output_info.target_branch_state_id" label="" type="int" control="SmartCombo" size="4" readOnly="true" inline="true" >
+                        <lookup>
+                            <valueMember>gst_state_id</valueMember>
+                            <displayMember>gst_state_with_code</displayMember>
+                            <namedLookup>../core/tx/lookups/GstState.xml</namedLookup>
+                        </lookup>
+                    </field>
+                    <field id="annex_info.gst_output_info.target_branch_gstin" label="" type="string" control="TextBox" size="4" readOnly="true" class="fg-total" inline="true"/>
+                    <cLink label="Edit" inline="true" onClick="core_stocktransfer.select_cust_addr" size="2"/>
+                    <nextRow/>
+                    <field id="annex_info.gst_output_info.target_branch_addr" label="" type="string" control="TextArea" size="9" rows="2" inline="true" style="margin-top: 0px;"/>
+                <xdivEnd/>
+                <dummy size="1"/>
+                <xdiv size="5"/>
+                    <field id="annex_info.gst_output_info.eway_ref" label="Electronic Ref. #" type="string" control="TextBox" size="4" isOptional="true"/>
+                    <nextRow/>
+                    <cButton id="btn_add" label="Add Stock Items" onClick="core_stocktransfer.add_mat" icon="glyphicon glyphicon-plus"/>
+                <xdivEnd/>
+                <nextRow/>
+                <nextRow/>
+                <tranSection label="" editMode="Add|Edit|Delete" fixedWidth="850" 
+                    afterDeleteMethod="core_stocktransfer.st_tran_delete">
+                    <dataBinding dataProperty="stock_tran">
+                        <field id="sl_no" label="#" type="int" control="TextBox" size="1" inline="true" readOnly="true" isOptional="true" style="border: none; background: none;"/>
+                        <field id="bar_code" label="Bar Code" type="string" control="TextBox" size="3" isOptional="true"/>
+                        <field id="material_type_id" label="Type" type="int" control="SmartCombo" size="3" isOptional="true">
+                            <lookup>
+                                <valueMember>material_type_id</valueMember>
+                                <displayMember>material_type</displayMember>
+                                <namedLookup>../core/st/lookups/MaterialType.xml</namedLookup>
+                            </lookup>
+                        </field>
+                        <field id="material_id" label="Stock Item" type="int" control="SmartCombo" size="8"
+                               mdata-event="subscribe: core_stocktransfer.fetch_mat_info" >
+                            <lookup>
+                                <valueMember>material_id</valueMember>
+                                <displayMember>material_name</displayMember>
+                                <namedLookup>../core/st/lookups/Material.xml</namedLookup>
+                                <filterEvent>core_stocktransfer.material_filter</filterEvent>
+                            </lookup>   
+                        </field>                       
+                        <field id="issued_qty" label="Issued Qty" type="decimal" control="TextBox" size="3" scale="qty" 
+                               mdata-event="subscribe:core_stocktransfer.item_calc"/>
+                        <cButton id="btnStAlloc" label="..." size="1" onClick="core_st.lot_alloc.select_lot($data, $parent.stock_tran)"
+                                 cdata-bind="style: {backgroundColor: core_stocktransfer.lot_alloc_short($data) }"/>
+                        <field id="rate" label="Rate" type="decimal" control="TextBox" size="3" scale="rate" isOptional="true"
+                               mdata-event="subscribe:core_stocktransfer.item_calc"/>
+                        <field id="bt_amt" label="Item Amt" type="decimal" control="TextBox" size="3" readOnly="true" isOptional="true"/>
+                        <nextRow/>
+                        <dummy size="1"/>
+                         <field id="uom_id" label="UoM" type="int" control="SmartCombo" size="1" readOnly="true">
+                            <lookup>
+                                <valueMember>uom_id</valueMember>
+                                <displayMember>uom_desc</displayMember>
+                                <namedLookup>../core/st/lookups/UoM.xml</namedLookup>
+                                <filterEvent>core_st.sp_uom_combo_filter</filterEvent>
+                            </lookup>
+                        </field>                       
+                        <field id="stock_location_id" label="Stock Location" type="int" control="SmartCombo" size="1" mdata-event="subscribe: core_stocktransfer.fetch_avl_qty">
+                            <lookup>
+                                <valueMember>stock_location_id</valueMember>
+                                <displayMember>stock_location_name</displayMember>
+                                <namedLookup>../core/st/lookups/StockLocation.xml</namedLookup>
+                                <filterEvent>core_stocktransfer.sl_filter</filterEvent>
+                            </lookup>
+                        </field>
+                        <!-- GST Taxes -->
+                        <xdiv colspan="8"/>
+                            <field id="bal_qty" label="" type="string" control="TextBox" size="3" readOnly="true" inline="true" class="fg-total" style="font-style: italic; font-size: small;" 
+                                cdata-bind="style: { color: has_bal() ? 'green' : 'red' }"/>  
+                            <field id="vtax_desc" type="string" control="TextBox" size="16" readOnly="true" class="fg-total" 
+                                    style="border: none; text-align: right; font-style: italic;" inline="true" colspan="6"
+                                    cdata-bind="value: core_tx.gst.tax_desc($data)"/>
+                            <field label="Tax:" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true"/>
+                            <field id="tax_amt" label="Tax Amt" type="decimal" control="TextBox" size="3" readOnly="true" inline="true"/>
+                            <field id="has_bal" label="" type="bool" control="Hidden" readOnly="true" isOptional="true"/>                            
+                            <!--<field label="SGST" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true" /> -->
+                            <field id="gtt_sgst_pcnt" type="decimal" control="Hidden" size="1" readOnly="true" class="fg-total" scale="1"/>
+                            <field id="gtt_sgst_amt" type="decimal" control="Hidden" size="2" readOnly="true" class="fg-total"/>
+                            <!--<field label="CGST" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true"/> -->
+                            <field id="gtt_cgst_pcnt" type="decimal" control="Hidden" size="1" readOnly="true" class="fg-total" scale="1"/>
+                            <field id="gtt_cgst_amt" type="decimal" control="Hidden" size="2" readOnly="true" class="fg-total"/>
+                            <!--<field label="IGST" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true"/>-->
+                            <field id="gtt_igst_pcnt" type="decimal" control="Hidden" size="1" readOnly="true" class="fg-total" scale="1"/>
+                            <field id="gtt_igst_amt" type="decimal" control="Hidden" size="2" readOnly="true" class="fg-total"/>
+                            <!--<field label="Cess" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true"/> -->
+                            <field id="gtt_cess_pcnt" type="decimal" control="Hidden" size="1" readOnly="true" class="fg-total" scale="1"/>
+                            <field id="gtt_cess_amt" type="decimal" control="Hidden" size="2" readOnly="true" class="fg-total"/>
+                            <field id="gtt_hsn_sc_code" type="string" control="Hidden" />
+                            <field id="gtt_hsn_sc_type" type="string" control="Hidden" />
+                            <field id="gtt_gst_rate_id" type="int" control="Hidden" />
+                            <field id="gtt_apply_itc" type="bool" control="Hidden" />
+                            <field id="gtt_bt_amt" type="decimal" control="Hidden" isOptional="true"/>
+                            <field id="gtt_tax_amt_ov" type="bool" control="Hidden" />
+                            <field id="gtt_sgst_itc_account_id" type="int" control="Hidden" />
+                            <field id="gtt_sgst_account_id" type="int" control="Hidden" />
+                            <field id="gtt_cgst_itc_account_id" type="int" control="Hidden" />
+                            <field id="gtt_cgst_account_id" type="int" control="Hidden" />
+                            <field id="gtt_igst_itc_account_id" type="int" control="Hidden" />
+                            <field id="gtt_igst_account_id" type="int" control="Hidden" />
+                            <field id="gtt_cess_itc_account_id" type="int" control="Hidden" />
+                            <field id="gtt_cess_account_id" type="int" control="Hidden" />
+                        <xdivEnd/>
+                        <field id="item_amt" label="Amount" type="decimal" control="Hidden" readOnly="true" isOptional="true"/>
+                        <tranSection label="" editMode="Auto"  cdata-visible-on="core_st.show_sl_lot_alloc" >
+                            <dataBinding dataProperty="sl_lot_alloc">
+                                <field id="sl_id" label="" type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="sl_lot_alloc_id" label="" type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="sl_lot_id" label="" type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="material_id" label="" type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="lot_issue_qty" label="" type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                            </dataBinding>
+                        </tranSection>
+                        <addRowEvent>core_stocktransfer.st_tran_add</addRowEvent>
+                    </dataBinding>
+                </tranSection>
+                <nextRow/>
+                <xdiv size="5"/>
+                    <field id="narration" label="Narration" type="string" control="TextArea" size="12" maxLength="500" rows="4" isOptional="true"/>  
+                <xdivEnd/>
+                <dummy size="1"/>
+                <xdiv id="total_div" size="6"/>
+                    <xdiv id="tot_div1" size="12"/>
+                        <field label="Items" type="string" control="Label" size="2" isOptional="true" inline="true"/>
+                        <field id="annex_info.item_cnt" label="" type="decimal" control="TextBox" size="2" inline="true" scale="0" readOnly="true" 
+                            isOptional="true" class="fg-total"/>
+                        <field label="Units" type="string" control="Label" size="1" isOptional="true" inline="true"/>
+                        <field id="annex_info.unit_cnt" label="" type="decimal" control="TextBox" size="2" inline="true" scale="0" readOnly="true" 
+                            isOptional="true" class="fg-total"/>
+                        <nextRow/>
+                        <field label="Items Total" type="string" control="Label" size="2" isOptional="true" inline="true"/>
+                        <field id="vbt_amt_tot" label="" type="decimal" control="TextBox" size="2" inline="true" readOnly="true" isOptional="true" class="fg-total"/>
+                        <field label="Taxes" type="string" control="Label" size="1" isOptional="true" inline="true"/>
+                        <field id="tax_amt" label="" type="decimal" control="TextBox" size="2" inline="true" readOnly="true" isOptional="true" class="fg-total"/>
+                        <field label="Gross Total" type="string" control="Label" size="2" isOptional="true" inline="true"/>
+                        <field id="gross_amt" label="" type="decimal" control="TextBox" size="3" inline="true" readOnly="true" isOptional="true" class="fg-total"/>                                
+                    <xdivEnd/>
+                    <xdiv id="tot_div2" size="12"/>
+                        <field label="Round Off" type="string" control="Label" size="2" isOptional="true" inline="true"/>
+                        <field id="round_off_amt" label="" type="decimal" control="TextBox" size="2" allowNegative="true" inline="true" readOnly="true" class="fg-total"/>
+                        <dummy size="3"/>
+                        <field label="Invoice Amt" type="string" control="Label" size="2" isOptional="true" inline="true" style="font-weight: bold;"/>
+                        <field id="total_amt" label="" type="decimal" control="TextBox" size="3" inline="true" readOnly="true" isOptional="true" class="fg-total" style="font-weight: bold;"/>
+                    <xdivEnd/>
+                <xdivEnd/>
+                <nextRow/>
+                <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" size="m"  isOptional="true"/>  
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" size="m" readOnly="true" isOptional="true"/> 
+            </dataBinding>   
+        </controlSection>
+    </formView>
+</cwFramework>

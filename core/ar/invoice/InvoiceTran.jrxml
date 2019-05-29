@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.1.final using JasperReports Library version 6.1.1  -->
+<!-- 2017-02-09T14:29:22 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InvoiceTran" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="30a28dbd-aff1-485d-a5aa-cc18b703a318">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="inch"/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pvoucher_id" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["INV/HO/1516/10"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pfc_type_id" class="java.lang.Long" isForPrompting="false"/>
+	<parameter name="pfc_type" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[select * from ar.fn_invoice_tran_report
+(
+ $P{pvoucher_id}
+ );]]>
+	</queryString>
+	<field name="invoice_id" class="java.lang.String"/>
+	<field name="invoice_tran_id" class="java.lang.String"/>
+	<field name="sl_no" class="java.lang.Integer"/>
+	<field name="account_id" class="java.lang.Long"/>
+	<field name="account_head" class="java.lang.String"/>
+	<field name="credit_amt" class="java.math.BigDecimal"/>
+	<field name="credit_amt_fc" class="java.math.BigDecimal"/>
+	<field name="description" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<frame>
+				<reportElement style="NormalText" positionType="Float" stretchType="RelativeToTallestObject" mode="Opaque" x="1" y="0" width="522" height="20" isPrintWhenDetailOverflows="true" backcolor="#E0E0E0" uuid="b5feb517-16e8-4286-bf3f-c1cc06b7e3fe">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+				</box>
+				<staticText>
+					<reportElement style="NormalLabel" positionType="Float" mode="Opaque" x="40" y="0" width="368" height="20" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#E0E0E0" uuid="e3c4ecec-a0f2-495b-b7a2-ff386550b6be">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Description]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" positionType="Float" mode="Opaque" x="0" y="0" width="40" height="20" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#E0E0E0" uuid="0980100f-56f3-4744-98b9-685ca06939db">
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[SL.]]></text>
+				</staticText>
+				<textField>
+					<reportElement style="NormalLabel" x="408" y="0" width="114" height="20" uuid="5adefe56-12d3-48d1-bca2-2bedd6e61721"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[($P{pfc_type_id}.longValue() != 0) ? "Amount (" + $P{pfc_type} + ")" : "Amount"]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<frame>
+				<reportElement x="1" y="2" width="522" height="14" uuid="30caf762-67b6-4cd6-a631-e86dcc87d021">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+				</box>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="NormalText" x="0" y="0" width="40" height="14" uuid="4a8ed119-463f-470a-b54f-5c7bdd4a5402"/>
+					<box leftPadding="4">
+						<topPen lineWidth="0.0" lineColor="#6B6B6B"/>
+						<leftPen lineWidth="0.0" lineColor="#6B6B6B"/>
+						<bottomPen lineWidth="0.0" lineColor="#6B6B6B"/>
+						<rightPen lineWidth="0.0" lineColor="#6B6B6B"/>
+					</box>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{sl_no}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="NormalText" positionType="Float" x="40" y="0" width="368" height="14" uuid="5aa5f826-6942-4d3a-873f-f64150d9f7a8">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<box leftPadding="4">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					</box>
+					<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="NormalText" x="408" y="0" width="114" height="14" uuid="2e51f8de-0ac1-47f6-a799-0731c7181f99">
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<box rightPadding="4">
+						<topPen lineWidth="0.0" lineColor="#6B6B6B"/>
+						<leftPen lineWidth="0.0" lineColor="#6B6B6B"/>
+						<bottomPen lineWidth="0.0" lineColor="#6B6B6B"/>
+						<rightPen lineWidth="0.0" lineColor="#6B6B6B"/>
+					</box>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[($P{pfc_type_id}.longValue() != 0) ? CoreJSFormatUtils.Formatter.formatDecimal($F{credit_amt_fc}) : CoreJSFormatUtils.Formatter.formatDecimal($F{credit_amt})]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+</jasperReport>

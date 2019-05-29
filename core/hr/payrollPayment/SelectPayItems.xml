@@ -1,0 +1,38 @@
+<wizardView>
+    <header>Select Pay Items</header>
+    <sections>
+        <clientJsCode>ap_clientcode.js</clientJsCode>
+        <collectionSection id="SelectPayItems">
+        <connectionType>
+          <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select *
+                from hr.fn_get_payroll_pay_items(:pbranch_id, :pto_date, :pvoucher_id) a
+                order by a.voucher_id
+            </command>
+            <params>
+                <param id="pbranch_id">
+                    <session>branch_id</session>
+                </param>
+                <param id="pto_date">
+                    <currentDate/>
+                </param>
+                <param id="pvoucher_id">
+                    <text></text>
+                </param>
+            </params>
+        </sql>
+        <keyField id="payroll_tran_id"/>
+        <displayFields>
+            <displayField columnName="pay_month" id="pay_month" label="Pay Month" type="string" control="TextBox" size="s"/>
+            <displayField columnName="full_employee_name" id="full_employee_name" label="Employee" type="string" control="TextBox" size="s"/>
+            <displayField columnName="employee_no" id="employee_no" label="Employee No" type="string" control="TextBox" size="s"/>  
+            <displayField columnName="tot_emolument_amt" id="tot_emolument_amt" label="Emoluments" type="decimal" control="TextBox" size="s" scale="amt"/>
+            <displayField columnName="tot_deduction_amt" id="tot_deduction_amt" label="Deductions" type="decimal" control="TextBox" size="s" scale="amt"/>   
+            <displayField columnName="net_amt" id="net_amt" label="Net Amount" type="decimal" control="TextBox" size="s" scale="amt"/>
+        </displayFields>
+    </collectionSection>
+    </sections>
+</wizardView>

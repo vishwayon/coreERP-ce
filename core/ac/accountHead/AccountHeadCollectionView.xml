@@ -1,0 +1,28 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="AccountHead" type="Master" bindingBO="AccountHead" editView="accountHead/AccountHeadEditForm">
+        <header>Account Head</header>
+        <collectionSection>
+            <connectionType>
+              <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    SELECT  a.account_id, a.account_head, a.account_code, a.account_type_id, b.account_type_desc 
+                    FROM ac.account_head a
+                    inner join ac.account_type b on a.account_type_id=b.account_type_id
+                    where a.account_type_id not in (0, 7, 12)
+                    Order by a.account_head
+                </command>
+            </sql>
+            <displayFields>
+              <displayField columnName="account_head" displayName="Account Head"/>
+              <displayField columnName="account_code" displayName="Code"/>
+              <displayField columnName="account_type_desc" displayName="Type"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>
+

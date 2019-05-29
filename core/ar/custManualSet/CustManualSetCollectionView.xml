@@ -1,0 +1,22 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>             
+    
+    <collectionView id="CustManualSet" type="Master" bindingBO="CustManualSet" editView="custManualSet/CustManualSetEditForm">        
+        <header>Customer Manual Settlement</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select customer_id, customer, customer_code from ar.customer order by customer
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="customer" displayName="Customer"/>
+                <displayField columnName="customer_code" displayName="Code"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

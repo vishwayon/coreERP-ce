@@ -1,0 +1,15 @@
+<wizard id="SaleReturnGst" name="Sale Return/Debit/Credit Note Wizard">
+        <clientJsCode>saleReturnGst/SaleReturnGst_clientcode.js</clientJsCode>       
+    <codeBehind>
+        <className>\app\core\st\saleReturnGst\SaleReturnGstWiz</className>
+    </codeBehind>
+    <wizardStep id="SelectCustomer">
+        <path>saleReturnGst/SaleReturnGstWiz/SelectCustomer</path>
+    </wizardStep>
+    <wizardStep id="SelectStockInvoice">
+        <path>saleReturnGst/SaleReturnGstWiz/SelectStockInvoice</path>
+    </wizardStep>
+    <postWizard id="SaleReturnGst">
+        <path>saleReturnGst/SaleReturnGstEditForm</path>
+    </postWizard>
+</wizard>

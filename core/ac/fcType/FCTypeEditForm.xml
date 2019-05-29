@@ -1,0 +1,21 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="FCType" type="Master" bindingBO="fcType/FCType">    
+        <header>Foreign Currency</header>
+        <keyField>fc_type_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+          <dataBinding>
+            <field id="fc_type" label="Foreign Currency Type" type="string" control="TextBox" size="ms" maxLength="20"/>
+            <nextRow/>
+            <field id="exch_rate" label="Exch Rate" type="decimal" control="TextBox" size="ms" scale="fc"/>
+            <nextRow/>
+            <field id="currency" label="Foreign Currency" type="string" control="TextBox" size="ms" maxLength="20"/>
+            <field id="sub_currency" label="Sub Currency" type="string" control="TextBox" size="ms" maxLength="20"/>
+          </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

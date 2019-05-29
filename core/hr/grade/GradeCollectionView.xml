@@ -1,0 +1,22 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>             
+    
+    <collectionView id="Grade" type="Master" bindingBO="Grade" editView="grade/GradeEditForm">        
+        <header>Grade</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select grade_id, grade, grade_alias from hr.grade order by grade
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="grade" displayName="Grade"/>
+                <displayField columnName="grade_alias" displayName="Grade Alias"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

@@ -1,0 +1,22 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="SubHeadDimension" type="Master"  bindingBO="subHeadDimension/SubHeadDimension">
+        <header>Sub Head Dimension</header>
+        <keyField>sub_head_dim_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="sub_head_dim" label="Sub Head Dimension" type="string" control="TextBox" size="l" maxLength="250" />
+                <nextRow/>
+                <tranSection label="Ledger Account" editMode="Auto" size="3" noColHeader="true">
+                    <dataBinding dataProperty="sub_head_dim_acc">
+                        <field id="account_head" label="Account" type="string" control="TextBox" size="l" maxLength="250" readOnly="true" />
+                    </dataBinding>
+                </tranSection>                   
+            </dataBinding> 
+        </controlSection>
+    </formView>
+</cwFramework>

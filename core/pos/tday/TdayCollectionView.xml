@@ -1,0 +1,39 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="Tday" type="Master" bindingBO="Tday" editView="tday/TdayEditForm">        
+        <header>POS Transaction Day</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    Select a.tday_id, a.tday_date, b.terminal, 
+                        Case When a.tday_status = 0 Then 'Open' 
+                             When a.tday_status = 1 Then 'EOD Started'
+                             When a.tday_status = 2 Then 'EOD Completed'
+                             When a.tday_status = 3 Then 'Handover Started'
+                             When a.tday_status = 5 Then 'Closed'
+                             Else 'Unknown'
+                        End as tday_status,
+                        c.full_user_name, a.start_time 
+                    From pos.tday a
+                    Inner Join pos.terminal b On a.terminal_id=b.terminal_id
+                    Inner Join sys.user c On a.user_id=c.user_id
+                    Where a.company_id={company_id}
+                        And a.tday_status in (0, 1, 2)
+                    order by b.terminal
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="tday_date" displayName="Txn. Date" format="Date"/>
+                <displayField columnName="terminal" displayName="Terminal"/>
+                <displayField columnName="tday_status" displayName="Status"/>
+                <displayField columnName="full_user_name" displayName="User"/>
+                <displayField columnName="start_time" displayName="Start Time"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

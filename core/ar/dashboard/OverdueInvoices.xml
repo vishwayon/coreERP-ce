@@ -1,0 +1,40 @@
+<widget id="OverdueInvoices">
+    <title>Overdue Invoices</title>
+    <widgetType>grid</widgetType>
+    <series id="OverdueInvoices">
+        <label>Overdue Invoices</label>
+        <sql>
+            <command>
+                select voucher_id, doc_date, overdue+not_due as total_outstanding, account_head, case when overdue_days &gt; 0 then overdue_days else 0 end as overdue_days, due_date
+                from ar.fn_customer_overdue(:pcompany_id, :pbranch_id, :paccount_id, :pto_date, '', 'D')
+                where due_date &lt; :pto_date
+                Order by account_head, voucher_id
+            </command>
+            <params>
+                <param id="pcompany_id">
+                    <session>company_id</session>
+                </param>
+                <param id="pbranch_id">
+                    <text>0</text>
+                </param>
+                <param id="paccount_id">
+                    <text>0</text>
+                </param>
+                <param id="pto_date">
+                    <currentDate/>
+                </param>
+            </params>
+        </sql>
+        <seriesType>grid</seriesType>
+        <xField/>
+        <yField/>
+        <displayFields>
+            <displayField columnName="account_head" displayName="Customer"/>
+            <displayField columnName="voucher_id" displayName="Voucher No" />
+            <displayField columnName="doc_date" displayName="Date" format="Date"/>
+            <displayField columnName="due_date" displayName="Due Date" format="Date"/>
+            <displayField columnName="total_outstanding" displayName="Overdues" format="Amount"/>
+            <displayField columnName="overdue_days" displayName="Overdue Days" format="Number"/>
+        </displayFields>
+    </series>
+</widget>

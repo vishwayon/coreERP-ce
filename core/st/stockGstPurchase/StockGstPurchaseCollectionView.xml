@@ -1,0 +1,64 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="StockGstPurchase" type="Document" bindingBO="StockGstPurchase" editView="stockGstPurchase/StockGstPurchaseEditForm">
+        <header>Stock Purchase (GST)</header>
+        <clientJsCode>st_clientcode.js</clientJsCode>
+        <!--ovrride className="\app\core\st\stockGstPurchase\StockGstPurchaseEventHandler" method="ovrrideCollection"/>
+        <filter>
+            <field id="vat_type_id" label="Purchase VAT/GST Type" type="int" control="SmartCombo" size="3">
+                <lookup>
+                    <valueMember>vat_type_id</valueMember>
+                    <displayMember>vat_type_desc</displayMember>
+                    <namedLookup>../core/tx/lookups/VatTypePurchase.xml</namedLookup>
+                </lookup>
+            </field>
+            <field id="sale_account_id" label="Purchase Account" type="int" control="SmartCombo" size="3">
+                <lookup>
+                    <valueMember>account_id</valueMember>
+                    <displayMember>account_head</displayMember>
+                    <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                    <filter>account_type_id = 17</filter>
+                </lookup>
+            </field>
+        </filter-->
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    Select a.stock_id, a.doc_date, b.account_head, a.bill_amt, a.bill_amt_fc, a.bill_no, a.bill_date, 
+                    '--'::varchar as qc_status, a.status 
+                    from st.stock_control a
+                    inner join ac.account_head b on a.account_id = b.account_id
+                    Where doc_type='SPG' and a.finyear=:pfinyear and a.company_id=:pcompany_id and a.branch_id=:pbranch_id
+                    And ((a.annex_info->>'is_closed')::Boolean != True Or (a.annex_info->>'is_closed') Is Null)
+                    Order by doc_date, stock_id
+                </command>
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                    <param id="pbranch_id">
+                        <session>branch_id</session>
+                    </param>
+                    <param id="pfinyear">
+                        <session>finyear</session>
+                    </param>
+                </params>
+            </sql>
+            <displayFields>
+                <displayField columnName="doc_date" displayName="Date" format="Date"/>
+                <displayField columnName="stock_id" displayName="Document No"/>
+                <displayField columnName="account_head" displayName="Account"/>
+                <displayField columnName="bill_amt" displayName="Amount" format="Amount"/>
+                <displayField columnName="bill_no" displayName="Bill No."/>
+                <displayField columnName="bill_date" displayName="Bill Date" format="Date"/>
+                <displayField columnName="qc_status" displayName="QC Test" />
+            </displayFields>
+            <afterFetch>core_st.get_qc_status</afterFetch>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

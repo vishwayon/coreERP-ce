@@ -1,0 +1,66 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="TaxSchedule" type="Master" bindingBO="taxSchedule/TaxSchedule">    
+        <header>Tax Schedule</header>  
+        <keyField>tax_schedule_id</keyField>  
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="tax_schedule_code" label="Schedule Code" type="string" control="TextBox" size="s"  maxLength="20"/>
+                <field id="tax_schedule_desc" label="Schedule Desc" type="string" control="TextBox" size="l" maxLength="120"/>
+                <field id="discontinued" label="Discontinued" type="bool" control="CheckBox" size="s"/>
+                <tranSection label="Tax Detail(s)" editMode="Add|Edit|Delete">
+                    <dataBinding dataProperty="tax_schedule_detail">
+                        <field id="step_id" label="Step" type="int" control="TextBox" size="s"/>
+                        <field id="tax_schedule_detail_desc" label="Tax Detail" type="string" control="TextBox"  size="l" maxLength="120"/>
+                        <field id="account_id" label="Tax Account" type="int" control="SmartCombo" size="s">
+                            <lookup> 
+                                <valueMember>account_id</valueMember>
+                                <displayMember>account_head</displayMember>
+                                <namedLookup>../cwf/ac/lookups/Account.xml</namedLookup>
+                                <filter>account_type_id not in (1, 2, 7, 12, 32, 45, 46, 47)</filter>
+                            </lookup>    
+                        </field>
+                        <field id="tax_report_group_id" label="Tax Report Group" type="int" control="SmartCombo" size="s">
+                            <lookup> 
+                                <valueMember>tax_report_group_id</valueMember>
+                                <displayMember>tax_report_group</displayMember>
+                                <namedLookup>../cwf/sys/lookups/TaxReportGroup.xml</namedLookup>
+                            </lookup>    
+                        </field>          
+                        <field id="en_tax_type" label="Calculation Type" type="int" control="SimpleCombo" size="s">
+                            <options>
+                                <option value="0">Percent of Amount</option>
+                                <option value="1">Percent of Parent Tax Detail</option>
+                                <option value="2">Tax per Unit</option>
+                                <option value="3">Custom Percent of Amount</option>
+                                <option value="4">Custom Percent of Parent Tax Detail</option>
+                                <option value="5">Custom Tax Per Unit</option>
+                                <option value="6">Custom Absolute Amount</option>
+                            </options>
+                        </field>         
+                        <field id="en_round_type" label="Round Of" type="int" control="SimpleCombo" size="s">
+                            <options>
+                                <option value="0">Do not Round</option>
+                                <option value="1">Round Up Tenth Decimal</option>
+                                <option value="2">Round Down Tenth Decimal</option>
+                                <option value="3">Round Off Tenth Decimal</option>
+                                <option value="4">Round Up Whole Digit</option>
+                                <option value="5">Round Down Whole Digit</option>
+                                <option value="6">Round Off Whole Digit</option>
+                            </options>
+                        </field>
+
+                        <field id="tax_percent" label="Tax Percent" type="decimal" scale="amt" control="TextBox" isOptional="true" size="s"/>
+                        <field id="min_tax_amt" label="Min Tax Amt" type="decimal" scale="amt" control="TextBox" isOptional="true" size="s"/>
+                        <field id="max_tax_amt" label="Max Tax Amt" type="decimal" scale="amt" control="TextBox" isOptional="true" size="s"/>
+                        <field id="tax_on_percent" label="Tax on Percent" type="decimal" scale="amt" control="TextBox" isOptional="true" size="s"/>
+                        <field id="tax_on_min_amt" label="Tax on Min Amt" type="decimal" scale="amt" control="TextBox" isOptional="true" size="s"/>
+                        <field id="tax_on_max_amt" label="Tax on Max Amt" type="decimal" scale="amt" control="TextBox" isOptional="true" size="s"/>
+                    </dataBinding>
+                </tranSection>    
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

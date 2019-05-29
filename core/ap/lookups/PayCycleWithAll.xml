@@ -1,0 +1,24 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="PayCycleWithAll">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+              <command>
+                select a.pay_cycle_id, a.pay_cycle
+                from (        
+                       Select 0 as pay_cycle_id, 'All' as pay_cycle
+                       union All
+                       (select pay_cycle_id, pay_cycle
+                       from ap.pay_cycle
+                       where company_id={company_id}
+                       order by pay_cycle)
+                ) a
+              </command>
+        </sql>
+        <keyField id="paycycle_id"/>
+    </lookup>
+</cwFramework>

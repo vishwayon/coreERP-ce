@@ -1,0 +1,47 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="MatCat" type="Master" bindingBO="matCat/MatCat">
+        <header>Stock Item Categories</header>
+        <keyField>mat_cat_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="mat_cat" label="Category" type="string" control="TextBox" size="3"/>
+                <field id="mat_cat_parent_id" label="Parent Category" type="string" control="SmartCombo" size="3" isOptional="true">
+                    <lookup>
+                        <displayMember>mat_cat</displayMember>
+                        <valueMember>mat_cat_id</valueMember>
+                        <namedLookup>../core/st/lookups/MatCat.xml</namedLookup>
+                    </lookup>
+                </field>
+                <nextRow/>
+                <field id="mat_cat_desc" label="Description" type="string" control="TextArea" size="6" rows="4"/>
+                <nextRow/>
+                <xdiv id="div_cat_key" size="6"/>
+                    <tranSection label="Category Keys" editMode="Add|Edit|Delete">
+                        <dataBinding dataProperty="mat_cat_key">
+                            <field id="mat_cat_key_id" label="mat_cat_key_id" type="Hidden" control="Hidden" size="s"/>
+                            <field id="mat_cat_key" label="Key" type="string" control="TextBox" size="5"/>
+                            <field id="mat_cat_key_desc" label="Description" type="string" control="TextArea" size="6" rows="2"/>
+                        </dataBinding>
+                    </tranSection>
+                <xdivEnd/>
+                <xdiv id="div_dummy" size="1"/>
+                
+                <xdivEnd/>
+                <xdiv id="div_cat_attr" size="5"/>
+                    <tranSection label="Category Attributes"  editMode="Add|Edit|Delete">
+                        <dataBinding dataProperty="mat_cat_attr">
+                            <field id="mat_cat_attr_id" label="mat_cat_attr_id" type="Hidden" control="Hidden" size="s"/>
+                            <field id="mat_cat_attr" label="Attributes" type="string" control="TextBox" size="5"/>
+                            <field id="mat_cat_attr_desc" label="Description" type="string" control="TextArea" size="6" rows="2"/>
+                        </dataBinding>
+                    </tranSection>
+                <xdivEnd/>
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

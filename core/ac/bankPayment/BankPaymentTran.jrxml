@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2017-02-10T14:41:32 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BankPaymentTran" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="523" leftMargin="0" rightMargin="72" topMargin="0" bottomMargin="0" uuid="4c307fb7-97ec-429f-a8e6-44533a037434">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="JDBC Data Adapter "/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pcwf_header_template" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["cwf/report-templates/header-template.jasper"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_company_name" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["First Company Private Limtied"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_branch_name" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["First Branch"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_branch_address" class="java.lang.String">
+		<defaultValueExpression><![CDATA["First Floor, Technology Park, Pune"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_company_logo" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["cwf/vsla/assets/coreerp_logo.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_ccy_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_txn_ccy" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["INR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_coreerp_ver" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["CoreERP Ver. 0.5.4"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_base_path" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcompany_id" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pbranch_id" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1000001]]></defaultValueExpression>
+	</parameter>
+	<parameter name="preport_period" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["As On 31-03-2015"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_date_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["dd-MM-yyyy"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pis_fc" class="java.lang.Boolean"/>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_qty_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_fc_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.#"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pvoucher_id" class="java.lang.String"/>
+	<parameter name="SumDebitAmt" class="java.math.BigDecimal"/>
+	<parameter name="SumCreditAmt" class="java.math.BigDecimal"/>
+	<parameter name="pis_inter_branch" class="java.lang.Boolean" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[SELECT *  FROM ac.fn_vch_tran_report
+(
+	$P{pvoucher_id}
+) order by sl_no;]]>
+	</queryString>
+	<field name="voucher_id" class="java.lang.String"/>
+	<field name="vch_tran_id" class="java.lang.String"/>
+	<field name="branch_id" class="java.lang.Long"/>
+	<field name="sl_no" class="java.lang.Integer"/>
+	<field name="dc" class="java.lang.String"/>
+	<field name="account_id" class="java.lang.Long"/>
+	<field name="credit_amt" class="java.math.BigDecimal"/>
+	<field name="debit_amt" class="java.math.BigDecimal"/>
+	<field name="debit_amt_fc" class="java.math.BigDecimal"/>
+	<field name="credit_amt_fc" class="java.math.BigDecimal"/>
+	<field name="branch_code" class="java.lang.String"/>
+	<field name="account_head" class="java.lang.String"/>
+	<variable name="SumDebitAmount" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{debit_amt}]]></variableExpression>
+	</variable>
+	<variable name="SumCreditAmount" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{credit_amt}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="523" height="14" uuid="efecf793-97d4-4f76-96ae-0ff3c3fb47aa">
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="NormalText" isPrintRepeatedValues="false" x="0" y="0" width="320" height="14" isRemoveLineWhenBlank="true" uuid="460a27da-0d44-4c40-9dac-e30451371e49">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<box topPadding="0"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$P{pis_inter_branch} ? $F{branch_code} + " - " + $F{account_head} : $F{account_head}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" x="320" y="0" width="100" height="14" uuid="6e79a4a9-6fcc-486c-b9d6-a60e1a00debe">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+						<printWhenExpression><![CDATA[$F{debit_amt}.compareTo(new java.math.BigDecimal(0)) == 1]]></printWhenExpression>
+					</reportElement>
+					<box topPadding="0">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($F{debit_amt})]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" x="420" y="0" width="103" height="14" uuid="45fbf35a-10dc-4713-8897-24c4dcabbc9b">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+						<printWhenExpression><![CDATA[$F{credit_amt}.compareTo(new java.math.BigDecimal(0)) == 1]]></printWhenExpression>
+					</reportElement>
+					<box topPadding="0">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($F{credit_amt})]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<summary>
+		<band height="16">
+			<frame>
+				<reportElement x="0" y="0" width="523" height="14" uuid="2291a3a7-9edd-4fff-b058-ada47c695b4c"/>
+				<textField>
+					<reportElement style="NormalLabel" positionType="Float" isPrintRepeatedValues="false" x="0" y="0" width="320" height="14" isRemoveLineWhenBlank="true" uuid="c2d64014-6bff-452a-aac8-c15bae87d262">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<box topPadding="0"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["Total"]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report">
+					<reportElement style="NormalText" x="420" y="0" width="103" height="14" uuid="452d19e0-89d5-4a21-b6e7-57f1302dc88f">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<box topPadding="0">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($V{SumCreditAmount}.add($P{SumCreditAmt}))]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+				<textField evaluationTime="Report">
+					<reportElement style="NormalText" x="320" y="0" width="100" height="14" uuid="196aab1a-e57f-4e87-b613-ff4454cf52ca">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<box topPadding="0">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($V{SumDebitAmount}.add($P{SumDebitAmt}))]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+			</frame>
+		</band>
+	</summary>
+</jasperReport>

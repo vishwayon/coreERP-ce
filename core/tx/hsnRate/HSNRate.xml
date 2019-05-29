@@ -1,0 +1,27 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="HSNRate" type="Master"> 
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <controlTable>
+            <tableName>tx.hsn_sc</tableName>
+            <primaryKey>hsn_sc_id</primaryKey>
+            <customColumns>
+                <customColumn name="gst_rate_id" type="bigint"/>
+                <customColumn name="is_exempt" type="bool"/>
+            </customColumns>
+            <fetchOrCreate>
+                <useOnFetch/>
+            </fetchOrCreate>
+            <save>
+                <useOnSave/>
+            </save>  
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\tx\hsnRate\HSNRateEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

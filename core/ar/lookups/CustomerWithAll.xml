@@ -1,0 +1,24 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="Customer">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select a.customer_id, a.customer
+                from (        
+                Select 0 as customer_id, 'All' as customer
+                union All
+                (select customer_id, customer
+                from ar.customer
+                where company_id={company_id}
+                order by customer asc)
+                ) a
+            </command>
+        </sql>
+        <keyField id="customer_id"/>
+    </lookup>
+</cwFramework>

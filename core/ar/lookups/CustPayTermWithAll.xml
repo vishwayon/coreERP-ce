@@ -1,0 +1,25 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="CustPayTermWithAll">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select a.pay_term_id, a.pay_term
+                from (        
+                Select 0 as pay_term_id, 'All' as pay_term
+                union All
+                (
+                    SELECT pay_term_id, pay_term 
+                    From ac.pay_term 
+                    where for_cust = true 
+                    order by pay_term
+                ) )a
+            </command>
+        </sql>
+        <keyField id="pay_term_id"/>
+    </lookup> 
+</cwFramework>

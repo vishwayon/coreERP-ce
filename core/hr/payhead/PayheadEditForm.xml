@@ -1,0 +1,58 @@
+
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Payhead" type="Master"  bindingBO="payhead/Payhead">
+        <header>Payhead</header>
+        <keyField>payhead_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <clientJsCode>payhead/Payhead_clientcode.js</clientJsCode> 
+        <controlSection editMode="Edit">
+            <dataBinding>              
+                <field id="payhead" label="Payhead" type="string" control="TextBox" size="4" maxLength="50" />
+                <field id="payhead_alias" label="Payhead Alias" type="string" control="TextBox" size="4" maxLength="20" />
+                <nextRow/>
+                <field id="account_id" label="Account" type="int" control="SmartCombo" size="4">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="accrual_account_id" label="Accural Account" type="int" control="SmartCombo" size="4">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <field id="payhead_type" label="Payhead Type" control="SimpleCombo" type="string" size="2">
+                    <options>
+                        <option value="E">Emolument</option>
+                        <option value="D">Deduction</option>   
+                        <option value="C">CompanyContribution</option> 
+                        <option value="O">Overtime</option>         
+                        <option value="L">Loan Recovery</option>              
+                    </options>
+                </field>  
+                <sectionHeader label="Include In Calculation"/> 
+                <field id="incl_in_gratuity" label="Gratutity" type="bool" control="CheckBox" size="ms"
+                       cdata-enable-on="core_payhead.enable_gratuity"/>
+                <field id="incl_in_leave" label="Leave Salary" type="bool" control="CheckBox" size="ms"
+                       cdata-enable-on="core_payhead.enable_leave"/>
+                <field id="incl_in_nopay" label="No Pay Calculation" type="bool" control="CheckBox" size="ms"
+                       cdata-enable-on="core_payhead.enable_nopay"/>
+                <nextRow/>
+                <field id="note1" label="Note : For Emolument, selected account is debited and accrual account is credited. For Deduction, selected account is credited and accrual account is debited." type="string" control="Label" size="l"/>
+            
+            </dataBinding>  
+        </controlSection>
+    </formView>
+</cwFramework>
+              
+              
+ 
+ 

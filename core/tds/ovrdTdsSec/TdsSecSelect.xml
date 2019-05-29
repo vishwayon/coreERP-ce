@@ -1,0 +1,17 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <allocView id="TdsSecSelect" type="alloc" width="700px">
+        <header>Override Section</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="gst-loading" control="Label" type="string" size="m" label="Loading ..." />
+                <tranSection label="" editMode="Edit" >
+                    <dataBinding dataProperty="ts_temp" bindMethod="datatable">
+                    </dataBinding>
+                </tranSection>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>

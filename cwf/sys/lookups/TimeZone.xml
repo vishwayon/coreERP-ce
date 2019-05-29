@@ -1,0 +1,18 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="TimeZone">
+        <connectionType>
+            <mainDB/>
+        </connectionType>
+        <sql>
+            <command>
+                SELECT time_zone_id, time_zone
+                From sys.time_zone
+                Order By time_zone
+            </command>
+        </sql>
+        <keyField id="time_zone_id"/>
+    </lookup> 
+</cwFramework>

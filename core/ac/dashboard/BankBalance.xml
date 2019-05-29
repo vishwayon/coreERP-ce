@@ -1,0 +1,45 @@
+<widget id="BankBalance">
+    <title>Bank/Cash Balance</title>    
+    <widgetType>grid</widgetType>
+    <series id="acctype1">
+        <label>Debit Closing Balance</label>
+        <sql>
+            <command>
+                select a.*
+                from ac.fn_tb_report(:pcompany_id, :pbranch_id, :pfinyear, :pyear_begin, :pyear_end) a
+                inner join ac.account_head b on a.account_id=b.account_id
+                where b.account_type_id in (1,2)
+                order by a.debit_opening_total-a.credit_opening_total
+                limit 4
+            </command>
+            <params>
+                <param id="pcompany_id">
+                    <session>company_id</session>
+                </param>
+                <param id="pbranch_id">
+                    <session>branch_id</session>
+                </param>
+                <param id="pfinyear">
+                    <session>finyear</session>
+                </param>
+                <param id="pyear_begin">
+                    <session>year_begin</session>
+                </param>
+                <param id="pyear_end">
+                    <session>year_end</session>
+                </param>
+            </params>
+        </sql>
+        <seriesType>grid</seriesType>
+        <xField/>
+        <yField/>
+        <displayFields>
+          <displayField columnName="account_head" displayName="Account"/>
+          <displayField columnName="debit_opening_total" displayName="Debit" format="Amount"/>
+          <displayField columnName="credit_opening_total" displayName="Credit" format="Amount"/>
+        </displayFields>
+    </series>    
+    <codeBehind>
+        <className>\app\core\ac\dashboard\BankBalanceEventHandler</className>
+    </codeBehind>
+</widget>

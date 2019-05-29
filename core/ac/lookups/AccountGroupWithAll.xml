@@ -1,0 +1,26 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="AccountGroupWihAll">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select a.group_id, a.group_name, a.pad_left, a.group_path
+                from (
+                    Select -99 as group_id, 'All' as group_name, 0 as pad_left, 'All' as group_path
+                    union All
+                    (select group_id, group_name, (ascii(left(group_key, 1))-65)*10 as pad_left, group_path
+                        from ac.account_group
+                        Order By group_path)
+                    Union All
+                    Select -98 as group_id, 'Non Expense' as group_name, 0 as pad_left, 'NX' as group_path
+                ) a
+            </command>
+        </sql>
+        <keyField id="group_id"/>
+        <padField id="pad_left"/>
+    </lookup>
+</cwFramework>

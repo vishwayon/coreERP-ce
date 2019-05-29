@@ -1,0 +1,21 @@
+<wizardView>
+    <header>Select Payroll Group</header>
+    <sections>
+        <formSection id="SelectPayrollGroup">
+            <displayFields>
+                <displayField id="payroll_group_id" label="Payroll Group" type="int" control="SmartCombo" size="m" editMode="edit" defaultValue="-1">
+                    <lookup>
+                         <valueMember>payroll_group_id</valueMember>
+                         <displayMember>payroll_group</displayMember>
+                         <namedLookup>../core/hr/lookups/Payrollgroup.xml</namedLookup>
+                    </lookup>   
+                </displayField>
+                <displayField id="pay_month" label="Pay Month" type="date" control="Date" size="ms" editMode="edit" range="finYear">
+                    <value>
+                        <currentDate/>
+                    </value>
+                </displayField>
+            </displayFields>
+        </formSection>
+    </sections>
+</wizardView>

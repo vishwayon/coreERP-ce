@@ -1,0 +1,64 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="CustomerRefund" type="Document">
+        <controlTable>
+            <tableName>ar.rcpt_control</tableName>
+            <primaryKey>voucher_id</primaryKey>
+            <jsonField id="annex_info">
+                <jfield name="is_ac_payee" type="bool"/>
+                <jfield name="is_non_negotiable" type="bool"/>
+            </jsonField>
+            <customColumns>
+                <customColumn name="customer" type="varchar" length="250"/>
+                <customColumn name="credit_amt_total" type="numeric" />     
+                <customColumn name="credit_amt_total_fc" type="numeric" />   
+                <customColumn name="write_off_amt_total" type="numeric" />   
+                <customColumn name="write_off_amt_total_fc" type="numeric" />   
+                <customColumn name="tds_amt_total" type="numeric" />   
+                <customColumn name="tds_amt_total_fc" type="numeric" />          
+                <customColumn name="other_exp_total" type="numeric" />   
+                <customColumn name="other_exp_total_fc" type="numeric" />        
+                <customColumn name="credit_amt" type="numeric" />   
+                <customColumn name="credit_amt_fc" type="numeric" />           
+            </customColumns>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save>    
+            <delete>
+                <useEntity/>
+            </delete>
+            <tranTable id="receivable_ledger_alloc_tran">
+                <tableName>ac.rl_pl_alloc</tableName>
+                <primaryKey>rl_pl_alloc_id</primaryKey>  
+                <customColumns>
+                    <customColumn name="adv_ref_id" type="varchar" length="50"/>
+                    <customColumn name="adv_ref_date" type="date"/>
+                    <customColumn name="balance" type="numeric" />
+                    <customColumn name="balance_fc" type="numeric" />
+                </customColumns>    
+                <relation linkType="OneToMany">
+                    <foreignKey>voucher_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern type="md5">{voucher_id}:{RowID}</primaryKeyPattern>
+                    <fieldPattern field="vch_tran_id">{voucher_id}:{RowID}</fieldPattern>
+                </save>         
+                <delete>
+                    <useEntity/>      
+                </delete> 
+            </tranTable>
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\ar\customerRefund\CustomerRefundEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

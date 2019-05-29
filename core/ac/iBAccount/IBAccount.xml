@@ -1,0 +1,26 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="IBAccount" type="Master"> 
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <controlTable>
+            <tableName>sys.branch</tableName>
+            <primaryKey>branch_id</primaryKey>
+            <customColumns>
+                <customColumn name="account_id" type="bigint"/>
+            </customColumns>
+            <fetchOrCreate>
+                <useOnFetch/>
+            </fetchOrCreate>
+            <save>
+                <useOnSave/>
+            </save>  
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\ac\iBAccount\IBAccountEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

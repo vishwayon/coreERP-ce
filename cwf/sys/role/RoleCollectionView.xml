@@ -1,0 +1,22 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="Role" type="Master" bindingBO="Role" editView="role/RoleEditForm">        
+        <header>Role</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select role_id, role_name, role_description from sys.role order by role_name
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="role_name" displayName="Role Name"/>
+                <displayField columnName="role_description" displayName="Description"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

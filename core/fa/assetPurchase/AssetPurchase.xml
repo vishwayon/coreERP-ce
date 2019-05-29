@@ -1,0 +1,89 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <businessObject id="AssetPurchase" type="Document">  
+        <controlTable>
+            <tableName>fa.ap_control</tableName>
+            <primaryKey>ap_id</primaryKey>
+            <customColumns>
+                <customColumn name ="tax_schedule_name" type="varchar" length="50"/>
+                <customColumn name="applicable_to_customer" type="bool"/> 
+                <customColumn name="applicable_to_supplier" type="bool"/>
+                <customColumn name="tax_amt" type="numeric"/> 
+                <customColumn name="lc_amt" type="numeric"/> 
+                <customColumn name="misc_taxable_amt" type="numeric"/> 
+                <customColumn name="misc_non_taxable_amt" type="numeric"/> 
+                <customColumn name="total_purchase_amt" type="numeric"/> 
+                <customColumn name="before_tax_amt" type="numeric"/> 
+            </customColumns>        
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save>  
+            <delete>
+                <useEntity/>      
+            </delete> 
+            <tranTable id="ap_tran">
+                <tableName>fa.ap_tran</tableName>
+                <primaryKey>ap_tran_id</primaryKey>      
+                <relation linkType="OneToMany">
+                    <foreignKey>ap_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{ap_id}:{RowID}</primaryKeyPattern>
+                </save>   
+                <delete>
+                    <useEntity/>      
+                </delete> 
+            </tranTable>
+            <tranTable id="ap_lc_tran">
+                <tableName>fa.ap_lc_tran</tableName>
+                <primaryKey>ap_lc_tran_id</primaryKey>
+                <relation linkType="OneToMany">
+                    <foreignKey>ap_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{ap_id}:{RowID}</primaryKeyPattern>
+                </save>  
+                <delete>
+                    <useEntity/>      
+                </delete> 
+            </tranTable>
+            <tranTable id="tax_tran">
+                <tableName>tx.tax_tran</tableName>
+                <primaryKey>tax_tran_id</primaryKey>  
+                <customColumns>
+                    <customColumn name="en_tax_type" type="bigint"/>  
+                    <customColumn name ="tax_schedule_name" type="varchar" length="50"/>
+                </customColumns>        
+                <relation linkType="OneToOne">
+                    <foreignKey>voucher_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{ap_id}:{RowID}</primaryKeyPattern>
+                </save>         
+                <delete>
+                    <useEntity/>      
+                </delete> 
+            </tranTable>
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\fa\assetPurchase\AssetPurchaseEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

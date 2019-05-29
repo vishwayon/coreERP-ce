@@ -1,0 +1,24 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    <allocView id="SiForSr" type="alloc" width="800pt">
+        <header>Invoice Line Items</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="si-loading" control="Label" label="Loading ..." />
+                <tranSection label="" editMode="Edit" fixedWidth="700" fixedHeight="400">
+                    <dataBinding dataProperty="si_temp">
+                        <field id="si_tran_id" label="Inv Line #" type="string" control="TextBox" size="2" readOnly="true"/>
+                        <field id="material_name" label="Stock Item" type="string" control="TextBox" size="4" readOnly="true"/>
+                        <field id="bal_qty" label="Balance" type="decimal" control="TextBox" size="2" scale="1"  readOnly="true"/>
+                        <field id="uom_desc" label="UoM" type="string" control="TextBox" size="1"  readOnly="true"/>
+                        <field id="si_sel" label="" type="bool" control="CheckBox" size="1"
+                            mdata-event="subscribe: core_st.si_for_sr.si_sel_click" />
+                        <field id="alloc_qty" label="Select Qty" type="decimal" control="TextBox" size="2" scale="3"
+                            cdata-enable-on="core_st.si_for_sr.alloc_qty_enable" />
+                    </dataBinding>
+                </tranSection>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>

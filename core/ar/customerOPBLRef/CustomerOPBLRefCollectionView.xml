@@ -1,0 +1,28 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>             
+    
+    <collectionView id="CustomerOPBLRef" type="Master" bindingBO="CustomerOPBLRef" editView="customerOPBLRef/CustomerOPBLRefEditForm">        
+        <header>Customer OPBL Ref</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select a.customer_id, a.customer_name, a.customer_code, d.segment, a.control_account_id, b.account_head control_account 
+                    from ar.customer a
+                    Inner join ac.account_head b on a.control_account_id = b.account_id
+                    left join ar.segment d On (a.annex_info-&gt;&gt;'segment_id')::BigInt = d.segment_id
+                    order by a.customer_name
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="customer_name" displayName="Customer"/>
+                <displayField columnName="customer_code" displayName="Code"/>
+                <displayField columnName="segment" displayName="Segment"/>
+                <displayField columnName="control_account" displayName="Control Account"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

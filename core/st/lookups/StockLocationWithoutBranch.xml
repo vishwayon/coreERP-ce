@@ -1,0 +1,23 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="StockLocation">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select a.stock_location_id, a.stock_location_name, (b.branch_code || ' - ' || a.stock_location_name) sl_name_with_br, a.branch_id, a.sl_type_id
+                from st.stock_location a
+                inner join sys.branch b on a.branch_id = b.branch_id
+                Where a.company_id={company_id} 
+                order by (b.branch_code || ' - ' || a.stock_location_name)
+            </command>
+        </sql>
+        <keyField id="stock_location_id"/>
+    </lookup>
+</cwFramework>
+
+
+    

@@ -1,0 +1,19 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="AccountGroup">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select group_id, group_name, (ascii(left(group_key, 1))-65)*10 as pad_left, group_path
+                from ac.account_group
+                Order By group_path
+            </command>
+        </sql>
+        <keyField id="group_id"/>
+        <padField id="pad_left"/>
+    </lookup>
+</cwFramework>

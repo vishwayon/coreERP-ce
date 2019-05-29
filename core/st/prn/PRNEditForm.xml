@@ -1,0 +1,132 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="PurchaseReturnNote" type="Document" bindingBO="prn/PRN">
+        <header>Purchase Return Note</header>
+        <keyField>stock_id</keyField>
+        <printView rptOption="purchaseReturn/PurchaseReturnPrint">
+            <rptParams>
+                <param id="pstock_id">stock_id</param>
+            </rptParams>
+        </printView>
+        <newDocEnabled wizard="prn/PRNWizard" step="SelectVatType">
+            <docType>PRN</docType>
+        </newDocEnabled>
+        <deleteDocEnabled/>  
+        <jsEvents>
+            <afterLoadEvent>core_prn.after_load</afterLoadEvent>   
+        </jsEvents>      
+        <clientJsCode>prn/PRN_clientcode.js</clientJsCode> 
+        <clientJsCodeRefs>
+            <clientJsCodeRef>../core/st/st_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/ac/ac_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/ap/ap_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/tx/tx_clientcode.js</clientJsCodeRef>
+        </clientJsCodeRefs>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="stock_id" label="Stock No" type="string" control="TextBox" size="s" maxLength="50" isOptional="true" readOnly="true" forStatus="true"/>
+                <dummy size="6"/>
+                <field id="doc_date" label="Date" type="date" control="Date" size="ms" range="finYear"  readOnly="true"/>
+                <nextRow/>
+                <field id="account_id" label="Supplier" type="int" control="SmartCombo" size="s" >
+                    <lookup>
+                        <valueMember>supplier_id</valueMember>
+                        <displayMember>supplier</displayMember>
+                        <namedLookup>../core/ap/lookups/Supplier.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="annex_info.origin_inv_id" label="Original Invoice #" type="string" control="TextBox" size="2"/>
+                <field id="annex_info.origin_inv_date" label="Original Invoice Dt." type="date" control="Date" size="2"/>
+                <field id="sale_account_id" label="Purchase Account" type="int" control="SmartCombo" size="s" >
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id = 17</filter>
+                    </lookup>
+                </field>
+                <nextRow/>
+                <tranSection label="Stock Items" editMode="Add|Edit|Delete" fixedWidth="850"  afterDeleteMethod="core_prn.st_tran_delete">
+                    <dataBinding dataProperty="stock_tran">
+                        <field id="bar_code" label="Bar Code" type="string" control="TextBox" size="2" isOptional="true"/>
+                        <field id="material_type_id" label="Type" type="int" control="SmartCombo" size="2" isOptional="true" >
+                            <lookup>
+                                <valueMember>material_type_id</valueMember>
+                                <displayMember>material_type</displayMember>
+                                <namedLookup>../core/st/lookups/MaterialType.xml</namedLookup>
+                            </lookup>
+                        </field>
+                        <field id="material_id" label="Stock/Inventory Item" type="int" control="SmartCombo" size="6" 
+                                mdata-event="subscribe: core_prn.fetch_mat_info" >
+                            <lookup>
+                                <valueMember>material_id</valueMember>
+                                <displayMember>material_name</displayMember>
+                                <namedLookup>../core/st/lookups/Material.xml</namedLookup>
+                            </lookup>   
+                        </field>                
+                        <field id="uom_id" label="UoM" type="int" control="SmartCombo" size="2" readOnly="true">
+                            <lookup>
+                                <valueMember>uom_id</valueMember>
+                                <displayMember>uom_desc</displayMember>
+                                <namedLookup>../core/st/lookups/UoM.xml</namedLookup>
+                                <filterEvent>core_st.sp_uom_combo_filter</filterEvent>
+                            </lookup>   
+                        </field>
+                        <field id="issued_qty" label="Return Qty" type="decimal" control="TextBox" size="2" scale="qty"
+                                mdata-event="subscribe:core_prn.item_calc"/>
+                        <field id="rate" label="Rate" type="decimal" control="TextBox" size="2" scale="rate" 
+                                mdata-event="subscribe:core_prn.item_calc"/>
+                        <field id="bt_amt" label="Amount" type="decimal" control="TextBox" size="2" readOnly="true"/>
+                        <nextRow/>
+                        <field id="stock_location_id" label="Stock Location" type="int" control="SmartCombo" size="1" >
+                            <lookup>
+                                <valueMember>stock_location_id</valueMember>
+                                <displayMember>stock_location_name</displayMember>
+                                <namedLookup>../core/st/lookups/StockLocation.xml</namedLookup>
+                            </lookup>   
+                        </field>
+                        <field id="tax_schedule_id" label="" type="int" control="SmartCombo" isOptional="true" size="1">
+                            <lookup>
+                                <valueMember>tax_schedule_id</valueMember>
+                                <displayMember>tax_schedule</displayMember>
+                                <namedLookup>../core/tx/lookups/TaxSchedule.xml</namedLookup>
+                                <filter>applicable_to_supplier = true</filter>
+                            </lookup>
+                        </field>
+                        <xdiv size="1" colspan="1"/>
+                            <field label="ITC:" type="string" size="1" control="Label" style="border: none; margin-top: 5px; padding-right: 0;" inline="true"/>
+                            <field id="apply_itc" label="" type="bool" control="CheckBox" isOptional="true" sixe="1"/>
+                            <field id="en_tax_type" label="" type="int" control="Hidden" isOptional="true"/>
+                            <field label="Tax(%):" type="string" size="1" control="Label" style="border: none; margin-top: 5px; padding-right: 0;" inline="true"/>
+                            
+                        <xdivEnd/>
+                        <field id="tax_pcnt" label="Tax %" type="decimal" control="TextBox" size="1" isOptional="true"
+                                cdata-enable-on="core_prn.tax_pcnt_enable" mdata-event="subscribe:core_prn.item_calc"/>
+                        <field label="Tax:" type="string" size="1" control="Label" style="border: none; margin-top: 5px; padding-right: 0;" colspan="1" inline="true" />
+                        <field id="tax_amt" label="Tax Amt" type="decimal" control="TextBox" size="1" isOptional="true" colspan="1"
+                            cdata-enable-on="core_prn.tax_amt_enable" mdata-event="subscribe:core_prn.item_calc"/>
+                        <field id="item_amt" label="" type="decimal" control="Hidden" readOnly="true" size="1"/>
+                        
+                        <addRowEvent>core_prn.st_tran_add</addRowEvent>
+                    </dataBinding>
+                </tranSection>
+                <nextRow/>  
+                <xdiv id="narration_div" size="6"/>
+                    <field id="narration" label="Narration" type="string" control="TextArea" size="12" maxLength="500" rows="3" isOptional="true"/> 
+                    <nextRow/> 
+                    <field id="remarks" label="Remarks" type="string" control="TextArea" size="12" maxLength="500" rows="3" isOptional="true"/>                                  
+                <xdivEnd/>
+                <xdiv id="total_div" size="6"/>
+                <dummy size="1"/>
+                <field id="total_amt_label" label="Total Amount" type="string" control="Label" size="2" isOptional="true" inline="true"/>  
+                <field id="total_amt" label="" type="decimal" control="TextBox" size="4" readOnly="true" inline="true"/>          
+                <xdivEnd/>
+                <nextRow/> 
+                <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" size="m"  isOptional="true"/>  
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" size="m" readOnly="true" isOptional="true"/> 
+            </dataBinding>
+        </controlSection>   
+    </formView>
+</cwFramework>

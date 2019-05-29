@@ -1,0 +1,17 @@
+<wizard id="TDSPayment" name="TDS Payment Wizard">
+    <clientJsCodeRefs>
+        <clientJsCodeRef>../core/tds/tdsPayment/TDSPayment_clientcode.js</clientJsCodeRef>
+    </clientJsCodeRefs>
+    <codeBehind>
+        <className>\app\core\tds\tdsPayment\TDSPaymentWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectPersonType">
+        <path>tdsPayment/TDSPaymentWizard/SelectPersonType</path>
+    </wizardStep>
+    <wizardStep id="SelectBill">
+        <path>tdsPayment/TDSPaymentWizard/SelectBill</path>
+    </wizardStep>
+    <postWizard id="TDSPayment">
+        <path>tdsPayment/TDSPaymentEditForm</path>
+    </postWizard>
+</wizard>

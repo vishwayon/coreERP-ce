@@ -1,0 +1,200 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="DebitNote" type="Document" bindingBO="debitNote/DebitNote">
+        <header>Debit Note</header>
+        <keyField>invoice_id</keyField>
+        <printView rptOption="debitNote/DebitNotePrint">
+            <rptParams>
+                <param id="pvoucher_id">invoice_id</param>
+            </rptParams>
+        </printView>
+        <newDocEnabled wizard="debitNote/DebitNoteWizard" step="SelectIncomeType">
+            <docType>DN</docType>
+        </newDocEnabled>
+        <deleteDocEnabled/>
+        <clientJsCode>invoice/Invoice_clientcode.js</clientJsCode>     
+        <clientJsCodeRefs>
+            <clientJsCodeRef>../core/tx/tx_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/ar/ar_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/ac/ac_clientcode.js</clientJsCodeRef>
+        </clientJsCodeRefs>  
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="invoice_id" label="Voucher No" type="string" control="TextBox" size="s" maxLength="50" isOptional="true" readOnly="true" forStatus="true"/>
+                <dummy size="m"/>
+                <field id="doc_date" label="Date" type="date" control="Date" size="ms" range="finYear" readOnly="true"/>     
+                <nextRow/>
+                <field id="customer_id" label="Customer" type="int" control="SmartCombo" size="m"   mdata-event="subscribe:core_invoice.customer_changed">
+                    <lookup>
+                        <valueMember>customer_id</valueMember>
+                        <displayMember>customer</displayMember>
+                        <namedLookup>../core/ar/lookups/Customer.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <dummy size="1"/>
+                <field id="fc_type_id" label="Txn Ccy" type="int" control="FC" mdata-event="subscribe:core_invoice.inv_fc_changed" readOnly="true" size="s" />
+                
+                <field id="exch_rate" label="Amount" type="decimal" control="Hidden" size="ms" scale="fc" readOnly="true"  isOptional="true"/>
+                        
+                <cButton id="gl_distribution" onClick="core_invoice.inv_view_gl" label="GL Distribution" cdata-visible-on="core_invoice.visible_gl_distribution"/>
+                
+                <nextRow/>   
+                <field id="income_type_id" label="Income Type" type="int" control="SmartCombo" size="3" 
+                       readOnly="true">
+                    <lookup>
+                        <valueMember>income_type_id</valueMember>
+                        <displayMember>income_type_name</displayMember>
+                        <namedLookup>../core/ar/lookups/IncomeType.xml</namedLookup>
+                    </lookup>
+                </field>  
+                <field id="salesman_id" label="Salesman" type="int" control="SmartCombo"  size="3">
+                    <lookup>
+                        <valueMember>salesman_id</valueMember>
+                        <displayMember>salesman_name</displayMember>
+                        <namedLookup>../core/ar/lookups/Salesman.xml</namedLookup>
+                    </lookup>   
+                </field> 
+                <dummy size="1"/>
+                <field id="po_no" label="Order Ref #" type="string" control="TextBox" size="ms"  isOptional="true"/>  
+                <field id="po_date" label="Order Ref Date" type="date" control="Date" size="ms"/>
+                <nextRow style="height:25px;"/>
+                <tranSection label="Item Details" editMode="Add|Edit|Delete">
+                    <dataBinding dataProperty="invoice_tran">
+                        <field id="account_id" label="Account" type="int" control="SmartCombo" size="s">
+                            <lookup>
+                                <valueMember>account_id</valueMember>
+                                <displayMember>account_head</displayMember>
+                                <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                                <filterEvent>core_invoice.income_type_account_combo_filter</filterEvent>
+                            </lookup>   
+                        </field>
+                        <field id="description" label="Description" type="string" control="TextArea" size="5" maxLength="250" />
+                        <field id="credit_amt" label="Amount" type="decimal" control="TextBox" size="ms" isOptional="true" 
+                                mdata-event="subscribe:core_invoice.item_calc"/>
+                        <field id="credit_amt_fc" label="Amount FC" type="decimal" control="TextBox" size="ms" isOptional="true"
+                               data-fc-dependent="credit_amt" mdata-event="subscribe:core_invoice.item_calc"/>
+                    </dataBinding>
+                </tranSection>
+                <field id="before_tax_amt" label="Tran Debit Amount" type="Hidden" control="Hidden" allowNegative="true" size="ms" readOnly="true">
+                    <computedField>
+                        var debit_total = new Number();
+                        ko.utils.arrayForEach(this.invoice_tran(),function(item){                              
+                            debit_total+=new Number(item.credit_amt());
+                        });
+                        return debit_total.toFixed(2);
+                    </computedField>
+                </field>
+                <dummy style="height:25px;"/>
+                <nextRow/>
+                <xdiv id="narr_div" size="6"/>
+                <cButton id="sel_addr" onClick="core_invoice.SelectAddress" label="Select Address" /> 
+                <field id="invoice_address" label="Address" type="string" rows="6" control="TextArea"  size="12" maxLength="2000" isOptional="true"/> 
+                <nextRow/>           
+                <field id="narration" label="Note/Narration" type="string" rows="6" control="TextArea"  size="12" maxLength="500" isOptional="true"/> 
+                <xdivEnd/>
+                <xdiv id="tax_div" size="6"/> 
+                <xtab id="inv_tab" size="12" />   
+                <xtabPage id="tax_tab_page" label="Taxes" tabid="inv_tab" size="12"/>
+                <field label="Taxes" type="string" control="Label" size="2" inline="true" isOptional="true" style="font-size:14px;color:teal;width:50px;"/>  
+                <field id="tax_schedule_name" label="" type="string" control="TextBox" size="6" maxLength="50" readOnly="true" isOptional="True" inline="true"/>
+                <cButton id="tax_schedule" onClick="core_tx.SelectTax" label="Select Tax" cdata-enable-on="core_tx.select_clear_tax_enable" inline="true" 
+                         icon="glyphicon glyphicon-plus" tooltip="Select Tax" nolabel="true"/>
+                <cButton id="clear_tax_schedule" onClick="core_tx.ClearTax" label="Clear Tax" cdata-enable-on="core_tx.select_clear_tax_enable" inline="true" 
+                         icon="glyphicon glyphicon-trash" nolabel="true" tooltip="Clear Tax"/>
+                <tranSection editMode="Auto" size="12">                    
+                    <dataBinding dataProperty="tax_tran">
+                        <field id="supplier_paid" label="Paid By Supplier" type="Hidden" control="Hidden" size="xs"/>
+                        <field id="description" label="Description" type="string" control="TextBox" size="s" maxLength="250" readOnly="true"/> 
+                        <field id="tax_amt" label="Amount" type="decimal" control="TextBox" size="ms"  readOnly="true"
+                               mdata-event="subscribe:core_tx.tx_tax_amt_changed" />
+                        <field id="tax_amt_fc" label="Amount FC" type="decimal" control="TextBox" size="ms"  readOnly="true"
+                               cdata-visible-on="core_tx.enable_visible_fc"/>
+                        <field id="include_in_lc" label="Include In LC" type="Hidden" control="Hidden" size="xs"/> 
+                        <field id="account_id" label="Account_ID" type="Hidden" control="Hidden" size="xs"/> 
+                        <field id="account_affected_id" label="account_affected_id" type="Hidden" control="Hidden" size="xs"/> 
+                        <field id="custom_rate" label="custom_rate" type="Hidden" control="Hidden" size="xs"/> 
+                        <field id="tax_schedule_id" label="tax_schedule_id" type="Hidden" control="Hidden" size="xs"/> 
+                        <field id="tax_detail_id" label="tax_detail_id" type="Hidden" control="Hidden" size="xs"/> 
+                    </dataBinding>
+                </tranSection>
+                <dummy size="1"/> 
+                <field id="tax_total" label="Tax Amount" type="string" control="Label" size="3" isOptional="true" inline="true"/>   
+                <field id="tax_amt" label="" type="decimal" control="TextBox" size="4" readOnly="true" inline="true" class="fg-total">
+                  <computedField  forceCalOnPost="true">
+                        var total_tax_amt = new Number();
+                        for(var p = 0; p &lt; this.tax_tran().length; ++p)
+                        {
+                            total_tax_amt += new Number(this.tax_tran()[p].tax_amt());
+                        }
+                        core_invoice.total_calc();
+                        return total_tax_amt.toFixed(2);
+                    </computedField>
+                </field>          
+                <field id="tax_amt_fc" label="" type="decimal" control="TextBox" size="4" readOnly="true" inline="true"
+                           cdata-visible-on="core_invoice.enable_visible_fc" class="fg-total">
+                    <computedField  forceCalOnPost="true">
+                        var total_tax_amt_fc = new Number();
+                        for(var p = 0; p &lt; this.tax_tran().length; ++p)
+                        {
+                            total_tax_amt_fc += new Number(this.tax_tran()[p].tax_amt_fc());
+                        }
+                        core_invoice.total_calc();
+                        return total_tax_amt_fc.toFixed(2);
+                    </computedField>
+                </field>
+                <xtabPageEnd/>
+                <xtabPage id="adv_tab_page" label="Advances" tabid="inv_tab" size="12"/>
+                <field label="Less: Advance" type="string" control="Label" size="6" inline="true" isOptional="true" style="font-size:14px;color:teal;width:115px;"/>  
+                <cButton id="advance" onClick="core_invoice.adv_alloc_click" label="Select Advance" inline="true" icon="glyphicon glyphicon-plus" tooltip="Select Advance" nolabel="true"/>
+                <cButton id="clearadvance" onClick="core_ar.clearAdvalloc" label="Clear Advance" inline="true" icon="glyphicon glyphicon-trash" nolabel="true" tooltip="Clear Advance"/>
+                <tranSection editMode="Auto" size="12">         
+                    <dataBinding dataProperty="receivable_ledger_alloc_tran">
+                        <field id="rl_pl_id" label="rl_pl_id" type="Hidden" control="Hidden" size="ms" maxLength="50" readOnly="true"/>
+                        <field id="vch_tran_id" label="vch_tran_id" type="Hidden" control="Hidden" size="ms" maxLength="50" readOnly="true"/>
+                        <field id="voucher_id" label="vch_tran_id" type="Hidden" control="Hidden" size="ms" maxLength="50" readOnly="true"/>
+                        <field id="branch_id" label="branch_id" type="Hidden" control="Hidden" size="ms" maxLength="50" readOnly="true"/>
+                        <field id="account_id" label="account_id" type="Hidden" control="Hidden" size="ms" maxLength="50" readOnly="true"/>
+                        <field id="exch_rate" label="exch_rate" type="Hidden" control="Hidden" size="ms" maxLength="50" readOnly="true"/>
+                        <field id="net_debit_amt" label="net_debit_amt" type="Hidden" control="Hidden" size="ms" maxLength="50" readOnly="true"/>
+                        <field id="net_debit_amt_fc" label="net_debit_amt_fc" type="Hidden" control="Hidden" size="ms" maxLength="50" readOnly="true"/>
+                        
+                        <field id="adv_ref_id" label="Voucher No" type="string" control="TextBox" size="s" maxLength="50" readOnly="true"/>
+                        <field id="adv_ref_date" label="Date" type="date" control="Date" size="ms" maxLength="50" readOnly="true"/>                        
+                        <field id="debit_amt" label="Amount" type="decimal" control="TextBox" size="ms"   readOnly="true"/>
+                        <field id="debit_amt_fc" label="Amount FC" type="decimal" control="TextBox" size="ms"   readOnly="true"
+                               cdata-visible-on="core_invoice.enable_visible_fc"/>
+                    </dataBinding>
+                </tranSection> 
+                <dummy size="1"/> 
+                <field id="advance_total" label="Advance Amount" type="string" control="Label" size="3" isOptional="true" inline="true"/>
+                <field id="advance_amt" label="" type="decimal" control="TextBox" size="4"  readOnly="true" inline="true" class="fg-total"/>
+                <field id="advance_amt_fc" label="" type="decimal" control="TextBox" size="4"  readOnly="true" inline="true"
+                       cdata-visible-on="core_invoice.enable_visible_fc" class="fg-total"/> 
+                <xtabPageEnd/>
+                <xtabEnd/>      
+                <nextRow/>
+                <dummy size="1"/> 
+                <field id="invoice_total" label="Invoice Amount" type="string" control="Label" size="3" isOptional="true" inline="true"/>   
+                <field id="invoice_amt" label="" type="decimal" control= "TextBox" size="4" isOptional="true"  readOnly="true" inline="true"
+                         class="fg-total fg-bold"/>  
+                <field id="invoice_amt_fc" label="" type="decimal" control= "TextBox" size="4" isOptional="true"  readOnly="true" inline="true"
+                           cdata-visible-on="core_invoice.enable_visible_fc"  class="fg-total fg-bold"/> 
+                <nextRow/>  
+                <dummy size="1"/> 
+                <field id="net_total_label" label="Net Receivable" type="string" control="Label" size="3" isOptional="true" inline="true"/>   
+                <field id="net_total" label="" type="decimal" control= "TextBox" size="4" isOptional="true"  readOnly="true" inline="true"
+                         class="fg-total"/>  
+                <field id="net_total_fc" label="" type="decimal" control= "TextBox" size="4" isOptional="true"  readOnly="true" inline="true"
+                           cdata-visible-on="core_invoice.enable_visible_fc"  class="fg-total"/>   
+                <xdivEnd/>
+                <nextRow/>       
+                <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" 
+                       size="m"  isOptional="true"/>  
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" readOnly="true" 
+                       size="m" isOptional="true"/> 
+            </dataBinding>
+        </controlSection>   
+    </formView>
+</cwFramework>

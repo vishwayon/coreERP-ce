@@ -1,0 +1,22 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'>
+
+    <lookup id="EmployeeWithAll">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+              <command>
+                select a.payroll_group_id, a.payroll_group
+                from (        
+                       Select 0 as payroll_group_id, 'All' as payroll_group
+                       union All
+                       (SELECT payroll_group_id, payroll_group 
+                        FROM hr.payroll_group Where company_id={company_id} 
+                        order by payroll_group asc)
+                ) a
+              </command>
+        </sql>
+        <keyField id="payroll_group_id"/>
+    </lookup>
+</cwFramework>

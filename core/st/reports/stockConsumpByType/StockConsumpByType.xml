@@ -1,0 +1,90 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="StockConsumpByType" type="Report" rptPath="/core/st/reports/stockConsumpByType" rptName="StockConsumpByTypeSummary">
+        <header>Stock Consumption By Issue Type</header>
+        <clientJsCode>../core/st/st_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pbranch_ids" label="Branch" type="array" control="MultiSelect" size="4" forConsolidated="true"> 
+                    <value>
+                        <session>branch_id</session>
+                    </value>
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>
+                    </lookup>  
+                </field>
+                <field id="pReport" label="Report" type="int" control="SimpleCombo"  size="s">
+                    <options defaultValue="0">
+                        <option value="0">By Issue Type Summary</option>
+                        <option value="1">By Issue Type Detailed</option>
+                        <option value="2">By Stock Item Summary</option>
+                        <option value="3">By Stock Item Detailed</option>
+                    </options>
+                </field>
+                <field id="pfrom_date" label="From" type="date" control="Date" size="ms" range="finYear">
+                    <value>
+                        <session>year_begin</session>
+                    </value>
+                </field>
+                <field id="pto_date" label="To" type="date" control="Date" size="ms" range="finYear">                   
+                    <value>
+                        <currentDate/>
+                    </value>
+                </field>
+                <nextRow/>
+                <dummy size="4"/>
+                <field id="pmaterial_type_id" label="Stock Type" type="int" control="SmartCombo"  size="s">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <displayMember>material_type</displayMember>
+                        <valueMember>material_type_id</valueMember>
+                        <namedLookup>../core/st/lookups/MaterialTypeWithAll.xml</namedLookup>
+                    </lookup>
+                </field>
+                <field id="pmaterial_id" label="Stock Item" type="int" control="SmartCombo" size="4" >
+                    <value>
+                        <text>-2</text>
+                    </value>
+                    <lookup>
+                        <valueMember>material_id</valueMember>
+                        <displayMember>material_name</displayMember>
+                        <namedLookup>../core/st/lookups/MaterialWithAll.xml</namedLookup>
+                        <filterEvent>core_st.rpt_sc_material_filter</filterEvent>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <dummy size="4"/>
+                <field id="pstock_movement_type_ids" label="Issue Document Type" type="array" control="MultiSelect" size="s">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <displayMember>stock_movement_type</displayMember>
+                        <valueMember>stock_movement_type_id</valueMember>
+                        <namedLookup>../core/st/lookups/StockMovementTypeWithAll.xml</namedLookup>
+                        <filter>(stock_movement_type_group in ('I', 'All') Or stock_movement_type_id = 7) And stock_movement_type_id != 101</filter>
+                    </lookup>
+                </field>
+                <param id="pcompany_id">                
+                    <session>company_id</session>
+                </param>
+                <param id="pfinyear">                
+                    <session>finyear</session>
+                </param>
+                <param id="pbranch_id">                
+                    <session>branch_id</session>
+                </param>
+                <param id="prpt_caption">         
+                    <text></text>
+                </param>
+                <field id="pshow_grp_tot" label="Sub-total Qty/Val" type="bool" control="CheckBox" size="2"/>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

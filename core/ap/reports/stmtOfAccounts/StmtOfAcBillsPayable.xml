@@ -1,0 +1,77 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="StmtOfAcBillsPayable" type="Report" rptPath="/core/ap/reports/stmtOfAccounts" rptName="rptStmtOfAcBillsPayable">
+        <header>Statement of Accounts</header>
+        <clientJsCodeRefs>
+            <clientJsCodeRef>../core/ap/ap_clientcode.js</clientJsCodeRef>
+        </clientJsCodeRefs>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="2" forConsolidated="true"> 
+                    <value>
+                        <session>branch_id</session>
+                    </value>
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>
+                    </lookup>  
+                </field>
+                <field id="preport_type" label="Report" type="int" control="SimpleCombo"  size="3">
+                    <options defaultValue="0">
+                        <option value="0">Statement of Accounts</option>
+                        <option value="1">Statement of Accounts Detailed</option>
+                        <option value="2">Ageing Analysis Summary</option>
+                        <option value="3">Ageing Analysis Detailed</option> 
+                        <option value="4">Balance Confirmation Letter</option>
+                    </options>  
+                </field>
+                <field id="pto_date" label="As On" type="date" control="Date" size="2" range="finYear">                   
+                    <value>
+                        <currentDate/>
+                    </value>    
+                </field> 
+                <field id="psupp_type_id" label="Supplier Type" control="SmartCombo" type="int" size="2">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <valueMember>supp_type_id</valueMember>
+                        <displayMember>supp_type</displayMember>
+                        <namedLookup>../core/ap/lookups/SupplierTypeWithAll.xml</namedLookup>
+                    </lookup>   
+                </field>  
+                <field id="paccount_id" label="Supplier" type="int" control="SmartCombo" size="3">
+                    <value>
+                        <text>-1</text>
+                    </value>
+                    <lookup>
+                        <valueMember>supplier_id</valueMember>
+                        <displayMember>supplier_with_code</displayMember>
+                        <namedLookup>../core/ap/lookups/SupplierWithAll.xml</namedLookup>
+                        <filterEvent>core_ap.rpt_supp_type_filter</filterEvent>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <field id="pshow_future_settlement" label="Future Settlement" type="bool" control="CheckBox" size="ms"/> 
+                <field id="psummary_by_branch" label="Summary By Branch" type="bool" control="CheckBox" size="ms"/>
+                <field id="pen_bill_type" label="Bill Type" type="int" control="SimpleCombo"  size="3">
+                    <options defaultValue="0">
+                        <option value="0">All</option>
+                        <option value="1">Exclude Advances</option>
+                        <option value="2">Advances Only</option>
+                    </options>  
+                </field>
+                <field id="pbcl_with_detail" label="Balance Confirmation With Detailed Info" type="bool" control="CheckBox" size="4"/>
+                <param id="ptype">                
+                        <text>0</text>
+                </param>
+                <param id="pcompany_id">                
+                        <session>company_id</session>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

@@ -1,0 +1,23 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="PersonTypeWithAll">
+        <connectionType>
+            <mainDB/>
+        </connectionType>
+        <sql>
+            <command>
+                             
+                select a.person_type_id, a.person_type_desc
+                from (        
+                Select 0 as person_type_id, 'All' as person_type_desc
+                union All  
+                (select a.person_type_id, a.person_type_desc from tds.person_type a
+                order by person_type_desc)
+                ) a
+            </command>
+        </sql>
+        <keyField id="person_type_id"/>
+    </lookup>
+</cwFramework>

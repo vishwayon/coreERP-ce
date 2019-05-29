@@ -1,0 +1,51 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Gstr2" type="Master" bindingBO="gstr2/Gstr2">    
+        <header>GSTR 2</header>    
+        <keyField>gst_ret_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <clientJsCode>gstr2/Gstr2_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="gst_ret_type_id" label="Return Type" type="int" control="SmartCombo" size="s" readOnly="true">
+                    <lookup>
+                        <valueMember>gst_ret_type_id</valueMember>
+                        <displayMember>ret_type</displayMember>
+                        <namedLookup>../core/tx/lookups/GstRetType.xml</namedLookup>
+                    </lookup>
+                </field>
+                <field id="gst_state_id" label="GST State" type="int" control="SmartCombo" size="s" readOnly="true">
+                    <lookup>
+                        <valueMember>gst_state_id</valueMember>
+                        <displayMember>gst_state_with_code</displayMember>
+                        <namedLookup>../core/tx/lookups/GstState.xml</namedLookup>
+                    </lookup>
+                </field>
+                <nextRow/>
+                <field id="ret_period" label="Return Period" type="string" control="TextBox" size="2" maxLength="6" readOnly="true"/>
+                <field id="ret_period_from" label="From" type="date" control="Date" size="2" readOnly="true"/>
+                <field id="ret_period_to" label="To" type="date" control="Date" size="2" readOnly="true"/>
+                <field id="ret_status" label="" type="int" control="Hidden" readOnly="true"/>
+                <field id="ret_status_desc" label="Return Status" type="string" control="TextBox" size="2" readOnly="true"/>
+                <field id="annex_info.gstr2a_reco_info.gstn_ret_ref_id" label="GSTN Ref. #" type="string" control="Hidden" readOnly="true"/>
+                <cButton id="btn_preprocess" label="Pre-Process" onClick="core_tx.gstr2.pre_process_click" />
+                <cButton id="btn_procstatus" label="View GSTR2 upload Status" onClick="gstr2.gstn_ret_status" cdata-visible-on="core_tx.gstr2.view_status_toggle"/>
+                <nextRow/>
+                <xdiv id="div_pending_doc" size="12" />
+                    
+                <xdivEnd/>
+                <nextRow/>
+                <xdiv id="div_gstr2_reco" size="12" />
+                    
+                <xdivEnd/>
+                <nextRow/>
+                <xdiv id="div_gstr2_summary" size="12" />
+                    
+                <xdivEnd/>
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

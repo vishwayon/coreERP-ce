@@ -1,0 +1,96 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <formView id="EntityExtn" type="Master" bindingBO="entityExtn/EntityExtn">
+        <header>Entity Extension</header>
+        <keyField>entity_extn_id</keyField>
+        <newDocEnabled wizard="entityExtn/EntityExtnWizard" step="SelectEntity">
+        </newDocEnabled>
+        <clientJsCode>entityExtn/EntityExtn_clientcode.js</clientJsCode> 
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="entity_type" label="Type" type="int" control="SimpleCombo" readOnly="True" size="2">
+                    <options>
+                        <option value="1">Docuement</option>
+                        <option value="2">Master</option>
+                    </options>
+                </field>
+                <field id="bo_id" label="Entity" type="string" control="SmartCombo" readOnly="True" size="3">
+                    <lookup>
+                        <valueMember>bo_id</valueMember>
+                        <displayMember>menu_text</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BOlist.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <tranSection label="Field Details"  editMode="None">
+                    <dataBinding dataProperty="fields" >
+                        <field id="id" label="Name" type="string" control="TextBox" size="s" maxLength="50" readOnly="true"/>
+                        <field id="label" label="Label" type="string" control="TextBox" size="s" maxLength="50" readOnly="true"/>
+                        <field id="type" label="Data Type" type="string" control="SimpleCombo" size="2" readOnly="true">
+                            <options>
+                                <option value="string">String</option>
+                                <option value="int">Integer</option>
+                                <option value="decimal">Decimal</option>
+                                <option value="date">Date</option>
+                                <option value="time">Time</option>
+                                <option value="datetime">Datetime</option>
+                                <option value="bool">Bool</option>
+                                <option value="array">Array</option>
+                            </options>
+                        </field>
+                        <field id="control" label="Control Type" type="string" control="SimpleCombo" size="2" readOnly="true">
+                            <options>
+                                <option value="Label">Label</option>
+                                <option value="SmartCombo">SmartCombo</option>
+                                <option value="SimpleCombo">SimpleCombo</option>
+                                <option value="FC">FC</option>
+                                <option value="SmartTextBox">SmartTextBox</option>
+                                <option value="Date">Date</option>
+                                <option value="Time">Time</option>
+                                <option value="CheckBox">CheckBox</option>
+                                <option value="TextArea">TextArea</option>
+                                <option value="TextBox">TextBox</option>
+                                <option value="Password">Password</option>
+                                <option value="Hidden">Hidden</option>
+                                <option value="Toggle">Toggle</option>
+                                <option value="DateTimeText">DateTimeText</option>
+                                <option value="SmartListBox">SmartListBox</option>
+                            </options>
+                        </field>
+                    </dataBinding>
+                </tranSection>
+                <tranSection label="Add fields"  editMode="Auto|Delete|Custom" editMethod="cwf_entityextn.extn_field_edit">
+                    <dataBinding dataProperty="custom_fields" >
+                        <displayField columnName="pre" label="" type="string" control="Label" size="1" isOptional="true"/>
+                        <field id="id" label="Name" type="string" control="TextBox" size="s" maxLength="50" readOnly="true" isOptional="true"/>
+                        <field id="label" label="Label" type="string" control="TextBox" size="s" maxLength="50" isOptional="true" />
+                        <field id="type" label="Data Type" type="string" control="SimpleCombo" size="1" readOnly="true" isOptional="true">
+                            <options>
+                                <option value="string">String</option>
+                                <option value="int">Integer</option>
+                                <option value="decimal">Decimal</option>
+                                <option value="date">Date</option>
+                                <option value="bool">Bool</option>
+                            </options>
+                        </field>
+                        <field id="control" label="Control Type" type="string" control="SimpleCombo" size="2" readOnly="true">
+                            <options>
+                                <option value="SmartCombo">SmartCombo</option>
+                                <option value="SimpleCombo">SimpleCombo</option>
+                                <option value="Date">Date</option>
+                                <option value="CheckBox">CheckBox</option>
+                                <option value="TextArea">TextArea</option>
+                                <option value="TextBox">TextBox</option>
+                                <option value="Hidden">Hidden</option>
+                            </options>
+                        </field>
+                        <field id="isOptional" label="Is Optional" type="bool" control="CheckBox"/>
+                    </dataBinding>
+                </tranSection>
+                <cButton label="Add Field" onClick="cwf_entityextn.extn_add_field"/>
+            </dataBinding> 
+        </controlSection>
+    </formView>
+</cwFramework>

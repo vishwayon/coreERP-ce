@@ -1,0 +1,16 @@
+<wizardView>
+    <header>Select Sales VAT/GST Type</header>
+    <sections>
+        <formSection id="SelectVatType">
+            <displayFields>
+                <displayField id="vat_type_id" label="Sales VAT/GST Type" type="int" control="SmartCombo" size="m" editMode="edit" defaultValue="-1">
+                    <lookup> 
+                        <valueMember>vat_type_id</valueMember>
+                        <displayMember>vat_type_desc</displayMember>
+                        <namedLookup>../core/tx/lookups/VatTypeSale.xml</namedLookup>
+                    </lookup>   
+                </displayField>   
+            </displayFields>
+        </formSection>
+    </sections>
+</wizardView>

@@ -1,0 +1,67 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="StockReorder" type="Report" rptPath="/core/st/reports/stockAnalysis/stockReorder" rptName="StockReorder">
+        <header>Stock Reorder Level</header>
+          <clientJsCode>../sd/sd_cc.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="ms" forConsolidated="true"> 
+                    <value>
+                        <session>branch_id</session>
+                    </value>
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>
+                    </lookup>  
+                </field>
+                <field id="pmat_type_id" label="Stock Type" type="int" control="SmartCombo"  size="ms">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <displayMember>material_type</displayMember>
+                        <valueMember>material_type_id</valueMember>
+                        <namedLookup>../core/st/lookups/MaterialTypeWithAll.xml</namedLookup>
+                    </lookup>
+                </field>   
+                <field id="pmat_id" label="Stock Item" type="int" control="SmartCombo" size="3" >
+                    <value>
+                        <text>-2</text>
+                    </value>
+                    <lookup>
+                        <valueMember>material_id</valueMember>
+                        <displayMember>material_name</displayMember>
+                        <namedLookup>../core/st/lookups/MaterialWithAll.xml</namedLookup>
+                        <filterEvent>sd.rpt_material_filter</filterEvent>
+                    </lookup>   
+                </field>  
+                <field id="pfilter_by" label="Filter Current Stock" type="int" control="SimpleCombo"  size="3">
+                    <options defaultValue="0">
+                        <option value="0">Less than or Equal to Reorder Level</option>
+                        <option value="1">Greater than Reorder Level</option>
+                        <option value="2">With Reorder Level</option>
+                        <option value="3">Without Reorder Level</option>
+                        <option value="4">All</option>
+                    </options>
+                </field>
+                <field id="pin_pur_units" label="In Purchase Units" type="bool" control="CheckBox" size="2"/> 
+                <param id="pas_on_date">
+                        <currentDate/>
+                </param>
+                <param id="pwhere_condition">
+                    <text></text>
+                </param>
+                <param id="pcompany_id">                
+                    <session>company_id</session>
+                </param>
+                <param id="pfinyear">
+                    <session>finyear</session>
+                </param>
+                <param id="pstock_date"/>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

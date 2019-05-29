@@ -1,0 +1,25 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="POSInv" type="Report" rptPath="/core/pos/inv" rptName="POSInv">
+        <header>POS Invoice</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pinv_id" label="Invoice #" type="string" control="TextBox" size="l"/>            
+                <param id="pbranch_id">
+                    <session>branch_id</session>
+                </param>  
+                <param id="pcompany_id">
+                    <session>company_id</session>
+                </param>
+                <param id="pcp_option">
+                    <text>2</text>
+                </param>
+                <param id="prpt_caption">
+                    <text>Tax Invoice</text>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

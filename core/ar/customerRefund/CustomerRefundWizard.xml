@@ -1,0 +1,14 @@
+<wizard id="CustomerRefund" name="Customer Refund Wizard">
+    <codeBehind>
+        <className>\app\core\ar\customerRefund\CustomerRefundWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectCustomer">
+        <path>customerRefund/CustomerRefundWizard/SelectCustomer</path>
+    </wizardStep>
+    <wizardStep id="SelectVch">
+        <path>customerRefund/CustomerRefundWizard/SelectVch</path>
+    </wizardStep>
+    <postWizard id="CustomerReceipt">
+        <path>customerRefund/CustomerRefundEditForm</path>
+    </postWizard>
+</wizard>

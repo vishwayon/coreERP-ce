@@ -1,0 +1,24 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="SubHeadDimension" type="Master" bindingBO="SubHeadDimension" editView="subHeadDimension/SubHeadDimensionEditForm">        
+        <header>Sub Head Dimension</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select sub_head_dim_id, sub_head_dim 
+                    from ac.sub_head_dim
+                    Where company_id={company_id}
+                    order by sub_head_dim
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="sub_head_dim" displayName="Sub Head Dimension"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

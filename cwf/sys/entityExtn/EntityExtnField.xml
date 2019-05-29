@@ -1,0 +1,72 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    <allocView id="EntityExtnField" type="alloc">
+        <header>Entity Extension Field</header>
+        <clientJsCode>entityExtn/EntityExtn_clientcode.js</clientJsCode> 
+        <controlSection editMode="Edit">        
+            <dataBinding>        
+                <dummy size="1"/>            
+                <field id="nextRow" label="New line" type="bool" control="CheckBox" size="2"/>
+                <field id="dummy" label="Blanks" type="int" control="TextBox" size="2"/>
+                <field id="isOptional" label="Is Optional" type="bool" control="CheckBox" size="2"/>
+                <nextRow/>
+                <field id="pre" label="Prefix" type="string" control="TextBox" size="1" readOnly="true" isOptional="true"/>
+                <field id="id" label="Name" type="string" control="TextBox" size="s" maxLength="50" 
+                       cdata-enable-on="cwf_entityextn.isnewfield" isOptional="true"/>
+                <field id="label" label="Label" type="string" control="TextBox" size="s" maxLength="50" isOptional="true"/>
+                <nextRow/>
+                <dummy size="1"/>
+                <field id="type" label="Data Type" type="string" control="SimpleCombo" size="s"  isOptional="true"
+                       cdata-enable-on="cwf_entityextn.isnewfield">
+                    <options>
+                        <option value="string">String</option>
+                        <option value="int">Integer</option>
+                        <option value="decimal">Decimal</option>
+                        <option value="date">Date</option>
+                        <option value="bool">Bool</option>
+                    </options>
+                </field>
+                <field id="control" label="Control Type" type="string" control="SimpleCombo" size="s" 
+                       cdata-enable-on="cwf_entityextn.isnewfield">
+                    <options>
+                        <option value="SmartCombo">SmartCombo</option>
+                        <option value="SimpleCombo">SimpleCombo</option>
+                        <option value="Date">Date</option>
+                        <option value="CheckBox">CheckBox</option>
+                        <option value="TextArea">TextArea</option>
+                        <option value="TextBox">TextBox</option>
+                        <option value="Hidden">Hidden</option>
+                    </options>
+                </field>
+                <nextRow/>
+                <dummy size="1"/>
+                <field id="size" label="Size" type="int" control="TextBox" size="1" isOptional="true"/>
+                <field id="scale" label="Scale" type="string" control="SimpleCombo" size="2" isOptional="true">
+                    <options>
+                        <option value="0">None</option>
+                        <option value="2">Amount</option>
+                        <option value="3">Rate / Quantity</option>
+                    </options>
+                </field>
+                <nextRow/>
+                <dummy size="1"/>
+                <field id="namedLookup" label="Lookup Name" type="string" control="TextBox" size="6" isOptional="true" 
+                       cdata-visible-on="cwf_entityextn.enable_visible_smart"/>
+                <nextRow/>
+                <dummy size="1"/>
+                <field id="valueMember" label="Value Member" type="string" control="TextBox" size="3" isOptional="true" 
+                       cdata-visible-on="cwf_entityextn.enable_visible_smart"/>
+                <field id="displayMember" label="Display Member" type="string" control="TextBox" size="3" isOptional="true" 
+                       cdata-visible-on="cwf_entityextn.enable_visible_smart"/>
+                <nextRow/>
+                <dummy size="1"/>
+                <field id="filter" label="Filter" type="string" control="TextBox" size="3" isOptional="true" 
+                       cdata-visible-on="cwf_entityextn.enable_visible_smart"/>
+                <field id="filterEvent" label="Filter Event" type="string" control="TextBox" size="3" isOptional="true" 
+                       cdata-visible-on="cwf_entityextn.enable_visible_smart"/>
+                <nextRow/>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>

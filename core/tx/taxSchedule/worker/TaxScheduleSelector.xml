@@ -1,0 +1,46 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'>
+    <allocView id="TaxScheduleAlloc" type="alloc">
+        <header>Select Tax</header>
+        <clientJsCode>tx_clientcode.js</clientJsCode>    
+        <controlSection>
+            <dataBinding>
+                <field id="tax_schedule_id" label="Tax Schedule" type="int" control="SmartCombo" size="5">
+                    <lookup>
+                        <valueMember>tax_schedule_id</valueMember>
+                        <displayMember>tax_schedule</displayMember>
+                        <namedLookup>../core/tx/lookups/TaxSchedule.xml</namedLookup>
+                        <filterEvent>core_tx.tax_schedule_filter</filterEvent>
+                    </lookup>   
+                </field>
+                <cButton id="get_tax_detail" onClick="core_tx.get_tax_detail" label="Get Tax Details"/>
+                <cButton id="recalculate_tax" onClick="core_tx.recalculate_tax" label="Recalculate Tax"/>
+                <tranSection label="">
+                    <dataBinding dataProperty="tax_detail_temp">
+                        <field id="description" label="Description" type="string" control="TextBox" size="s" maxLength="250" readOnly="true"/>   
+                        <field id="en_tax_type" label="Calculation Type" control="SimpleCombo" type="int" size="s" readOnly="true">
+                            <options>
+                                <option value="0">Percent Of Amount</option>
+                                <option value="1">Custom Percent Of Amount</option>
+                                <option value="2">Custom Absolute Amount</option>
+                            </options>
+                        </field>  
+                        <field id="custom_rate" label="Custom Rate" type="decimal" control="TextBox" size="ms" cdata-enable-on="core_tx.custom_rate_enable" />
+                        <field id="tax_amt" label="Tax Amt" type="decimal" control="TextBox" size="ms" readOnly="true" />
+                    </dataBinding>
+                </tranSection>  
+                <dummy size="9"/>                    
+                <field id="tax_amt_temp" label="Tax Amount" type="decimal" control="TextBox" size="3" readOnly="true">
+                     <computedField>
+                        var total_tax_amt = new Number();
+                        for(var p = 0; p &lt; this.tax_detail_temp().length; ++p)
+                        {
+                            total_tax_amt += new Number(this.tax_detail_temp()[p].tax_amt());
+                        }
+                        return total_tax_amt.toFixed(2);
+                    </computedField>
+                </field>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>

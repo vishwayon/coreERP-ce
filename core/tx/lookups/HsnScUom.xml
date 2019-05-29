@@ -1,0 +1,18 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="HsnScUom">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                Select hsn_sc_uom_id, uom_code || ' - ' || uom_desc as uom_code_desc
+                From tx.hsn_sc_uom
+                order by uom_code || ' - ' || uom_desc
+            </command>
+        </sql>
+        <keyField id="hsn_sc_uom_id"/>
+    </lookup>
+</cwFramework>

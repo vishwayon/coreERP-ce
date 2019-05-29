@@ -1,0 +1,34 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'> 
+    
+    <collectionView id="SuppToCust" type="Master" bindingBO="SuppToCust" editView="suppToCust/SuppToCustEditForm">        
+        <header>Extend Supplier To Customer</header>
+        <collectionSection>
+            <connectionType>
+              <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select a.supplier_id, a.supplier_name, a.supplier_code, c.supp_type, d.account_head, COALESCE(b.customer_id, -1) customer_id, COALESCE(b.customer_name, '') customer_name,
+                        case when COALESCE(b.customer_id, -1) != -1 then true else false End as edit_not_allowed
+                    from ap.supplier a
+                    Left Join ap.supp_type c On (a.annex_info-&gt;&gt;'supp_type_id')::BigInt = c.supp_type_id
+                    Inner Join ac.account_head d On a.control_account_id = d.account_id
+                    left join ap.supp_cust e on a.supplier_id = e.supplier_id
+                    left join ar.customer b on e.customer_id = b.customer_id
+                    Where COALESCE(b.customer_id, -1) = -1
+                    Order By supplier_name
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="supplier_name" displayName="Supplier"/>
+                <displayField columnName="supplier_code" displayName="Code"/>
+                <displayField columnName="supp_type" displayName="Supplier Type"/>
+                <displayField columnName="account_head" displayName="Supplier Control A/C"/>
+                <displayField columnName="customer_name" displayName="Associated Customer"/>
+            </displayFields>
+            <editNotAllowed field='edit_not_allowed'/>
+        </collectionSection>       
+    </collectionView>
+</cwFramework>  

@@ -1,0 +1,61 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="InvDispatch" type="Report" rptPath="/core/ar/reports/invDispatch" rptName="InvDispatch">
+        <header>Invoice Pending For Dispatch</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="ms" forConsolidated="true"> 
+                    <value>
+                        <session>branch_id</session>
+                    </value>
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>
+                    </lookup>  
+                </field>
+                <field id="preport_type" label="Report" type="int" control="SimpleCombo"  size="2">
+                    <options defaultValue="0">
+                        <option value="0">By Invoice Date</option>
+                        <option value="1">By Customer</option>
+                        <option value="2">By Salesman</option>
+                    </options>  
+                </field>
+                <field id="pfrom_date" label="From" type="date" control="Date" size="ms" range="finYear">
+                    <value>
+                        <session>year_begin</session>
+                    </value>
+                </field>
+                <field id="pto_date" label="To" type="date" control="Date" size="ms" range="finYear">                   
+                    <value>
+                        <currentDate/>
+                    </value>    
+                </field>  
+                <field id="pcustomer_id" label="Customer" type="int" control="SmartCombo" size="4">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <valueMember>customer_id</valueMember>
+                        <displayMember>customer</displayMember>
+                        <namedLookup>../core/ar/lookups/CustomerWithAll.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <param id="pcompany_id">                
+                    <session>company_id</session>
+                </param>
+                <param id="pvoucher_id">
+                    <text></text>
+                </param>
+                <param id="ppdc">
+                    <text>D</text>
+                </param>
+                <param id="preport_caption">
+                    <text>Invoice Pending For Dispatch</text>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

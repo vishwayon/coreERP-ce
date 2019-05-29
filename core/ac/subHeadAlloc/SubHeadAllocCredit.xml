@@ -1,0 +1,54 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <allocView id="SubHeadAlloc" type="alloc" width="850px">
+        <header>Sub Head Allocation</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="sub_head_account_id" label="Account" type="int" control="SmartCombo" size="m" readOnly="true">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                    </lookup>   
+                </field> 
+                <tranSection label="" editMode="Add|Edit|Delete">
+                    <dataBinding dataProperty="sub_head_ledger_temp">
+                        <field id="sub_head_id" label="Sub Head" type="int" control="SmartCombo" size="m" >
+                            <lookup>
+                                <valueMember>sub_head_id</valueMember>
+                                <displayMember>sub_head</displayMember>
+                                <namedLookup>../core/ac/lookups/SubHead.xml</namedLookup>
+                                <filterEvent>core_ac.sub_head_combo_filter</filterEvent>
+                            </lookup>   
+                        </field>
+                        <field id="narration" label="Narration" type="string" control="TextBox" size="4" maxLength="500" isOptional="true"/>
+                        <field id="credit_amt" label="Credits" type="decimal" control="TextBox" size="ms"/>
+                    </dataBinding>
+                </tranSection>
+
+                <field id="vch_tran_credit" label="Amount Credited" type="decimal" control="TextBox" size="3"  readOnly="true"> 
+                </field>
+                <dummy/>
+                <field id="total_credit_amt" label="Total" type="decimal" control="TextBox" size="3"  readOnly="true">                
+                    <computedField forceCalOnPost="true"> 
+                        var total = new Number();
+                        ko.utils.arrayForEach(this.sub_head_ledger_temp(),function(item){                              
+                        total+=new Number(item.credit_amt());
+                        });
+                        return total.toFixed(2);                        
+                    </computedField>
+                </field>
+                <nextRow/>
+                <field id="balance_credit_total" label="Balance" type="decimal" control="TextBox" size="3"  readOnly="true">
+                    <computedField forceCalOnPost="true"> 
+                        var balance_total = new Number();                             
+                        balance_total = new Number(this.vch_tran_credit())- new Number(this.total_credit_amt());
+                        return balance_total.toFixed(2); 
+                    </computedField>
+                </field>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>    

@@ -1,0 +1,11 @@
+<wizard id="CreditNote" name="Credit Note Wizard">
+    <codeBehind>
+        <className>\app\core\ap\creditNote\CreditNoteWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectSupplier">
+        <path>creditNote/CreditNoteWizard/SelectSupplier</path>
+    </wizardStep>
+    <postWizard id="CreditNote">
+        <path>creditNote/CreditNoteEditForm</path>
+    </postWizard>
+</wizard>

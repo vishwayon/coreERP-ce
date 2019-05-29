@@ -1,0 +1,18 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="TaxType" type="Master" bindingBO="taxType/TaxType">    
+        <header>Tax Type</header>    
+        <keyField>tax_type_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>               
+                <field id="tax_type" label="Tax Type" type="string" control="TextBox" size="s" maxLength="50"/>
+                <nextRow/>
+                <field id="in_use" label="In Use" type="bool" control="CheckBox" size="2" />                
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

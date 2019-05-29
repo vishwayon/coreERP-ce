@@ -1,0 +1,19 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="Payhead">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                SELECT payhead_id, payhead, payhead_type, payhead_type || ' - ' ||payhead as payhead_with_type, monthly_or_onetime 
+                FROM hr.payhead 
+                Where company_id={company_id}
+                order by payhead_type || ' - ' ||payhead asc
+            </command>
+        </sql>
+        <keyField id="payhead_id"/>
+    </lookup>
+</cwFramework>

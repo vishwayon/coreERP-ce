@@ -1,0 +1,19 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="RestrictIP" type="Master" bindingBO="restrictIP/RestrictIP">
+        <header>Restrict IP</header>
+        <keyField>restrict_ip_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="domain" label="Domain" type="string" control="TextBox" size="m" maxLength="50" readOnly="true"/>
+                <nextRow/>
+                <field id="ip" label="IP" type="string" control="TextBox" size="s" maxLength="18"/>
+                <nextRow/> 
+            </dataBinding> 
+        </controlSection>
+    </formView>
+</cwFramework>

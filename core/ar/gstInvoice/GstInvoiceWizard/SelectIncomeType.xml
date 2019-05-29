@@ -1,0 +1,16 @@
+<wizardView>
+    <header>Select Income Type</header>
+    <sections>
+        <formSection id="SelectIncomeType">
+            <displayFields>
+                <displayField id="income_type_id" label="Income Type" type="int" control="SmartCombo" size="m" editMode="edit" defaultValue="-1">
+                    <lookup>
+                        <valueMember>income_type_id</valueMember>
+                        <displayMember>income_type_name</displayMember>
+                        <namedLookup>../core/ar/lookups/IncomeType.xml</namedLookup>
+                    </lookup>   
+                </displayField> 
+            </displayFields>
+        </formSection>
+    </sections>
+</wizardView>

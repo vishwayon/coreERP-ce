@@ -1,0 +1,61 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <businessObject id="TaxSchedule" type="Master">
+        <connectionType>
+            <companyDB/>
+        </connectionType> 
+        <controlTable>
+            <tableName>tx.tax_schedule</tableName>
+            <primaryKey>tax_schedule_id</primaryKey>
+            <!-- <customColumns>                              
+                <customColumn name="tax_detail_desc" type="string" />  
+                <customColumn name="account_id" type="int" />   
+                <customColumn name="en_tax_type" type="int" />   
+                <customColumn name="en_round_type" type="int" />  
+                <customColumn name="tax_perc" type="numeric" />  
+                <customColumn name="tax_on_perc" type="numeric" />  
+                <customColumn name="tax_on_min_amt" type="numeric" />  
+                <customColumn name="tax_on_max_amt" type="numeric" />  
+                <customColumn name="min_tax_amt" type="numeric" />            
+                <customColumn name="max_tax_amt" type="numeric" />   
+                <customColumn name="parent_tax_details" type="string" />  
+                <customColumn name="include_base_in_calculation" type="bool" />             
+            </customColumns>-->
+            
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save> 
+            <delete>
+                <useEntity/>
+            </delete>
+            <tranTable id="tax_detail_tran">
+                <tableName>tx.tax_detail</tableName>
+                <primaryKey>tax_detail_id</primaryKey>
+                <customColumns>
+                    <customColumn name="include_base_in_calculation" type="bool" />           
+                </customColumns>
+                <relation linkType="OneToMany">
+                    <foreignKey>tax_schedule_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity orderby="step_id"/>
+                </fetchOrCreate>
+                <save>
+                    <useOnSave/>
+                    <primaryKeyPattern/>
+                </save>
+                <delete>
+                    <useEntity/>
+                </delete>
+            </tranTable>
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\tx\taxSchedule\TaxScheduleEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

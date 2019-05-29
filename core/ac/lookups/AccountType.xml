@@ -1,0 +1,17 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <lookup id="AccountType">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select account_type_id, account_type_desc from ac.account_type where account_type_id not in (0, 7, 12)
+                and is_inactive !=true order by account_type_desc asc
+            </command>
+        </sql>
+        <keyField id="account_type_id"/>
+    </lookup>
+</cwFramework>

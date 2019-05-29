@@ -1,0 +1,51 @@
+<wizardView>
+    <header>Select Invoices</header>
+    <sections>
+        <collectionSection id="SelectVch" bindMethod="datatable" renderEvent="core_customereceipt.rcpt_wiz.select_vch_init">
+        <connectionType>
+          <companyDB/>
+        </connectionType>
+        <sql>
+            <command>                
+                select a.rl_pl_id, a.account_id, a.voucher_id, a.doc_date, a.is_opbl,
+                        case when a.due_date &lt;= :pto_date then a.balance else 0 end as over_due, case when a.due_date &lt;= :pto_date then a.balance_fc else 0 end as over_due_fc, 
+                                    case when a.due_date &gt; :pto_date then a.balance else 0 end as not_due, case when a.due_date &gt; :pto_date then a.balance_fc else 0 end as not_due_fc,
+                        a.fc_type_id, a.fc_type, a.due_date, a.branch_id
+                from ar.fn_receivable_ledger_balance(:pcompany_id, :pbranch_id, :paccount_id, :pto_date, :pvoucher_id, :pdc) a
+                order by a.doc_date, a.voucher_id
+            </command>
+            <params>
+                <param id="pcompany_id">
+                    <session>company_id</session>
+                </param>
+                <param id="pbranch_id">
+                    <wizard step="SelectCustomer">branch_id</wizard>
+                </param>
+                <param id="paccount_id">
+                    <wizard step="SelectCustomer">account_id</wizard>
+                </param>
+                <param id="pto_date">
+                    <currentDate/>
+                </param>
+                <param id="pvoucher_id">
+                    <text></text>
+                </param>
+                <param id="pdc">
+                    <text>D</text>
+                </param>
+            </params>
+        </sql>
+        <keyField id="account_id"/>
+        <displayFields>
+             <!--Using datatable rendering. Therefore commented<displayField columnName="voucher_id" displayName="Voucher No" id="voucher_id" label="Voucher No" type="string" control="TextBox" size="m"/>
+            <displayField columnName="doc_date" displayName="Date" id="doc_date" label="Date" type="date" control="Date" size="s"/>
+            <displayField columnName="fc_type" displayName="FC Type" id="fc_type" label="Txn Ccy" type="string" control="TextBox" size="s"/>
+            <displayField columnName="over_due" id="over_due" label="Overdue" type="decimal" control="TextBox" size="s" scale="amt"/>
+            <displayField columnName="over_due_fc" id="over_due_fc" label="Overdue FC" type="decimal" control="TextBox" size="s" scale="amt"/>
+            <displayField columnName="not_due" id="not_due" label="Not Due" type="decimal" control="TextBox" size="s" scale="amt"/>
+            <displayField columnName="not_due_fc" id="not_due_fc" label="Not Due FC" type="decimal" control="TextBox" size="s" scale="amt"/>
+            <displayField columnName="due_date" id="due_date" label="Due Date" type="date" control="Date" size="s"/>-->
+        </displayFields>
+    </collectionSection>
+    </sections>
+</wizardView>

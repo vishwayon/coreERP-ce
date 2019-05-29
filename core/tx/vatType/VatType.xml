@@ -1,0 +1,32 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <businessObject id="VatType" type="Master">
+        <connectionType>
+            <companyDB/>
+        </connectionType> 
+        <controlTable>
+            <tableName>tx.vat_type</tableName>
+            <primaryKey>vat_type_id</primaryKey>            
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save> 
+            <delete>
+                <useEntity/>
+            </delete>
+            <jsonField id="annex_info">
+                <jobject name="po_tax" type="array">
+                    <jfield name="ts_id" type="int"/>
+                    <jfield name="po_ts_id" type="int"/>
+                </jobject>
+            </jsonField>
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\tx\vatType\VatTypeEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

@@ -1,0 +1,121 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'> 
+    
+    <businessObject id="SuppToCust" type="Master">
+         <controlTable>
+            <tableName>ap.supplier</tableName>
+            <primaryKey>supplier_id</primaryKey>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useOnSave/>
+            </save> 
+            <delete>
+                <useOnDelete/>
+            </delete> 
+            <customColumns>
+                <customColumn name="cust_control_account_id" type="int"/>
+                <customColumn name="cust_salesman_id" type="int"/>
+                <customColumn name="cust_segment_id" type="int"/>
+                <customColumn name="cust_pay_term_id" type="int"/>
+            </customColumns>
+            <jsonField id="annex_info">
+                <jfield name="has_kyc_docs" type="bool"/>   
+                <jfield name="as_cust" type="boolean"/>
+                <jfield name="is_overridden" type="boolean"/>
+                <jfield name="supp_type_id" type="int"/>  
+                <jfield name="supplier_type" type="string"/>  
+                <jobject name="msmeda" type="simple">
+                    <jfield name="is_msmeda_registered" type="boolean"/> 
+                    <jfield name="registration_no" type="string"/>   
+                </jobject> 
+                <jobject name="branch_addrs" type="array">
+                    <jfield name="branch_addr" type="string"/>
+                    <jfield name="gst_state_id" type="int"/>  
+                    <jfield name="gstin" type="string"/>
+                </jobject>
+                <jobject name="contact_org" type="simple">
+                    <jfield name="phone" type="string"/>
+                    <jfield name="fax" type="string"/>
+                    <jfield name="mobile" type="string"/>
+                    <jfield name="email" type="string"/>
+                    <jfield name="web" type="string"/>
+                </jobject>
+                <jobject name="contact_person_details" type="simple">
+                    <jfield name="name" type="string"/>
+                    <jfield name="designation" type="string"/>
+                    <jfield name="department" type="string"/>
+                    <jfield name="phone" type="string"/>
+                    <jfield name="fax" type="string"/>
+                    <jfield name="mobile" type="string"/>
+                    <jfield name="email" type="string"/>
+                </jobject>
+                <jobject name="satutory_details" type="simple">
+                    <jfield name="pan" type="string"/>
+                    <jfield name="tan" type="string"/>
+                    <jfield name="service_tax_no" type="string"/>
+                    <jfield name="cin_no" type="string"/>
+                    <jfield name="vat_no" type="string"/>
+                    <jfield name="cst_no" type="string"/>
+                    <jfield name="epf_no" type="string"/>
+                    <jfield name="epf_no" type="string"/>
+                    <jfield name="esi_no" type="string"/>
+                    <jfield name="prof_tax" type="string"/>
+                    <jfield name="labour_reg" type="string"/>
+                    <jfield name="ssi_reg" type="string"/>
+                    <jobject name="excise" type="simple">
+                        <jfield name="ecc_no" type="string"/>
+                        <jfield name="range" type="string"/>
+                        <jfield name="division" type="string"/>
+                        <jfield name="commissionerate" type="string"/>
+                    </jobject>
+                    <jfield name="gst_state_id" type="int"/>  
+                    <jfield name="gstin" type="string"/>
+                    <jfield name="is_ctp" type="bool"/> 
+                    <jfield name="dup_pan" type="bool"/> 
+                    <jfield name="dup_gstin" type="bool"/>
+                    <jfield name="diff_gst_name" type="bool"/> 
+                    <jfield name="gst_reg_name" type="string"/> 
+                </jobject>
+                <jobject name="bank_details" type="simple">
+                    <jfield name="title" type="string"/>
+                    <jfield name="account_type" type="string"/>
+                    <jfield name="bank_name" type="string"/>
+                    <jfield name="account_no" type="string"/>
+                    <jfield name="ifsc_code" type="string"/>
+                    <jfield name="micr_no" type="string"/>
+                    <jfield name="swift_code" type="string"/>
+                    <jfield name="branch_name" type="string"/>
+                    <jfield name="bank_city" type="string"/>
+                    <jfield name="branch_address" type="string"/>
+                    <jfield name="contact" type="string"/>
+                    <jfield name="email" type="string"/>
+                    <jfield name="contact_person" type="string"/>
+                    <jfield name="contact_person_designation" type="string"/>
+                </jobject>
+            </jsonField>   
+            <reverseTranTable id="supplier_address_tran">       
+                <tableName>sys.address</tableName>
+                <primaryKey>address_id</primaryKey>      
+                <relation linkType="OneToOne">
+                    <foreignKey>address_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern/>
+                </save>
+                <delete>
+                    <useEntity/>
+                </delete>    
+            </reverseTranTable>
+        </controlTable> 
+        <codeBehind>
+            <className>app\core\ap\suppToCust\SuppToCustEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

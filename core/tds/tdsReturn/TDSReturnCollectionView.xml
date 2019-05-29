@@ -1,0 +1,38 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'> 
+    
+    <collectionView id="TDSReturn" type="Document" bindingBO="TDSReturn" editView="tdsReturn/TDSReturnEditForm">
+        <header>TDS Return</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>                 
+            <sql>
+                <command>
+                    Select a.voucher_id, a.doc_date, a.amt, a.status, a.return_quarter, case when a.return_type = 0 then 'New' else 'Existing' end as return_type 
+                    from tds.tds_Return_control a
+                    Where a.finyear=:pfinyear and a.company_id=:pcompany_id and a.branch_id=:pbranch_id
+                    Order by a.voucher_id
+                </command>
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                    <param id="pbranch_id">
+                        <session>branch_id</session>
+                    </param>
+                    <param id="pfinyear">
+                        <session>finyear</session>
+                    </param>
+                </params>
+            </sql>
+            <displayFields>
+                <displayField columnName="doc_date" displayName="Date" format="Date"/>
+                <displayField columnName="voucher_id" displayName="Document No"/>
+                <displayField columnName="return_type" displayName="Return Type"/>
+                <displayField columnName="return_quarter" displayName="Return For"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

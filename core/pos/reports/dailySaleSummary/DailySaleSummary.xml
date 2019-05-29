@@ -1,0 +1,48 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="DailySaleSummary" type="Report" rptPath="/core/pos/reports/dailySaleSummary" rptName="DailySaleSummary">
+        <header>Daily Sale Summary</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="ms" forConsolidated="true"> 
+                    <value>
+                        <session>branch_id</session>
+                    </value>
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>
+                    </lookup>  
+                </field>
+                <field id="pterminal_id" label="Terminal" type="int" control="SmartCombo" size="ms"> 
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <valueMember>terminal_id</valueMember>
+                        <displayMember>terminal</displayMember>
+                        <namedLookup>../core/pos/lookups/TerminalAll.xml</namedLookup>
+                    </lookup>  
+                </field>
+                <field id="pfrom_date" label="From" type="date" control="Date" size="ms" range="finYear">
+                    <value>
+                        <session>year_begin</session>
+                    </value>
+                </field>
+                <field id="pto_date" label="To" type="date" control="Date" size="ms" range="finYear">
+                    <value>
+                        <currentDate/>
+                    </value>
+                </field>
+                <param id="pcompany_id">
+                    <session>company_id</session>
+                </param>
+                <param id="pyear">
+                    <session>finyear</session>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

@@ -1,0 +1,30 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="Attendance" type="Master">  
+        <controlTable>
+            <tableName>hr.attendance</tableName>
+            <primaryKey>attendance_id</primaryKey>
+            <customColumns>
+                <customColumn name="in_hrs" type="int" />
+                <customColumn name="in_mins" type="int"/>  
+                <customColumn name="out_hrs" type="int" />
+                <customColumn name="out_mins" type="int"/>    
+            </customColumns>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save> 
+            <delete>
+                <useEntity/>
+            </delete> 
+     
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\hr\attendance\AttendanceEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

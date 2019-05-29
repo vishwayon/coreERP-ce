@@ -1,0 +1,45 @@
+<wizardView>
+    <header>Select Stock Purchase Items</header>
+    <sections>
+        <collectionSection id="SelectStockPurchase" bindMethod="datatable" renderEvent="core_st.spg_prv_wiz.select_spg_init">
+            <connectionType>
+              <companyDB/>
+            </connectionType>
+            <sql>
+                <command>    
+                    Select d.material_name, e.material_type, a.material_id, f.uom_desc, c.account_id, a.stock_location_id, a.rate, a.uom_id, a.issued_qty, 	
+                        a.stock_id, a.stock_tran_id, c.doc_date, sum(b.reject_qty) as reject_qty
+                    From st.stock_tran a 
+                    Inner Join st.stock_tran_qc b On a.stock_tran_id = b.stock_tran_id
+                    Inner join st.stock_control c on a.stock_id = c.stock_id
+                    inner join st.material d on a.material_id = d.material_id
+                    inner join st.material_type e on d.material_type_id = e.material_type_id
+                    inner join st.uom f on a.uom_id = f.uom_id
+                    where COALESCE((c.annex_info->>'dcn_ref_id')::varchar, '') = ''
+                            And c.company_id = {company_id}
+                            And c.branch_id = {branch_id}
+                            And c.doc_type = 'SPG'
+                            And c.doc_date &lt;= :pto_date
+                            And c.status = 5
+                    group by d.material_name, e.material_type, a.material_id, f.uom_desc, c.doc_date, c.account_id, a.stock_location_id, a.rate, a.uom_id, a.issued_qty, 	
+                                a.stock_id, a.stock_tran_id
+                    Having sum(b.reject_qty) &gt; 0
+                </command>           
+                <params>
+                    <param id="pto_date">
+                        <currentDate/>
+                    </param>
+                </params>
+            </sql>
+
+            <keyField id="stock_tran_id"/>                
+            <displayFields>
+               <!-- <displayField columnName="mrq_id" id="mrq_id" label="Mat Req #" type="string" control="TextBox" size="2"/>
+                <displayField columnName="doc_date" displayName="Date" id="doc_date" label="Date" type="datetime" control="TextBox" size="1"/>
+                <displayField columnName="batch_id" id="batch_id" label="Batch #" type="string" control="TextBox" size="4"/>
+                <displayField columnName="produce_type" id="produce_type" label="Produce Type" type="string" control="TextBox" size="4"/>
+                <displayField columnName="batch_date" displayName="Batch Date" id="batch_date" label="Batch Date" type="datetime" control="TextBox" size="1"/>-->
+            </displayFields>
+        </collectionSection>
+    </sections>
+</wizardView>

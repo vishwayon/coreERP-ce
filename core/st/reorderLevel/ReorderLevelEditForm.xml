@@ -1,0 +1,42 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="ReorderLevel" type="Master"  bindingBO="reorderLevel/ReorderLevel">
+        <header>Stock Item Reorder Level</header>
+        <keyField>material_id</keyField>
+        <clientJsCode>st_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+          <dataBinding>
+               <field id="material_type_id" label="Stock Type" type="int" control="SmartCombo" size="ms" readOnly="true">
+                    <lookup>
+                        <valueMember>material_type_id</valueMember>
+                        <displayMember>material_type</displayMember>
+                        <namedLookup>../core/st/lookups/MaterialType.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="material_code" label="Stock Item Code" type="string" control="TextBox" size="2" maxLength="20" readOnly="true"  isOptional="true"/> 
+                <nextRow/>
+                <field id="material_name" label="Stock Item" type="string" control="TextBox" size="4" maxLength="250" readOnly="true"  isOptional="true"/>         
+                <nextRow/>
+                <nextRow/>
+                <tranSection label="Reorder Level Details"  editMode="Add|Edit|Delete" fixedWidth="700">
+                    <dataBinding dataProperty="mat_level">
+                        <field id="branch_id" label="Branch" type="int" control="SmartCombo" size="2">
+                            <lookup>
+                                <valueMember>branch_id</valueMember>
+                                <displayMember>branch_name</displayMember>
+                                <namedLookup>../cwf/sys/lookups/Branch.xml</namedLookup>
+                            </lookup>   
+                        </field>
+                        <field id="min_qty" label="Min Qty" type="decimal" control="TextBox" size="xs" scale="qty" isOptional="true"/>  
+                        <field id="reorder_level" label="Reorder Level" type="decimal" control="TextBox" size="xs" scale="qty" isOptional="true"/> 
+                        <field id="reorder_qty" label="Reorder Qty" type="decimal" control="TextBox" size="xs" scale="qty" isOptional="true"/>                                                 
+                        <field id="max_qty" label="Max Qty" type="decimal" control="TextBox" size="xs" scale="qty" isOptional="true"/>                                              
+                        <field id="lead_time" label="Lead Time" type="int" control="TextBox" size="xs" isOptional="true" />
+                    </dataBinding>
+                </tranSection>
+          </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

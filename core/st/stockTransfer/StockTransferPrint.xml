@@ -1,0 +1,25 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="StockTransfer" type="Report" rptPath="/core/st/stockTransfer" rptName="StockTransfer">
+        <header>Stock Transfer</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pstock_id" label="Stock Transfer No" type="string" control="TextBox" size="l"/>
+                <param id="pbranch_id">
+                    <session>branch_id</session>
+                </param>  
+                <param id="pcompany_id">                
+                    <session>company_id</session>
+                </param>
+                <param id="pcp_option">
+                    <text>1</text>
+                </param>
+                <param id="prpt_caption">
+                    <text>Stock Transfer - Delivery Challan</text>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

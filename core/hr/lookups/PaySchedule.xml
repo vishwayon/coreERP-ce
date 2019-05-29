@@ -1,0 +1,17 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="PaySchedule">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                SELECT pay_schedule_id, description FROM hr.pay_schedule 
+                Where company_id={company_id} and is_discontinued = false order by description asc
+            </command>
+        </sql>
+        <keyField id="pay_schedule_id"/>
+    </lookup>
+</cwFramework>

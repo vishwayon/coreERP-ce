@@ -1,0 +1,19 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="UoM">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select uom_id, material_id, uom_desc || ' (PU)' uom_desc
+                from st.uom
+                where is_discontinued = 'false' and uom_type_id = 103
+                order by uom_desc
+            </command>
+        </sql>
+        <keyField id="uom_id"/>
+    </lookup>
+</cwFramework>

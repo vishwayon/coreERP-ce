@@ -1,0 +1,333 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="GstBankPymt" type="Document" bindingBO="gstBankPymt/GstBankPymt">
+        <header>GST Bank Payment</header>
+        <keyField>voucher_id</keyField>
+       <printView rptOption="gstPymt/GstPymtPrint">
+            <rptParams>
+                <param id="pvoucher_id">voucher_id</param>
+            </rptParams>
+            <printOptions>
+                <printOption desc="Cheque Print" rptOption="bankPayment/BankPaymentChequePrint"/>
+            </printOptions>
+        </printView>
+        <newDocEnabled>
+            <docType>PAYB</docType>
+            <beforeNewEvent>core_ac.before_new_vch</beforeNewEvent>		
+            <afterNewEvent>core_ac.after_new_vch</afterNewEvent>
+        </newDocEnabled>
+        <deleteDocEnabled/>
+        <clientJsCode>gstPymt/GstPymt_clientcode.js</clientJsCode>
+        <clientJsCodeRefs>
+            <clientJsCodeRef>../core/ac/ac_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/tx/tx_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/tx/ovrdGstRate/gst_rate_cc.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/tx/ovrdHsnSc/hsn_cc.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/ac/gstPymt/rcPopUp/rc_popup_cc.js</clientJsCodeRef>
+        </clientJsCodeRefs>
+        <jsEvents>
+            <afterLoadEvent>core_ac.gst_pymt.afterload</afterLoadEvent>
+            <afterUnpostEvent>core_ac.vch_afterunpost</afterUnpostEvent>
+            <afterPostEvent>core_ac.vch_afterpost</afterPostEvent>
+        </jsEvents>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="voucher_id" label="Voucher No" type="string" control="TextBox" size="s" maxLength="50" isOptional="true" readOnly="true" forStatus="true" />
+                <field id="annex_info.gst_input_info.vat_type_id" label="Purchase VAT/GST Type" type="int" control="SmartCombo" size="3" readOnly="true">
+                    <lookup>
+                        <valueMember>vat_type_id</valueMember>
+                        <displayMember>vat_type_desc</displayMember>
+                        <namedLookup>../core/tx/lookups/VatTypePurchase.xml</namedLookup>
+                    </lookup>
+                </field>
+                <dummy size="1"/>
+                <field id="doc_date" label="Date" type="date" control="Date" size="ms" range="finYear"/>
+                <nextRow/>
+                <xdiv size="6"/>
+                    <field id="annex_info.pymt_type" label="Settlement Type" type="int" control="SimpleCombo" size="4" readOnly="true">
+                        <options>
+                            <option value="0">Bank</option>
+                            <option value="1">Journal</option>
+                            <option value="2">Cash</option>
+                        </options>
+                    </field>
+                    <field id="account_id" label="Credit To:" type="int" control="SmartCombo" size="6" >
+                        <lookup>
+                            <valueMember>account_id</valueMember>
+                            <displayMember>account_head</displayMember>
+                            <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                            <filterEvent>core_ac.gst_pymt.account_filter</filterEvent>
+                        </lookup>   
+                    </field>
+                    <cButton id="details" onClick="core_ac.gst_pymt.sub_head_alloc_click($data);" label="Details"/>      
+                    
+                    <nextRow/>
+                    <field id="annex_info.gst_input_info.supplier_state_id" label="GST State" type="int" control="SmartCombo" size="5"
+                            mdata-event="subscribe: core_ac.gst_pymt.supplier_state_update"
+                            cdata-enable-on="core_ac.gst_pymt.supplier_state_enable">
+                        <lookup>
+                            <valueMember>gst_state_id</valueMember>
+                            <displayMember>gst_state_with_code</displayMember>
+                            <namedLookup>../core/tx/lookups/GstState.xml</namedLookup>
+                            <filter> gst_state_id not in (98,99)</filter>
+                        </lookup>
+                    </field>
+                    <field id="annex_info.bill_amt" label="Total Amt" type="decimal" control="TextBox" size="4" 
+                        mdata-event="subscribe: core_ac.gst_pymt.total_calc"
+                        cdata-visible-on="core_ac.gst_pymt.hide_bill_amt"/>
+                    <field id="annex_info.gst_input_info.supplier_gstin" label="GSTIN" type="string" control="TextBox" size="4" maxLength="15" isOptional="true"
+                        cdata-visible-on="core_ac.gst_pymt.hide_bill_supp"/>
+                    <field id="annex_info.gst_input_info.is_ctp" label="Is CTP" type="bool" control="CheckBox" size="2" isOptional="true"
+                        mdata-event="subscribe: core_ac.gst_pymt.supplier_state_update"
+                        cdata-visible-on="core_ac.gst_pymt.hide_bill_supp"/>
+                    <xdiv size="12" cdata-bind="visible: annex_info.line_item_gst() == false"/>
+                        <field id="annex_info.gst_input_info.supplier_name" label="Supplier" type="string" control="TextBox" size="12" isOptional="true"/>
+                        <field id="annex_info.gst_input_info.supplier_address" label="Address" type="string" control="TextArea" size="12" rows="2" inline="true" style="margin-top: 0px;" isOptional="true"/>          
+                    <xdivEnd/>
+                <xdivEnd/>
+                <dummy size="1"/>
+                <xdiv size="5"/>
+                    <field id="is_inter_branch" label="" type="bool" control="Toggle" toggleOn="Inter Branch" toggleOff="Normal" size="C90" inline="true"
+                           mdata-event="subscribe:core_ac.inter_branch_toggle"/>
+                    <field id="annex_info.line_item_gst" label="" type="bool" control="Toggle" toggleOn="Line Item GST" toggleOff="Bill GST" size="C90" inline="true"/>                    
+                    <cButton id="gl_distribution" onClick="core_ac.gst_pymt.pymt_view_gl" label="GL Distribution" inline="true" cdata-visible-on="core_ac.gst_pymt.visible_gl_distribution"/>      
+                    <nextRow/>
+                    <xdiv size="12" cdata-bind="visible: annex_info.line_item_gst() == false"/>
+                        <field id="annex_info.bill_no" label="Bill No" type="string" control="TextBox" size="4" maxLength="50" isOptional="true"/> 
+                        <field id="annex_info.bill_date" label="Bill Date" type="date" control="Date" size="4"/>
+                        <field id="annex_info.bill_amt" label="Bill Amt" type="decimal" control="TextBox" size="4" 
+                               mdata-event="subscribe: core_ac.gst_pymt.total_calc"/>
+                        <nextRow/>
+                        <field id="annex_info.gst_rc_info.apply_rc" label="Apply GST Reverse Charge" type="bool" control="CheckBox" size="6"
+                            mdata-event="subscribe: core_ac.gst_pymt.apply_rc_update"/>
+                        <field id="annex_info.gst_rc_info.rc_sec_id" label="Under Sec." type="int" control="SmartCombo" size="6" isOptional="true"
+                            cdata-enable-on="core_ac.gst_pymt.apply_rc">
+                            <lookup>
+                                <valueMember>rc_sec_id</valueMember>
+                                <displayMember>rc_sec_desc</displayMember>
+                                <namedLookup>../core/tx/lookups/GstRcSec.xml</namedLookup>
+                            </lookup>
+                        </field>
+                        <field id="note1" label="Note:" type="string" control="Label" size="l"/>
+                        <field id="note2" label="1) GST Reverse Charge u/s 9(4) would be posted at the end of the month only if it exceeds the daily threshold limit." type="string" control="Label" size="l"/>
+                        <field id="note3" label="2) CTP - Composition Taxable Person" type="string" control="Label" size="l"/>
+                    <xdivEnd/>
+                <xdivEnd/>
+                <field id="credit_amt" label="Amount Paid" type="decimal" control="Hidden"/>
+                <tranSection label="Account Info/Debits" editMode="Add|Edit|Delete" fixedWidth="800"
+                    beforeAddMethod="core_ac.gst_pymt.vch_before_tran_add"
+                    beforeDeleteMethod="core_ac.bpv_before_tran_delete" 
+                    afterDeleteMethod="core_ac.gst_pymt.vch_tran_delete">
+                    <dataBinding dataProperty="vch_tran">
+                        <field id="sl_no" label="Sl No." type="int" control="TextBox" isOptional="true" size="1" readOnly="true"/>
+                        <field id="branch_id" label="Branch" type="int" control="SmartCombo" size="2" isOptional="true" 
+                               cdata-enable-on="core_ac.enable_branch">
+                            <lookup>
+                                <valueMember>branch_id</valueMember>
+                                <displayMember>branch_name</displayMember>
+                                <namedLookup>../cwf/sys/lookups/BranchWithIBAccount.xml</namedLookup>
+                                <filterEvent>core_ac.gst_pymt.ib_branch_filter</filterEvent>
+                            </lookup>   
+                        </field>
+                        <field id="account_id" label="Account" type="int" control="SmartCombo" size="6" >
+                            <lookup>
+                                <valueMember>account_id</valueMember>
+                                <displayMember>account_head</displayMember>
+                                <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                                <filter>account_type_id not in (1, 2, 32, 45, 46, 47)</filter>
+                            </lookup>   
+                        </field> 
+                        <field id="debit_amt" label="Amount" type="decimal" control="TextBox" size="2" isOptional="true"  
+                               mdata-event="subscribe: core_ac.gst_pymt.item_calc"/>
+                        <!--<field id="credit_amt" label="Credits" type="decimal" control="TextBox" size="ms" isOptional="true"  cdata-enable-on="core_ac.vch_isCredit"/>-->
+                        <cButton id="sub_head_alloc" onClick="core_ac.gst_pymt.sub_head_alloc_tran_click($data);" label="Details" tooltip="Select Sub Head"/>
+                        <field id="tran_desc" label="Description" type="string" control="TextBox" size="4" maxLength="100" isOptional="true"/>
+                        <nextRow />
+                        <dummy size="1"/>
+                        <xdiv colspan="5" cdata-bind="visible: $root.annex_info.line_item_gst"/>
+                            <field id="gtt_supplier_gstin" label="" type="string" control="TextBox" size="2" class="fg-total" isOptional="true" placeholder="GSTIN"/>
+                            <field id="gtt_is_ctp" label="" type="bool" control="CheckBox" size=".5" style="text-align: right;" isOptional="true"/>
+                            <field label="Is_CTP" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true" />
+                            <field id="gtt_is_rc" label="" type="bool" control="CheckBox" size=".5" style="text-align: right;" isOptional="true"
+                                mdata-event="subscribe: core_ac.gst_pymt.tran_rc_check"/>
+                            <field label="Rev.Chg." type="string" control="Label" size="1" style="border: none; margin-top: 5px; margin-right: 10px;" inline="true" />
+                            <cButton id="btn_rc" label="..." onClick="core_ac.gst_pymt.select_rc_info($data)" cdata-bind="text: core_ac.gst_pymt.rc_btn_text($data)" />
+                            <field label="Bill No." type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true" />
+                            <field id="bill_no" label="" type="string" control="TextBox" size="2" class="fg-total" placeholder="Bill No" maxLength="16" isOptional="true"/>
+                            <field label="Dt." type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true" />
+                            <field id="bill_dt" label="" type="date" control="Date" size="2" class="fg-total" />
+                            <field label="Amt" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true" />
+                            <field id="bill_amt" label="" type="decimal" control="TextBox" size="2" class="fg-total" isOptional="true"/>
+                            <field label="Roff" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true"/>
+                            <field id="roff_amt" label="" type="decimal" control="TextBox" size="1" class="fg-total" maxVal="2" allowNegative="true" isOptional="true"
+                                mdata-event="subscribe: core_ac.gst_pymt.item_calc"/>
+                            <field id="gtt_rc_sec_id" label="" type="int" control="Hidden" isOptional="true"/>
+                        <xdivEnd/>
+                        <nextRow/>
+                        <dummy size="1"/>
+                        <xdiv colspan="5"/>
+                            <field id="gtt_hsn_sc_code" label="" type="string" control="TextBox" size="2" class="fg-total" placeholder="HSN/SC" maxLength="8"/>
+                            <cButton id="btn_hsn_select" label="..." onClick="core_ac.gst_pymt.select_hsn($data)" />
+                            <field id="gtt_apply_itc" type="bool" control="CheckBox" size=".5" style="text-align: right;" />
+                            <field label="ITC" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true" />
+                            <field id="gtt_tax_amt_ov" type="bool" control="CheckBox" size=".5" style="text-align: right;"
+                                    mdata-event="subscribe: core_ac.gst_pymt.item_calc" />
+                            <field label="Ovrd" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true" /> 
+                            <cButton id="btn_gst_rate" label="..." onClick="core_ac.gst_pymt.gst_rate_select($data)"/>
+                            <field label="SGST:" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true" />
+                            <field id="gtt_sgst_pcnt" type="decimal" control="TextBox" size="2" readOnly="true" class="fg-total"/>
+                            <field id="gtt_sgst_amt" type="decimal" control="TextBox" size="3" isOptional="true" class="fg-total"
+                                    cdata-enable-on="core_ac.gst_pymt.tax_amt_ov" mdata-event="subscribe: core_ac.gst_pymt.item_calc"/>
+                            <field label="CGST:" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true"/>
+                            <field id="gtt_cgst_pcnt" type="decimal" control="TextBox" size="2" readOnly="true" class="fg-total"/>
+                            <field id="gtt_cgst_amt" type="decimal" control="TextBox" size="3" isOptional="true" class="fg-total"
+                                    cdata-enable-on="core_ac.gst_pymt.tax_amt_ov" mdata-event="subscribe: core_ac.gst_pymt.item_calc"/>
+                            <field label="IGST:" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true"/>
+                            <field id="gtt_igst_pcnt" type="decimal" control="TextBox" size="2" readOnly="true" class="fg-total"/>
+                            <field id="gtt_igst_amt" type="decimal" control="TextBox" size="3" isOptional="true" class="fg-total"
+                                    cdata-enable-on="core_ac.gst_pymt.tax_amt_ov" mdata-event="subscribe: core_ac.gst_pymt.item_calc"/>
+                            <field id="gtt_cess_pcnt" type="decimal" control="Hidden" size="1" readOnly="true" class="fg-total"/>
+                            <field id="gtt_cess_amt" type="decimal" control="Hidden" size="1" readOnly="true" class="fg-total"/>
+                            <field id="gtt_hsn_sc_type" type="string" control="Hidden" isOptional="true"/>
+                            <field id="gtt_gst_rate_id" type="int" control="Hidden" isOptional="true"/>
+                            <field id="gtt_bt_amt" type="decimal" control="Hidden" isOptional="true" />
+                            <field id="gtt_sgst_itc_account_id" type="int" control="Hidden" />
+                            <field id="gtt_sgst_account_id" type="int" control="Hidden" />
+                            <field id="gtt_cgst_itc_account_id" type="int" control="Hidden" />
+                            <field id="gtt_cgst_account_id" type="int" control="Hidden" />
+                            <field id="gtt_igst_itc_account_id" type="int" control="Hidden" />
+                            <field id="gtt_igst_account_id" type="int" control="Hidden" />
+                            <field id="gtt_cess_itc_account_id" type="int" control="Hidden" />
+                            <field id="gtt_cess_account_id" type="int" control="Hidden" />
+                            <field id="supp_name" label="" type="string" control="Hidden" isOptional="true"/>
+                            <field id="supp_addr" label="" type="string" control="Hidden" isOptional="true"/>
+                        <xdivEnd/>
+                        <field id="ref_no" label="Ref No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="ref_desc" label="Ref Desc" type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="dc" label="D or C" type="string" control="Hidden" size="1" maxLength="1"/>
+                        <tranSection label="" editMode="Auto"  cdata-visible-on="core_ac.visible_sub_head_tran" >
+                            <!-- Sub Head ledger Bindings -->
+                            <dataBinding dataProperty="sub_head_ledger_tran">
+                                <field id="sub_head_ledger_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="company_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="finyear" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="branch_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="voucher_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="vch_tran_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="doc_date" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="account_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="sub_head_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="fc_type_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="exch_rate" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="debit_amt_fc" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="credit_amt_fc" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="debit_amt" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="credit_amt" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="narration" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="status" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="not_by_alloc" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                            </dataBinding>
+                        </tranSection>
+                        <tranSection label="" editMode="Auto" cdata-visible-on="core_ac.visible_sub_head_tran" >
+                            <!-- Ref ledger Bindings -->
+                            <dataBinding dataProperty="ref_ledger_alloc_tran">
+                                <field id="ref_ledger_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="ref_ledger_alloc_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="branch_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="affect_voucher_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="affect_vch_tran_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="account_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="net_debit_amt" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="net_credit_amt" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="status" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                            </dataBinding>
+                        </tranSection>
+                        <addRowEvent>core_ac.gst_pymt.vch_tran_add</addRowEvent>
+                    </dataBinding>
+                </tranSection>
+                <nextRow/>
+                <xdiv id="narration_div" size="5"/>                  
+                    <field id="narration" label="Narration" type="string" rows="3" control="TextArea" 
+                           size="12" maxLength="2000" isOptional="true" 
+                           smartText="'Being amount paid to ' +coreWebApp.ModelBo.annex_info.gst_input_info.supplier_name()"/>
+                <xdivEnd/>
+                <dummy size="1"/> 
+                <xdiv id="tot_div1" size="6"/>
+                    <field label="Items Total" type="string" control="Label" size="2"  isOptional="true" inline="true"/>  
+                    <field id="annex_info.bt_amt" label="" type="decimal" control="TextBox" allowNegative="true" size="2" readOnly="true"  class="fg-total" inline="true"/>
+
+                    <field label="Total Taxes" type="string" control="Label" size="2"  isOptional="true" inline="true"/>  
+                    <field id="annex_info.tax_amt" label="" type="decimal" control="TextBox" allowNegative="true" size="2" readOnly="true"  class="fg-total" inline="true"/>
+                    <nextRow/>
+                    <field label="RC Taxes" type="string" control="Label" size="2"  isOptional="true" inline="true"/>  
+                    <field id="annex_info.gst_rc_info.rc_tax_amt" label="" type="decimal" control="TextBox" size="2" isOptional="true" inline="true" readOnly="true"  class="fg-total"/>                  
+                    <field label="Round Off" type="string" control="Label" size="2"  readOnly="true" inline="true"/>  
+                    <field id="annex_info.round_off_amt" label="" type="decimal" control="TextBox" size="2"  allowNegative="true" isOptional="true" inline="true"
+                            mdata-event="subscribe: core_ac.gst_pymt.total_calc" cdata-bind="enable: !self.annex_info.line_item_gst()"/>
+                    <field label="Bill Total" type="string" control="Label" size="2"  readOnly="true" inline="true"/>  
+                    <field id="credit_amt" label="" type="decimal" control="TextBox" size="2" readOnly="true" isOptional="true" inline="true" class="fg-total"/>
+                    <dummy size="8"/>
+                    <field label="Bill Diff" type="string" control="Label" size="2"  isOptional="true" inline="true"/>  
+                    <field id="bill_diff" label="" type="decimal" control= "TextBox" size="2" isOptional="true"   class="fg-total"
+                           readOnly="true" cdata-bind="style: {color: bill_diff() != 0 ? &quot;red&quot; : &quot;inherit&quot; }"  inline="true" />
+                <xdivEnd/>
+                <nextRow/>
+                <field id="cheque_number" label="Cheque#" type="string" control="TextBox" isOptional="true" size="ms" maxLength="20"/>  
+                <field id="cheque_date" label="Cheque Date" type="date" control="Date" size="ms" inline="true"/>          
+                <field id="is_pdc" label="Post Dated" type="bool" control="CheckBox" size="2"/>       
+                <field id="collection_date" label="Reconciled Date" type="date" control="Date" size="ms" inline="true" readOnly="true" cdata-visible-on="core_ac.enable_recodate"/> 
+                <nextRow/>
+                <field id="is_ac_payee" label="A/C Payee" type="bool" control="CheckBox" size="2"/> 
+                <field id="is_non_negotiable" label="Non Negotiable" type="bool" control="CheckBox" size="2"/> 
+                <nextRow/>
+                <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" size="4"  isOptional="true"/>
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" size="4" readOnly="true" isOptional="true"/> 
+                
+                <tranSection label="" editMode="Auto"  cdata-visible-on="core_ac.visible_sub_head_tran" >
+                    <!-- Sub Head ledger control side Bindings -->
+                    <dataBinding dataProperty="shl_head_tran">
+                        <field id="sub_head_ledger_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="company_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="finyear" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="branch_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="voucher_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="vch_tran_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="doc_date" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="account_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="sub_head_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="fc_type_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="exch_rate" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="debit_amt_fc" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="credit_amt_fc" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="debit_amt" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="credit_amt" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="narration" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="status" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="not_by_alloc" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                    </dataBinding>
+                </tranSection>
+
+                <tranSection label="" editMode="Auto" cdata-visible-on="core_ac.visible_sub_head_tran" >
+                    <!-- Ref ledger Bindings Control side-->
+                    <dataBinding dataProperty="rla_head_tran">
+                        <field id="ref_ledger_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="ref_ledger_alloc_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="branch_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="affect_voucher_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="affect_vch_tran_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="account_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="net_debit_amt" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="net_credit_amt" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="status" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                    </dataBinding>
+                </tranSection>
+                <field id="ref_no" label="Ref No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                <field id="ref_desc" label="Ref Desc" type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+            </dataBinding>
+        </controlSection>
+        <dmFiles multipleFiles="true"/> 
+        <!--   <dmFiles multipleFiles="true"/>   -->
+    </formView>
+</cwFramework>

@@ -1,0 +1,16 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="PayrollGroup">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                SELECT payroll_group_id, payroll_group FROM hr.payroll_group Where company_id={company_id} order by payroll_group asc
+            </command>
+        </sql>
+        <keyField id="payroll_group_id"/>
+    </lookup>
+</cwFramework>

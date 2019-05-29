@@ -1,0 +1,18 @@
+<wizard id="PurchaseReturn" name="Purchase Return Wizard">
+        <clientJsCode>purchaseReturn/PurchaseReturn_clientcode.js</clientJsCode>       
+    <codeBehind>
+        <className>\app\core\st\purchaseReturn\PurchaseReturnWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectSupplier">
+        <path>purchaseReturn/PurchaseReturnWizard/SelectSupplier</path>
+    </wizardStep>
+    <wizardStep id="SelectStockPurchase">
+        <path>purchaseReturn/PurchaseReturnWizard/SelectStockPurchase</path>
+    </wizardStep>
+    <wizardStep id="SelectMaterial">
+        <path>purchaseReturn/PurchaseReturnWizard/SelectMaterial</path>
+    </wizardStep>
+    <postWizard id="PurchaseReturn">
+        <path>purchaseReturn/PurchaseReturnEditForm</path>
+    </postWizard>
+</wizard>

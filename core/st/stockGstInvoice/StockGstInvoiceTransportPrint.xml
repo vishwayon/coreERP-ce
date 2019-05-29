@@ -1,0 +1,32 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="StockGstInvoice" type="Report" rptPath="/core/st/stockGstInvoice" rptName="StockGstInvoice">
+        <header>Stock Invoice (GST)</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pstock_id" label="Stock No" type="string" control="TextBox" size="l"/>            
+                <param id="pbranch_id">
+                    <session>branch_id</session>
+                </param>  
+                <param id="pcompany_id">
+                    <session>company_id</session>
+                </param>
+                <param id="pcp_option">
+                    <text>2</text>
+                </param>
+                <param id="prpt_caption">
+                    <text>Tax Invoice</text>
+                </param>
+                <param id="psr_caption">
+                    <text>Tax Invoice</text>
+                </param>
+                <param id="ploc_alloc_print">
+                    <text>false</text>
+                </param>
+                <rptCompanyInfoPrefix>inv_</rptCompanyInfoPrefix>
+            </dataBinding>
+        </controlSection>
+    </reportView>
+</cwFramework>

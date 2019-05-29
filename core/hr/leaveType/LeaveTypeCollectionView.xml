@@ -1,0 +1,23 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>             
+    
+    <collectionView id="LeaveType" type="Master" bindingBO="LeaveType" editView="leaveType/LeaveTypeEditForm">        
+        <header>Leave Type</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select leave_type_id, leave_type, case when paid_leave is true then 'Yes' else 'No' end as paid_leave, pay_percent from hr.leave_type order by leave_type
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="leave_type" displayName="Leave Type" />
+                <displayField columnName="paid_leave" displayName="Paid Leave" />
+                <displayField columnName="pay_percent" displayName="Pay Percent" format="Amount"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

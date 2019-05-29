@@ -1,0 +1,57 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="CustManualSet" type="Master">
+        <controlTable>
+            <tableName>ar.customer</tableName>
+            <primaryKey>customer_id</primaryKey>
+            <customColumns>
+                <customColumn name="advance_amt" type="numeric" />   
+                <customColumn name="advance_amt_fc" type="numeric" />   
+                <customColumn name="invoice_id" type="varchar" length="50"/>
+                <customColumn name="rl_id" type="varchar"/>
+                <customColumn name="doc_date" type="date" />
+                <customColumn name="balance" type="numeric" />
+                <customColumn name="balance_fc" type="numeric" />
+            </customColumns>    
+            <fetchOrCreate>
+                <useOnFetch/>
+            </fetchOrCreate>
+            <save>
+                <useOnSave/>
+            </save>    
+            <delete>
+                <useOnDelete/>
+            </delete>
+            <tranTable id="receivable_ledger_alloc_tran">
+                <tableName>ac.rl_pl_alloc</tableName>
+                <primaryKey>rl_pl_alloc_id</primaryKey>  
+                <customColumns>             
+                    <customColumn name="sl_no" type="bigint" />       
+                    <customColumn name="adv_ref_id" type="varchar" length="50"/>
+                    <customColumn name="adv_ref_date" type="date"/>
+                    <customColumn name="balance" type="numeric" />
+                    <customColumn name="balance_fc" type="numeric" />
+                </customColumns>    
+                <relation linkType="OneToMany">
+                    <foreignKey>voucher_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useOnSave/>
+                    <primaryKeyPattern type="md5">{invoice_id}:{RowID}</primaryKeyPattern>
+                    <fieldPattern field="vch_tran_id">{invoice_id}:{RowID}</fieldPattern>
+                </save>         
+                <delete>
+                    <useOnDelete/>      
+                </delete> 
+            </tranTable>
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\ar\custManualSet\CustManualSetEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

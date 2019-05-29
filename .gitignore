@@ -1,0 +1,5 @@
+/nbproject/private/
+config/cwfconfig*.php
+web/assets/
+runtime/*
+vendor

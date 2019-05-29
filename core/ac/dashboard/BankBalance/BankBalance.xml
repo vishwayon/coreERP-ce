@@ -1,0 +1,5 @@
+<widget id="BankBalance">
+    <title>Bank/Cash Balance</title>    
+    <widgetType>twig</widgetType>
+    <widgetPath>/core/ac/dashboard/BankBalance/BankBalance</widgetPath>
+</widget>

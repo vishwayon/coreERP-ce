@@ -1,0 +1,66 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="TDSPayments" type="Report" rptPath="/core/tds/reports/tdsPayments" rptName="TDSPayments">
+        <header>TDS Payments</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="2" forConsolidated="true"> 
+                    <value>
+                        <session>branch_id</session>
+                    </value>
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>
+                    </lookup>  
+                </field>   
+                <field id="pcategory" label="Category" type="int" control="SimpleCombo" size="2">
+                    <options defaultValue="1">
+                        <option value="0">All</option>
+                        <option value="1">Pending For Payment</option>
+                        <option value="2">Remitted/Not Remitted</option>
+                    </options>
+                </field>           
+                <field id="pperson_type_id" label="Person Type" type="int" control="SmartCombo" size="2">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <valueMember>person_type_id</valueMember>
+                        <displayMember>person_type_desc</displayMember>
+                        <namedLookup>../core/tds/lookups/PersonTypeWithAll.xml</namedLookup>
+                    </lookup>    
+                </field> 
+                <field id="pfrom_date" label="From" type="date" control="Date" size="ms" range="finYear">  
+                    <value>
+                        <session>year_begin</session>
+                    </value>
+                </field>   
+                <field id="pto_date" label="To" type="date" control="Date" size="ms" range="finYear">                   
+                    <value>
+                        <currentDate/>
+                    </value>    
+                </field>                
+                <nextRow/> 
+                <field id="psupplier_id" label="Supplier" type="int" control="SmartCombo" size="3">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <valueMember>supplier_id</valueMember>
+                        <displayMember>supplier</displayMember>
+                        <namedLookup>../core/ap/lookups/SupplierWithAll.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <param id="pcompany_id">                
+                    <session>company_id</session>
+                </param>
+                <param id="preport_caption">
+                    <text>TDS Deducted</text>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

@@ -1,0 +1,27 @@
+<wizardView>
+    <header>Select Customer</header>
+    <sections>
+        <formSection id="SelectCustomerAll">
+            <displayFields>
+                <displayField id="account_id" label="Customer" type="int" control="SmartCombo" size="m"  editMode="edit" >
+                    <lookup>
+                        <valueMember>customer_id</valueMember>
+                        <displayMember>customer</displayMember>
+                        <namedLookup>../core/ar/lookups/CustomerWithAll.xml</namedLookup>
+                    </lookup>   
+                </displayField>  
+                <displayField id="to_date" label="To Date" type="date" control="Date" size="ms" editMode="edit" range="finYear">
+                    <value>
+                        <currentDate/>
+                    </value>
+                </displayField>  
+                <displayField id="ib_type" label="Branch Type" type="int" control="SimpleCombo" size="s" defaultValue = "0" editMode="edit" >
+                    <options>
+                        <option value="0">Normal</option>
+                        <option value="1">Inter Branch</option>
+                    </options>   
+                </displayField>   
+            </displayFields>
+        </formSection>
+    </sections>
+</wizardView>

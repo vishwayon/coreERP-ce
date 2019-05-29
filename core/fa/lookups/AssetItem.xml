@@ -1,0 +1,16 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="AssetItem">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select asset_item_id, asset_name from fa.asset_item order by asset_name asc
+            </command>
+        </sql>
+        <keyField id="asset_book_id"/>
+    </lookup>
+</cwFramework>

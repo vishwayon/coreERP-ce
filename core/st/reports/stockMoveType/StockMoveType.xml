@@ -1,0 +1,95 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="StockMoveType" type="Report" rptPath="/core/st/reports/stockMoveType" rptName="StockMoveType">
+        <header>Stock Movement Analysis</header>
+        <clientJsCodeRefs>
+            <clientJsCodeRef>../core/st/st_clientcode.js</clientJsCodeRef>
+        </clientJsCodeRefs>
+        <controlSection editMode="Edit">
+            <dataBinding>    
+                <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="ms" forConsolidated="true" on-change-event="core_st.rpt_st_bal_after_page_refresh"> 
+                    <value>
+                        <session>branch_id</session>
+                    </value>
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>             
+                    </lookup>  
+                </field>            
+                <field id="preport_type" label="Report" type="int" control="SimpleCombo"  size="s">
+                    <options defaultValue="0">
+                        <option value="0">By Material By Movement Summary</option>
+                        <option value="1">By Material By Movement Detail</option>
+                        <option value="2">By Movement By Material Summary</option>
+                        <option value="3">By Movement By Material Detail</option>
+                    </options>
+                </field>   
+                <field id="pfrom_date" label="From" type="date" control="Date" size="ms" range="finYear">
+                    <value>
+                        <session>year_begin</session>
+                    </value>
+                </field>
+                <field id="pto_date" label="To" type="date" control="Date" size="ms" range="finYear">                   
+                    <value>
+                        <currentDate/>
+                    </value>    
+                </field>
+                <field id="psl_id" label="Stock Location" type="int" control="SmartCombo"  size="s">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <displayMember>stock_location_name</displayMember>
+                        <valueMember>stock_location_id</valueMember>
+                        <namedLookup>../core/st/lookups/StockLocationAllforRpt.xml</namedLookup>                        
+                        <filterEvent>core_st.rpt_stock_location_branch_filter</filterEvent>
+                    </lookup>
+                </field>
+                <nextRow/>
+                <field id="pstock_movement_type_id" label="Stock Movement Type" type="int" control="SmartCombo"  size="ms">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <displayMember>stock_movement_type</displayMember>
+                        <valueMember>stock_movement_type_id</valueMember>
+                        <namedLookup>../core/st/lookups/StockMovementTypeWithAll.xml</namedLookup>
+                    </lookup>
+                </field>
+                <field id="pmaterial_type_id" label="Stock Type" type="int" control="SmartCombo"  size="s">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <displayMember>material_type</displayMember>
+                        <valueMember>material_type_id</valueMember>
+                        <namedLookup>../core/st/lookups/MaterialTypeWithAll.xml</namedLookup>
+                    </lookup>
+                </field>
+                <field id="pmaterial_id" label="Stock Item" type="int" control="SmartCombo" size="4" >
+                    <value>
+                        <text>-2</text>
+                    </value>
+                    <lookup>
+                        <valueMember>material_id</valueMember>
+                        <displayMember>material_name</displayMember>
+                        <namedLookup>../core/st/lookups/MaterialWithAll.xml</namedLookup>
+                        <filterEvent>core_st.rpt_sl_lot_stmt_material_filter</filterEvent>
+                    </lookup>   
+                </field>
+                <param id="pcompany_id">                
+                    <session>company_id</session>
+                </param>
+                <param id="pyear">
+                    <session>finyear</session>
+                </param>
+                <param id="preport_name">
+                    <text>Stock Movement Type</text>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

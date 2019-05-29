@@ -1,0 +1,51 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>             
+    
+    <businessObject id="CustomerOPBLRef" type="Master">     
+        <controlTable>
+            <tableName>ar.customer</tableName>
+            <primaryKey>customer_id</primaryKey>   
+            <customColumns>
+                <customColumn name="branch_id" type="bigint"/> 
+                <customColumn name="debit_total" type="bigint"/> 
+                <customColumn name="debit_total_fc" type="bigint"/>     
+                <customColumn name="credit_total" type="bigint"/> 
+                <customColumn name="credit_total_fc" type="bigint"/>              
+            </customColumns>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <!--This is to ensure that Anchor table does not use entity for save-->
+                <useOnSave/>
+            </save> 
+            <delete>
+                <useOnDelete/>
+            </delete>
+            <tranTable id="customer_receivable_ledger">
+                <tableName>ac.rl_pl</tableName>
+                <primaryKey>rl_pl_id</primaryKey>      
+                <customColumns>
+                    <customColumn name="is_allow_edit" type="boolean"/>              
+                </customColumns>
+                <relation linkType="OneToMany">
+                    <foreignKey>account_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useOnFetch/>
+                </fetchOrCreate>
+                <save>
+                    <useOnSave/>
+                    <primaryKeyPattern/>
+                </save>     
+                <delete>
+                    <useEntity/>
+                </delete>
+            </tranTable>  
+        </controlTable> 
+        <codeBehind>
+            <className>\app\core\ar\customerOPBLRef\CustomerOPBLRefEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

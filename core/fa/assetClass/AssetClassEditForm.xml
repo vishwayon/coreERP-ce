@@ -1,0 +1,67 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="AssetClass" type="Master" bindingBO="assetClass/AssetClass">    
+        <header>Asset Class</header> 
+        <keyField>asset_class_id</keyField>   
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="asset_class_code" label="Asset Class Code" type="string" control="TextBox" size="ms" maxLength="4"/>
+                <nextRow/>
+                <field id="asset_class" label="Asset Class" type="string" control="TextBox" size="m"  maxLength="50"/>
+                <nextRow/>
+                <field id="asset_account_id" label="Fixed Asset Account" type="int" control="SmartCombo" size="m" >
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id=16</filter>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <field id="dep_account_id" label="Depreciation Account" type="int" control="SmartCombo" size="m"  isOptional="true">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id=42</filter>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <field id="acc_dep_account_id" label="Accumulated Depreciation Account" type="int" control="SmartCombo" size="m"  isOptional="true">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id=43</filter>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <field id="profit_loss_account_id" label="Profit/Loss on Sale/Retire" type="int" control="SmartCombo" size="m"  isOptional="true">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id=30</filter>
+                    </lookup>   
+                </field>
+                <tranSection label="Depreciation By Book" editMode="Edit" size="8">
+                    <dataBinding dataProperty="asset_class_book">
+                        <field id="asset_book_id" label="Asset Book ID" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>
+                        <field id="asset_book_desc" label="Asset Book" type="string" control="TextBox" size="s"  maxLength="50" readOnly="true"/>
+                        <field id="en_dep_method" label="Depreciation Method" type="int" control="SimpleCombo" size="ms">
+                            <options>
+                                <option value="1">Straight Line</option>
+                                <option value="2">Written Down value</option>
+                            </options>
+                        </field>
+                        <field id="dep_rate" label="Rate of Depreciation (%)" type="decimal" scale="rate" maxVal="100" control="TextBox" size="ms"/>    
+                    </dataBinding>
+                </tranSection>    
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

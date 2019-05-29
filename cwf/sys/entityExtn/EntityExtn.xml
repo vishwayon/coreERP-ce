@@ -1,0 +1,32 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="EntityExtn" type="Master">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <controlTable>
+            <tableName>sys.entity_extn</tableName>
+            <primaryKey>entity_extn_id</primaryKey>
+            <customColumns>
+                <customColumn name="entity_type" type="int"/>
+                <customColumn name="fields" type="array"/>
+                <customColumn name="custom_fields" type="array"/>
+                <customColumn name="table_name" type="string"/>
+            </customColumns>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save> 
+            <delete>
+                <useEntity/>
+            </delete>
+        </controlTable>  
+        <codeBehind>
+            <className>\app\cwf\sys\entityExtn\EntityExtnEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

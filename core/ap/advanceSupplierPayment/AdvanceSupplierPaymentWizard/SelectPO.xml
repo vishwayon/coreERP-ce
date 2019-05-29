@@ -1,0 +1,31 @@
+<wizardView>
+    <header>Select Purchase Order</header>
+    <sections>
+        <collectionSection id="SelectPO">
+            <connectionType>
+              <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                   Select * from ap.fn_po_for_adv_req(:pcompany_id, :pbranch_id)
+                </command>           
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                    <param id="pbranch_id">
+                        <session>branch_id</session>
+                    </param>
+                </params>
+            </sql>
+
+            <keyField id="account_id"/>
+            <displayFields>
+                <displayField columnName="stock_id" id="stock_id" label="PO #" type="string" control="TextBox" size="m"/>
+                <displayField columnName="doc_Date" id="doc_date" label="PO Date" type="date" control="Date" size="s" scale="amt"/>
+                <displayField columnName="supplier" id="supplier" label="Supplier" type="string" control="TextBox" size="m"/>
+                <displayField columnName="advance_amt" id="advance_amt" label="Adv Request" type="decimal" control="TextBox" size="s" scale="amt"/>
+            </displayFields>
+        </collectionSection>
+    </sections>
+</wizardView>

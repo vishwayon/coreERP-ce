@@ -1,0 +1,17 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="PersonType">
+        <connectionType>
+            <mainDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select person_type_id, person_type_desc from tds.person_type
+                order by person_type_desc
+            </command>
+        </sql>
+        <keyField id="person_type_id"/>
+    </lookup>
+</cwFramework>

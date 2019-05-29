@@ -1,0 +1,23 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="HolidayList" type="Master">  
+        <controlTable>
+            <tableName>hr.holiday_list</tableName>
+            <primaryKey>holiday_id</primaryKey>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save> 
+            <delete>
+                <useEntity/>
+            </delete> 
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\hr\holidayList\HolidayListEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

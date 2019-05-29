@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2018-09-26T14:56:30 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StockAdjustmentNoteTran" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="1ef13994-e9a1-4f80-a2a4-37e07bc95200">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="fusion DB"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pstock_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA["SAN/HO/1516/3"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_ccy_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_qty_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_fc_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.#"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_date_format" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[SELECT * FROM
+st.fn_stock_tran_report
+(
+	$P{pstock_id}
+)ORDER BY sl_no asc;]]>
+	</queryString>
+	<field name="stock_id" class="java.lang.String"/>
+	<field name="stock_tran_id" class="java.lang.String"/>
+	<field name="sl_no" class="java.lang.Long"/>
+	<field name="material_id" class="java.lang.Long"/>
+	<field name="material_name" class="java.lang.String"/>
+	<field name="stock_location_id" class="java.lang.Long"/>
+	<field name="uom_id" class="java.lang.Long"/>
+	<field name="issued_qty" class="java.math.BigDecimal"/>
+	<field name="received_qty" class="java.math.BigDecimal"/>
+	<field name="rate" class="java.math.BigDecimal"/>
+	<field name="disc_percent" class="java.math.BigDecimal"/>
+	<field name="disc_amt" class="java.math.BigDecimal"/>
+	<field name="item_amt" class="java.math.BigDecimal"/>
+	<field name="reference_id" class="java.lang.String"/>
+	<field name="reference_tran_id" class="java.lang.String"/>
+	<field name="reference_parent_id" class="java.lang.String"/>
+	<field name="reference_parent_tran_id" class="java.lang.String"/>
+	<field name="target_stock_location_id" class="java.lang.Long"/>
+	<field name="stock_location_name" class="java.lang.String"/>
+	<field name="target_stock_location_name" class="java.lang.String"/>
+	<field name="uom_desc" class="java.lang.String"/>
+	<variable name="IorR" class="java.lang.String">
+		<variableExpression><![CDATA[(($F{issued_qty}.doubleValue() > 0.0) ? "I" : "R")]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<frame>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Opaque" x="0" y="0" width="522" height="30" isPrintWhenDetailOverflows="true" backcolor="#008080" uuid="31b1ed8f-c8a3-4ebc-8ba6-0905ce14f766">
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<staticText>
+					<reportElement style="NormalLabel" positionType="Float" mode="Transparent" x="0" y="0" width="25" height="30" isPrintWhenDetailOverflows="true" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="b12b3832-1ad4-48a2-b26b-3fd50f585462">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[I / R]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" positionType="Float" mode="Transparent" x="25" y="0" width="157" height="30" isPrintWhenDetailOverflows="true" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="4393869a-33a3-4eeb-b203-8e9bd7140e42">
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Material]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" positionType="Float" mode="Transparent" x="182" y="0" width="78" height="30" isPrintWhenDetailOverflows="true" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="d01bb4b9-7fa8-4ac0-9725-810834d1d9fb">
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Stock Location]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" positionType="Float" mode="Transparent" x="260" y="0" width="38" height="30" isPrintWhenDetailOverflows="true" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="ffdf5e8e-df36-4d12-9ff5-6f01a81cf805">
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[UoM]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" positionType="Float" mode="Transparent" x="350" y="0" width="48" height="30" isPrintWhenDetailOverflows="true" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="53b332ac-cd1b-4fef-a09a-1547d4973e8e">
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<box leftPadding="4"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Received Qty]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" positionType="Float" mode="Transparent" x="298" y="0" width="52" height="30" isPrintWhenDetailOverflows="true" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="f02de8dc-776e-4c9c-82c1-ba3e560c7f22">
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Issued Qty]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" positionType="Float" mode="Transparent" x="398" y="0" width="52" height="30" isPrintWhenDetailOverflows="true" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="637c6e84-a993-42ca-97dc-e74f2fcb7f5a">
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Rate]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" positionType="Float" mode="Transparent" x="450" y="0" width="72" height="30" isPrintWhenDetailOverflows="true" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="0e42389b-18a4-4e2e-afc3-a3cf14eb5905">
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Amount]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="34" splitType="Stretch">
+			<textField>
+				<reportElement style="NormalText" x="0" y="0" width="25" height="12" isPrintWhenDetailOverflows="true" uuid="0a8147dd-d8c3-4d0c-8e9f-301e01161c56">
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{IorR}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" x="25" y="0" width="157" height="12" isPrintWhenDetailOverflows="true" uuid="26fe472b-a695-49a3-a9b4-1a916753c18a">
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{material_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" x="260" y="0" width="38" height="12" isPrintWhenDetailOverflows="true" uuid="308e21d7-7d04-4e5b-a062-21ddd7186ef9">
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{uom_desc}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" x="182" y="0" width="78" height="12" isPrintWhenDetailOverflows="true" uuid="d4f1f6ba-2499-4727-a216-c32a06ed534b">
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{stock_location_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="NormalText" x="298" y="0" width="52" height="12" isPrintWhenDetailOverflows="true" uuid="c1423c0a-fa23-4f09-a75d-60a3e496409e">
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($F{issued_qty})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_qty_format}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement style="NormalText" x="350" y="0" width="48" height="12" isPrintWhenDetailOverflows="true" uuid="4691d9e6-9a99-428d-b46e-ff16bd6df8f2">
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($F{received_qty})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_qty_format}]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" x="398" y="0" width="52" height="12" isPrintWhenDetailOverflows="true" uuid="e1578c56-e91b-4e8c-9308-e0c763791135">
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($F{rate})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_rate_format}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement style="NormalText" stretchType="RelativeToBandHeight" x="450" y="0" width="72" height="12" isPrintWhenDetailOverflows="true" uuid="9c0673a1-a82d-489b-bc09-008fff5764b9">
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($F{item_amt})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="13" width="522" height="18" isRemoveLineWhenBlank="true" uuid="91fa546f-ee0e-4b7d-9819-73d4b16cc603">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<subreportParameter name="pvch_tran_id">
+					<subreportParameterExpression><![CDATA[$F{stock_tran_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_date_format">
+					<subreportParameterExpression><![CDATA[$P{pcwf_date_format}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_qty_format">
+					<subreportParameterExpression><![CDATA[$P{pcwf_qty_format}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["/core/st/lotAlloc/LotTran.jrxml"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

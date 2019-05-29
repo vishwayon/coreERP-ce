@@ -1,0 +1,29 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'> 
+    
+    <collectionView id="IBAccount" type="Master" bindingBO="IBAccount" editView="iBAccount/IBAccountEditForm">        
+        <header>Inter Branch Account</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select a.branch_id, a.branch_name, a.branch_description, a.branch_code, c.account_head
+                    from sys.branch a 
+                    left join ac.ib_account b on a.branch_id = b.branch_id
+                    left Join ac.account_head c on b.account_id =c.account_id
+                    order by branch_id
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="branch_name" displayName="Branch Name"/>
+                <displayField columnName="branch_description" displayName="Branch Description"/>
+                <displayField columnName="branch_code" displayName="Branch Code"/>
+                <displayField columnName="account_head" displayName="Inter Branch Account"/>
+            </displayFields>
+        </collectionSection>       
+    </collectionView>    
+</cwFramework>   
+

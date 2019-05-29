@@ -1,0 +1,23 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="BusinessUnit" type="Master" bindingBO="BusinessUnit" editView="businessUnit/BusinessUnitEditForm">
+        <header>Business Unit</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    SELECT business_unit_id, business_unit
+                    FROM sys.business_unit
+                    Order by business_unit
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="business_unit" displayName="Business Unit"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

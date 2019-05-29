@@ -1,0 +1,22 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'> 
+    
+    <collectionView id="SupplierOPBLRef" type="Master" bindingBO="SupplierOPBLRef" editView="supplierOPBLRef/SupplierOPBLRefEditForm">        
+        <header>Supplier OPBL Ref</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select supplier_id ,  supplier , supplier_code from ap.supplier order by supplier
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="supplier" displayName="Supplier"/>
+                <displayField columnName="supplier_code" displayName="Code"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

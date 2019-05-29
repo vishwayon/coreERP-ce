@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.1.final using JasperReports Library version 6.1.1  -->
+<!-- 2017-06-20T12:43:20 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StmtOfAcBillsReceivableLedgerTran" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="64717965-5c10-47dd-ad2a-1e1f87a10efe">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="fusion DB"/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="net.sf.jasperreports.export.xls.white.page.background" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.columns" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pcompany_id" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pbranch_id" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1000001]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_date_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["dd-MM-yyyy"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_qty_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_fc_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.#"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pto_date" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2015-11-30"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="paccount_id" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2000087]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pen_bill_type" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ptype" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pNet_Closing_Balance" class="java.math.BigDecimal" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[SELECT * FROM ar.fn_stmt_of_ac_br_report_future
+(
+	$P{pcompany_id}, 
+	$P{pbranch_id}, 
+	$P{paccount_id},
+	$P{pto_date}::Date, 
+	$P{pen_bill_type}
+);]]>
+	</queryString>
+	<field name="rl_pl_id" class="java.lang.Object"/>
+	<field name="voucher_id" class="java.lang.String"/>
+	<field name="vch_tran_id" class="java.lang.String"/>
+	<field name="doc_date" class="java.sql.Date"/>
+	<field name="account_id" class="java.lang.Long"/>
+	<field name="account_head" class="java.lang.String"/>
+	<field name="en_bill_type" class="java.lang.Integer"/>
+	<field name="balance_fc" class="java.math.BigDecimal"/>
+	<field name="fc_type_id" class="java.lang.Long"/>
+	<field name="balance" class="java.math.BigDecimal"/>
+	<field name="bill_no" class="java.lang.String"/>
+	<field name="bill_date" class="java.sql.Date"/>
+	<field name="net_debit_amount" class="java.math.BigDecimal"/>
+	<field name="debit_exch_diff" class="java.math.BigDecimal"/>
+	<field name="net_credit_amount" class="java.math.BigDecimal"/>
+	<field name="credit_exch_diff" class="java.math.BigDecimal"/>
+	<field name="debit_amount" class="java.math.BigDecimal"/>
+	<field name="credit_amount" class="java.math.BigDecimal"/>
+	<field name="net_debit_amount_fc" class="java.math.BigDecimal"/>
+	<field name="net_credit_amount_fc" class="java.math.BigDecimal"/>
+	<field name="fc_type" class="java.lang.String"/>
+	<field name="currency" class="java.lang.String"/>
+	<variable name="CreditAmount" class="java.math.BigDecimal" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{credit_amount}]]></variableExpression>
+	</variable>
+	<variable name="DebitAmount" class="java.math.BigDecimal" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{debit_amount}]]></variableExpression>
+	</variable>
+	<variable name="NetCredits" class="java.math.BigDecimal" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{net_credit_amount}]]></variableExpression>
+	</variable>
+	<variable name="NetDebits" class="java.math.BigDecimal" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{net_debit_amount}]]></variableExpression>
+	</variable>
+	<variable name="Balance" class="java.math.BigDecimal" resetType="None">
+		<variableExpression><![CDATA[$V{NetDebitAmount} - $V{NetCreditAmount}]]></variableExpression>
+	</variable>
+	<variable name="NetCreditAmount" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{net_credit_amount} > 0 ? $F{net_credit_amount} : 0]]></variableExpression>
+	</variable>
+	<variable name="NetDebitAmount" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{net_debit_amount} > 0 ? $F{net_debit_amount} : $F{debit_exch_diff}]]></variableExpression>
+	</variable>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{account_id}]]></groupExpression>
+		<groupHeader>
+			<band height="24">
+				<textField>
+					<reportElement style="NormalLabel" positionType="Float" x="0" y="7" width="523" height="14" uuid="de3e36d1-a46d-4ecb-8120-ce6e62896027">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<textFieldExpression><![CDATA["*Transaction(s) exist after the Statement Date."]]></textFieldExpression>
+				</textField>
+			</band>
+			<band height="41">
+				<frame>
+					<reportElement style="NormalText" positionType="Float" mode="Opaque" x="0" y="15" width="523" height="21" isPrintWhenDetailOverflows="true" backcolor="#008080" uuid="e5e7988a-005c-45b9-9107-7fa91e97b706">
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<staticText>
+						<reportElement style="NormalLabel" positionType="Float" mode="Transparent" x="0" y="0" width="61" height="20" isPrintWhenDetailOverflows="true" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="29155079-17a4-4fb3-918a-d0d4332ce66c">
+							<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						</reportElement>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<text><![CDATA[Date]]></text>
+					</staticText>
+					<staticText>
+						<reportElement style="NormalLabel" positionType="Float" mode="Transparent" x="61" y="0" width="104" height="20" isPrintWhenDetailOverflows="true" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="b01b9e3b-4dbe-4420-96c1-066ff702909f">
+							<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						</reportElement>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<text><![CDATA[Voucher No.]]></text>
+					</staticText>
+					<staticText>
+						<reportElement style="NormalLabel" positionType="Float" mode="Transparent" x="360" y="0" width="80" height="20" isPrintWhenDetailOverflows="true" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="3d02f18b-6cfb-4792-ae8d-b54a5fcb232f">
+							<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+						</reportElement>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<text><![CDATA[Credits]]></text>
+					</staticText>
+					<staticText>
+						<reportElement style="NormalLabel" positionType="Float" mode="Transparent" x="440" y="0" width="83" height="20" isPrintWhenDetailOverflows="true" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="08f21f0f-6a06-4959-9934-c743dac444c4">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						</reportElement>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<text><![CDATA[Balance]]></text>
+					</staticText>
+					<staticText>
+						<reportElement style="NormalLabel" positionType="Float" mode="Transparent" x="165" y="0" width="90" height="20" isPrintWhenDetailOverflows="true" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="d91e8d25-a8cf-4ea4-8500-f05648ed867b">
+							<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						</reportElement>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<text><![CDATA[Reference]]></text>
+					</staticText>
+					<staticText>
+						<reportElement style="NormalLabel" positionType="Float" mode="Transparent" x="255" y="0" width="105" height="20" isPrintWhenDetailOverflows="true" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="9fd6a82b-e3de-4acb-b37b-07510a156c2b">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+						</reportElement>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<text><![CDATA[Debits]]></text>
+					</staticText>
+				</frame>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="NormalLabel" positionType="Float" x="0" y="1" width="523" height="14" uuid="e385755d-d7bb-44d2-9ea3-358b5a743735"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA["Future Settlement(s)"]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="16">
+				<textField isStretchWithOverflow="true">
+					<reportElement style="NormalLabel" positionType="Float" x="0" y="0" width="255" height="14" uuid="cccf2cd7-097c-4156-aa87-e7319b254702"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[(((($V{NetDebits} == null) || ($V{NetDebits} == 0)) && (($V{NetCredits} == null) || ($V{NetCredits} == 0)))) ? "** There are no Settlements." : "Total"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="NormalText" positionType="Float" x="255" y="0" width="105" height="14" uuid="8f71ca82-4cf3-4031-92c9-c12604021ac2">
+						<printWhenExpression><![CDATA[$V{NetDebits} != null]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($V{NetDebits})]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="NormalText" positionType="Float" x="360" y="0" width="80" height="14" uuid="b7cb45d2-8814-426c-82a7-1dd124a4131a">
+						<printWhenExpression><![CDATA[$V{NetCredits} != null]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($V{NetDebits})]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" positionType="Float" x="0" y="0" width="61" height="14" uuid="4ddb7931-f156-47a1-aa10-8e9b8449c999"/>
+				<textFieldExpression><![CDATA[$F{bill_date}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_date_format}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement x="61" y="0" width="104" height="14" uuid="37f80554-30b0-4bd4-a16e-c069165cb4bb"/>
+				<textFieldExpression><![CDATA[$F{bill_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="165" y="0" width="90" height="14" uuid="5c9be498-46cf-40e3-a587-328db59012fe"/>
+				<textFieldExpression><![CDATA[$F{voucher_id}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" positionType="Float" x="255" y="0" width="105" height="14" uuid="5c423bd2-ed65-4fb3-b564-bfb7ed54bbd1"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($V{NetDebitAmount})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" positionType="Float" x="360" y="0" width="80" height="14" uuid="9e002fa9-d73d-4bb0-9114-0b36ecda1ed1"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($V{NetCreditAmount})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" positionType="Float" x="440" y="0" width="83" height="14" uuid="61160aa2-a8c3-49fa-9db1-d22c0ef0e107"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[($V{Balance} > 0) ? CoreJSFormatUtils.Formatter.formatDecimal($V{Balance}) : "(" + CoreJSFormatUtils.Formatter.formatDecimal($V{Balance} * -1)  + ")"]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

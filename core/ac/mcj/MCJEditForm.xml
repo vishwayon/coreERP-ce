@@ -1,0 +1,98 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="MCJ" type="Document" bindingBO="mcj/MCJ">
+        <header>Monthly Closing Journal</header>    
+        <keyField>voucher_id</keyField>
+        <printView rptOption="bankPayment/BankPaymentPrint">
+            <rptParams>
+                <param id="pvoucher_id">voucher_id</param>
+            </rptParams>
+        </printView>
+        <newDocEnabled>
+            <docType>MCJ</docType>
+            <beforeNewEvent>core_ac.before_new_vch</beforeNewEvent>
+            <afterNewEvent>core_ac.after_new_vch</afterNewEvent>
+        </newDocEnabled>
+        <deleteDocEnabled/>
+        <clientJsCode>ac_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="voucher_id" label="Voucher No" type="string" control="TextBox" size="s" maxLength="50" isOptional="true" readOnly="true"/>
+                <dummy/>
+                <dummy/>
+                <field id="doc_date" label="Date" type="date" control="Date" size="ms" range="finYear"/>
+                <nextRow/>
+                <field id="account_id" label="GL Account" type="int" control="SmartCombo" size="4" >
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id not in(1, 2, 32, 46, 47)</filter>
+                    </lookup>   
+                </field>
+                <dummy size="3"/>
+                <field id="debit_amt" label="Debits" type="decimal" control="TextBox"  size="ms" isOptional="true" />       
+                <field id="credit_amt" label="Credits" type="decimal" control="TextBox"  size="ms" isOptional="true"/>          
+                <nextRow/> 
+                <dummy size="8"/>
+                <field id="is_reversal" label="Date of Reversal" type="bool" control="CheckBox" size="1" isOptional="true"/>                         
+                <field id="reversal_date" label="" type="date" control="Date" size="2"  isOptional="true" 
+                       cdata-enable-on="core_ac.enable_reversal_date"/>
+                <nextRow/> 
+                <tranSection label="Account Info" editMode="Add|Edit|Delete">
+                    <dataBinding dataProperty="vch_tran">
+                        <field id="ref_no" label="Ref No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="ref_desc" label="Ref Desc" type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="sl_no" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="dc" label="D or C" type="string" control="TextBox" size="xs" maxLength="1"/>
+                        <field id="branch_id" label="Branch" type="int" control="SmartCombo" size="s"  cdata-visible-on="core_ac.enable_branch" isOptional="true">
+                            <lookup>
+                                <valueMember>branch_id</valueMember>
+                                <displayMember>branch_name</displayMember>
+                                <namedLookup>../cwf/sys/lookups/BranchWithIBAccount.xml</namedLookup>
+                            </lookup>   
+                        </field>
+                        <field id="account_id" label="Account" type="int" control="SmartCombo" size="s" >
+                            <lookup>
+                                <valueMember>account_id</valueMember>
+                                <displayMember>account_head</displayMember>
+                                <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                                <filter>account_type_id not in (1, 2, 32, 46, 47)</filter>
+                            </lookup>   
+                        </field>
+                        <field id="debit_amt" label="Debits" type="decimal" control="TextBox" isOptional="true"  size="ms" cdata-enable-on="core_ac.vch_isDebit"/>
+                        <field id="credit_amt" label="Credits" type="decimal" control="TextBox" isOptional="true"  size="ms" cdata-enable-on="core_ac.vch_isCredit"/>                                         
+                        <addRowEvent>core_ac.vch_tran_add_new_row_debit</addRowEvent>
+                    </dataBinding>
+                </tranSection>      
+                <nextRow/>                 
+                <nextRow/>                     
+                <field id="narration" label="Narration" type="string" rows="3" control="TextArea" size="m" maxLength="500" isOptional="true"/>  
+                <dummy/> 
+                <customField id="net_effect" label="Debit/Credit Diff" type="decimal" control= "TextBox" size="ms" isOptional="true"  
+                             readOnly="true" cdata-bind="style: {color: net_effect() != 0 ? &quot;red&quot; : &quot;inherit&quot; }">
+                    <computedField>
+                        var debit = new Number();
+                        var credit = new Number();
+                        var total = new Number();
+                        for(var p = 0; p &lt; coreWebApp.ModelBo.vch_tran().length; ++p)
+                        {
+                        credit += new Number(coreWebApp.ModelBo.vch_tran()[p].credit_amt());
+                        debit += new Number(coreWebApp.ModelBo.vch_tran()[p].debit_amt());
+                        }
+                        debit += (new Number(coreWebApp.ModelBo.debit_amt()) - new Number(coreWebApp.ModelBo.credit_amt()));
+
+                        total =  debit - credit;
+                        return total.toFixed(2);
+                    </computedField>
+                </customField> 
+                <nextRow/>
+                <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" size="m"  isOptional="true"/>  
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" size="m" readOnly="true" isOptional="true"/> 
+            </dataBinding>
+        </controlSection>   
+        <dmFiles multipleFiles="true"/> 
+    </formView>
+</cwFramework>

@@ -1,0 +1,48 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <businessObject id="PaySchedule" type="Master">
+        <connectionType>
+            <companyDB/>
+        </connectionType> 
+        <controlTable>
+            <tableName>hr.pay_schedule</tableName>
+            <primaryKey>pay_schedule_id</primaryKey>
+            <customColumns>                           
+                <customColumn name="do_not_display" type="bool" /> 
+                <customColumn name="pay_schedule_copy_id" type="int" />    
+            </customColumns>
+            
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save> 
+            <delete>
+                <useEntity/>
+            </delete>
+            <tranTable id="pay_schedule_detail_tran">
+                <tableName>hr.pay_schedule_detail</tableName>
+                <primaryKey>pay_schedule_detail_id</primaryKey>
+                <relation linkType="OneToMany">
+                    <foreignKey>pay_schedule_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity orderby="step_id"/>
+                </fetchOrCreate>
+                <save>
+                    <useOnSave/>
+                    <primaryKeyPattern/>
+                </save>
+                <delete>
+                    <useEntity/>
+                </delete>
+            </tranTable>
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\hr\paySchedule\PayScheduleEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

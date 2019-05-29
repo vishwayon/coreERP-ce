@@ -1,0 +1,19 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="AccAccountInPayhead">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select account_id, account_head, account_code, account_type_id 
+                from ac.account_head a        
+                where account_id in (Select distinct accrual_account_id from hr.payhead)
+                order by account_head asc
+            </command>
+        </sql>
+        <keyField id="account_id"/>
+    </lookup>
+</cwFramework>

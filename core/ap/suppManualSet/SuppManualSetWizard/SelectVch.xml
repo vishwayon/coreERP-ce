@@ -1,0 +1,54 @@
+<wizardView>
+    <header>Select Bills</header>
+    <sections>
+        <clientJsCode>ap_clientcode.js</clientJsCode>
+        <collectionSection id="SelectVch">
+        <connectionType>
+          <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select a.rl_pl_id, a.account_id, a.voucher_id, a.doc_date, a.bill_no, 
+                        case when a.bill_no = '' then '1970-01-01' else a.bill_date end as bill_date, 
+                        a.balance, a.balance_fc, a.fc_type_id, a.fc_type, a.due_date, a.branch_id
+                from ap.fn_payable_ledger_balance(:pcompany_id, :pbranch_id, :paccount_id, :pto_date, :pvoucher_id, :pdc) a
+                where a.doc_date between :pfrom_date and :pto_date
+                order by a.doc_date, a.voucher_id
+            </command>
+            <params>
+                <param id="pcompany_id">
+                    <session>company_id</session>
+                </param>
+                <param id="pbranch_id">
+                    <session>branch_id</session>
+                </param>
+                <param id="paccount_id">
+                    <wizard step="SelectSupplier">account_id</wizard>
+                </param>
+                <param id="pfrom_date">
+                    <session>year_begin</session>
+                </param>
+                <param id="pto_date">
+                    <currentDate/>
+                </param>
+                <param id="pvoucher_id">
+                    <text></text>
+                </param>
+                <param id="pdc">
+                    <text>C</text>
+                </param>
+            </params>
+        </sql>
+        <keyField id="account_id"/>
+        <displayFields>
+            <displayField columnName="voucher_id" id="voucher_id" label="Voucher No" type="string" control="TextBox" size="m"/>
+            <displayField columnName="doc_date" id="doc_date" label="Date" type="date" control="Date" size="s"/>
+            <displayField columnName="fc_type" id="fc_type" label="Txn Ccy" type="string" control="TextBox" size="s"/>
+            <displayField columnName="bill_no" id="bill_no" label="Bill No" type="string" control="TextBox" size="s"/>
+            <displayField columnName="bill_date" id="bill_date" label="Bill Date" type="date" control="Date" size="s"/>
+            <displayField columnName="balance" id="balance" label="Balance" type="decimal" control="TextBox" size="s" scale="amt"/>
+            <displayField columnName="balance_fc" id="balance_fc" label="Valance FC" type="decimal" control="TextBox" size="s" scale="amt"/>
+        </displayFields>
+    </collectionSection>
+    </sections>
+</wizardView>

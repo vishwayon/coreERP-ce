@@ -1,0 +1,25 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="SupplierWithAll">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+              <command>
+                select a.supplier_id, a.supplier, a.supp_type_id, a.supplier_with_code
+                from (        
+                       Select 0 as supplier_id, 'All' as supplier, 0 as supp_type_id, 'All' as supplier_with_code
+                       union All
+                       (select supplier_id, supplier, (annex_info->>'supp_type_id')::bigint as supp_type_id,
+                        case when supplier_code = '' Then supplier Else (supplier_code || ' - ' || supplier) End supplier_with_code
+                       from ap.supplier
+                       where company_id={company_id}
+                       order by case when supplier_code = '' Then supplier Else (supplier_code || ' - ' || supplier) End asc)
+                ) a
+              </command>
+        </sql>
+        <keyField id="supplier_id"/>
+    </lookup>
+</cwFramework>

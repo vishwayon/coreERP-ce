@@ -1,0 +1,52 @@
+
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="EmployeeOrg" type="Master"  bindingBO="employeeOrg/EmployeeOrg">
+        <header>Employee Organisation Detail</header>
+        <keyField>employee_org_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>              
+                <field id="employee_id" label="Employee" type="int" control="SmartCombo" size="4">
+                    <lookup>
+                        <valueMember>employee_id</valueMember>
+                        <displayMember>full_employee_name</displayMember>
+                        <namedLookup>../core/hr/lookups/Employee.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="effective_date" label="Effective Date" type="date" control="Date" size="ms"/>           
+                <nextRow/>
+                <field id="manager_id" label="Manager" type="int" control="SmartCombo" size="4">
+                    <lookup>
+                        <valueMember>employee_id</valueMember>
+                        <displayMember>full_employee_name</displayMember>
+                        <namedLookup>../core/hr/lookups/Employee.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="designation_id" label="Designation" type="int" control="SmartCombo" size="3">
+                    <lookup>
+                        <valueMember>designation_id</valueMember>
+                        <displayMember>designation</displayMember>
+                        <namedLookup>../core/hr/lookups/Designation.xml</namedLookup>
+                     </lookup>   
+               </field>  
+               <nextRow/>
+               <field id="branch_id" label="Branch" type="int" control="SmartCombo" size="3">
+                <lookup>
+                    <valueMember>branch_id</valueMember>
+                    <displayMember>branch_name</displayMember>
+                    <namedLookup>../cwf/sys/lookups/Branch.xml</namedLookup>
+                </lookup>   
+              </field>
+            
+            </dataBinding>  
+        </controlSection>
+    </formView>
+</cwFramework>
+              
+              
+ 
+ 

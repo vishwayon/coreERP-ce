@@ -1,0 +1,35 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>             
+    
+    <collectionView id="Attendance" type="Master" bindingBO="Attendance" editView="attendance/AttendanceEditForm">        
+        <header>Attendance</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select attendance_id, attendance_date, full_employee_name, in_time, out_time 
+                    from hr.attendance a inner join hr.employee b on a.employee_id=b.employee_id
+                    Where a.company_id=:pcompany_id  and a.finyear =  :pfinyear                    
+                    order by attendance_date desc
+                </command>
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                    <param id="pfinyear">
+                        <session>finyear</session>
+                    </param>
+                </params>
+            </sql>
+            <displayFields>
+                <displayField columnName="attendance_date" displayName="Attendance Date" format="Date"/>
+                <displayField columnName="full_employee_name" displayName="Employee Name"/>
+                <displayField columnName="in_time" displayName="In Time"/>
+                <displayField columnName="out_time" displayName="Out Time"/>                
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

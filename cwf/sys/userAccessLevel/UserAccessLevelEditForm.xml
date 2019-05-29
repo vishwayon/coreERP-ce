@@ -1,0 +1,63 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="User" type="Master" bindingBO="userAccessLevel/UserAccessLevel">
+        <header>User Access Level</header>
+        <keyField>user_id</keyField>
+        <clientJsCode>sys_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="full_user_name" label="User Name" type="string" control="TextBox" size="s" maxLength="50" readOnly="True"/>
+                <field id="branch_id" label="Branch" type="int" control="SmartCombo" size="s" >
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/Branch.xml</namedLookup>
+                    </lookup>
+                </field>
+                <cButton id="get_access_levels" onClick="core_sys.get_branch_user_access_level" label="Get Access Levels"/>
+                <field id="menu_items" label="Menu" type="string" control="Hidden" size="s" readOnly="True"/>
+                <nextRow/>        
+
+                <cHtml id="accesslevels" label="Access Levels">
+                <![CDATA[
+                    <style type="text/css">
+                        #accesslevels.btn-default{margin-top:20px;}
+                        .ui-widget-content .ui-state-active{border:0;}
+                     </style>
+                    <script type="text/html" id="tree-node">
+                        <li data-bind="attr: { cmenutype: menu_type, id: menu_name }">                            
+                            <input data-bind="attr: {id: menu_name()+'-chk' }, checked: selected, visible: (menu_type() != '0')" type="checkbox"/>
+                            <span data-bind="text: menu_text"></span>                                                     
+                            <span data-bind="attr: {id: menu_name()+'-opts' }, visible:selected" style="margin-right:50%;float:right;">
+                                <span data-bind=" visible: (menu_type() == '1'|| menu_type() == '2')">                                
+                                    <input data-bind="attr: {id: menu_name()+'-del-chk' }, checked: allow_delete" type="checkbox"/> Delete
+                                </span>
+                                <span data-bind=" visible: (menu_type() == '1')">
+                                    <input data-bind="attr: {id: menu_name()+'-unp-chk' }, checked: allow_unpost" type="checkbox"/> Unpost
+                                </span>
+                                <span data-bind=" visible: (menu_type() == '1'|| menu_type() == '2')">
+                                    <input data-bind="attr: {id: menu_name()+'-adt-chk' }, checked: allow_audit_trail" type="checkbox"/> Audit Trail
+                                </span>                                
+                            </span>                            
+                            <ul data-bind="template: {name: 'tree-node', foreach: children, as: 'chld'}"></ul>
+                        </li>
+                    </script>
+                    <script type="text/html" id="access-levels">
+                        &nbsp&nbsp<input type="radio" data-bind="attr: { name: chld.menu_name},checked: chld.access_level,value: val"/><span data-bind="text: name"></span>
+                    </script>
+                    <div id="mitem" data-bind="if: menu_items">
+                        <div class="form-group col-md-12">
+                            <label class="control-label" for="menu_items">Access Control</label>
+                            <div id='divtree'>
+                                <ul data-bind="template: {name: 'tree-node', foreach: menu_items, as: 'mitem'}"></ul>
+                            </div>
+                        </div>
+                    </div>
+                ]]>
+                </cHtml>
+            </dataBinding> 
+        </controlSection>
+    </formView>
+</cwFramework>

@@ -1,0 +1,26 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'> 
+    
+    <collectionView id="SuppCust" type="Master" bindingBO="SuppCust" editView="suppCust/SuppCustEditForm">        
+        <header>Supplier to Customer</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select a.supplier_id, a.supplier_name, COALESCE(b.customer_id,-1)::bigint as customer_id, 
+                    COALESCE(c.customer,'') as customer from                 
+                    ap.supplier a  
+                    left join ap.supp_cust b on a.supplier_id=b.supplier_id
+                    left join ar.customer c on b.customer_id=c.customer_id
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="supplier_name" displayName="Supplier"/>
+                <displayField columnName="customer" displayName="Customer"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

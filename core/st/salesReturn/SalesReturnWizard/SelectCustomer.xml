@@ -1,0 +1,31 @@
+<wizardView>
+    <header>Select Customer</header>
+    <sections>
+        <formSection id="SelectCustomer">
+            <displayFields>
+                <displayField id="account_id" label="Customer" type="int" control="SmartCombo" size="m" editMode="edit" defaultValue="-1">
+                    <lookup>
+                        <valueMember>customer_id</valueMember>
+                        <displayMember>customer</displayMember>
+                        <namedLookup>../core/ar/lookups/Customer.xml</namedLookup>
+                    </lookup>  
+                </displayField>
+                <displayField id="from_date" label="Sales From" type="date" control="Date" size="ms" editMode="edit" range="finYear">
+                    <value>
+                        <currentDate/>
+                    </value>
+                </displayField>
+                <displayField id="to_date" label="To" type="date" control="Date" size="ms" editMode="edit" range="finYear">
+                    <value>
+                        <currentDate/>
+                    </value>
+                </displayField>
+                <displayField id="doc_date" label="Returned Date" type="date" control="Date" size="ms" editMode="edit" range="finYear">
+                    <value>
+                        <currentDate/>
+                    </value>
+                </displayField>
+            </displayFields>
+        </formSection>
+    </sections>
+</wizardView>

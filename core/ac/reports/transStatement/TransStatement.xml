@@ -1,0 +1,76 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="TransStatement" type="Report" rptPath="/core/ac/reports/transStatement" rptName="TransStatement">
+        <header>Ledgers Transactions</header>    
+        <clientJsCodeRefs>
+            <clientJsCodeRef>../core/ac/ac_clientcode.js</clientJsCodeRef>
+        </clientJsCodeRefs>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="ms" forConsolidated="true"> 
+                    <value>
+                        <session>branch_id</session>
+                    </value>
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>
+                    </lookup>  
+                </field>
+                <field id="pfrom_date" label="From" type="date" control="Date" size="2" range="finYear">
+                    <value>
+                        <session>year_begin</session>
+                    </value>
+                </field>
+                <field id="pto_date" label="To" type="date" control="Date" size="2" range="finYear">                   
+                    <value>
+                        <currentDate/>
+                    </value>    
+                </field>  
+                <field id="paccount_id" label="Account" type="int" control="SmartCombo" size="3">
+                    <value>
+                        <text>-99</text>
+                    </value>
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/AccountWithAll.xml</namedLookup>
+                        <filterEvent>core_ac.rpt_gl_account_combo_filter</filterEvent>
+                    </lookup>   
+                </field>      
+                <nextRow/>
+                <field id="pcategory" label="Book" type="string" control="SimpleCombo" size="2" mdata-event="subscribe:core_ac.rpt_gl_category_changed">
+                    <options defaultValue="Any">
+                        <option value="Any">Any</option>
+                        <option value="Bank">Bank</option>
+                        <option value="Cash">Cash</option>
+                        <option value="GL">GL</option>
+                    </options>
+                </field> 
+                <field id="pfilter_gst_state" label="Filter by GST State" type="bool" control="CheckBox" size="2" forConsolidated="true" />
+                <field id="pshow_narration" label="Display Narration" type="bool" control="CheckBox" size="2">            
+                    <value>
+                        <text>True</text>
+                    </value>
+                </field>
+                <field id="pshow_cheque_details" label="Cheque Details" type="bool" control="CheckBox" size="2">       
+                    <value>
+                        <text>True</text>
+                    </value>
+                </field>
+                <field id="psuppress_details" label="Suppress Details" type="bool" control="CheckBox" size="2"/>
+                <param id="pcompany_id">                
+                        <session>company_id</session>
+                </param>
+                <param id="pyear">
+                        <session>finyear</session>
+                </param>
+                <param id="preport_caption">
+                    <text>General Ledger Transaction Statement</text>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

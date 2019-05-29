@@ -1,0 +1,17 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <lookup id="Salesman">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                SELECT salesman_id, salesman_name, salesman_type
+                FROM ar.salesman order by salesman_name asc
+            </command>
+        </sql>
+        <keyField id="salesman_id"/>
+    </lookup>
+</cwFramework>

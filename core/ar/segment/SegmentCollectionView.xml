@@ -1,0 +1,30 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>             
+    
+    <collectionView id="Segment" type="Master" bindingBO="Segment" editView="segment/SegmentEditForm">        
+        <header>Segment</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select segment_id, segment, segment_desc
+                    From ar.segment
+                    Where company_id=:pcompany_id         
+                    order by segment desc
+                </command>
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                </params>
+            </sql>
+            <displayFields>
+                <displayField columnName="segment" displayName="Segment"/>
+                <displayField columnName="segment_desc" displayName="Segment Desc"/>    
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

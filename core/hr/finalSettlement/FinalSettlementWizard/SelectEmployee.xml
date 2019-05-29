@@ -1,0 +1,16 @@
+<wizardView>
+    <header>Select Employee</header>
+    <sections>
+        <formSection id="SelectEmployee">
+            <displayFields>
+                <displayField id="employee_id" label="Employee" type="int" control="SmartCombo" size="m" editMode="edit" defaultValue="-1">
+                    <lookup>
+                        <valueMember>employee_id</valueMember>
+                        <displayMember>full_employee_name</displayMember>
+                        <namedLookup>../core/hr/lookups/Employee.xml</namedLookup>
+                     </lookup>  
+                </displayField>  
+            </displayFields>
+        </formSection>
+    </sections>
+</wizardView>

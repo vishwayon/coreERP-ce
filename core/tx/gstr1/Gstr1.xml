@@ -1,0 +1,34 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="Gstr1" type="Master">
+        <controlTable>
+            <tableName>tx.gst_ret</tableName>
+            <primaryKey>gst_ret_id</primaryKey>
+            <customColumns>
+                <customColumn name="ret_status_desc" type="string"/>
+                <customColumn name="gt" type="numeric" />
+                <customColumn name="cur_gt" type="numeric"/>
+            </customColumns>
+            <jsonField id="annex_info">
+                <jfield name="for_branch" type="string"/>
+                <jfield name="gt" type="decimal"/>
+                <jfield name="cur_gt" type="decimal"/>
+                <jfield name="ct" type="decimal"/>
+            </jsonField>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save>  
+            <delete>
+                <useEntity/>
+            </delete>
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\tx\gstr1\Gstr1EventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

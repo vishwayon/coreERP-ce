@@ -1,0 +1,25 @@
+<treeView id="AccountGroup">        
+    <header>Account Group</header>
+    <relationKeyField>group_id</relationKeyField>
+    <parentSection type="Master" bindingBO="AccountGroup" editView="accountGroup/AccountGroupEditForm">
+        <connectionType>
+          <companyDB/>
+        </connectionType>
+        <sql>
+              <command>
+                  select a.parent_key, b.group_name as parent_group, a.group_id, a.group_name, a.group_key,
+                  a.group_code, case when a.parent_key='0' then true else false End as edit_not_allowed
+                  from ac.account_group a
+                  left Join ac.account_group b on a.parent_key=b.group_key order by sys.fn_sort_key(a.parent_key), sys.fn_sort_key(a.group_key)
+              </command>
+        </sql>
+        <keyField id="group_id"/>
+        <displayFields>
+              <displayField columnName="group_name" displayName="Group Name" />
+              <displayField columnName="group_code" displayName="Group Code" />
+          </displayFields>
+        <parentKeyField>parent_key</parentKeyField>
+        <childKeyField>group_key</childKeyField>
+        <editNotAllowed field='edit_not_allowed'/>
+    </parentSection>
+</treeView>

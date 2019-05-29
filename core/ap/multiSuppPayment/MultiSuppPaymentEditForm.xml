@@ -1,0 +1,142 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="MultiSuppPayment" type="Document" bindingBO="multiSuppPayment/MultiSuppPayment">
+        <header>Multi Supplier Payment</header>
+        <keyField>voucher_id</keyField>
+        <printView rptOption="multiSuppPayment/MultiSuppPaymentPrint">
+            <rptParams>
+                <param id="pvoucher_id">voucher_id</param>
+            </rptParams>
+            <printOptions>
+                <printOption desc="Cheque Print" rptOption="multiSuppPayment/MultiSuppPaymentChequePrint"/>
+            </printOptions>
+        </printView>
+        <newDocEnabled>
+            <docType>MSP</docType>
+        </newDocEnabled>
+        <deleteDocEnabled/>
+        <clientJsCode>multiSuppPayment/MultiSuppPayment_clientcode.js</clientJsCode>        
+        <clientJsCodeRefs>
+            <clientJsCodeRef>../core/ap/ap_clientcode.js</clientJsCodeRef>
+        </clientJsCodeRefs>
+        <jsEvents>
+            <afterLoadEvent>msp.afterload</afterLoadEvent>
+        </jsEvents>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="voucher_id" label="Voucher No" type="string" control="TextBox" size="s" maxLength="50" isOptional="true" readOnly="true" forStatus="true"/>
+                <dummy size="5"/>
+                <field id="doc_date" label="Date" type="date" control="Date" size="ms" range="finYear"/>
+                <nextRow/>     
+                <field id="pymt_type" label="Settlement Type" type="int" control="SimpleCombo" size="ms">
+                    <options>
+                        <option value="0">Cash Bank</option>
+                        <option value="1">Journal</option>
+                    </options>
+                </field>      
+                <dummy size="6"/>   
+                <field id="is_inter_branch" label="" type="bool" control="Toggle" toggleOn="Inter Branch" toggleOff="Normal" size="C90"/>           
+                   
+                <nextRow/>
+                <field id="account_id" label="Account" type="int" control="SmartCombo" size="4">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filterEvent>core_ap.pymt_account_combo_filter</filterEvent>
+                    </lookup>   
+                </field>
+                <cButton id="seleBill" onClick="msp.SelectBill" label="Select Bills" icon="glyphicon glyphicon-plus" /> 
+                <dummy size="4"/>   
+                <field id="fc_type_id" label="Txn Ccy" type="int" control="FC" mdata-event="subscribe:msp.pymt_fc_changed" readOnly="true" size="s"/>
+                <field id="exch_rate" label="Amount" type="Hidden" control="Hidden" size="ms" scale="fc" readOnly="true"  isOptional="true"/>
+                <nextRow/> 
+                <tranSection label="Payable Allocations"  editMode="Add|Edit|Delete" fixedWidth="1200" fixedHeight="240"
+                         afterDeleteMethod="msp.pl_tran_delete">
+                    <dataBinding dataProperty="payable_ledger_alloc_tran">
+                        <field id="account_id" label="Supplier" type="int" control="SmartCombo" size="4" readOnly="true">
+                            <lookup>
+                                <valueMember>supplier_id</valueMember>
+                                <displayMember>supplier</displayMember>
+                                <namedLookup>../core/ap/lookups/Supplier.xml</namedLookup>
+                            </lookup>   
+                        </field>
+                        <field id="bill_id" label="Voucher No" type="string" control="TextBox" size="3" maxLength="50" readOnly="true"/>
+                        <field id="bill_no" label="Bill No" type="string" control="TextBox" size="2" maxLength="50" readOnly="true" isOptional="true"/>
+                        <field id="bill_date" label="Bill Date" type="date" control="Date" size="2" readOnly="true"/>
+                        <field columnName="balance" id="balance" label="Balance" type="decimal" control="TextBox" size="2" readOnly="true" 
+                                cdata-visible-on="msp.visible_balance"/>
+                        <field id="balance_fc" label="Balance FC" type="decimal" control="TextBox" size="2" readOnly="true"  
+                               cdata-visible-on="msp.visible_balance_fc"/>                        
+                        <field id="debit_amt" label="Settled Amount" type="decimal" control="TextBox" size="2" isOptional="true"  
+                               mdata-event="subscribe:msp.pymt_amount_changed"/>
+                        <field id="debit_amt_fc" label="Settled Amount FC" type="decimal" control="TextBox" size="2" isOptional="true"  
+                               data-fc-dependent="debit_amt"  mdata-event="subscribe:msp.pymt_amount_changed"/>
+                        <field id="write_off_amt" label="Discount" type="decimal" control="TextBox" size="1" isOptional="true"
+                               mdata-event="subscribe:msp.pymt_dis_changed"/>
+                        <field id="write_off_amt_fc" label="Discount FC" type="decimal" control="TextBox" size="1" isOptional="true"   
+                               data-fc-dependent="write_off_amt" mdata-event="subscribe:msp.pymt_dis_changed"/>
+                        
+                        <field id="debit_exch_diff" label="Exch. Diff" type="decimal" control="TextBox" size="1"  readOnly="true" cdata-visible-on="core_ap.ap_enable_visible_fc"/>
+                        <field id="net_debit_amt" label="Net Settled" type="decimal" control="TextBox" size="2" readOnly="true" />
+                        <field id="net_debit_amt_fc" label="Net Settled FC" type="decimal" control="TextBox" size="2" 
+                               readOnly="true" cdata-visible-on="core_ap.ap_enable_visible_fc"/>
+                        <field id="rl_pl_id" label="rl_pl_id" type="Hidden" control="Hidden"/>
+                        <field id="account_id" label="account_id" type="Hidden" control="Hidden"/>
+                        <field id="branch_id" label="branch_id" type="Hidden" control="Hidden"/>
+                    </dataBinding>
+                </tranSection>             
+                <nextRow/>   
+                <xdiv id="narration_div" size="6"/>
+                    <tranSection label="Other Adjustments" editMode="Add|Edit|Delete" afterDeleteMethod="msp.pl_tran_delete">
+                        <dataBinding dataProperty="pymt_tran">
+                            <field id="account_id" label="Account" type="int" control="SmartCombo" size="8" >
+                                <lookup>
+                                    <valueMember>account_id</valueMember>
+                                    <displayMember>account_head</displayMember>
+                                    <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                                    <filter>account_type_id not in (1, 2, 32, 45, 46, 47)</filter>
+                                </lookup>   
+                            </field> 
+                            <field id="debit_amt" label="Debit Amount" type="decimal" control="TextBox" size="2"  isOptional="true"   
+                                   mdata-event="subscribe:msp.total_calc"/>
+                            <field id="debit_amt_fc" label="Debit Amount FC" type="decimal" control="TextBox" size="2"   isOptional="true" 
+                                   data-fc-dependent="credit_amt"  mdata-event="subscribe:msp.total_calc"/>
+                        </dataBinding>
+                    </tranSection>
+                    <nextRow/>     
+                    <field id="narration" label="Narration" type="string" rows="3" control="TextArea" 
+                           size="12" maxLength="500" isOptional="true"
+                           smartText="'Being amount paid to ' +coreWebApp.ModelBo.supplier()"/> 
+
+                <xdivEnd/>
+                <dummy size="1"/>
+                <xdiv id="tot_div" size="5"/>
+                    <field id="annex_info.other_adj" label="Other Adjustment" type="decimal" control="TextBox" size="4" inline="true"  isOptional="true" readOnly="true"/>  
+                    <field id="annex_info.other_adj_fc" label="Other Adjustment FC" type="decimal" control="TextBox"  size="4" inline="true"  isOptional="true"  readOnly="true"
+                            cdata-visible-on="core_ap.ap_enable_visible_fc"/>       
+                    <nextRow/>  
+                    <field id="credit_amt" label="Total Amount" type="decimal" control="TextBox" allowNegative="true" size="4" readOnly="true"/> 
+
+                    <field id="credit_amt_fc" label="Total Amount FC" type="decimal" control="TextBox" allowNegative="true" size="4" readOnly="true"
+                           cdata-visible-on="core_ap.ap_enable_visible_fc"/> 
+                <xdivEnd/>
+                <nextRow/> 
+                <field id="supplier_detail" label="Cheq Pay To" type="string" control="TextBox" size="m" maxLength="250"/>               
+                <nextRow/>
+                <field id="cheque_number" label="Cheq/Trnsf. #" type="string" control="TextBox" isOptional="true" size="ms" maxLength="20"/>  
+                <field id="cheque_date" label="Cheq/Trnsf. Dt." type="date" control="Date" size="ms" isOptional="true"/>                
+                <field id="is_pdc" label="Post Dated" type="bool" control="CheckBox" size="2"/>             
+                <field id="collection_date" label="Reconciled Date" type="date" control="Date" size="ms" inline="true" readOnly="true" cdata-visible-on="core_ap.enable_recodate"/>  
+                <nextRow/>
+                <field id="is_ac_payee" label="A/C Payee" type="bool" control="CheckBox" size="2" inline="true"/> 
+                <field id="is_non_negotiable" label="Non Negotiable" type="bool" control="CheckBox" size="2" inline="true"/> 
+                <nextRow/>
+                <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" size="m"  isOptional="true"/>  
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" size="m" readOnly="true" isOptional="true"/> 
+            </dataBinding>
+        </controlSection>  
+    </formView>
+</cwFramework>

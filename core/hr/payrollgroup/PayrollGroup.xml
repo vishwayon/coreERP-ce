@@ -1,0 +1,24 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="PayrollGroup" type="Master">           
+        <controlTable>
+            <tableName>hr.payroll_group</tableName>
+            <primaryKey>payroll_group_id</primaryKey>        
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save> 
+            <delete>
+                <useEntity/>
+            </delete>      
+        </controlTable>       
+        <codeBehind>
+            <className>\app\core\hr\payrollgroup\PayrollGroupEventHandler</className>
+        </codeBehind>
+    </businessObject>
+    
+</cwFramework>

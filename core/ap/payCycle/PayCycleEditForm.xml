@@ -1,0 +1,16 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="PayCycle" type="Master" bindingBO="payCycle/PayCycle">
+        <header>Pay Cycle</header>
+        <keyField>pay_cycle_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>    
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pay_cycle" label="Pay Cycle" type="string" control="TextBox" size="s" maxLength="50"/> 
+            </dataBinding>
+        </controlSection>   
+    </formView>
+</cwFramework>

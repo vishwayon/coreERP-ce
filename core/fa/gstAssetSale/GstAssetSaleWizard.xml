@@ -1,0 +1,15 @@
+<wizard id="GstAssetSale" name="GST Asset Sale Wizard">
+    <clientJsCode>gstAssetSale/GstAssetSale_clientcode.js</clientJsCode>   
+    <codeBehind>
+        <className>\app\core\fa\gstAssetSale\GstAssetSaleWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectAssetClass">
+        <path>gstAssetSale/GstAssetSaleWizard/SelectAssetClass</path>
+    </wizardStep>
+    <wizardStep id="SelectAssetItem">
+        <path>gstAssetSale/GstAssetSaleWizard/SelectAssetItem</path>
+    </wizardStep>
+    <postWizard id="GstAssetSale">
+        <path>gstAssetSale/GstAssetSaleEditForm</path>
+    </postWizard>
+</wizard>

@@ -1,0 +1,28 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="User" type="Master" bindingBO="userToLedger/UserToLedger">
+        <header>User To Ledger</header>
+        <keyField>user_id</keyField>
+        <clientJsCode>sys_clientcode.js</clientJsCode>        
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="full_user_name" label="User Name" type="string" control="TextBox" size="s" maxLength="50" readOnly="True"/>   
+                
+                             
+                <tranSection label="Associated Ledgers"  editMode="Add|Edit|Delete"  noColHeader="true" fixedWidth="300">
+                    <dataBinding dataProperty="user_to_ledger"  >
+                        <field id="account_id" label="Account" type="int" control="SmartCombo" size="4">
+                            <lookup>
+                                <valueMember>account_id</valueMember>
+                                <displayMember>account_head</displayMember>
+                                <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                            </lookup>   
+                        </field>
+                    </dataBinding>
+                </tranSection>
+            </dataBinding> 
+        </controlSection>
+    </formView>
+</cwFramework>

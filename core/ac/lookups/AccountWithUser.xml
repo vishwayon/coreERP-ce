@@ -1,0 +1,30 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="AccountWithUser">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select a.account_id, a.account_head, a.account_code, a.account_type_id, a.is_ref_ledger
+                from ac.account_head a        
+                inner join sys.user_to_ledger b on a.account_id = b.account_id
+                where account_type_id not in (0, 7, 12)
+                    And not exists (Select b.account_id from ac.account_head_hidden b where branch_id=:pbranch_id and a.account_id=b.account_id)
+                    And  b.user_id = :puser_id
+                order by a.account_head asc
+            </command>
+            <params>
+                <param id="pbranch_id" >
+                    <session>branch_id</session>
+                </param>
+                <param id="puser_id" >
+                    <userID/>
+                </param>
+            </params>
+        </sql>
+        <keyField id="account_id"/>
+    </lookup>
+</cwFramework>

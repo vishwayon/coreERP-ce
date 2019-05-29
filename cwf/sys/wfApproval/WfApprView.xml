@@ -1,0 +1,62 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    <allocView id="WfAppr" type="alloc" width="700pt">
+        <header>Approval Requests</header>    
+        <clientJsCodeRefs>
+            <clientJsCodeRef>../cwf/sys/wfApproval/WfAppr_clientcode.js</clientJsCodeRef> 
+        </clientJsCodeRefs>   
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="wf-ar-loading" control="Label" label="Loading ..." />
+                <nextRow/>
+                <field id="limit_hdr" label="All limits Exceeded. Cannot seek approvals" style="font-size: 1.225em;color: red; text-align:center;"
+                       type="string" control="Label" size="12" cdata-visible-on="core_sys.wf_ar.visible_limit"/> 
+                <nextRow/>
+                
+                <field id="balance_credit_hdr" label="Credit Limit Exceeded" style="font-size: 1.225em;color: teal;"
+                       type="string" control="Label" size="3" cdata-visible-on="core_sys.wf_ar.visible_cl"/>  
+                <nextRow/>
+                <field id="balance_credit_label" label="Available" type="string" control="Label" size="2" inline="true" cdata-visible-on="core_sys.wf_ar.visible_cl"/>
+                <field id="balance" label="" type="decimal" control="TextBox" isOptional="true" size="2" readOnly="true" inline="true" class="fg-total" 
+                       cdata-visible-on="core_sys.wf_ar.visible_cl"  style="font-weight: bold; color: green;" />
+                <field id="order_amt_label" label="Order Amt" type="string" control="Label" size="2" inline="true" cdata-visible-on="core_sys.wf_ar.visible_cl"/>
+                <field id="order_amt" label="" type="decimal" control="TextBox" isOptional="true" size="2"  readOnly="true" inline="true" class="fg-total"
+                       cdata-visible-on="core_sys.wf_ar.visible_cl"/>
+                <field id="excess_val_label" label="Excess" type="string" control="Label" size="2" inline="true" cdata-visible-on="core_sys.wf_ar.visible_cl"/>
+                <field id="excess_val" label="" type="decimal" control="TextBox" isOptional="true" size="2"  readOnly="true" inline="true" class="fg-total"
+                       cdata-visible-on="core_sys.wf_ar.visible_cl"   style="font-weight: bold; color: green;"/>
+                <nextRow/>
+                <field id="cl_to_user_label" label="Approver" type="string" control="Label" size="2" inline="true" cdata-visible-on="core_sys.wf_ar.visible_cl"/>
+                <field id="cl_to_user" label="" type="string" control="TextBox" size="3" readOnly="true" inline="true" class="fg-total" 
+                       cdata-visible-on="core_sys.wf_ar.visible_cl"/>
+                <nextRow/>
+                
+                <field id="inv_io_hdr" label="Invoice Overdue Details" style="font-size: 1.225em;color: teal;"
+                       type="string" control="Label" size="3" cdata-visible-on="core_sys.wf_ar.visible_io"/>
+                <nextRow/> 
+                <field id="inv_id_label" label="Invoice #" type="string" control="Label" size="2" inline="true" cdata-visible-on="core_sys.wf_ar.visible_io"/>
+                <field id="inv_id" label="" type="string" control="TextBox" size="2" readOnly="true" inline="true" class="fg-total" 
+                       cdata-visible-on="core_sys.wf_ar.visible_io"/>
+                <field id="inv_date_label" label="Date" type="string" control="Label" size="2" inline="true" cdata-visible-on="core_sys.wf_ar.visible_io"/>
+                <field id="inv_date" label="" type="date" control="Date" size="2" readOnly="true" inline="true" class="fg-total" 
+                       cdata-visible-on="core_sys.wf_ar.visible_io"/>
+                <field id="overdue_amt_label" label="Invoice Amt" type="string" control="Label" size="2" inline="true" cdata-visible-on="core_sys.wf_ar.visible_io"/>
+                <field id="overdue_amt" label="" type="decimal" control="TextBox" isOptional="true" size="2" readOnly="true" inline="true" class="fg-total"
+                       cdata-visible-on="core_sys.wf_ar.visible_io"/>
+                <nextRow/> 
+                <field id="overdue_days_label" label="Overdue Days" type="string" control="Label" size="2" inline="true" cdata-visible-on="core_sys.wf_ar.visible_io"/>
+                <field id="overdue_days" label="" type="decimal" control="TextBox" isOptional="true" size="2"  readOnly="true" inline="true" class="fg-total"
+                       cdata-visible-on="core_sys.wf_ar.visible_io"/>
+                <field id="io_to_user_label" label="Approver" type="string" control="Label" size="2" inline="true" cdata-visible-on="core_sys.wf_ar.visible_io"/>
+                <field id="io_to_user" label="" type="string" control="TextBox" size="3" readOnly="true" inline="true" class="fg-total" 
+                       cdata-visible-on="core_sys.wf_ar.visible_io"/>
+
+                <nextRow/>
+                <field id="warning_lable" label="Warning: Upon requesting approval, this document would not be editable until approval is granted/rejected"
+                       style="font-size: 1.200em;color: red;"
+                       type="string" control="Label" size="12" cdata-visible-on="core_sys.wf_ar.visible_warning"/>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>

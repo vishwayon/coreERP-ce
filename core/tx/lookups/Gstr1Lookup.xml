@@ -1,0 +1,20 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="Gstr1Lookup">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                Select a.gst_ret_id, to_char(a.ret_period_to, 'Mon-YY') || ' for ' || b.state_code || ' (' || a.ret_period || ')'  gst_ret_period
+                From tx.gst_ret a
+                inner join tx.gst_state b on a.gst_state_id=b.gst_state_id
+                where a.gst_ret_type_id=101
+                Order By a.ret_period_to desc
+            </command>
+        </sql>
+        <keyField id="gst_ret_id"/>
+    </lookup>
+</cwFramework>

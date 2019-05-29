@@ -1,0 +1,30 @@
+<widget id="pendingApprovals">
+    <title>Pending Approvals</title>    
+    <widgetType>grid</widgetType>
+    <series id="pAprs">
+        <label>Pending Approvals</label>
+        <sql>
+            <command>
+                SELECT a.wf_ar_id, a.bo_id, a.branch_id, b.branch_name, a.doc_id, a.doc_date, a.wf_desc, a.user_from, a.user_to,
+                        a.route, a.formname, a.formparams, a.added_on,'' as from_user
+                    FROM sys.wf_ar a
+                    left join sys.branch b on a.branch_id = b.branch_id
+                    where a.user_to = {user_id} and a.acted_on is null 
+            </command>
+        </sql>
+        <seriesType>grid</seriesType>
+        <xField/>
+        <yField/>
+        <displayFields>
+          <displayField columnName="branch_name" displayName="Branch"/>
+          <displayField columnName="bo_id" displayName="Doc Type"/>
+          <displayField columnName="doc_id" displayName="Voucher id"/>
+          <displayField columnName="doc_date" displayName="Doc Date"/>
+          <displayField columnName="from_user" displayName="From user"/>
+          <displayField columnName="added_on" displayName="Request Date"/>
+        </displayFields>
+    </series>    
+    <codeBehind>
+        <className>\app\cwf\sys\userDashboard\UserDashboardEventHandler</className>
+    </codeBehind>
+</widget>

@@ -1,0 +1,38 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>             
+    
+    <collectionView id="Leave" type="Master" bindingBO="Leave" editView="leave/LeaveEditForm">        
+        <header>Leave</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select leave_id, a.finyear, b.full_employee_name, leave_type, from_date,
+                    to_date, d.full_employee_name as authorised_by from hr.leave a
+                    inner join hr.employee b on a.employee_id=b.employee_id
+                    inner join hr.leave_type c on a.leave_type_id=c.leave_type_id  
+                    left join hr.employee d on a.authorised_by_emp_id=d.employee_id                  
+                    where  a.finyear=:pfinyear and a.company_id=:pcompany_id
+                </command>
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                    <param id="pfinyear">
+                        <session>finyear</session>
+                    </param>
+                </params>
+            </sql>
+            <displayFields>
+                <displayField columnName="full_employee_name" displayName="Employee"/>
+                <displayField columnName="leave_type" displayName="Leave Type"/>
+                <displayField columnName="from_date" displayName="Leave Date From" format="Date"/>
+                <displayField columnName="to_date" displayName="Leave Date To" format="Date"/>
+                <displayField columnName="authorised_by" displayName="Authorised By"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

@@ -1,0 +1,414 @@
+<div id="twig_rpt" name="twig_rpt" class="col-md-12" style="background-color: #ffffff;border-radius: 5px;">
+    <style>
+        #twig_rpt>table td {word-wrap:break-word;}
+    </style>
+    <div class="cformheader">
+        <h3>Periodic Balance Sheet
+            <span style="font-size: 12px;"><i>{{ " As On " ~ model.toDate }}</i></span></h3>
+    </div>
+    <div>
+        <h4>{{ model.branchName }}</h4>
+    </div>
+    <div class="row" style="width: auto;">
+        <table id="tcons" style="margin: 10px auto auto;">
+            <style type="text/css">
+                td {padding: 0.55em;}
+                tr {padding: 0.55em;}
+            </style>
+            <thead style="background-color: lightgrey;line-height: 2.75em;">
+                <tr>
+                    <th style="width: 450pt;">Particulars</th>
+                    {% for item in model.bsPeriods %}
+                        <th style="width: 120pt; padding: 5pt;">{{ item.id }}</th>
+                    {% endfor %}
+                    {% if model.periodTot %}
+                        <th style="width: 120pt; padding: 5pt;">Period Ended</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+            {% if model.showBs %}
+                {% for grp in model.assetGroups %}
+                    <tr>
+                        <td group_id="{{ grp.group_id }}" style="font-weight: bold; color: maroon; padding-left: {{ grp.level * 5 }}pt;" 
+                            onclick="core_ac.bs.toggleGroup({{ grp.group_id }});">
+                            {% if grp.accounts|length > 0 %}
+                                <i group_id="ico-{{ grp.group_id }}" class="fa fa-plus-circle"></i> 
+                            {% endif %}
+                            {{ grp.group_name }} 
+                        </td>
+                        {% set ptot = 0 %}
+                        {% for pd in model.bsPeriods %}
+                            {% if grp.period_tots[pd.sl_no] != 0.00 %}
+                                {% set ptot = grp.period_tots[pd.sl_no] %}
+                                <td style="font-weight: bold; color: maroon;" class="datatable-col-right"> {{ formatHelper.FormatAmt(grp.period_tots[pd.sl_no]) }} </td>
+                            {% else %}
+                                <td />
+                            {% endif %}
+                        {% endfor %}
+                        {% if model.periodTot %}
+                            {% if ptot != 0.00 %}
+                                <td style="font-weight: bold; color: maroon;" class="datatable-col-right"> {{ formatHelper.FormatAmt(ptot) }} </td>
+                            {% else %}
+                                <td />
+                            {% endif %}
+                        {% endif %}
+                    </tr>
+                    {% for acc in grp.accounts %}
+                        {% set acptot = 0 %}
+                        {% if model.getSumAbs(acc.period_amts) != 0.00 %}
+                            <tr parent_id="{{ grp.group_id }}" style="display: none;"><td style="padding-left: {{ grp.level * 5 }}pt;"> {{ acc.account_head }} </td>
+                            {% for amt in acc.period_amts %}
+                                {% set acptot = amt %}
+                                <td class="datatable-col-right"> {{ formatHelper.FormatAmt(amt) }} </td>
+                            {% endfor %}
+                            {% if model.periodTot %}
+                                <td class="datatable-col-right"> {{ formatHelper.FormatAmt(acptot) }} </td>
+                            {% endif %}
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                <tr><td style="text-align: right;">Total</td>
+                    {% set pgtot = 0 %}
+                    {% for pd in model.bsPeriods %}
+                        {% set amt_tot = 0 %}
+                        {% for grp in model.assetGroups %}
+                            {% set amt_tot = amt_tot + grp.period_tots[pd.sl_no] %}
+                        {% endfor %}
+                        {% set pgtot = amt_tot %}
+                        <td style="border-top: solid 1px black; border-bottom: solid 1px black;" class="datatable-col-right"> {{ formatHelper.FormatAmt(amt_tot) }} </td>
+                    {% endfor %}
+                    {% if model.periodTot %}
+                        <td style="border-top: solid 1px black; border-bottom: solid 1px black;" class="datatable-col-right"> {{ formatHelper.FormatAmt(pgtot) }} </td>
+                    {% endif %}
+                </tr>
+                
+                <!-- Start Owner's Funds -->
+                {% for grp in model.ownerFundGroups %}
+                    <tr>
+                        <td group_id="{{ grp.group_id }}" style="font-weight: bold; color: maroon;"
+                            onclick="core_ac.bs.toggleGroup({{ grp.group_id }});">
+                            {% if grp.accounts|length > 0 %}
+                                <i group_id="ico-{{ grp.group_id }}" class="fa fa-plus-circle"></i> 
+                            {% endif %}
+                            {{ grp.group_name }} 
+                        </td>
+                        {% set ptot = 0 %}
+                        {% for pd in model.bsPeriods %}
+                            {% set ptot = grp.period_tots[pd.sl_no] %}
+                            {% if grp.period_tots[pd.sl_no] != 0.00 %}
+                                <td style="font-weight: bold; color: maroon;" class="datatable-col-right"> {{ formatHelper.FormatAmt(grp.period_tots[pd.sl_no]) }} </td>
+                            {% else %}
+                                <td />
+                            {% endif %}
+                        {% endfor %}
+                        {% if model.periodTot %}
+                            {% if ptot != 0.00 %}
+                                <td style="font-weight: bold; color: maroon;" class="datatable-col-right"> {{ formatHelper.FormatAmt(ptot) }} </td>
+                            {% else %}
+                                <td />
+                            {% endif %}
+                        {% endif %}
+                    </tr>
+                    {% for acc in grp.accounts %}
+                        {% set acptot = 0 %}
+                        {% if model.getSumAbs(acc.period_amts) != 0.00 %}
+                            <tr parent_id="{{ grp.group_id }}" style="display: none;"><td style="text-indent: 5pt;"> {{ acc.account_head }} </td>
+                            {% for amt in acc.period_amts %}
+                                {% set acptot = amt %}
+                                <td class="datatable-col-right"> {{ formatHelper.FormatAmt(amt) }} </td>
+                            {% endfor %}
+                            {% if model.periodTot %}
+                                <td class="datatable-col-right"> {{ formatHelper.FormatAmt(acptot) }} </td>
+                            {% endif %}
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                {# <tr><td style="text-align: right;">Total</td>
+                    {% set amt_tot = 0 %}
+                    {% for pd in model.bsPeriods %}
+                        {% for grp in model.ownerFundGroups %}
+                            {% set amt_tot = amt_tot + grp.period_tots[pd.sl_no] %}
+                        {% endfor %}
+                        <td style="border-top: solid 1px black; border-bottom: solid 1px black;" class="datatable-col-right"> {{ formatHelper.FormatAmt(amt_tot) }} </td>
+                    {% endfor %}
+                </tr> #}
+                <!-- Start Liabilities -->
+                {% for grp in model.liabilityGroups %}
+                    <tr>
+                        <td group_id="{{ grp.group_id }}" style="font-weight: bold; color: maroon;"
+                            onclick="core_ac.bs.toggleGroup({{ grp.group_id }});">
+                            {% if grp.accounts|length > 0 %}
+                                <i group_id="ico-{{ grp.group_id }}" class="fa fa-plus-circle"></i> 
+                            {% endif %}
+                            {{ grp.group_name }} 
+                        </td>
+                        {% set ptot = 0 %}
+                        {% for pd in model.bsPeriods %}
+                            {% set ptot = grp.period_tots[pd.sl_no] %}
+                            {% if grp.period_tots[pd.sl_no] != 0.00 %}
+                                <td style="font-weight: bold; color: maroon;" class="datatable-col-right"> {{ formatHelper.FormatAmt(grp.period_tots[pd.sl_no]) }} </td>
+                            {% else %}
+                                <td />
+                            {% endif %}
+                        {% endfor %}
+                        {% if model.periodTot %}
+                            {% if ptot != 0.00 %}
+                                <td style="font-weight: bold; color: maroon;" class="datatable-col-right"> {{ formatHelper.FormatAmt(ptot) }} </td>
+                            {% else %}
+                                <td />
+                            {% endif %}
+                        {% endif %}
+                    </tr>
+                    {% for acc in grp.accounts %}
+                        {% set acptot = 0 %}
+                        {% if model.getSumAbs(acc.period_amts) != 0.00 %}
+                            <tr parent_id="{{ grp.group_id }}" style="display: none;"><td style="text-indent: 5pt;"> {{ acc.account_head }} </td>
+                            {% for amt in acc.period_amts %}
+                                {% set acptot = amt %}
+                                <td class="datatable-col-right"> {{ formatHelper.FormatAmt(amt) }} </td>
+                            {% endfor %}
+                            {% if model.periodTot %}
+                                <td class="datatable-col-right"> {{ formatHelper.FormatAmt(acptot) }} </td>
+                            {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                <tr><td style="text-align: right;">Total</td>
+                    {% set pgtot = 0 %}
+                    {% for pd in model.bsPeriods %}
+                        {% set amt_tot = 0 %}
+                        {% for grp in model.ownerFundGroups %}
+                            {% set amt_tot = amt_tot + grp.period_tots[pd.sl_no] %}
+                        {% endfor %}
+                        {% for grp in model.liabilityGroups %}
+                            {% set amt_tot = amt_tot + grp.period_tots[pd.sl_no] %}
+                        {% endfor %}
+                        {% set pgtot = amt_tot %}
+                        <td style="border-top: solid 1px black; border-bottom: solid 1px black;" class="datatable-col-right"> {{ formatHelper.FormatAmt(amt_tot) }} </td>
+                    {% endfor %}
+                    {% if model.periodTot %}
+                        <td style="border-top: solid 1px black; border-bottom: solid 1px black;" class="datatable-col-right"> {{ formatHelper.FormatAmt(pgtot) }} </td>
+                    {% endif %}
+                </tr>
+            {% endif %}
+            {% if model.showPnl %}
+                <!-- Start Income -->
+                {% for grp in model.incomeGroups %}
+                    <tr><td style="padding-top: 20pt;"></td></tr>
+                    <tr>
+                        <td group_id="{{ grp.group_id }}" style="font-weight: bold; color: maroon;"
+                            onclick="core_ac.bs.toggleGroup({{ grp.group_id }});">
+                            {% if grp.accounts|length > 0 %}
+                                <i group_id="ico-{{ grp.group_id }}" class="fa fa-plus-circle"></i> 
+                            {% endif %}
+                            {{ grp.group_name }} 
+                        </td>
+                        {% set ptot = 0 %}
+                        {% for pd in model.bsPeriods %}
+                            {% set ptot = ptot + grp.period_tots[pd.sl_no] %}
+                            {% if grp.period_tots[pd.sl_no] != 0.00 %}
+                                <td style="font-weight: bold; color: maroon;" class="datatable-col-right"> {{ formatHelper.FormatAmt(grp.period_tots[pd.sl_no]) }} </td>
+                            {% else %}
+                                <td />
+                            {% endif %}
+                        {% endfor %}
+                        {% if model.periodTot %}
+                            {% if ptot != 0.00 %}
+                                <td style="font-weight: bold; color: maroon;" class="datatable-col-right"> {{ formatHelper.FormatAmt(ptot) }} </td>
+                            {% else %}
+                                <td />
+                            {% endif %}
+                        {% endif %}
+                    </tr>
+                    {% for acc in grp.accounts %}
+                        {% set acptot = 0 %}
+                        {% if model.getSumAbs(acc.period_amts) != 0.00 %}
+                            <tr parent_id="{{ grp.group_id }}" style="display: none;"><td style="text-indent: 5pt;"> {{ acc.account_head }} </td>
+                            {% for amt in acc.period_amts %}
+                                {% set acptot = acptot + amt %}
+                                <td class="datatable-col-right"> {{ formatHelper.FormatAmt(amt) }} </td>
+                            {% endfor %}
+                            {% if model.periodTot %}
+                                <td class="datatable-col-right"> {{ formatHelper.FormatAmt(acptot) }} </td>
+                            {% endif %}
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                <tr><td style="text-align: right;">Total</td>
+                    {% set pgtot = 0 %}
+                    {% for pd in model.bsPeriods %}
+                        {% set amt_tot = 0 %}
+                        {% for grp in model.incomeGroups %}
+                            {% set amt_tot = amt_tot + grp.period_tots[pd.sl_no] %}
+                        {% endfor %}
+                        {% set pgtot = pgtot + amt_tot %}
+                        <td style="border-top: solid 1px black; border-bottom: solid 1px black;" class="datatable-col-right"> {{ formatHelper.FormatAmt(amt_tot) }} </td>
+                    {% endfor %}
+                    {% if model.periodTot %}
+                        <td style="border-top: solid 1px black; border-bottom: solid 1px black;" class="datatable-col-right"> {{ formatHelper.FormatAmt(pgtot) }} </td>
+                    {% endif %}
+                </tr>
+                <!-- Start COGC -->
+                {% for grp in model.cogcGroups %}
+                    <tr>
+                        <td group_id="{{ grp.group_id }}" style="font-weight: bold; color: maroon;"
+                            onclick="core_ac.bs.toggleGroup({{ grp.group_id }});"> 
+                            {% if grp.accounts|length > 0 %}
+                                <i group_id="ico-{{ grp.group_id }}" class="fa fa-plus-circle"></i> 
+                            {% endif %}
+                            {{ grp.group_name }} 
+                        </td>
+                        {% set ptot = 0 %}
+                        {% for pd in model.bsPeriods %}
+                            {% set ptot = ptot + grp.period_tots[pd.sl_no] %}
+                            {% if grp.period_tots[pd.sl_no] != 0.00 %}
+                                <td style="font-weight: bold; color: maroon;" class="datatable-col-right"> {{ formatHelper.FormatAmt(grp.period_tots[pd.sl_no]) }} </td>
+                            {% else %}
+                                <td />
+                            {% endif %}
+                        {% endfor %}
+                        {% if model.periodTot %}
+                            {% if ptot != 0.00 %}
+                                <td style="font-weight: bold; color: maroon;" class="datatable-col-right"> {{ formatHelper.FormatAmt(ptot) }} </td>
+                            {% else %}
+                                <td />
+                            {% endif %}
+                        {% endif %}
+                    </tr>
+                    {% for acc in grp.accounts %}
+                        {% set acptot = 0 %}
+                        {% if model.getSumAbs(acc.period_amts) != 0.00 %}
+                            <tr parent_id="{{ grp.group_id }}" style="display: none;"><td style="text-indent: 5pt;"> {{ acc.account_head }} </td>
+                            {% for amt in acc.period_amts %}
+                                {% set acptot = acptot + amt %}
+                                <td class="datatable-col-right"> {{ formatHelper.FormatAmt(amt) }} </td>
+                            {% endfor %}
+                            {% if model.periodTot %}
+                                <td class="datatable-col-right"> {{ formatHelper.FormatAmt(acptot) }} </td>
+                            {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                <tr><td style="text-align: right;">Total</td>
+                    {% set pgtot = 0 %}
+                    {% for pd in model.bsPeriods %}
+                        {% set amt_tot = 0 %}
+                        {% for grp in model.cogcGroups %}
+                            {% set amt_tot = amt_tot + grp.period_tots[pd.sl_no] %}
+                        {% endfor %}
+                        {% set pgtot = pgtot + amt_tot %}
+                        <td style="border-top: solid 1px black; border-bottom: solid 1px black;" class="datatable-col-right"> {{ formatHelper.FormatAmt(amt_tot) }} </td>
+                    {% endfor %}
+                    {% if model.periodTot %}
+                        <td style="border-top: solid 1px black; border-bottom: solid 1px black;" class="datatable-col-right"> {{ formatHelper.FormatAmt(pgtot) }} </td>
+                    {% endif %}
+                </tr>
+                <!-- Display Gross Profit -->
+                <tr>
+                    <td style="font-weight: bold; font-size: 14px; color: #030303; padding-top: 20pt; padding-bottom: 20pt;">Gross Profit/(Loss)</td>
+                    {% set ptot = 0 %}
+                    {% for pd in model.bsPeriods %}
+                        {% set ptot = ptot + model.gp[pd.sl_no] %}
+                        {% if model.gp[pd.sl_no] >= 0.00 %}
+                            <td style="font-weight: bold; font-size: 14px; color: darkgreen;" class="datatable-col-right"> {{ formatHelper.FormatAmt(model.gp[pd.sl_no]) }} </td>
+                        {% else %}
+                            <td style="font-weight: bold; font-size: 14px; color: red;" class="datatable-col-right"> {{ formatHelper.FormatAmt(model.gp[pd.sl_no]) }} </td>
+                        {% endif %}
+                    {% endfor %}
+                    {% if model.periodTot %}
+                        {% if ptot >= 0.00 %}
+                            <td style="font-weight: bold; font-size: 14px; color: darkgreen;" class="datatable-col-right"> {{ formatHelper.FormatAmt(ptot) }} </td>
+                        {% else %}
+                            <td style="font-weight: bold; font-size: 14px; color: red;" class="datatable-col-right"> {{ formatHelper.FormatAmt(ptot) }} </td>
+                        {% endif %}
+                    {% endif %}
+                </tr>
+                <!-- Start Expenses -->
+                {% for grp in model.expenseGroups %}
+                    <tr>
+                        <td group_id="{{ grp.group_id }}" style="font-weight: bold; color: maroon;"
+                            onclick="core_ac.bs.toggleGroup({{ grp.group_id }});">
+                            {% if grp.accounts|length > 0 %}
+                                <i group_id="ico-{{ grp.group_id }}" class="fa fa-plus-circle"></i> 
+                            {% endif %}
+                            {{ grp.group_name }} 
+                        </td>
+                        {% for pd in model.bsPeriods %}
+                            {% if grp.period_tots[pd.sl_no] != 0.00 %}
+                                <td style="font-weight: bold; color: maroon;" class="datatable-col-right"> {{ formatHelper.FormatAmt(grp.period_tots[pd.sl_no]) }} </td>
+                            {% else %}
+                                <td />
+                            {% endif %}
+                        {% endfor %}
+                        {% if model.periodTot %}
+                            {% set ptot = 0 %}
+                            {% for pd in model.bsPeriods %}
+                            {%     set ptot = ptot + grp.period_tots[pd.sl_no] %}
+                            {% endfor %}
+                            {% if ptot != 0.00 %}
+                                <td style="font-weight: bold; color: maroon;" class="datatable-col-right"> {{ formatHelper.FormatAmt(ptot) }} </td>
+                            {% else %}
+                                <td />
+                            {% endif %}
+                        {% endif %}
+                    </tr>
+                    {% for acc in grp.accounts %}
+                        {% set acptot = 0 %}
+                        {% if model.getSumAbs(acc.period_amts) != 0.00 %}
+                            <tr parent_id="{{ grp.group_id }}" style="display: none;"><td style="text-indent: 5pt;"> {{ acc.account_head }} </td>
+                            {% for amt in acc.period_amts %}
+                                {% set acptot = acptot + amt %}
+                                <td class="datatable-col-right"> {{ formatHelper.FormatAmt(amt) }} </td>
+                            {% endfor %}
+                            {% if model.periodTot %}
+                                <td class="datatable-col-right"> {{ formatHelper.FormatAmt(acptot) }} </td>
+                            {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                <tr><td style="text-align: right;">Total</td>
+                    {% set pgtot = 0 %}
+                    {% for pd in model.bsPeriods %}
+                        {% set amt_tot = 0 %}
+                        {% for grp in model.expenseGroups %}
+                            {% set amt_tot = amt_tot + grp.period_tots[pd.sl_no] %}
+                        {% endfor %}
+                        {% set pgtot = pgtot + amt_tot %}
+                        <td style="border-top: solid 1px black; border-bottom: solid 1px black;" class="datatable-col-right"> {{ formatHelper.FormatAmt(amt_tot) }} </td>
+                    {% endfor %}
+                    {% if model.periodTot %}
+                        <td style="border-top: solid 1px black; border-bottom: solid 1px black;" class="datatable-col-right"> {{ formatHelper.FormatAmt(pgtot) }} </td>
+                    {% endif %}
+                </tr>
+                <!-- Display Net Profit -->
+                <tr>
+                    <td style="font-weight: bold; font-size: 14px; color: #030303; padding-top: 20pt; padding-bottom: 20pt;">Net Profit/(Loss)</td>
+                    {% set ptot = 0 %}
+                    {% for pd in model.bsPeriods %}
+                        {% set ptot = ptot + model.np[pd.sl_no] %}
+                        {% if model.np[pd.sl_no] >= 0.00 %}
+                            <td style="font-weight: bold; font-size: 14px; color: darkgreen;" class="datatable-col-right"> {{ formatHelper.FormatAmt(model.np[pd.sl_no]) }} </td>
+                        {% else %}
+                            <td style="font-weight: bold; font-size: 14px; color: red;" class="datatable-col-right"> {{ formatHelper.FormatAmt(model.np[pd.sl_no]) }} </td>
+                        {% endif %}
+                    {% endfor %}
+                    {% if model.periodTot %}
+                        {% if ptot >= 0.00 %}
+                            <td style="font-weight: bold; font-size: 14px; color: darkgreen;" class="datatable-col-right"> {{ formatHelper.FormatAmt(ptot) }} </td>
+                        {% else %}
+                            <td style="font-weight: bold; font-size: 14px; color: red;" class="datatable-col-right"> {{ formatHelper.FormatAmt(ptot) }} </td>
+                        {% endif %}
+                    {% endif %}
+                </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>

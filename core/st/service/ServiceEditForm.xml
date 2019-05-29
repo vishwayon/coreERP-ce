@@ -1,0 +1,93 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Service" type="Master" bindingBO="service/Service">    
+        <header>Non Inventory Stock Item (Service)</header>    
+        <keyField>material_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <noRefreshOnClose/>
+        <clientJsCode>service/Service_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="material_type_id" label="Service Type" type="int" control="SmartCombo" size="ms">
+                    <lookup>
+                        <valueMember>material_type_id</valueMember>
+                        <displayMember>material_type</displayMember>
+                        <namedLookup>../core/st/lookups/MaterialType.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <field id="material_code" label="Service Code" type="string" control="TextBox" size="s" maxLength="20" isOptional="true" />
+                <dummy size="3"/>
+                <field id="annex_info.gst_info.hsn_sc_id" label="HSN/SAC for GST" control="SmartCombo" size="s">
+                    <lookup>
+                        <valueMember>hsn_sc_id</valueMember>
+                        <displayMember>hsn_sc_desc</displayMember>
+                        <namedLookup>../core/tx/lookups/HsnSc.xml</namedLookup>
+                    </lookup>  
+                </field>
+                <nextRow/>
+                <xdiv id="stock_info" size="6"/>
+                    <field id="material_name" label="Stock Item" type="string" control="TextBox" size="12" maxLength="250" />
+                    <nextRow/>
+                    <field id="material_desc" label="Stock Item Description" type="string" control="TextArea" size="12" maxLength="2000" rows="3" isOptional="true"/>
+                    <nextRow/>
+                    <field id="inventory_account_id" label="Income Account" type="int" control="SmartCombo" size="6" isOptional="true">
+                        <lookup>
+                            <valueMember>account_id</valueMember>
+                            <displayMember>account_head</displayMember>
+                            <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                            <filter>account_type_id = 18</filter>
+                        </lookup>   
+                    </field>
+                    <field id="consumed_account_id" label="Expense Account" type="int" control="SmartCombo" size="6">
+                        <lookup>
+                            <valueMember>account_id</valueMember>
+                            <displayMember>account_head</displayMember>
+                            <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                            <filter>account_type_id = 17</filter>
+                        </lookup>   
+                    </field>
+                <xdivEnd/>
+                <dummy size="1"/>
+                <xdiv id="uom_info" size="5"/>
+                    <field id="uom_desc" label="UOM Description" type="string" control="TextBox" size="s" maxLength="20"/>
+                <xdivEnd/>
+                <xtab id="supp_price_tab" size="12" style="margin-top: 20px;" />        
+                <xtabPage id="sale_price_tab" label="Sale Price" tabid="supp_price_tab" size="12" style="height: 300px;"/>
+                    <xdiv id="div_sp" size="6"/>
+                        <field id="annex_info.sale_price.price_type" type="string" control="SimpleCombo" label="Price Type" size="6">
+                            <options defaultValue="FP">
+                                <option value="FP">Fixed Price</option>
+                            </options>
+                        </field>
+                        <nextRow/>
+                        <field id="annex_info.sale_price.sp_calc.fixed_pu" type="decimal" control="TextBox" label="Fixed Price Per Unit" isOptional="true" size="6"
+                               cdata-enable-on="core_service.enable_fp_price"/>
+                        <field id="annex_info.sale_price.sp_calc.disc_pcnt" type="decimal" control="TextBox" label="Standard Discount (%)" isOptional="true" size="6"
+                               cdata-enable-on="core_service.enable_fp_price"/>
+                    <xdivEnd/>
+                    <xdiv id="div_tx" size="6"/>
+                        <field id="annex_info.sale_price.tax_schedule_id" label="Tax Applied" type="int" control="SmartCombo" size="6" isOptional="true">
+                            <lookup>
+                                <valueMember>tax_schedule_id</valueMember>
+                                <displayMember>tax_schedule</displayMember>
+                                <namedLookup>../core/tx/lookups/CustomerTax.xml</namedLookup>
+                            </lookup>
+                        </field>
+                    <xdivEnd/>
+                <xtabPageEnd/>
+                <xtabPage id="mat_war_tab" label="Warranty Info" tabid="supp_price_tab" size="12" style="height: 300px; overflow-y: auto;"/>
+                    <field id="annex_info.war_info.has_war" label="Has Warranty" type="bool" control="CheckBox" size="2" isOptional="true"/>
+                    <field id="annex_info.war_info.war_days" label="Warranty Period (In Days)" type="int" control="TextBox" size="2" isOptional="true"
+                        cdata-enable-on="core_service.war_info_enabled"/>
+                    <field id="annex_info.war_info.from_mfg_date" label="From date of Mfg." type="bool" control="CheckBox" size="2" isOptional="true"
+                        cdata-enable-on="core_service.war_info_enabled"/>
+                <xtabPageEnd/>
+                <xtabEnd/>
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

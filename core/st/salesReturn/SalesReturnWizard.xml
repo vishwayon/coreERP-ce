@@ -1,0 +1,18 @@
+<wizard id="SalesReturn" name="Sales Return Wizard">
+        <clientJsCode>salesReturn/SalesReturn_clientcode.js</clientJsCode>       
+    <codeBehind>
+        <className>\app\core\st\salesReturn\SalesReturnWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectCustomer">
+        <path>salesReturn/SalesReturnWizard/SelectCustomer</path>
+    </wizardStep>
+    <wizardStep id="SelectStockInvoice">
+        <path>salesReturn/SalesReturnWizard/SelectStockInvoice</path>
+    </wizardStep>
+    <wizardStep id="SelectMaterial">
+        <path>salesReturn/SalesReturnWizard/SelectMaterial</path>
+    </wizardStep>
+    <postWizard id="SalesReturn">
+        <path>salesReturn/SalesReturnEditForm</path>
+    </postWizard>
+</wizard>

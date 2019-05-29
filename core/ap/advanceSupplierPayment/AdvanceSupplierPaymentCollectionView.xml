@@ -1,0 +1,46 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'> 
+    
+    <collectionView id="AdvanceSupplierPayment" type="Document" bindingBO="AdvanceSupplierPayment" editView="advanceSupplierPayment/AdvanceSupplierPaymentEditForm">
+        <header>Advance Supplier Payment</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>                 
+            <sql>
+                <command>
+                    Select a.voucher_id, a.doc_date, a.received_from, a.credit_amt, a.credit_amt_fc, a.status, 
+            		COALESCE((c.tds_base_rate_amt + c.tds_ecess_amt + c.tds_surcharge_amt) , 0) as tds_amt, COALESCE(d.section, '') as section,
+                        a.gross_adv_amt
+                    from ap.pymt_control a
+                    left join tds.bill_tds_tran c on a.voucher_id = c.voucher_id
+                    left join tds.section d on c.section_id = d.section_id
+                    Where a.finyear=:pfinyear and a.company_id=:pcompany_id and a.branch_id=:pbranch_id
+                            And a.doc_type='ASP'
+                    Order by a.voucher_id
+                </command>
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                    <param id="pbranch_id">
+                        <session>branch_id</session>
+                    </param>
+                    <param id="pfinyear">
+                        <session>finyear</session>
+                    </param>
+                </params>
+            </sql>
+            <displayFields>
+                <displayField columnName="doc_date" displayName="Date" format="Date"/>
+                <displayField columnName="voucher_id" displayName="Document No"/>
+                <displayField columnName="received_from" displayName="Supplier"/>
+                <displayField columnName="credit_amt" displayName="Net Amt" format="Amount"/>
+                <displayField columnName="tds_amt" displayName="TDS Amount" format="Amount"/>
+                <displayField columnName="gross_adv_amt" displayName="Total Amount" format="Amount"/>
+                <displayField columnName="section" displayName="TDS Section"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

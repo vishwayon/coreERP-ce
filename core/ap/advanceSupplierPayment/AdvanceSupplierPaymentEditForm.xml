@@ -1,0 +1,223 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="AdvanceSupplierPayment" type="Document" bindingBO="advanceSupplierPayment/AdvanceSupplierPayment">
+        <header>Advance Supplier Payment</header>
+        <keyField>voucher_id</keyField>
+        <printView rptOption="advanceSupplierPayment/AdvanceSupplierPaymentPrint">
+            <rptParams>
+                <param id="pvoucher_id">voucher_id</param>
+            </rptParams>
+            <printOptions>
+                <printOption desc="Cheque Print" rptOption="supplierPayment/SupplierPaymentChequePrint"/>
+                <printOption desc="Cheque Detail Print" rptOption="supplierPayment/SupplierPaymentChequeDetailPrint"/>
+            </printOptions>
+        </printView>
+        <newDocEnabled>
+            <docType>ASP</docType>
+        </newDocEnabled>
+        <deleteDocEnabled/>
+        <clientJsCode>advanceSupplierPayment/pymt_clientcode.js</clientJsCode>          
+        <clientJsCodeRefs>
+            <clientJsCodeRef>../core/ac/ac_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/ap/ap_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/tds/ovrdTdsSec/tds_sec_cc.js</clientJsCodeRef>            
+        </clientJsCodeRefs>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="voucher_id" label="Voucher No" type="string" control="TextBox" size="s" maxLength="50" isOptional="true" readOnly="true" forStatus="true"/>
+                <dummy/><dummy/>
+                <field id="doc_date" label="Date" type="date" control="Date" size="ms" range="finYear"/>
+                <nextRow/>     
+                <field id="pymt_type" label="Settlement Type" type="int" control="SimpleCombo" size="ms">
+                    <options>
+                        <option value="0">Cash Bank</option>
+                        <option value="1">Journal</option>
+                    </options>
+                </field>     
+                <dummy size="7"/>   
+                <field id="is_inter_branch" label="" type="bool" control="Toggle" toggleOn="Inter Branch" toggleOff="Normal" size="C90"
+                    cdata-enable-on="core_ap.pymt.enable_asp_info"/>           
+                       
+                <nextRow/>
+                <field id="account_id" label="Settlement Account" type="int" control="SmartCombo" size="3">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filterEvent>core_ap.pymt.account_combo_filter</filterEvent>
+                    </lookup>   
+                </field>
+                <cButton id="details" onClick="core_ap.pymt.sub_head_alloc_click($data);" label="Details"/>
+                <field id="annex_info.po_no" label="PO No" type="string" control="TextBox" size="2" maxLength="50" readOnly="true" cdata-visible-on="core_ap.pymt.visible_po_info"/> 
+                <field id="annex_info.po_date" label="PO Date" type="date" control="Date" size="2" readOnly="true" cdata-visible-on="core_ap.pymt.visible_po_info"/>
+                <dummy size="1"/>
+                <field id="fc_type_id" label="Txn Ccy" type="int" control="FC" mdata-event="subscribe:core_ap.pymt.adv_pymt_fc_changed" size="s"/>                
+                <field id="exch_rate" label="Amount" type="decimal" control="Hidden" size="ms" scale="amt" readOnly="true"/>
+                       
+                <nextRow/> 
+                <field id="supplier_account_id" label="Supplier" type="int" control="SmartCombo" size="3"  
+                        mdata-event="subscribe:core_ap.pymt.supplier_changed"
+                    cdata-enable-on="core_ap.pymt.enable_asp_info">
+                    <lookup>
+                        <valueMember>supplier_id</valueMember>
+                        <displayMember>supplier</displayMember>
+                        <namedLookup>../core/ap/lookups/Supplier.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="target_branch_id" label="Target Branch" type="int" control="SmartCombo" size="2"  cdata-enable-on="core_ap.pymt.target_branch_enable">
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/Branch.xml</namedLookup>
+                    </lookup>
+                </field>   
+                <field id="unstl_adv_amt" label="Unsettled Advance" type="decimal" control="TextBox" size="2" readOnly="true"
+                        cdata-visible-on="core_ap.visible_unstl_adv" class="fg-total" style="color: red; font-weight: bold;"/>   
+                <dummy size="1"/>
+                <field id="gross_adv_amt" label="Amount" type="decimal" control="TextBox" allowNegative="true" size="ms"
+                        cdata-enable-on="core_ap.ap_enable_visible_local" mdata-event="subscribe:core_ap.pymt.calculate_adv_pymt_tds"/>
+                <field id="gross_adv_amt_fc" label="Amount FC" type="decimal" control="TextBox" allowNegative="true" size="ms" 
+                        cdata-visible-on="core_ap.ap_enable_visible_fc" cdata-enable-on="core_ap.ap_enable_visible_fc" isOptional="true"
+                        mdata-event="subscribe:core_ap.pymt.calculate_adv_pymt_tds"/>
+                
+                <nextRow/> 
+                <field id="annex_info.is_tds_applied" type="string" label="Deduct TDS" control="CheckBox" size="2" isOptional="true"/> 
+                <nextRow/>                            
+                <xdiv id="tds" cdata-bind="visible: annex_info.is_tds_applied() == true"  size="6"/>
+                <!-- <tranSection label="" editMode="Edit" dataRelation="OneToOne" cdata-visible-on="core_ap.gst_bill.visible_tds">
+                     <dataBinding dataProperty="bill_tds_tran">-->
+                         <field id="btt_person_type_id" label="Person type" type="int" control="SmartCombo" size="6" readOnly="true" class="fg-total">
+                             <lookup>
+                                 <valueMember>person_type_id</valueMember>
+                                 <displayMember>person_type_desc</displayMember>
+                                 <namedLookup>../core/tds/lookups/PersonType.xml</namedLookup>
+                             </lookup>   
+                         </field>
+                         <field id="btt_section_id" label="Section" type="int" control="SmartCombo" size="3" readOnly="true">
+                             <lookup>
+                                 <valueMember>section_id</valueMember>
+                                 <displayMember>section</displayMember>
+                                 <namedLookup>../core/tds/lookups/Section.xml</namedLookup>
+                             </lookup>   
+                         </field>
+                         <cButton id="btn_sc" label="..." onClick="core_ap.pymt.select_sec_info($data)"/>
+
+                         <nextRow/>
+                         <field id="btt_tds_base_rate_perc" label="" type="decimal" control="Hidden" isOptional="true"/>
+                         <field id="vtds_base_desc" type="string" control="TextBox" size="3" readOnly="true" class="fg-total"
+                             style="border: none; text-align: right; font-style: italic;" inline="true"
+                             cdata-bind="value: core_ap.pymt.tds_base_desc($data)"/>
+                         <field id="btt_tds_base_rate_amt" label="" type="decimal" control="TextBox" size="3" readOnly="true" class="fg-total" inline="true"/>
+                         <field id="btt_tds_base_rate_amt_fc" label="Base Rate Amt FC" type="decimal" control="TextBox" size="3" readOnly="true" class="fg-total" inline="true"
+                                cdata-visible-on="core_ap.ap_enable_visible_fc"/>
+                         <field id="btt_tds_ecess_perc" label="" type="decimal" control="Hidden" isOptional="true"/>
+                         <field id="vtds_ecess_desc" type="string" control="TextBox" size="3" readOnly="true" class="fg-total" 
+                             style="border: none; text-align: right; font-style: italic;" inline="true"
+                             cdata-bind="value: core_ap.pymt.tds_ecess_desc($data)"/>
+                         <field id="btt_tds_ecess_amt" label="" type="decimal" control="TextBox" size="3"  readOnly="true" class="fg-total" inline="true"/>
+                         <field id="btt_tds_ecess_amt_fc" label="Ecess Amt FC" type="decimal" control="TextBox" size="3" readOnly="true" class="fg-total" inline="true"
+                                cdata-visible-on="core_ap.ap_enable_visible_fc"/>
+                         <nextRow/>
+                         <field id="btt_tds_surcharge_perc" label="" type="decimal" control="Hidden" isOptional="true"/>
+                         <field id="vtds_surch_desc" type="string" control="TextBox" size="3" readOnly="true" class="fg-total" 
+                             style="border: none; text-align: right; font-style: italic;" inline="true"
+                             cdata-bind="value: core_ap.pymt.tds_surch_desc($data)"/>
+                         <field id="btt_tds_surcharge_amt" label="" type="decimal" control="TextBox" size="3" readOnly="true" class="fg-total" inline="true"/>
+                         <field id="btt_tds_surcharge_amt_fc" label="Surch. Amt FC" type="decimal" control="TextBox" size="3" readOnly="true" class="fg-total" inline="true"
+                                cdata-visible-on="core_ap.ap_enable_visible_fc"/>
+                         <field label="Deduct Amt." type="string" control="Label" size="3" inline="true" 
+                             style="text-align: right;" />
+                         <field id="vtotal_tds_amt" label="" type="string" control="TextBox" size="3" readOnly="true" class="fg-total" inline="true"
+                             style="text-align: right;"
+                             cdata-bind="value: core_ap.pymt.tds_total($data)"/>
+                    <!-- </dataBinding>
+                 </tranSection> --> 
+                 <xdivEnd/> 
+                 <nextRow/> 
+                <field id="narration" label="Narration" type="string" rows="3" control="TextArea" size="m" maxLength="500" isOptional="true"/> 
+                <dummy size="2"/>
+                <field id="credit_amt" label="Net Amount" type="decimal" control="TextBox" allowNegative="true" size="ms" readOnly="true">
+                   <computedField>
+                        var tds_total = 0;
+                        tds_total += parseFloat(this.btt_tds_base_rate_amt());
+                        tds_total += parseFloat(this.btt_tds_ecess_amt());
+                        tds_total += parseFloat(this.btt_tds_surcharge_amt());
+                        return (parseFloat(this.gross_adv_amt()) - tds_total ).toFixed(2);
+                    </computedField>
+                </field> 
+                
+                <field id="credit_amt_fc" label="Net Amount FC" type="decimal" control="TextBox" allowNegative="true" size="ms" readOnly="true"
+                        cdata-visible-on="core_ap.ap_enable_visible_fc">
+                   <computedField>
+                        var tds_total_fc = 0;
+                        tds_total_fc += parseFloat(this.btt_tds_base_rate_amt_fc());
+                        tds_total_fc += parseFloat(this.btt_tds_ecess_amt_fc());
+                        tds_total_fc += parseFloat(this.btt_tds_surcharge_amt_fc());
+                        return (parseFloat(this.gross_adv_amt_fc()) - tds_total_fc).toFixed(2);
+                    </computedField>
+                </field> 
+                <nextRow/> 
+                <field id="supplier_detail" label="Cheq Pay To" type="string" control="TextBox" size="m" maxLength="250"/>               
+                <nextRow/>
+                <field id="cheque_number" label="Cheque#" type="string" control="TextBox" isOptional="true" size="ms" maxLength="20"/>  
+                <field id="cheque_date" label="Cheque Date" type="date" control="Date" size="ms"/>               
+                <field id="is_pdc" label="Post Dated" type="bool" control="CheckBox" size="2"/> 
+                <field id="collection_date" label="Reconciled Date" type="date" control="Date" size="ms" inline="true" readOnly="true" cdata-visible-on="core_ap.enable_recodate"/> 
+                <nextRow/>
+                <field id="is_ac_payee" label="A/C Payee" type="bool" control="CheckBox" size="2" inline="true"/> 
+                <field id="is_non_negotiable" label="Non Negotiable" type="bool" control="CheckBox" size="2" inline="true"/> 
+                <nextRow/>
+
+                <field id="cheque_bank" label="Bank" type="string" control="TextBox" isOptional="true" size="s"/>  
+                <field id="cheque_branch" label="Branch" type="string" control="TextBox" isOptional="true" size="s"/>  
+                
+                <nextRow/> 
+                    
+                 <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" size="m"  isOptional="true"/>  
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" size="m" readOnly="true" isOptional="true"/> 
+                <tranSection label="" editMode="Auto"  cdata-visible-on="core_ac.visible_sub_head_tran" >
+                    <!-- Sub Head ledger control side Bindings -->
+                    <dataBinding dataProperty="shl_head_tran">
+                        <field id="sub_head_ledger_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="company_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="finyear" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="branch_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="voucher_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="vch_tran_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="doc_date" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="account_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="sub_head_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="fc_type_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="exch_rate" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="debit_amt_fc" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="credit_amt_fc" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="debit_amt" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="credit_amt" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="narration" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="status" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="not_by_alloc" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                    </dataBinding>
+                </tranSection>
+
+                <tranSection label="" editMode="Auto" cdata-visible-on="core_ac.visible_sub_head_tran" >
+                    <!-- Ref ledger Bindings Control side-->
+                    <dataBinding dataProperty="rla_head_tran">
+                        <field id="ref_ledger_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="ref_ledger_alloc_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="branch_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="affect_voucher_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="affect_vch_tran_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="account_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="net_debit_amt" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="net_credit_amt" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                        <field id="status" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                    </dataBinding>
+                </tranSection>
+                <field id="ref_no" label="Ref No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                <field id="ref_desc" label="Ref Desc" type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+            </dataBinding>
+        </controlSection>  
+    </formView>
+</cwFramework>

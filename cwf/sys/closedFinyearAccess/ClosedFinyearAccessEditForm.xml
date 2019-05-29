@@ -1,0 +1,29 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="ClosedFinyearAccess" type="Master"  bindingBO="closedFinyearAccess/ClosedFinyearAccess">
+        <header>Closed Finyear Access</header>
+        <keyField>finyear_id</keyField>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="finyear_code" label="Year Code" type="string" control="TextBox" size="s" maxLength="4"  readOnly="True"/>
+                <nextRow/> 
+                <field id="year_begin" label="Year Begins From" type="date" control="Date" size="s" readOnly="True"/>
+                <field id="year_end" label="Year Ends On" type="date" control="Date" size="s"  readOnly="True"/>
+                <nextRow/> 
+                <tranSection label="User(s)" editMode="Add|Edit|Delete">
+                    <dataBinding dataProperty="user_to_clfinyear">
+                        <field id="user_id" label="User Name" type="int" control="SmartCombo" size="s">
+                            <lookup> 
+                                <valueMember>user_id</valueMember>
+                                <displayMember>user_name</displayMember>
+                                <namedLookup>../cwf/sys/lookups/User.xml</namedLookup>
+                            </lookup>    
+                        </field>
+                    </dataBinding>
+                </tranSection>  
+            </dataBinding> 
+        </controlSection>
+    </formView>
+</cwFramework>

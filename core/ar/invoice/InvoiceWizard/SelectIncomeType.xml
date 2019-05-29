@@ -1,0 +1,28 @@
+<wizardView>
+    <header>Select Income Type</header>
+    <sections>
+        <formSection id="SelectIncomeType">
+            <displayFields>
+                <displayField id="income_type_id" label="Income Type" type="int" control="SmartCombo" size="m" editMode="edit" defaultValue="-1">
+                    <lookup>
+                        <valueMember>income_type_id</valueMember>
+                        <displayMember>income_type_name</displayMember>
+                        <namedLookup>../core/ar/lookups/IncomeType.xml</namedLookup>
+                    </lookup>   
+                </displayField>             
+                <displayField id="doc_date" label="Date" type="date" control="Date" size="ms" editMode="edit" range="finYear">
+                    <value>
+                        <currentDate/>
+                    </value>
+                </displayField>
+                <displayField id="fc_type_id" label="Txn Ccy" type="int" control="SmartCombo" size="s" editMode="edit" defaultValue="0">
+                    <lookup>
+                        <valueMember>fc_type_id</valueMember>
+                        <displayMember>fc_type</displayMember>
+                        <namedLookup>../core/ac/lookups/FCType.xml</namedLookup>
+                    </lookup>   
+                </displayField>  
+            </displayFields>
+        </formSection>
+    </sections>
+</wizardView>

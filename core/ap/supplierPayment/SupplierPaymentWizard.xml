@@ -1,0 +1,21 @@
+<wizard id="SupplierPayment" name="Supplier Payment Wizard">
+    <clientJsCode>ap_clientcode.js</clientJsCode>
+    <clientJsCodeRefs>
+        <clientJsCodeRef>../core/ap/supplierPayment/SupplierPayment_clientcode.js</clientJsCodeRef>
+    </clientJsCodeRefs>
+    <codeBehind>
+        <className>\app\core\ap\supplierPayment\SupplierPaymentWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectSupplierAll">
+        <path>supplierPayment/SupplierPaymentWizard/SelectSupplierAll</path>
+    </wizardStep>
+    <wizardStep id="SelectSupplier">
+        <path>supplierPayment/SupplierPaymentWizard/SelectSupplier</path>
+    </wizardStep>
+    <wizardStep id="SelectVch">
+        <path>supplierPayment/SupplierPaymentWizard/SelectVch</path>
+    </wizardStep>
+    <postWizard id="SupplierPayment">
+        <path>supplierPayment/SupplierPaymentEditForm</path>
+    </postWizard>
+</wizard>

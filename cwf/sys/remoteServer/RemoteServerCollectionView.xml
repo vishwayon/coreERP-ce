@@ -1,0 +1,24 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="RemoteServer" type="Master" bindingBO="RemoteServer" editView="remoteServer/RemoteServerEditForm">    
+        <header>Remote Server(s)</header>
+        <collectionSection>
+            <connectionType>
+                <mainDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select remote_server_id, remote_server_name 
+                    From sys.remote_server 
+                    Order by remote_server_name
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="remote_server_id" displayName="ID"/>
+                <displayField columnName="remote_server_name" displayName="Remote Server"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

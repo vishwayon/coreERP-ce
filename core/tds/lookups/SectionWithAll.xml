@@ -1,0 +1,25 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="SectionWithAll">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>              
+                select a.section_id, a.section, a.section_desc, a.tds_account_id
+                from (        
+                Select 0 as section_id, 'All' as section, 'All' as section_desc, -1 as tds_account_id
+                union All  
+                (select a.section_id, a.section, a.section_desc, 
+                coalesce(b.tds_account_id, -1) as tds_account_id
+                from tds.section a
+                inner Join tds.section_acc b on a.section_id=b.section_id
+                order by section)
+                ) a
+            </command>
+        </sql>
+        <keyField id="section_id"/>
+    </lookup>
+</cwFramework>

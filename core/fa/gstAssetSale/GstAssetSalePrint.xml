@@ -1,0 +1,25 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="GstAssetSale" type="Report" rptPath="/core/fa/gstAssetSale" rptName="GstAssetSale">
+        <header>GST Asset Sale</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pas_id" label="Voucher No" type="string" control="TextBox" size="l"/>            
+                <param id="pcompany_id">
+                    <session>company_id</session>
+                </param>
+                <param id="pbranch_id">
+                    <session>branch_id</session>
+                </param> 
+                <param id="prpt_caption">
+                    <text>Tax Invoice</text>
+                </param>
+                <param id="pcp_option">
+                    <text>1</text>
+                </param> 
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'>
+
+    <scriptInfo>
+        <mainDB>
+            <scriptFile>core/tds/scripts/Admin_Menu_Entry.sql</scriptFile>
+            <scriptFile>core/tds/scripts/Table_Main_Schema.sql</scriptFile>
+        </mainDB> 
+        <companyDB>
+            <!-- TDS -->
+            <scriptFile>core/tds/scripts/Table_Schema.sql</scriptFile>
+            <scriptFile>core/tds/scripts/Procedure_Schema.sql</scriptFile> 
+            <scriptFile>core/tds/scripts/Function_Schema.sql</scriptFile> 
+            <scriptFile>core/tds/scripts/Menu_Entry.sql</scriptFile>
+        </companyDB>
+    </scriptInfo>
+</cwFramework>

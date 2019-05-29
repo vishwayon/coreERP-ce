@@ -1,0 +1,24 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="Srr" type="Master" bindingBO="Srr" editView="srr/SrrEditForm">        
+        <header>Sales Return Reason</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select a.srr_id, a.srr_desc
+                    from st.srr a 
+                    Where a.company_id={company_id}
+                    order by a.srr_desc
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="srr_desc" displayName="Description"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

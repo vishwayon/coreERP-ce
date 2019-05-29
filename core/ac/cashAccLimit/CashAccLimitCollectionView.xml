@@ -1,0 +1,23 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="CashAccLimit" type="Master" bindingBO="CashAccLimit" editView="cashAccLimit/CashAccLimitEditForm">
+        <header>Cash Account Limits</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    SELECT a.cash_acc_limit_id, a.account_id, b.account_head
+                    FROM ac.cash_acc_limit a
+                    left Join ac.account_head b on a.account_id = b.account_id
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="account_head" displayName="Account"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

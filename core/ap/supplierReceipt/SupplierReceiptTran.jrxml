@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2018-01-11T18:14:47 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SupplierReceiptTran" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="35290539-0491-4524-bf92-bfd0c9a6554a">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="production_db_14"/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="inch"/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pvoucher_id" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["PYMT17HU00307"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pfc_type_id" class="java.lang.Long" isForPrompting="false">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_date_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["dd-MM-yyyy"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_qty_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_fc_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.#"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from ap.fn_payable_ledger_alloc_report
+(
+	$P{pvoucher_id}
+);]]>
+	</queryString>
+	<field name="branch_id" class="java.lang.Long"/>
+	<field name="bill_id" class="java.lang.String"/>
+	<field name="vch_tran_id" class="java.lang.String"/>
+	<field name="doc_date" class="java.sql.Date"/>
+	<field name="account_id" class="java.lang.Long"/>
+	<field name="exch_rate" class="java.math.BigDecimal"/>
+	<field name="debit_amt" class="java.math.BigDecimal"/>
+	<field name="debit_amt_fc" class="java.math.BigDecimal"/>
+	<field name="credit_amt" class="java.math.BigDecimal"/>
+	<field name="credit_amt_fc" class="java.math.BigDecimal"/>
+	<field name="write_off_amt" class="java.math.BigDecimal"/>
+	<field name="write_off_amt_fc" class="java.math.BigDecimal"/>
+	<field name="debit_exch_diff" class="java.math.BigDecimal"/>
+	<field name="credit_exch_diff" class="java.math.BigDecimal"/>
+	<field name="net_debit_amt" class="java.math.BigDecimal"/>
+	<field name="net_debit_amt_fc" class="java.math.BigDecimal"/>
+	<field name="net_credit_amt" class="java.math.BigDecimal"/>
+	<field name="net_credit_amt_fc" class="java.math.BigDecimal"/>
+	<field name="voucher_id" class="java.lang.String"/>
+	<field name="bill_doc_date" class="java.sql.Date"/>
+	<field name="bill_no" class="java.lang.String"/>
+	<field name="bill_date" class="java.sql.Date"/>
+	<variable name="TotalAmount" class="java.math.BigDecimal" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{credit_amt}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="TotalAmountFC" class="java.math.BigDecimal" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{credit_amt_fc}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{voucher_id}]]></groupExpression>
+		<groupHeader>
+			<band height="19">
+				<frame>
+					<reportElement style="NormalText" positionType="Float" stretchType="RelativeToTallestObject" mode="Opaque" x="0" y="0" width="537" height="16" isPrintWhenDetailOverflows="true" backcolor="#008080" uuid="6cd8482d-39fb-44e5-b89e-e976df967b87">
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<staticText>
+						<reportElement style="NormalLabel" positionType="Float" mode="Transparent" x="0" y="0" width="126" height="16" isPrintWhenDetailOverflows="true" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="2e5d6ae1-2484-43c1-8f93-682c39fdc5bd">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						</reportElement>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<text><![CDATA[Voucher No]]></text>
+					</staticText>
+					<staticText>
+						<reportElement style="NormalLabel" positionType="Float" mode="Transparent" x="126" y="0" width="74" height="16" isPrintWhenDetailOverflows="true" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="0aeb3b47-8493-4cd5-b856-68f87efbf162">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						</reportElement>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<text><![CDATA[Date]]></text>
+					</staticText>
+					<staticText>
+						<reportElement style="NormalLabel" positionType="Float" mode="Transparent" x="450" y="0" width="86" height="16" isPrintWhenDetailOverflows="true" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="7e0ad43d-d977-4ec5-bf16-3ef595ee841f">
+							<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						</reportElement>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<text><![CDATA[Amount]]></text>
+					</staticText>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="26">
+				<textField>
+					<reportElement style="NormalText" x="450" y="0" width="87" height="14" uuid="9e28365f-6f60-4391-a4d6-b58351fe864e">
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.2"/>
+						<bottomPen lineWidth="0.2"/>
+					</box>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[($P{pfc_type_id}.longValue() != 0) ? $V{TotalAmountFC} : CoreJSFormatUtils.Formatter.formatDecimal($V{TotalAmount})]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" x="0" y="0" width="126" height="14" uuid="dfc9c0e2-1600-4737-8956-061ad4533ccb">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{bill_id}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" x="126" y="0" width="74" height="14" uuid="92037beb-89d7-4a52-92c0-ea0ae244e106">
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{bill_doc_date}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_date_format}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement style="NormalText" x="450" y="0" width="86" height="14" uuid="a61cf813-e813-4596-bcd2-539fb061353c">
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[($P{pfc_type_id}.longValue() != 0) ? $F{credit_amt_fc} : CoreJSFormatUtils.Formatter.formatDecimal($F{credit_amt})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

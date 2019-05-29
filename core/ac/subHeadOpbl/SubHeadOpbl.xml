@@ -1,0 +1,51 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>             
+    
+    <businessObject id="SubHeadOpbl" type="Master">     
+        <controlTable>
+            <tableName>ac.account_head</tableName>
+            <primaryKey>account_id</primaryKey>   
+            <customColumns>
+                <customColumn name="branch_id" type="bigint"/> 
+                <customColumn name="debit_total" type="bigint"/>    
+                <customColumn name="credit_total" type="bigint"/>           
+            </customColumns>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <!--This is to ensure that Anchor table does not use entity for save-->
+                <useOnSave/>
+            </save> 
+            <delete>
+                <useOnDelete/>
+            </delete>
+            <tranTable id="sub_head_ledger">
+                <tableName>ac.sub_head_ledger</tableName>
+                <primaryKey>sub_head_ledger_id</primaryKey>      
+                <customColumns>
+                    <customColumn name="is_allow_edit" type="boolean"/>   
+                    <customColumn name="sub_head" type="varchar"/>     
+                    <customColumn name="sl_no" type="bigint"/>            
+                </customColumns>
+                <relation linkType="OneToMany">
+                    <foreignKey>account_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useOnFetch/>
+                </fetchOrCreate>
+                <save>
+                    <useOnSave/>
+                    <primaryKeyPattern/>
+                </save>     
+                <delete>
+                    <useEntity/>
+                </delete>
+            </tranTable>  
+        </controlTable> 
+        <codeBehind>
+            <className>\app\core\ac\subHeadOpbl\SubHeadOpblEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

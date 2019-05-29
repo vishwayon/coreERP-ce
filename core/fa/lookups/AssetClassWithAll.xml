@@ -1,0 +1,23 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="AssetClassWithAll">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select asset_class_id, asset_class, asset_class_code 
+                from (  
+                Select 0 as asset_class_id, 'All' as asset_class, '' as asset_class_code
+                union All
+                (select asset_class_id, asset_class, asset_class_code 
+                from fa.asset_class where company_id={company_id}
+                order by asset_class asc)
+                ) a
+            </command>
+        </sql>
+        <keyField id="asset_class_id"/>
+    </lookup>
+</cwFramework>

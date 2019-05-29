@@ -1,0 +1,16 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="User">
+        <connectionType>
+            <mainDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select user_id, user_name, full_user_name From sys.user  where  user_id !=0 And is_owner = false  order by user_name
+            </command>
+        </sql>
+        <keyField id="user_id"/>
+    </lookup> 
+</cwFramework>

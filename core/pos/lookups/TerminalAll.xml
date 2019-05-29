@@ -1,0 +1,24 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="Terminal">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select a.terminal_id, a.terminal
+                from (        
+                    Select 0 as terminal_id, 'All' as terminal
+                    union All
+                    (select terminal_id, terminal
+                    from pos.terminal 
+                    Where company_id={company_id}
+                    order by terminal)
+                ) a
+            </command>
+        </sql>
+        <keyField id="terminal_id"/>
+    </lookup>
+</cwFramework>

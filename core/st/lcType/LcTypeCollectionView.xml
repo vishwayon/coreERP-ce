@@ -1,0 +1,33 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="LcType" type="Master" bindingBO="LcType" editView="lcType/LcTypeEditForm">        
+        <header>Landed Cost Type</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    Select a.lc_type_id, a.lc_desc, 
+                        Case When (jdata-&gt;&gt;'req_alloc')::Boolean Then 'Yes' Else 'Not Req.' End req_alloc,
+                        Case When (jdata-&gt;&gt;'post_gl')::Boolean Then 'Yes' Else 'Not Posted' End post_gl,
+                        Coalesce(b.account_head, '--') exp_ac, Coalesce(c.account_head, '--') liab_ac
+                    From st.lc_type a 
+                    Left join ac.account_head b on a.exp_ac_id = b.account_id
+                    Left join ac.account_head c on a.liab_ac_id = c.account_id
+                    Where a.company_id={company_id}
+                    Order By a.lc_desc
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="lc_desc" displayName="Landed Cost Type"/>
+                <displayField columnName="req_alloc" displayName="Req. Alloc."/>
+                <displayField columnName="exp_ac" displayName="Expense Account"/>
+                <displayField columnName="post_gl" displayName="Post In Ledger"/>
+                <displayField columnName="liab_ac" displayName="Liability Account"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

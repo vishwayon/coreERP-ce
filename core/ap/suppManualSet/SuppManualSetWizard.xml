@@ -1,0 +1,14 @@
+<wizard id="SuppManualSet" name="Supplier Manual Settlement Wizard">
+    <codeBehind>
+        <className>\app\core\ap\suppManualSet\SuppManualSetWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectSupplier">
+        <path>suppManualSet/SuppManualSetWizard/SelectSupplier</path>
+    </wizardStep>
+    <wizardStep id="SelectVch">
+        <path>suppManualSet/SuppManualSetWizard/SelectVch</path>
+    </wizardStep>
+    <postWizard id="SuppManualSet">
+        <path>suppManualSet/SuppManualSetEditForm</path>
+    </postWizard>
+</wizard>

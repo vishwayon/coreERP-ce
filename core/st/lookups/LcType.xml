@@ -1,0 +1,19 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="LcType">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select lc_type_id, lc_desc
+                from st.lc_type
+                Where company_id={company_id}
+                order by lc_desc
+            </command>
+        </sql>
+        <keyField id="lc_type_id"/>
+    </lookup>
+</cwFramework>

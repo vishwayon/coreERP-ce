@@ -1,0 +1,40 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <businessObject id="Saj" type="Document">
+        <controlTable>
+            <tableName>ac.vch_control</tableName>
+            <primaryKey>voucher_id</primaryKey>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save>    
+            <delete>
+                <useEntity/>
+            </delete> 
+            <tranTable id="saj_tran">
+                <tableName>ac.saj_tran</tableName>
+                <primaryKey>vch_tran_id</primaryKey>      
+                <relation linkType="OneToMany">
+                    <foreignKey>voucher_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{voucher_id}:{RowID}</primaryKeyPattern>
+                </save>       
+                <delete>
+                    <useEntity/>      
+                </delete>   
+            </tranTable>
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\ac\saj\SajEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

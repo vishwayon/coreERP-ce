@@ -1,0 +1,390 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="StockGstInvoice" type="Document" bindingBO="stockGstInvoice/StockGstInvoice">
+        <header>Stock Invoice (GST)</header>
+        <keyField>stock_id</keyField>
+        <printView rptOption="stockGstInvoice/StockGstInvoicePrint">
+            <rptParams>
+                <param id="pstock_id">stock_id</param>
+            </rptParams>
+            <printOptions>
+                <printOption desc="Transporter Copy" rptOption="stockGstInvoice/StockGstInvoiceTransportPrint"/>
+                <printOption desc="With Lot Alloc Info" rptOption="stockGstInvoice/StockGstInvoiceLotAllocPrint"/>
+            </printOptions>
+        </printView>
+        <newDocEnabled>
+            <docType>SIV</docType>
+        </newDocEnabled>
+        <deleteDocEnabled/>
+        <dmFiles multipleFiles="true"/>
+        <clientJsCode>stockGstInvoice/StockGstInvoice_clientcode.js</clientJsCode>
+        <clientJsCodeRefs>
+            <clientJsCodeRef>../crm/soForSi/soForSi_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/st/st_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/ar/ar_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/ac/ac_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/tx/tx_clientcode.js</clientJsCodeRef>
+        </clientJsCodeRefs>
+        <jsEvents>
+            <afterLoadEvent>core_stock_gst_inv.after_load</afterLoadEvent>      
+        </jsEvents>
+        <codeBehind>
+            <className>app\core\st\stockGstInvoice\StockGstInvoiceWorker</className>
+        </codeBehind>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="stock_id" label="Invoice No" type="string" control="TextBox" size="s" maxLength="50" isOptional="true" readOnly="true" forStatus="true"/>
+                <field id="vat_type_id" label="VAT/GST Type" type="int" control="SmartCombo" size="3" readOnly="true" >
+                    <lookup>
+                        <valueMember>vat_type_id</valueMember>
+                        <displayMember>vat_type_desc</displayMember>
+                        <namedLookup>../core/tx/lookups/VatTypeSale.xml</namedLookup>
+                    </lookup>
+                </field>
+                <dummy size="3"/>
+                <field id="doc_date" label="Date" type="date" control="Date" size="ms" range="finYear"/>
+                <nextRow/>
+                <xdiv size="4"/>
+                <field id="account_id" label="Customer" type="int" control="SmartCombo" size="12" cdata-enable-on="core_stock_gst_inv.so_enable"
+                           mdata-event="subscribe: core_stock_gst_inv.fetch_cust_info">
+                    <lookup>
+                        <valueMember>customer_id</valueMember>
+                        <displayMember>customer</displayMember>
+                        <namedLookup>../core/ar/lookups/Customer.xml</namedLookup>
+                    </lookup>
+                </field>
+                <nextRow/>
+                <field id="annex_info.gst_output_info.customer_state_id" label="" type="int" control="SmartCombo" size="5" readOnly="true" inline="true">
+                    <lookup>
+                        <valueMember>gst_state_id</valueMember>
+                        <displayMember>gst_state_with_code</displayMember>
+                        <namedLookup>../core/tx/lookups/GstState.xml</namedLookup>
+                    </lookup>
+                </field>
+                <field id="annex_info.gst_output_info.customer_gstin" label="" type="string" control="TextBox" size="5" readOnly="true" class="fg-total" inline="true"/>
+                <cLink label="Edit" inline="true" onClick="core_stock_gst_inv.select_cust_addr" size="1"/>
+                <field id="customer_address" label="" type="string" control="TextArea" size="12" rows="3" maxLength="500" inline="true" 
+                           style="margin-top: 0px;" cdata-enable-on="core_stock_gst_inv.cust_addr_editable"/>
+                <xdivEnd/>
+                <dummy size="1"/>
+                <xdiv size="7"/>
+                <field id="salesman_id" label="Salesman" type="int" control="SmartCombo"  size="6">
+                    <lookup>
+                        <valueMember>salesman_id</valueMember>
+                        <displayMember>salesman_name</displayMember>
+                        <namedLookup>../core/ar/lookups/Salesman.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <field id="sale_account_id" label="Sales Account" type="int" control="SmartCombo" size="6" >
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id = 18</filter>
+                    </lookup>   
+                </field>
+                <cButton id="gl_distribution" onClick="core_st.view_gl" label="GL Distribution" 
+                             cdata-visible-on="core_st.visible_gl_distribution"/>
+                <nextRow/>
+                <field id="bill_no" label="Order Ref #" type="string" control="TextBox" size="3"  isOptional="true"/>  
+                <field id="bill_date" label="Order Ref Date" type="date" control="Date" size="3"/>
+                <cButton id="sales_order" onClick="core_stock_gst_inv.so_sel" label="Sales Order" size="3" />
+                <cButton id="gen_ewb_json" onClick="core_stock_gst_inv.get_ewb_file" label="Get Eway bill file" 
+                             cdata-visible-on="core_stock_gst_inv.ewb_visible"/>    
+                <field id="annex_info.ewb_no" label="Eway Bill #" type="string" control="TextBox" size="3" isOptional="true" cdata-visible-on="core_stock_gst_inv.ewb_visible"/>                 
+                <cButton id="update_ewb_no" onClick="core_stock_gst_inv.update_ewb_no" label="Update EWB in Invoice" 
+                             cdata-visible-on="core_stock_gst_inv.ewb_visible"/>
+                <xdivEnd/>
+                <nextRow/>
+                <tranSection label="Stock Items" editMode="Add|Edit|Delete" fixedWidth="850" 
+                             beforeAddMethod="core_stock_gst_inv.allow_add" beforeDeleteMethod="core_stock_gst_inv.allow_delete" afterDeleteMethod="core_stock_gst_inv.redo_item_calc" >
+                    <dataBinding dataProperty="stock_tran">
+                        <field id="sl_no" label="#" type="int" control="TextBox" size="1" inline="true" readOnly="true" isOptional="true" style="border: none; background: none;"/>
+                        <field id="bar_code" label="Bar Code" type="string" control="TextBox" size="3" isOptional="true"
+                               cdata-enable-on="core_stock_gst_inv.mat_info_editable" />
+                        <field id="material_type_id" label="Type" type="int" control="SmartCombo" size="3" isOptional="true"
+                               cdata-enable-on="core_stock_gst_inv.mat_info_editable">
+                            <lookup>
+                                <valueMember>material_type_id</valueMember>
+                                <displayMember>material_type</displayMember>
+                                <namedLookup>../core/st/lookups/MaterialType.xml</namedLookup>
+                            </lookup>
+                        </field>
+                        <field id="material_id" label="Stock Item" type="int" control="SmartCombo" size="6"  
+                               cdata-enable-on="core_stock_gst_inv.mat_info_editable" mdata-event="subscribe: core_stock_gst_inv.fetch_mat_info" >
+                            <lookup>
+                                <valueMember>material_id</valueMember>
+                                <displayMember>material_name</displayMember>
+                                <namedLookup>../core/st/lookups/Material.xml</namedLookup>
+                                <filterEvent>core_stock_gst_inv.material_filter</filterEvent>
+                            </lookup>   
+                        </field>                       
+                        <field id="issued_qty" label="Issued Qty" type="decimal" control="TextBox" size="3" scale="qty" 
+                               mdata-event="subscribe:core_stock_gst_inv.item_calc" cdata-enable-on="core_stock_gst_inv.mat_info_editable"/>
+                        <cButton label="..." inline="true" onClick="core_stock_gst_inv.view_war_info($data)" style="height: 21px;"/>
+                        <field id="rate" label="Rate" type="decimal" control="TextBox" size="3" scale="rate" isOptional="true"
+                               mdata-event="subscribe:core_stock_gst_inv.item_calc" cdata-enable-on="core_stock_gst_inv.so_enable"/>
+                        <field id="disc_is_value" label="" type="bool" control="CheckBox" size="1" isOptional="true" 
+                               mdata-event="subscribe: core_stock_gst_inv.disc_is_value_change"/>
+                        <field id="disc_percent" label="Disc %" type="decimal" control="TextBox" size="2"  isOptional="true" maxVal="99.99"
+                               mdata-event="subscribe:core_stock_gst_inv.item_calc" cdata-enable-on="core_stock_gst_inv.disc_pcnt_enable"/>
+                        <field id="disc_amt" label="Disc" type="decimal" control="TextBox" size="2"  isOptional="true"
+                               mdata-event="subscribe:core_stock_gst_inv.item_calc" cdata-enable-on="core_stock_gst_inv.disc_amt_enable"/>
+                        <field id="bt_amt" label="Item Amt" type="decimal" control="TextBox" size="3" readOnly="true" isOptional="true"/>
+                        <nextRow/>
+                        <dummy size="1"/>
+                        <field id="uom_id" label="UoM" type="int" control="SmartCombo" size="1" readOnly="true">
+                            <lookup>
+                                <valueMember>uom_id</valueMember>
+                                <displayMember>uom_desc</displayMember>
+                                <namedLookup>../core/st/lookups/UoM.xml</namedLookup>
+                                <filterEvent>core_st.sp_uom_combo_filter</filterEvent>
+                            </lookup>
+                        </field>                       
+                        <field id="stock_location_id" label="Stock Location" type="int" control="SmartCombo" size="1"  
+                               cdata-enable-on="core_stock_gst_inv.mat_info_editable" mdata-event="subscribe: core_stock_gst_inv.fetch_avl_qty">
+                            <lookup>
+                                <valueMember>stock_location_id</valueMember>
+                                <displayMember>stock_location_name</displayMember>
+                                <namedLookup>../core/st/lookups/StockLocation.xml</namedLookup>
+                            </lookup>
+                        </field>
+                        <!-- GST Taxes -->
+                        <xdiv colspan="9"/>
+                        <field id="reference_tran_id" label="Ref #" type="string" control="TextBox" readOnly="true" size="5" inline="true" class="fg-total"/>
+                        <field id="bal_qty" label="" type="string" control="TextBox" size="3" readOnly="true" inline="true" class="fg-total" style="font-style: italic; font-size: small;" 
+                                   cdata-bind="style: { color: has_bal() ? 'green' : 'red' }"/>
+                        <field id="has_bal" label="" type="bool" control="Hidden" readOnly="true" isOptional="true"/>
+                        <field label="SGST" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true" />
+                        <field id="gtt_sgst_pcnt" type="decimal" control="TextBox" size="1" readOnly="true" class="fg-total" scale="1"/>
+                        <field id="gtt_sgst_amt" type="decimal" control="TextBox" size="2" readOnly="true" class="fg-total"/>
+                        <field label="CGST" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true"/>
+                        <field id="gtt_cgst_pcnt" type="decimal" control="TextBox" size="1" readOnly="true" class="fg-total" scale="1"/>
+                        <field id="gtt_cgst_amt" type="decimal" control="TextBox" size="2" readOnly="true" class="fg-total"/>
+                        <field label="IGST" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true"/>
+                        <field id="gtt_igst_pcnt" type="decimal" control="TextBox" size="1" readOnly="true" class="fg-total" scale="1"/>
+                        <field id="gtt_igst_amt" type="decimal" control="TextBox" size="2" readOnly="true" class="fg-total"/>
+                        <field label="Cess" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true"/>
+                        <field id="gtt_cess_pcnt" type="decimal" control="TextBox" size="1" readOnly="true" class="fg-total" scale="1"/>
+                        <field id="gtt_cess_amt" type="decimal" control="TextBox" size="2" readOnly="true" class="fg-total"/>
+                        <field id="gtt_hsn_sc_code" type="string" control="Hidden" />
+                        <field id="gtt_hsn_sc_type" type="string" control="Hidden" />
+                        <field id="gtt_gst_rate_id" type="int" control="Hidden" />
+                        <field id="gtt_apply_itc" type="bool" control="Hidden" />
+                        <field id="gtt_bt_amt" type="decimal" control="Hidden" isOptional="true"/>
+                        <field id="gtt_hsn_qty" type="decimal" control="Hidden" isOptional="true"/>
+                        <field id="gtt_tax_amt_ov" type="bool" control="Hidden" />
+                        <field id="gtt_sgst_itc_account_id" type="int" control="Hidden" />
+                        <field id="gtt_sgst_account_id" type="int" control="Hidden" />
+                        <field id="gtt_cgst_itc_account_id" type="int" control="Hidden" />
+                        <field id="gtt_cgst_account_id" type="int" control="Hidden" />
+                        <field id="gtt_igst_itc_account_id" type="int" control="Hidden" />
+                        <field id="gtt_igst_account_id" type="int" control="Hidden" />
+                        <field id="gtt_cess_itc_account_id" type="int" control="Hidden" />
+                        <field id="gtt_cess_account_id" type="int" control="Hidden" />
+                        <field label="Tax:" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true"/>
+                        <field id="tax_amt" label="Tax Amt" type="decimal" control="TextBox" size="2" readOnly="true" inline="true"/>
+                            
+                        <xdivEnd/>
+                        <field id="reference_id" label="Ref #" type="string" control="Hidden" readOnly="true" size="1" />
+                        <field id="other_amt" label="Other Amt (Used for Incidental Costs))" type="decimal" control="Hidden" readOnly="true" isOptional="true"/>                       
+                        <field id="item_amt" label="Amount" type="decimal" control="Hidden" readOnly="true" isOptional="true"/>
+                        <tranSection label="Stock Tran War" editMode="Auto"  cdata-visible-on="core_stock_gst_inv.stock_tran_war_hide" >
+                            <dataBinding dataProperty="stock_tran_war">
+                                <field id="stock_tran_war_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="stock_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="stock_tran_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="material_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="mfg_serial" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="mfg_date" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>                               
+                            </dataBinding>
+                        </tranSection>
+                        
+                        <addRowEvent>core_stock_gst_inv.st_tran_add</addRowEvent>
+                    </dataBinding>
+                </tranSection>   
+                <xdiv id="tax_div" size="5"/>
+                <xtab id="si_tab" size="12" />
+                <!--Temporary code comment as Mrr does not require misc. in Invoice. 
+                    To do: tag to hide tab page on settings value
+                <xtabPage id="misc_tab_page" label="Miscellaneous" tabid="si_tab" size="12"/>
+                    <dummy style="height:25px"/>
+                    <nextRow/>
+                    <tranSection label="" editMode="Add|Edit|Delete" size="12">
+                        <dataBinding dataProperty="stock_misc_tran">
+                            <field id="account_id" label="Account" type="int" control="SmartCombo" size="9">
+                                <lookup>
+                                    <valueMember>account_id</valueMember>
+                                    <displayMember>account_head</displayMember>
+                                    <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                                </lookup>
+                            </field>
+                            <field id="debit_amt" label="Amount" type="decimal" control="TextBox" size="3"   isOptional="true"
+                                mdata-event="subscribe: core_stock_gst_inv.total_calc" />
+                        </dataBinding>
+                    </tranSection>
+                <xtabPageEnd/>-->
+                <xtabPage id="adv_tab_page" label="Advance" tabid="si_tab" size="12" style="min-height: 100pt;"/> 
+                <field label="Less: Advance" type="string" control="Label" size="6" inline="true" isOptional="true" style="font-size:14px;color:teal;width:115px;"/>  
+                <cButton id="advance" onClick="core_stock_gst_inv.adv_alloc_click" label="Select Advance" inline="true" icon="glyphicon glyphicon-plus" tooltip="Select Advance" nolabel="true"/>
+                <cButton id="clearadvance" onClick="core_ar.clearAdvalloc" label="Clear Advance" inline="true" icon="glyphicon glyphicon-trash" nolabel="true" tooltip="Clear Advance"/>
+                <tranSection editMode="Auto" size="12">         
+                    <dataBinding dataProperty="receivable_ledger_alloc_tran">
+                        <field id="rl_pl_id" label="rl_pl_id" type="Hidden" control="Hidden" size="ms" maxLength="50" readOnly="true"/>
+                        <field id="vch_tran_id" label="vch_tran_id" type="Hidden" control="Hidden" size="ms" maxLength="50" readOnly="true"/>
+                        <field id="voucher_id" label="vch_tran_id" type="Hidden" control="Hidden" size="ms" maxLength="50" readOnly="true"/>
+                        <field id="branch_id" label="branch_id" type="Hidden" control="Hidden" size="ms" maxLength="50" readOnly="true"/>
+                        <field id="account_id" label="account_id" type="Hidden" control="Hidden" size="ms" maxLength="50" readOnly="true"/>
+                        <field id="exch_rate" label="exch_rate" type="Hidden" control="Hidden" size="ms" maxLength="50" readOnly="true"/>
+                        <field id="net_debit_amt" label="net_debit_amt" type="Hidden" control="Hidden" size="ms" maxLength="50" readOnly="true"/>
+                        <field id="adv_ref_id" label="Voucher No" type="string" control="TextBox" size="s" maxLength="50" readOnly="true"/>
+                        <field id="adv_ref_date" label="Date" type="date" control="Date" size="ms" maxLength="50" readOnly="true"/>
+                        <field id="debit_amt" label="Amount" type="decimal" control="TextBox" size="ms"   readOnly="true"/>
+                    </dataBinding>
+                </tranSection>
+                <nextRow/>
+                <xtabPageEnd/>
+                <xtabPage id="addr_tab_page" label="Address" tabid="si_tab" size="12"/>
+                <field label="Billing Address" type="string" control="Label" size="2" isOptional="true" inline="true"/>                         
+                <dummy size="4"/>
+                <field id="annex_info.gst_output_info.is_ship_consign" label="Ship To" type="bool" control="CheckBox" size="6" isOptional="true" 
+                                   cdata-bind="click: core_stock_gst_inv.is_ship_addr_change($data)" inline="true"/>   
+                <nextRow/>
+                <field id="customer_address" label="" type="string" rows="6" control="TextArea"  size="6" maxLength="2000" isOptional="true"
+                                   style="margin-top: 0;"/> 
+                <field id="annex_info.gst_output_info.ship_consign_addr" label="" type="string" rows="6" control="TextArea"  size="6" maxLength="2000" 
+                                   isOptional="true" style="margin-top: 0;" cdata-enable-on="core_stock_gst_inv.ship_addr_enable"/> 
+                <nextRow/>
+                <field id="annex_info.gst_output_info.customer_city" label="City" type="string" control="TextBox" size="5" maxLength="50" isOptional="true"/> 
+                <dummy size="1"/>
+                <field id="annex_info.gst_output_info.ship_consign_city" label="City" type="string" control="TextBox" size="5" maxLength="50" 
+                                   isOptional="true" cdata-enable-on="core_stock_gst_inv.ship_addr_enable"/>
+                <nextRow/>
+                <field id="annex_info.gst_output_info.customer_pin" label="Pin" type="string" control="TextBox" size="3" maxLength="8" isOptional="true"/>  
+                <dummy size="3"/>
+                <field id="annex_info.gst_output_info.ship_consign_pin" label="Pin" type="string" control="TextBox" size="3" maxLength="8" 
+                                   isOptional="true" cdata-enable-on="core_stock_gst_inv.ship_addr_enable"/> 
+                <nextRow/>
+                <xtabPageEnd/>
+                <xtabPage id="load_exp_tbp" label="Incidental Costs" tabid="si_tab" size="12"/>
+                <tranSection editMode="Add|Edit|Delete" size="12" afterDeleteMethod="core_stock_gst_inv.redo_item_calc">         
+                    <dataBinding dataProperty="annex_info.incd_cost">
+                        <field id="desc" label="Description" type="string" control="TextBox" size="9" maxLength="250"/>
+                        <field id="incd_amt" label="Amount" type="decimal" control="TextBox" size="3"
+                                           mdata-event="subscribe: core_stock_gst_inv.redo_item_calc"/>
+                    </dataBinding>
+                </tranSection>
+                <nextRow/>
+                <xtabPageEnd/>
+                <xtabEnd/>
+                <nextRow/>
+                <xdivEnd/>
+                <dummy size="1"/>
+                <xdiv id="total_div" size="6"/>
+                <xdiv id="tot_div1" size="12"/>
+                <field label="Incd. Costs" type="string" control="Label" size="2" isOptional="true" inline="true"/>
+                <field id="annex_info.incd_amt_tot" label="" type="decimal" control="TextBox" size="2" inline="true" readOnly="true" isOptional="true" class="fg-total"/>
+                <field label="Total Taxes" type="string" control="Label" size="2" isOptional="true" inline="true"/>
+                <field id="tax_amt" label="" type="decimal" control="TextBox" size="2" inline="true" readOnly="true" isOptional="true" class="fg-total"/>
+                <field label="Items Total" type="string" control="Label" size="2" isOptional="true" inline="true"/>
+                <field id="gross_amt" label="" type="decimal" control="TextBox" size="2" inline="true" readOnly="true" isOptional="true" class="fg-total"/>                                
+                <xdivEnd/>
+                <xdiv id="tot_div2" size="12"/>
+                <field label="Misc Amt" type="string" control="Label" size="2" isOptional="true" inline="true"/>
+                <field id="misc_non_taxable_amt" label="" type="decimal" control="TextBox" size="2" inline="true" readOnly="true" class="fg-total"/>
+                <field label="Round Off" type="string" control="Label" size="2" isOptional="true" inline="true"/>
+                <field id="round_off_amt" label="" type="decimal" control="TextBox" size="2" allowNegative="true" inline="true" readOnly="true" class="fg-total"/>
+                <field label="Invoice Amt" type="string" control="Label" size="2" isOptional="true" inline="true" style="font-weight: bold;"/>
+                <field id="total_amt" label="" type="decimal" control="TextBox" size="2" inline="true" readOnly="true" isOptional="true" class="fg-total" style="font-weight: bold;"/>
+                <xdivEnd/>
+                <xdiv id="tot_div3" size="12"/>
+                <dummy size="4"/>
+                <field label="Adv Settle" type="string" control="Label" size="2" inline="true"/>
+                <field id="advance_amt" label="" type="decimal" control="TextBox" size="2" readOnly="true" inline="true" class="fg-total"/>
+                <field label="Net Amount" type="string" control="Label" size="2" inline="true"/>
+                <field id="net_amt" label="" type="decimal" control="TextBox" size="2" readOnly="true" inline="true" class="fg-total"/>
+                <xdivEnd/>
+                <xdivEnd/>
+                <xtab id="tab_footer" size="12"/>
+                <xtabPage id="tbp_narration" tabid="tab_footer" label="Notes" size="12"/>
+                <field id="narration" label="Narration" type="string" rows="3" control="TextArea"  size="6" maxLength="8000" isOptional="true"/>                 
+                <field id="remarks" label="Remarks" type="string" control="TextArea" size="6" maxLength="8000" rows="3" isOptional="true"/>  
+                <xtabPageEnd/>
+                <xtabPage id="tbp_stock_bb" tabid="tab_footer" label="Buy Back(s)" size="12" />
+                <tranSection label="" editMode="Add|Edit|Delete" fixedWidth="800" fixedHeight="120"  
+                                     afterDeleteMethod="core_stock_gst_inv.inv_bb_delete">
+                    <dataBinding dataProperty="inv_bb">
+                        <field id="sl_no" label="#" type="int" control="TextBox" size="1" inline="true" readOnly="true" isOptional="true" style="border: none; background: none;"/>
+                        <field id="bar_code" label="Bar Code" type="string" control="TextBox" size="3" isOptional="true" />
+                        <field id="material_type_id" label="Type" type="int" control="SmartCombo" size="3" isOptional="true">
+                            <lookup>
+                                <valueMember>material_type_id</valueMember>
+                                <displayMember>material_type</displayMember>
+                                <namedLookup>../core/st/lookups/MaterialType.xml</namedLookup>
+                            </lookup>
+                        </field>
+                        <field id="material_id" label="Stock Item" type="int" control="SmartCombo" size="6"
+                                       mdata-event="subscribe: core_stock_gst_inv.fetch_bb_mat_info" >
+                            <lookup>
+                                <valueMember>material_id</valueMember>
+                                <displayMember>material_name</displayMember>
+                                <namedLookup>../core/st/lookups/Material.xml</namedLookup>
+                                <filterEvent>core_stock_gst_inv.material_filter</filterEvent>
+                            </lookup>
+                        </field>
+                        <field id="received_qty" label="Received Qty" type="decimal" control="TextBox" size="2" scale="qty"
+                                       mdata-event="subscribe:core_stock_gst_inv.item_bb_calc"/>
+                        <field id="rate" label="Rate" type="decimal" control="TextBox" size="2" scale="rate" isOptional="true"
+                                       mdata-event="subscribe:core_stock_gst_inv.item_bb_calc"/>
+                        <field id="bt_amt" label="Item Amt" type="decimal" control="TextBox" size="2" readOnly="true" isOptional="true" />
+                        <nextRow/>
+                        <dummy/>
+                        <field id="uom_id" label="UoM" type="int" control="SmartCombo" size="1" readOnly="true">
+                            <lookup>
+                                <valueMember>uom_id</valueMember>
+                                <displayMember>uom_desc</displayMember>
+                                <namedLookup>../core/st/lookups/UoM.xml</namedLookup>
+                                <filterEvent>core_st.sp_uom_combo_filter</filterEvent>
+                            </lookup>
+                        </field>
+                        <field id="stock_location_id" label="Location" type="int" control="SmartCombo" size="1">
+                            <lookup>
+                                <valueMember>stock_location_id</valueMember>
+                                <displayMember>stock_location_name</displayMember>
+                                <namedLookup>../core/st/lookups/StockLocation.xml</namedLookup>
+                            </lookup>
+                        </field>
+                        <field id="tax_schedule_id" label="" type="int" control="SmartCombo" size="1" readOnly="true"
+                                       mdata-event="subscribe: core_stock_gst_inv.tax_schedule_change">
+                            <lookup>
+                                <valueMember>tax_schedule_id</valueMember>
+                                <displayMember>tax_schedule</displayMember>
+                                <namedLookup>../core/tx/lookups/TaxSchedule.xml</namedLookup>
+                                <filter>applicable_to_customer = true</filter>
+                            </lookup>
+                        </field>
+                        <dummy/>
+                        <field id="en_tax_type" label="" type="int" control="Hidden" isOptional="true"/>
+                        <field id="tax_pcnt" label="Tax %" type="decimal" control="TextBox" size="1" isOptional="true"
+                                       cdata-enable-on="core_stock_gst_inv.tax_pcnt_enable" mdata-event="subscribe:core_stock_gst_inv.item_bb_calc"/>
+                        <field id="tax_amt" label="Tax Amt" type="decimal" control="TextBox" size="1" isOptional="true"
+                                       cdata-enable-on="core_stock_gst_inv.tax_amt_enable" mdata-event="subscribe:core_stock_gst_inv.item_bb_calc"/>
+                        <field id="item_amt" label="Amount" type="decimal" control="Hidden" readOnly="true" isOptional="true"/>
+
+                        <addRowEvent>core_stock_gst_inv.inv_bb_add</addRowEvent>
+                    </dataBinding>
+                </tranSection>
+                <xtabPageEnd/>
+                <xtabEnd/>
+                <nextRow/>
+                <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" size="m"  isOptional="true"/>  
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" size="m" readOnly="true" isOptional="true"/>
+                
+            </dataBinding>
+        </controlSection>
+        
+    </formView>
+</cwFramework>

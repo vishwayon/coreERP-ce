@@ -1,0 +1,41 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="GstInvoice" type="Document" bindingBO="GstInvoice" editView="gstInvoice/GstInvoiceEditForm">
+        <header>GST Invoice</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    SELECT a.invoice_id, a.doc_date, a.customer_id, b.customer, a.status, a.invoice_amt
+                    FROM ar.invoice_control a 
+                    INNER JOIN ar.customer b ON a.customer_id = b.customer_id
+                    WHERE a.finyear=:pfinyear and a.company_id=:pcompany_id and a.branch_id=:pbranch_id
+                        And a.doc_type in (Select seq_type from ar.income_type) And a.trigger_id='core'
+                        And a.vat_type_id Between 300 And 399
+                    Order by a.doc_date, a.invoice_id 
+                </command>
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                    <param id="pbranch_id">
+                        <session>branch_id</session>
+                    </param>
+                    <param id="pfinyear">
+                        <session>finyear</session>
+                    </param>
+                </params>
+            </sql>
+            <displayFields>
+                <displayField columnName="doc_date" displayName="Date" format="Date"/>
+                <displayField columnName="invoice_id" displayName="Document No"/>
+                <displayField columnName="customer" displayName="Customer"/>
+                <displayField columnName="invoice_amt" displayName="Invoice Amount" format="Amount"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

@@ -1,0 +1,55 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="TaxSchedule" type="Master" bindingBO="taxSchedule/TaxSchedule">    
+        <header>Tax Schedule</header>    
+        <keyField>tax_schedule_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <clientJsCode>taxSchedule/taxschedule_clientcode.js</clientJsCode> 
+        <controlSection editMode="Edit">
+            <dataBinding>               
+                <field id="tax_schedule_code" label="Tax Schedule Code" type="string" control="TextBox" size="s" maxLength="20" isOptional="True"/>
+                <nextRow/>
+                <field id="description" label="Description" type="string" control="TextBox" size="m" maxLength="120" />
+                <nextRow/>  
+                <field id="tax_type_id" label="Tax Type" type="int" control="SmartCombo" size="s">
+                    <lookup>
+                        <valueMember>tax_type_id</valueMember>
+                        <displayMember>tax_type</displayMember>
+                        <namedLookup>../core/tx/lookups/TaxType.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <nextRow/> 
+                <field id="is_discontinued" label="Is Discontinued" type="bool" control="CheckBox" size="2" /> 
+                <field id="applicable_to_customer" label="Applicable To Customer" type="bool" control="CheckBox" size="2" />
+                <field id="applicable_to_supplier" label="Applicable To Supplier" type="bool" control="CheckBox" size="2" />
+                <nextRow/> 
+                <field label="Tax Detail(s)" type="string" control="Label" size="2" inline="true" isOptional="true" style="font-size:14px;color:teal;width:120px;"/>                              
+                <cButton id="add_tax_detail"  onClick="core_taxschedule.TaxScheduleNew" label="Add" inline="true" 
+                        icon="glyphicon glyphicon-plus" tooltip="Add" nolabel="true"/>
+                <cButton id="clear_tax_detail"  onClick="core_taxschedule.TaxDetailRemove" label="Remove" inline="true" 
+                        icon="glyphicon glyphicon-trash" nolabel="true" tooltip="Remove"/>
+                <tranSection editMode="Auto" editMethod="core_taxschedule.edit_method" size="6">
+                    <dataBinding dataProperty="tax_detail_tran">
+                        <field id="step_id" label="Step" type="int" control="TextBox" size="2" readOnly="true"/>
+                        <field id="description" label="Tax Detail" type="string" control="TextBox" size="6" maxLength="5000"  readOnly="true"/>
+                        <field  id="tax_perc" label="Tax Rate" type="decimal" control="TextBox" size="4" scale="amt"  readOnly="true"/>
+                        <field id="parent_tax_details" label="Parent Tax Details" type="Hidden" control="Hidden" size="m" isOptional="true"/>
+                        <field id="account_id" label="Tax Account" type="Hidden" control="Hidden" size="s"/>
+                        <field id="en_tax_type" label="Tax Account" type="Hidden" control="Hidden" size="s"/>
+                        <field id="en_round_type" label="Tax Account" type="Hidden" control="Hidden" size="s"/>
+                        <field id="tax_perc" label="Percentage" type="Hidden" control="Hidden" size="s" scale="amt" /> 
+                        <field id="tax_on_perc" label="Tax On Percentage" type="Hidden" control="Hidden" size="s" scale="amt" /> 
+                        <field id="min_tax_amt" label="Minimum Amount" type="Hidden" control="Hidden" size="s" scale="amt" />   
+                        <field id="tax_on_min_amt" label="Tax On Minimum Amount" type="Hidden" control="Hidden" size="s" scale="amt" /> 
+                        <field id="max_tax_amt" label="Maximum Amount" type="Hidden" control="Hidden" size="s" scale="amt" /> 
+                        <field id="tax_on_max_amt" label="Tax On Maximum Amount" type="Hidden" control="Hidden" size="s" scale="amt" /> 
+                        <field id="tax_detail_id" label="Tax Detail Id" type="Hidden" control="Hidden" size="xs" readOnly="true"/>   
+                    </dataBinding>
+                </tranSection> 
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

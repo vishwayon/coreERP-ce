@@ -1,0 +1,23 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>             
+    
+    <collectionView id="HolidayList" type="Master" bindingBO="HolidayList" editView="holidayList/HolidayListEditForm">        
+        <header>Holiday List</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select holiday_id, holiday_year, holiday_date, holiday_desc from hr.holiday_list order by holiday_date
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="holiday_year" displayName="Year"/>
+                <displayField columnName="holiday_date" displayName="Date"/>
+                <displayField columnName="holiday_desc" displayName="Holiday Description"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

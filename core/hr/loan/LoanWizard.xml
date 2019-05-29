@@ -1,0 +1,11 @@
+<wizard id="Loan" name="Loan Wizard">
+    <codeBehind>
+        <className>\app\core\hr\employee\EmployeeWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectEmployee">
+        <path>employee/EmployeeWizard/SelectEmployee</path>
+    </wizardStep>
+    <postWizard id="Loan">
+        <path>loan/LoanEditForm</path>
+    </postWizard>
+</wizard>

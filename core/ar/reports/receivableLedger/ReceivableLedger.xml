@@ -1,0 +1,84 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="ReceivableLedger" type="Report" rptPath="/core/ar/reports/receivableLedger" rptName="ReceivableLedgerV2">
+        <header>Receivable Ledger</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="ms" forConsolidated="true"> 
+                    <value>
+                        <session>branch_id</session>
+                    </value>
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>
+                    </lookup>  
+                </field>
+                <field id="pfrom_date" label="From" type="date" control="Date" size="ms" range="finYear">
+                    <value>
+                        <session>year_begin</session>
+                    </value>
+                </field>
+                <field id="pto_date" label="To" type="date" control="Date" size="ms" range="finYear">                   
+                    <value>
+                        <currentDate/>
+                    </value>    
+                </field>  
+                <field id="paccount_id" label="Customer" type="int" control="SmartCombo" size="3">
+                    <value>
+                        <text>-1</text>
+                    </value>
+                    <lookup>
+                        <valueMember>customer_id</valueMember>
+                        <displayMember>customer</displayMember>
+                        <namedLookup>../core/ar/lookups/CustomerWithAll.xml</namedLookup>
+                        <!--<filter>account_type_id not in (7, 12)</filter>-->
+                    </lookup>   
+                </field>     
+                <field id="psub_interval" label="Balance" type="string" control="SimpleCombo" size="2">
+                    <options defaultValue="month">
+                        <option value="day">Daily</option>
+                        <option value="week">Weekly</option>
+                        <option value="month">Monthly</option>
+                        <option value="year">Yearly</option>
+                        <option value="period">Entire Period</option>
+                    </options>  
+                </field>
+                <nextRow/>
+                <field id="pshow_narration" label="Narration" type="bool" control="CheckBox" size="ms">            
+                    <value>
+                        <text>True</text>
+                    </value>
+                </field>
+                <field id="pshow_cheque_details" label="Cheque Details" type="bool" control="CheckBox" size="2">       
+                    <value>
+                        <text>True</text>
+                    </value>
+                </field>
+                <field id="pshow_settle" label="Settlements" type="bool" control="CheckBox" size="2">       
+                    <value>
+                        <text>True</text>
+                    </value>
+                </field>
+                <field id="pdaily_txn_sum" label="Daily Txn Sum." type="bool" control="CheckBox" size="2"/>
+                <field id="pdisplay_fc_amount" label="Display FC" type="bool" control="CheckBox" size="2"/>  
+                <field id="psuppress_details" label="Suppress Details" type="bool" control="CheckBox" size="2"/>
+                <field id="pshow_summary" label="Summary" type="bool" control="CheckBox" size="2"/>
+                <param id="pcompany_id">                
+                    <session>company_id</session>
+                </param>
+                <param id="pyear">
+                    <session>finyear</session>
+                </param>
+                <param id="pcategory">
+                    <text>Debtors</text>
+                </param>
+                <param id="preport_caption">
+                    <text>Receivable Ledger</text>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

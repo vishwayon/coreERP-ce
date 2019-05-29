@@ -1,0 +1,44 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="PurchaseReturnGst" type="Document" bindingBO="PurchaseReturnGst" editView="purchaseReturnGst/PurchaseReturnGstEditForm">
+        <header>GST Purchase Return/Dr/Cr Note</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    Select a.stock_id, a.doc_date, b.account_head, a.total_amt, a.total_amt_fc, a.status ,
+                        Case (a.annex_info->>'dcn_type')::Int
+                            When 1 Then 'Rate Adjustment (Cr)' 
+                            When 2 Then 'Post Purchase Discount (Dr)'
+                            Else 'Purchase Return' End As dcn_type_desc
+                    from st.stock_control a
+                    inner join ac.account_head b on a.account_id = b.account_id
+                    Where doc_type='PRV' and a.finyear=:pfinyear and a.company_id=:pcompany_id and a.branch_id=:pbranch_id
+                    Order by a.stock_id
+                </command>
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                    <param id="pbranch_id">
+                        <session>branch_id</session>
+                    </param>
+                    <param id="pfinyear">
+                        <session>finyear</session>
+                    </param>
+                </params>
+            </sql>
+            <displayFields>
+                <displayField columnName="doc_date" displayName="Date" format="Date"/>
+                <displayField columnName="stock_id" displayName="Document No"/>
+                <displayField columnName="dcn_type_desc" displayName="Document Type"/>
+                <displayField columnName="account_head" displayName="Account"/>
+                <displayField columnName="total_amt" displayName="Amount" format="Amount"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

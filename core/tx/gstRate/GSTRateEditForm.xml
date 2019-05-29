@@ -1,0 +1,156 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="GSTRate" type="Master" bindingBO="gstRate/GSTRate">    
+        <header>GST Rate</header>    
+        <keyField>gst_rate_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>               
+                <field id="gst_rate_desc" label="GST Rate" type="string" control="TextBox" size="4" maxLength="50"/>
+                <nextRow/>
+                <sectionHeader label="State GST"/>   
+                <field id="sgst_pcnt" label="SGST Percentage" type="decimal" control="TextBox" size="2" scale="amt" isOptional="true"/> 
+                <field id="sgst_itc_account_id" label="Input Tax Credit Account" type="int" control="SmartCombo" size="2">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup> 
+                        <filter> account_type_id not in (1, 47, 46, 2, 45, 7, 12) </filter>
+                    </lookup>   
+                </field>   
+                <field id="sgst_account_id" label="Tax Collection Account" type="int" control="SmartCombo" size="2">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter> account_type_id not in (1, 47, 46, 2, 45, 7, 12) </filter>
+                    </lookup>
+                </field>
+                <field id="sgst_rc_account_id" label="Reverse Charge Liability" type="int" control="SmartCombo" size="2">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter> account_type_id not in (1, 47, 46, 2, 45, 7, 12) </filter>
+                    </lookup>
+                </field>
+                <field id="sgst_tds_account_id" label="TDS Account" type="int" control="SmartCombo" size="2">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter> account_type_id not in (1, 47, 46, 2, 45, 7, 12) </filter>
+                    </lookup>
+                </field>
+                <nextRow/> 
+                <sectionHeader label="Central GST"/>   
+                <field id="cgst_pcnt" label="CGST Percentage" type="decimal" control="TextBox" size="2" scale="amt" isOptional="true"/> 
+                <field id="cgst_itc_account_id" label="Input Tax Credit Account" type="int" control="SmartCombo" size="2">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup> 
+                        <filter> account_type_id not in (1, 47, 46, 2, 45, 7, 12) </filter>
+                    </lookup>   
+                </field>   
+                <field id="cgst_account_id" label="Tax Collection Account" type="int" control="SmartCombo" size="2">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter> account_type_id not in (1, 47, 46, 2, 45, 7, 12) </filter>
+                    </lookup>
+                </field>
+                <field id="cgst_rc_account_id" label="Reverse Charge Liability" type="int" control="SmartCombo" size="2">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter> account_type_id not in (1, 47, 46, 2, 45, 7, 12) </filter>
+                    </lookup>
+                </field>
+                <field id="cgst_tds_account_id" label="TDS Account" type="int" control="SmartCombo" size="2">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter> account_type_id not in (1, 47, 46, 2, 45, 7, 12) </filter>
+                    </lookup>
+                </field>
+                <nextRow/> 
+                <sectionHeader label="Integrated GST"/>   
+                <field id="igst_pcnt" label="IGST Percentage" type="decimal" control="TextBox" size="2" scale="amt" isOptional="true"/> 
+                <field id="igst_itc_account_id" label="Input Tax Credit Account" type="int" control="SmartCombo" size="2">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup> 
+                        <filter> account_type_id not in (1, 47, 46, 2, 45, 7, 12) </filter>
+                    </lookup>   
+                </field>   
+                <field id="igst_account_id" label="Tax Collection Account" type="int" control="SmartCombo" size="2">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup> 
+                        <filter> account_type_id not in (1, 47, 46, 2, 45, 7, 12) </filter>
+                    </lookup>   
+                </field>
+                <field id="igst_rc_account_id" label="Reverse Charge Liability" type="int" control="SmartCombo" size="2">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter> account_type_id not in (1, 47, 46, 2, 45, 7, 12) </filter>
+                    </lookup>
+                </field>
+                <field id="igst_tds_account_id" label="TDS Account" type="int" control="SmartCombo" size="2">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter> account_type_id not in (1, 47, 46, 2, 45, 7, 12) </filter>
+                    </lookup>
+                </field>
+                <nextRow/> 
+                <sectionHeader label="Cess"/>   
+                <field id="cess_pcnt" label="Cess Percentage" type="decimal" control="TextBox" size="2" scale="amt" isOptional="true"/> 
+                <field id="cess_itc_account_id" label="Input Tax Credit Account" type="int" control="SmartCombo" size="2">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter> account_type_id not in (1, 47, 46, 2, 45, 7, 12) </filter>
+                    </lookup>
+                </field>
+                <field id="cess_account_id" label="Tax Collection Account" type="int" control="SmartCombo" size="2">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter> account_type_id not in (1, 47, 46, 2, 45, 7, 12) </filter>
+                    </lookup>
+                </field>
+                <field id="cess_rc_account_id" label="Reverse Charge Liability" type="int" control="SmartCombo" size="2">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter> account_type_id not in (1, 47, 46, 2, 45, 7, 12) </filter>
+                    </lookup>
+                </field>
+                <field id="cess_tds_account_id" label="TDS Account" type="int" control="SmartCombo" size="2">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter> account_type_id not in (1, 47, 46, 2, 45, 7, 12) </filter>
+                    </lookup>
+                </field>
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

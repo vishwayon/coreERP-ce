@@ -1,0 +1,22 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'> 
+    
+    <collectionView id="SystemSettings" type="Master" bindingBO="SystemSettings" editView="systemSettings/SystemSettingsEditForm">        
+        <header>System Settings</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select 'System Settings' as key, 1 as settings_id
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="key" displayName="Settings"/>
+            </displayFields>
+        </collectionSection>       
+    </collectionView>    
+</cwFramework>   
+

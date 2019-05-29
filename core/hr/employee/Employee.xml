@@ -1,0 +1,78 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="Employee" type="Master">  
+        <controlTable>
+            <tableName>hr.employee</tableName>
+            <primaryKey>employee_id</primaryKey>
+           <customColumns>   
+                <customColumn name="pf_acc_no" type="varchar" length="50"/> 
+                <customColumn name="esic_acc_no" type="varchar" length="50"/> 
+           </customColumns> 
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save> 
+            <delete>
+                <useEntity/>
+            </delete>
+            <tranTable id="employee_stat_regn">       
+                <tableName>hr.employee_stat_regn</tableName>
+                <primaryKey>employee_id</primaryKey>      
+                <relation linkType="OneToOne">
+                    <foreignKey>employee_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern/>
+                </save>   
+                <delete>
+                    <useEntity/>
+                </delete>  
+            </tranTable>
+            <tranTable id="employee_bank_info_tran">
+                <tableName>hr.employee_bank_info</tableName>
+                <primaryKey>employee_bank_info_id</primaryKey>      
+                <relation linkType="OneToOne">
+                    <foreignKey>employee_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{employee_id}:{RowID}</primaryKeyPattern>
+                </save>  
+                <delete>
+                    <useEntity/>
+                </delete>   
+            </tranTable> 
+            <reverseTranTable id="employee_address_tran">       
+                <tableName>sys.address</tableName>
+                <primaryKey>address_id</primaryKey>      
+                <relation linkType="OneToOne">
+                    <foreignKey>address_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern/>
+                </save>   
+                <delete>
+                    <useEntity/>
+                </delete>  
+            </reverseTranTable>
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\hr\employee\EmployeeEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

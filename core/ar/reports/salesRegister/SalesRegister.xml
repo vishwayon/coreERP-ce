@@ -1,0 +1,65 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="ArSalesRegister" type="Report" rptPath="/core/ar/reports/salesRegister" rptName="SalesRegister">
+        <header>Sales Register</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="ms" forConsolidated="true"> 
+                    <value>
+                        <session>branch_id</session>
+                    </value>
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>
+                    </lookup>  
+                </field>
+                <field id="pfrom_date" label="From" type="date" control="Date" size="ms" range="finYear">
+                    <value>
+                        <session>year_begin</session>
+                    </value>
+                </field>
+                <field id="pto_date" label="To" type="date" control="Date" size="ms" range="finYear">                   
+                    <value>
+                        <currentDate/>
+                    </value>    
+                </field>  
+                <field id="pcustomer_id" label="Customer" type="int" control="SmartCombo" size="m">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <valueMember>customer_id</valueMember>
+                        <displayMember>customer</displayMember>
+                        <namedLookup>../core/ar/lookups/CustomerWithAll.xml</namedLookup>
+                    </lookup>   
+                </field> 
+                <field id="pgst_state_id" label="Place Of Supply" type="int" control="SmartCombo" size="2">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <valueMember>gst_state_id</valueMember>
+                        <displayMember>gst_state_with_code</displayMember>
+                        <namedLookup>../core/tx/lookups/GstStateWithAll.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="pfilter_gst_state" label="Filter by GST State" type="bool" control="CheckBox" size="ms" forConsolidated="true" />
+                <param id="pcompany_id">                
+                        <session>company_id</session>
+                </param>
+                <param id="pyear">
+                        <session>finyear</session>
+                </param>
+                <param id="pcategory">
+                        <text>Creditors</text>
+                </param>
+                <param id="preport_caption">
+                    <text>Sales Register</text>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

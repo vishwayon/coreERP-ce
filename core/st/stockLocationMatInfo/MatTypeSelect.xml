@@ -1,0 +1,17 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <allocView id="MatTypeSelect" type="alloc" width="800px">
+        <header>Stock Type(s)</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="stocktype-loading" control="Label" type="string" size="m" label="Loading type..." />
+                <tranSection label="" editMode="Edit" >
+                    <dataBinding dataProperty="mattype_temp" bindMethod="datatable">   
+                    </dataBinding>
+                </tranSection>
+            </dataBinding>                      
+        </controlSection>
+    </allocView>
+</cwFramework>    

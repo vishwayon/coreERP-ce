@@ -1,0 +1,55 @@
+<wizardView>
+    <header>Select Customer</header>
+    <sections>
+        <collectionSection id="SelectCustomer" bindMethod="datatable" renderEvent="core_customereceipt.rcpt_wiz.select_cust_init">
+            <connectionType>
+              <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    Select a.account_id, a.account_head, sum(a.over_due) as over_due, sum(a.over_due_fc) as over_due_fc, sum(a.not_due) as not_due, sum(a.not_due_fc) as not_due_fc, 0 as credit_amt
+                    From (
+                            select a.account_id, b.account_head, case when a.due_date &lt;= :pto_date then sum(a.balance) else 0 end as over_due, case when a.due_date &lt;= :pto_date then sum(a.balance_fc) else 0 end as over_due_fc, 
+                                    case when a.due_date &gt; :pto_date then sum(a.balance) else 0 end as not_due, case when a.due_date &gt; :pto_date then sum(a.balance_fc) else 0 end as not_due_fc
+                            from ar.fn_receivable_ledger_balance(:pcompany_id, (case when :pis_inter_branch then 0 else :pbranch_id  end), :paccount_id, :pto_date, :pvoucher_id, :pdc) a
+                            inner Join ac.account_head b on a.account_id=b.account_id
+                            Where b.account_type_id = 7
+                            group by a.account_id, b.account_head, a.due_date
+                    ) a
+                    group by a.account_id, a.account_head
+                    order by a.account_head
+                </command>           
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                    <param id="pbranch_id">
+                        <session>branch_id</session>
+                    </param>
+                    <param id="paccount_id">
+                        <wizard step="SelectCustomerAll">account_id</wizard>
+                    </param>
+                    <param id="pto_date">
+                        <wizard step="SelectCustomerAll">to_date</wizard>
+                    </param>
+                    <param id="pis_inter_branch">
+                        <wizard step="SelectCustomerAll">is_inter_branch</wizard>
+                    </param>
+                    <param id="pvoucher_id">
+                        <text></text>
+                    </param>
+                    <param id="pdc">
+                        <text>D</text>
+                    </param>
+                </params>
+            </sql>
+
+            <keyField id="account_id"/>
+            <displayFields>
+                <!--<displayField columnName="account_head" displayName="Customer" id="account_head" label="Customer" type="string" control="TextBox" size="m"/>
+                <displayField columnName="over_due" id="over_due" label="Overdue" type="decimal" control="TextBox" size="s" scale="amt"/>
+                <displayField columnName="not_due" id="not_due" label="Not Due" type="decimal" control="TextBox" size="s" scale="amt"/> -->
+            </displayFields>
+        </collectionSection>
+    </sections>
+</wizardView>

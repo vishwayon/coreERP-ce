@@ -1,0 +1,37 @@
+<wizardView>
+    <header>Select Deductions for Payment</header>
+    <sections>
+        <collectionSection id="SelectBill" bindMethod="datatable" renderEvent="tds_pay.tds_pay_wiz.select_bill_init">
+            <connectionType>
+              <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select a.bill_tds_tran_id, a.voucher_id, a.doc_date, a.supplier_id, a.supplier, 
+                            a.tds_base_rate_amt, a.tds_ecess_amt, a.tds_surcharge_amt, a.tds_amt, a.bill_amt, a.branch_id
+                    from tds.fn_get_pending_bills_for_tds_payment(:pcompany_id, :pbranch_id, :pperson_type_id, '') a
+                    order by a.supplier, a.voucher_id
+                </command>
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                    <param id="pbranch_id">
+                        <text>0</text>
+                    </param>
+                    <param id="pperson_type_id">
+                        <wizard step="SelectPersonType">person_type_id</wizard>
+                    </param>
+                </params>
+            </sql>
+            <keyField id="bill_tds_tran_id"/>
+            <displayFields>
+                <!--<displayField columnName="supplier" id="supplier" label="Supplier" type="string" control="TextBox" size="s"/>
+                <displayField columnName="voucher_id" id="voucher_id" label="Voucher No" type="string" control="TextBox" size="s"/>
+                <displayField columnName="doc_date" id="doc_date" label="Deduction Date" type="date" control="Date" size="s"/>
+                <displayField columnName="bill_amt" id="bill_amt" label="Bill Amt" type="decimal" control="TextBox" size="s" scale="amt"/>
+                <displayField columnName="tds_amt" id="tds_amt" label="TDS Amt" type="decimal" control="TextBox" size="s" scale="amt"/> -->
+            </displayFields>
+        </collectionSection>
+    </sections>
+</wizardView>

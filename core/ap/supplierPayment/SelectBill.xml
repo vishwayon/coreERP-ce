@@ -1,0 +1,28 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    <allocView id="SeleBill" type="alloc" width="1000px">
+        <header>Select Bills</header>
+        <clientJsCode>ap_clientcode.js</clientJsCode> 
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="sele_bill-loading" control="Label" label="Loading ..." />
+                <tranSection label="" editMode="Edit">
+                    <dataBinding dataProperty="bill_temp" bindMethod="datatable">
+                        <!--<field id="is_select" label="..." type="bool" control="CheckBox" size="1"/>
+                        <field id="voucher_id" label="Voucher No" type="string" control="TextBox" size="2" readOnly="true" maxLength="50" />
+                        <field id="doc_date" label="Date" type="date" control="Date" size="1" readOnly="true"/>
+                        <field id="bill_no" label="Bill No" type="string" control="TextBox" size="2" readOnly="true" maxLength="50" />
+                        <field id="bill_date" label="Bill Date" type="date" control="Date" size="1" readOnly="true"/>
+                        <field id="fc_type" label="FC Type" type="string" control="TextBox" size="1" readOnly="true" maxLength="20" />
+                        <field id="over_due" label="Overdue" type="decimal" control="TextBox" size="1"  readOnly="true"/>
+                        <field id="over_due_fc" label="Overdue FC" type="decimal" control="TextBox" size="1"  readOnly="true"  cdata-visible-on="core_ap.ap_enable_visible_fc" />
+                        <field id="not_due" label="Not Due" type="decimal" control="TextBox" size="1"  readOnly="true"/>
+                        <field id="not_due_fc" label="Not Due FC" type="decimal" control="TextBox" size="1"  readOnly="true" cdata-visible-on="core_ap.ap_enable_visible_fc" />
+                        <field id="due_date" label="Due Date" type="date" control="Date" size="1" readOnly="true"/>-->
+                    </dataBinding>
+                </tranSection>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>

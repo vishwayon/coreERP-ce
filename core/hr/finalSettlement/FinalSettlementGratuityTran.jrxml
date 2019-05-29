@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2016-09-28T13:05:34 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FinalSettlementGratuityTran" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6ca61835-a8d3-4733-988d-aa60ce6dfd67">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="local"/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<template><![CDATA["/opt/tomcat/webapps/cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pcwf_date_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["dd-MM-yyyy"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pfinal_settlement_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA["FS/C1B1/1617/10"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT *  FROM hr.fn_fin_set_gratuity_tran_report
+(
+	$P{pfinal_settlement_id}
+);]]>
+	</queryString>
+	<field name="final_settlement_id" class="java.lang.String"/>
+	<field name="fin_set_gratuity_tran_id" class="java.lang.String"/>
+	<field name="sl_no" class="java.lang.Integer"/>
+	<field name="slab_from_date" class="java.sql.Date"/>
+	<field name="slab_to_date" class="java.sql.Date"/>
+	<field name="slab_days" class="java.lang.Integer"/>
+	<field name="gratuity_days" class="java.lang.Integer"/>
+	<field name="gratuity_amt" class="java.math.BigDecimal"/>
+	<field name="tot_gratuity_days" class="java.lang.Integer"/>
+	<field name="tot_gratuity_amt" class="java.math.BigDecimal"/>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<frame>
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="12" y="0" width="500" height="21" backcolor="#008080" uuid="cb73428a-f8e6-43cb-a8f4-f6bdb817bd8c">
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</frame>
+			<staticText>
+				<reportElement style="NormalLabel" mode="Transparent" x="326" y="0" width="88" height="21" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="56f408cf-ca32-4e1e-93bb-95a529e136e1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Gratuity Days]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="NormalLabel" mode="Transparent" x="432" y="0" width="80" height="21" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="49e7f2a5-27e4-4424-b0c6-3f193cc699a2">
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="12" y="0" width="40" height="21" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="61772000-5243-4b74-9d4f-7f80b68d44a2"/>
+				<box bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Sl.No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="NormalLabel" mode="Transparent" x="54" y="0" width="90" height="21" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="6ebeb4c0-ea0e-47a6-9054-2024c9bca69d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[From]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="NormalLabel" mode="Transparent" x="147" y="0" width="90" height="21" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="bc8bd5c6-8756-45f9-afa6-c3b9cccdc408"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[To]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="NormalLabel" mode="Transparent" x="248" y="0" width="64" height="21" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="b31efe06-0dbe-4edd-b54e-e4d15ae32d66"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Slab Days]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement x="12" y="0" width="500" height="14" uuid="efecf793-97d4-4f76-96ae-0ff3c3fb47aa">
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+				</reportElement>
+				<textField>
+					<reportElement style="NormalText" x="317" y="0" width="66" height="14" uuid="6e79a4a9-6fcc-486c-b9d6-a60e1a00debe">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<box topPadding="0">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{gratuity_days}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" x="401" y="0" width="99" height="14" uuid="45fbf35a-10dc-4713-8897-24c4dcabbc9b">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<box topPadding="0">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{gratuity_amt}]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" x="219" y="0" width="70" height="14" uuid="bd3fcccf-4501-40a2-b81b-15ea4487264c">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<box topPadding="0">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{slab_days}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" x="26" y="0" width="89" height="14" uuid="720a02a0-2875-44a0-897f-faedab005910">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<box topPadding="0">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{slab_from_date}]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_date_format}]]></patternExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" x="117" y="0" width="89" height="14" uuid="26ac5140-d7fd-4049-835d-d04f8fe07a1b">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<box topPadding="0">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{slab_to_date}]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_date_format}]]></patternExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" x="11" y="0" width="15" height="14" uuid="027b90a8-60f4-4ddc-a3d0-5ed281868939">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<box topPadding="0">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{sl_no}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<summary>
+		<band height="14">
+			<frame>
+				<reportElement x="95" y="0" width="417" height="14" uuid="2291a3a7-9edd-4fff-b058-ada47c695b4c"/>
+				<textField>
+					<reportElement style="NormalLabel" positionType="Float" isPrintRepeatedValues="false" x="71" y="0" width="63" height="14" isRemoveLineWhenBlank="true" uuid="c2d64014-6bff-452a-aac8-c15bae87d262">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<box topPadding="0"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["Total"]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report">
+					<reportElement style="NormalText" x="337" y="0" width="80" height="14" uuid="452d19e0-89d5-4a21-b6e7-57f1302dc88f">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<box topPadding="0" bottomPadding="0" rightPadding="0">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{tot_gratuity_amt}]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+				<textField evaluationTime="Report">
+					<reportElement style="NormalText" x="153" y="0" width="52" height="14" uuid="196aab1a-e57f-4e87-b613-ff4454cf52ca">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<box topPadding="0">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{tot_gratuity_days}]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+			</frame>
+		</band>
+	</summary>
+</jasperReport>

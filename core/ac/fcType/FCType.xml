@@ -1,0 +1,24 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <businessObject id="FCType" type="Master">
+        <controlTable>
+            <tableName>ac.fc_type</tableName>
+            <primaryKey>fc_type_id</primaryKey>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save>
+            <delete>
+                <useEntity/>
+            </delete>
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\ac\fcType\FCTypeEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>
+

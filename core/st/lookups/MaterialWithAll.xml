@@ -1,0 +1,27 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="StockLocation">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select a.material_id, a.material_name, a.material_type_id
+                from (        
+                    Select -2 as material_id, 'All' as material_name, 0 as material_type_id
+                    union All
+                    (select material_id, material_name, material_type_id
+                        from st.material 
+                        Where company_id={company_id}
+                        order by material_name)
+                ) a
+            </command>
+        </sql>
+        <keyField id="material_id"/>
+    </lookup>
+</cwFramework>
+
+
+    

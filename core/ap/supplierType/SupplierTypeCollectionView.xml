@@ -1,0 +1,30 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>             
+    
+    <collectionView id="SuppType" type="Master" bindingBO="SuppType" editView="supplierType/SupplierTypeEditForm">        
+        <header>Supplier Type</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select supp_type_id, supp_type, supp_type_desc
+                    From ap.supp_type
+                    Where company_id=:pcompany_id         
+                    order by supp_type desc
+                </command>
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                </params>
+            </sql>
+            <displayFields>
+                <displayField columnName="supp_type" displayName="Supplier Type"/> 
+                <displayField columnName="supp_type_desc" displayName="Description"/> 
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

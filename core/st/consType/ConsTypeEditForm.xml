@@ -1,0 +1,16 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="ConsType" type="Master" bindingBO="consType/ConsType">    
+        <header>Consumption Type</header>    
+        <keyField>cons_type_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="cons_type_desc" label="Consumption Type Description" type="string" control="TextBox" size="m" maxLength="100" />
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

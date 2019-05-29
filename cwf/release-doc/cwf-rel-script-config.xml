@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'>
+
+    <scriptInfo>
+        <mainDB>
+            <scriptFile>cwf/release-doc/cwf-main-db.sql</scriptFile>
+        </mainDB> 
+        <companyDB>
+            <scriptFile>cwf/release-doc/cwf-company-db.sql</scriptFile>
+        </companyDB>
+    </scriptInfo>
+</cwFramework>

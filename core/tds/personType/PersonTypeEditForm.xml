@@ -1,0 +1,17 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="PersonType" type="Master" bindingBO="personType/PersonType">
+        <header>Person Type</header>
+        <keyField>person_type_id</keyField>
+        <!--   <newDocEnabled/>
+        <deleteDocEnabled/>-->
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="person_type_desc" label="Person Type" type="string" control="TextBox" size="m" maxLength="50" />
+                <nextRow/> 
+            </dataBinding> 
+        </controlSection>
+    </formView>
+</cwFramework>

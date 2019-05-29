@@ -1,0 +1,21 @@
+<wizardView>
+    <header>Select Supplier</header>
+    <sections>
+        <formSection id="SelectSupplier">
+            <displayFields>
+                <displayField id="supplier_id" label="Supplier" type="int" control="SmartCombo" size="m" editMode="edit" defaultValue="-1">
+                    <lookup>
+                        <valueMember>supplier_id</valueMember>
+                        <displayMember>supplier</displayMember>
+                        <namedLookup>../core/ap/lookups/Supplier.xml</namedLookup>
+                    </lookup>   
+                </displayField>
+                <displayField id="doc_date" label="Date" type="date" control="Date" size="ms" editMode="edit" range="finYear">
+                    <value>
+                        <currentDate/>
+                    </value>
+                </displayField>
+            </displayFields>
+        </formSection>
+    </sections>
+</wizardView>

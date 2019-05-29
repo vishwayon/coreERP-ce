@@ -1,0 +1,25 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="AssetClass" type="Master" bindingBO="AssetClass" editView="assetClass/AssetClassEditForm">    
+        <header>Asset Class</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    SELECT asset_class_id, asset_class, asset_class_code
+                    FROM fa.asset_class
+                    Where company_id={company_id}
+                    Order by asset_class
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="asset_class" displayName="Asset Class"/>
+                <displayField columnName="asset_class_code" displayName="Class Code"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

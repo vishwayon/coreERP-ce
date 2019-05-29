@@ -1,0 +1,36 @@
+
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Grade" type="Master"  bindingBO="grade/Grade">
+        <header>Grade</header>
+        <keyField>grade_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>              
+                <field id="grade" label="Grade" type="string" control="TextBox" size="m" maxLength="50" />
+                <nextRow/>
+                <field id="grade_alias" label="Grade Alias" type="string" control="TextBox" size="m" maxLength="20" />
+                <tranSection label="Grade Detail" editMode="Add|Edit|Delete">
+                    <dataBinding dataProperty="grade_detail">
+                        <field id="leave_type_id" label="Leave Type" type="int" control="SmartCombo" size="2">
+                            <lookup>
+                                <valueMember>leave_type_id</valueMember>
+                                <displayMember>leave_type</displayMember>
+                                <namedLookup>../core/hr/lookups/LeaveType.xml</namedLookup>
+                            </lookup>   
+                        </field>
+                        <field id="leave_days" label="Leave Days" type="int" control="TextBox" size="xs" maxVal="100"/> 
+                        <field id="leave_entitled_per_year" label="Leave Per Year" type="int" control="TextBox" size="2"/>
+                    </dataBinding>
+                </tranSection>   
+            </dataBinding>  
+        </controlSection>
+    </formView>
+</cwFramework>
+              
+              
+ 
+ 

@@ -1,0 +1,89 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="LotStmt" type="Report" rptPath="/core/st/reports/lotStmt" rptName="rptLotStmt">
+        <header>Stock Lot Statement</header>  
+        <clientJsCodeRefs>
+            <clientJsCodeRef>../core/st/st_clientcode.js</clientJsCodeRef>
+        </clientJsCodeRefs>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="2" forConsolidated="true" on-change-event="core_st.afterPageRefresh"> 
+                    <value>
+                        <session>branch_id</session>
+                    </value>
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>
+                    </lookup>  
+                </field>
+                <field id="preport_type" label="Report" type="int" control="SimpleCombo"  size="3">
+                    <options defaultValue="0">
+                        <option value="0">Stock Lot Statement</option>
+                        <option value="1">Stock Lot Statement Detailed</option>
+                        <option value="2">Stock Summary</option>
+                        <option value="3">Stock Lot Statement Txn Only</option>
+                        <option value="4">Stock Lot Consumption</option>
+                        <option value="5">Stock Lot Consump. With TS</option>
+                    </options>  
+                </field>
+                <field id="pfrom_date" label="From (For Txn Only)" type="date" control="Date" size="2" range="finYear">   
+                    <value>
+                        <session>year_begin</session>
+                    </value>
+                </field> 
+                <field id="pto_date" label="As On" type="date" control="Date" size="2" range="finYear">                   
+                    <value>
+                        <currentDate/>
+                    </value>    
+                </field> 
+                <nextRow/>
+                <field id="pmaterial_type_id" label="Stock Type" type="int" control="SmartCombo" size="2" isOptional="true">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <valueMember>material_type_id</valueMember>
+                        <displayMember>material_type</displayMember>
+                        <namedLookup>../core/st/lookups/MaterialTypeWithAll.xml</namedLookup>
+                    </lookup>
+                </field>
+                <field id="pmaterial_id" label="Stock/Inventory Item" type="int" control="SmartCombo" size="4">
+                    <value>
+                        <text>-2</text>
+                    </value>
+                    <lookup>
+                        <valueMember>material_id</valueMember>
+                        <displayMember>material_name</displayMember>
+                        <namedLookup>../prod/lookups/MatWithQCAll.xml</namedLookup>
+                        <filterEvent>core_st.rpt_sl_lot_stmt_material_filter</filterEvent>
+                    </lookup>
+                </field>
+                <field id="pstock_location_id" label="Stock Location" type="int" control="SmartCombo" size="2" >
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <valueMember>stock_location_id</valueMember>
+                        <displayMember>stock_location_name</displayMember>
+                        <namedLookup>../core/st/lookups/StockLocationAllforRpt.xml</namedLookup>
+                        <filterEvent>core_st.rpt_stock_location_branch_filter</filterEvent>
+                    </lookup>   
+                </field>
+                <field id="pin_wf" label="In WF" type="bool" control="CheckBox" size="2"/>
+                <nextRow/>
+                <param id="pstock_location_name">                
+                    <text></text>
+                </param>
+                <param id="pyear">
+                    <session>finyear</session>
+                </param>
+                <param id="pcompany_id">                
+                    <session>company_id</session>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

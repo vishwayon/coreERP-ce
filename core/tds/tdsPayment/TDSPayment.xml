@@ -1,0 +1,48 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'> 
+    
+    <businessObject id="TDSPayment" type="Document">    
+        <controlTable>
+            <tableName>tds.tds_payment_control</tableName>
+            <primaryKey>voucher_id</primaryKey>
+            <jsonField id="annex_info">
+                <jfield name="person_type_id" type="int"/>
+                <jfield name="is_pdc" type="bool"/>
+            </jsonField>    
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save>    
+            <delete>
+                <useEntity/>      
+            </delete>
+            <tranTable id="bill_tds_tran">
+                <tableName>tds.bill_tds_tran</tableName>
+                <primaryKey>bill_tds_tran_id</primaryKey>  
+                <customColumns>
+                    <customColumn name="tds_amt" type="numeric" />
+                    <customColumn name="supplier" type="varchar" length="250"/>
+                </customColumns>    
+                <relation linkType="OneToMany">
+                    <foreignKey>payment_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useOnSave/>
+                    <primaryKeyPattern/>
+                </save>         
+                <delete>
+                    <useOnDelete/>      
+                </delete> 
+            </tranTable>
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\tds\tdsPayment\TDSPaymentEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

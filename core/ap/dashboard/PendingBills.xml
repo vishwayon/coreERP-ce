@@ -1,0 +1,46 @@
+<widget id="PendingBills">
+    <title>Pending Bills</title>
+    <widgetType>grid</widgetType>
+    <series id="pendingbills">
+        <label>Pending Bills</label>
+        <sql>
+            <command>
+                select a.rl_pl_id, a.account_id, b.supplier, a.voucher_id, a.doc_date, a.bill_no, 
+                        case when a.bill_no = '' then '1970-01-01' else a.bill_date end as bill_date, a.balance, a.balance_fc, a.fc_type_id, a.fc_type 
+                from ap.fn_pending_bills(:pcompany_id, :pbranch_id, :paccount_id, :pto_date, :pvoucher_id, :pdc, 0::smallint) a
+                Inner Join ap.supplier b on a.account_id = b.supplier_id
+            </command>
+            <params>
+                <param id="pcompany_id">
+                    <session>company_id</session>
+                </param>
+                <param id="pbranch_id">
+                    <text>0</text>
+                </param>
+                <param id="paccount_id">
+                    <text>0</text>
+                </param>
+                <param id="pvoucher_id">
+                    <text></text>
+                </param>
+                <param id="pdc">
+                    <text>C</text>
+                </param>
+                <param id="pto_date">
+                    <currentDate/>
+                </param>
+            </params>
+        </sql>
+        <seriesType>grid</seriesType>
+        <xField/>
+        <yField/>
+        <displayFields>
+            <displayField columnName="supplier" displayName="Supplier"/>
+            <displayField columnName="voucher_id" displayName="Voucher No" />
+            <displayField columnName="doc_date" displayName="Date" format="Date"/>
+            <displayField columnName="bill_no" displayName="Bill No"/>
+            <displayField columnName="bill_date" displayName="Bill Date" format="Date"/>
+            <displayField columnName="balance" displayName="Balance" format="Amount"/>
+        </displayFields>
+    </series>
+</widget>

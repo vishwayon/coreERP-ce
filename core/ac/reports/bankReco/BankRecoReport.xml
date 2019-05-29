@@ -1,0 +1,46 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="BankRecoReport" type="Report" rptPath="/core/ac/reports/bankReco" rptName="BankRecoStatement">
+        <header>Bank Reconciliation</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pview" label="view" type="int" control="SimpleCombo" size="2" >
+                    <options defaultValue="0">
+                        <option value="0">Unreconciled</option>
+                        <option value="1">Reconciled</option>
+                        <option value="2">All</option>
+                    </options>
+                </field>                    
+                <field id="paccount_id" label="Bank Account" type="int" control="SmartCombo" size="4" >
+                    <value>
+                        <text>-1</text>
+                    </value>
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id = 1</filter>
+                    </lookup>   
+                </field>
+                <field id="pfrom_date" label="From Date" type="date" control="Date" size="2" range="finYear">
+                    <value>
+                        <session>year_begin</session>
+                    </value>
+                </field>
+                <field id="pas_on" label="To Date/As On" type="date" control="Date" size="2" range="finYear">                   
+                    <value>
+                        <currentDate/>
+                    </value>    
+                </field>  
+                <param id="pcompany_id">
+                    <session>company_id</session>
+                </param>
+                <param id="pbranch_id">
+                    <text>0</text>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

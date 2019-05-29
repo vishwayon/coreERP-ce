@@ -1,0 +1,38 @@
+
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="LeaveType" type="Master"  bindingBO="leaveType/LeaveType">
+        <header>Leave Type</header>
+        <keyField>leave_type_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <clientJsCode>leaveType/leavetype_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="leave_type" label="Leave Type" type="string" control="TextBox" size="4" maxLength="50" />
+                <nextRow/>    
+                <field id="en_entitlement_type" label="Entitlement Type" control="SimpleCombo" type="string" size="2" mdata-event="subscribe:core_leavetype.change_entitlement_type">
+                    <options>
+                        <option value="1">As On Date</option>
+                        <option value="2">Full Year</option>                    
+                    </options>
+                </field>  
+                <nextRow/>    
+                <field id="paid_leave" label="Paid Leave" type="bool" control="CheckBox" size="ms"/>
+                <field id="pay_percent" label="Pay Percent" type="decimal" scale="amt" control="TextBox" size="ms" isOptional="true" cdata-enable-on="core_leavetype.enable_pay_percent"/>
+                <nextRow/> 
+                <field id="carry_forward_at_yearend" label="Carry Forward At Year End" type="bool" control="CheckBox" size="ms" cdata-enable-on="core_leavetype.enable_carry_forward"/>
+                <field id="carry_forward_limit" label="Carry Forward Limit" type="int" control="TextBox" size="ms" isOptional="true" cdata-enable-on="core_leavetype.enable_carry_forward_limit"/>
+                <nextRow/> 
+                <field id="rejoin_compulsory" label="Rejoin Compulsory"  type="bool" control="CheckBox" size="ms"/>
+                <nextRow/>  
+            </dataBinding>  
+        </controlSection>
+    </formView>
+</cwFramework>
+              
+              
+ 
+ 

@@ -1,0 +1,95 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="SalesReturnList" type="Report" rptPath="/core/st/reports/salesReturnList" rptName="SalesReturnList">
+        <header>Sales Return List</header>
+        <clientJsCode>../sd/sd_cc.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>  
+                <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="ms" forConsolidated="true"> 
+                    <value>
+                        <session>branch_id</session>
+                    </value>
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>
+                    </lookup>  
+                </field>    
+                <field id="preport_type" label="Report Type" type="int" control="SimpleCombo"  size="2">
+                    <options defaultValue="1">
+                        <option value="1">List</option>
+                        <option value="2">List With Tax Amt</option>
+                        <option value="3">Summary By Material</option>
+                        <option value="4">Summary By Customer</option>                      
+                    </options>
+                </field> 
+                <field id="pmat_type_id" label="Stock Type" type="int" control="SmartCombo" size="ms" isOptional="true">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <valueMember>material_type_id</valueMember>
+                        <displayMember>material_type</displayMember>
+                        <namedLookup>../core/st/lookups/MaterialTypeWithAll.xml</namedLookup>
+                    </lookup>
+                </field>                
+               <field id="pmat_id" label="Stock Item" type="int" control="SmartCombo" size="4" >
+                    <value>
+                        <text>-2</text>
+                    </value>
+                    <lookup>
+                        <valueMember>material_id</valueMember>
+                        <displayMember>material_name</displayMember>
+                        <namedLookup>../core/st/lookups/MaterialWithAll.xml</namedLookup>
+                        <filterEvent>sd.rpt_material_filter</filterEvent>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <field id="psales_return_type" label="Debit/Credit Note Type" type="int" control="SimpleCombo" size="2" >
+                    <options defaultValue="-1">
+                        <option value="-1">All</option>
+                        <option value="0">Sales Return</option>
+                        <option value="1">Rate Adjustment</option>
+                        <option value="2">Post Sale Discount</option>
+                        <option value="3">Damaged Delivery</option>
+                    </options>
+                </field> 
+                <field id="pfrom_date" label="Between" type="date" control="Date" size="ms" range="finYear">
+                    <value>
+                        <session>year_begin</session>
+                    </value>
+                </field>
+                <field id="pto_date" label="And" type="date" control="Date" size="ms" range="finYear">
+                    <value>
+                        <currentDate/>
+                    </value>
+                </field>              
+                <field id="pcustomer_id" label="Customer" type="int" control="SmartCombo" size="3" defaultValue="-1">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <valueMember>customer_id</valueMember>
+                        <displayMember>customer</displayMember>
+                        <namedLookup>../core/ar/lookups/CustomerWithAll.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="psrr_id" label="Sales Return Reason" type="int" control="SmartCombo" size="3" defaultValue="-1">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <valueMember>srr_id</valueMember>
+                        <displayMember>srr_desc</displayMember>
+                        <namedLookup>../core/st/lookups/SrrWithAll.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <param id="pcompany_id">                
+                    <session>company_id</session>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

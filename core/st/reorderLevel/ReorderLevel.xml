@@ -1,0 +1,41 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'> 
+    
+    <businessObject id="ReorderLevel" type="Master">
+        <controlTable>
+            <tableName>st.material</tableName>
+            <primaryKey>material_id</primaryKey>   
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <!--This is to ensure that Anchor table does not use entity for save-->
+                <useOnSave/>
+            </save>
+            <delete>
+                <useOnDelete/>
+            </delete>
+            <tranTable id="mat_level">
+                <tableName>st.mat_level</tableName>
+                <primaryKey>mat_level_id</primaryKey>
+                <relation linkType="OneToMany">
+                    <foreignKey>material_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useOnSave/>
+                     <primaryKeyPattern type="md5"></primaryKeyPattern>
+                </save>
+                <delete>
+                    <useOnDelete/>
+                </delete>   
+            </tranTable>   
+        </controlTable> 
+        <codeBehind>
+            <className>\app\core\st\reorderLevel\ReorderLevelEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

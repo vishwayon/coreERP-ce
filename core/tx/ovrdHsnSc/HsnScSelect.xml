@@ -1,0 +1,17 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <allocView id="HsnScSelect" type="alloc" width="800px">
+        <header>Select HSN/SC</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="hsn-loading" control="Label" type="string" size="m" label="Loading ..." />
+                <tranSection label="" editMode="Edit" >
+                    <dataBinding dataProperty="hsn_temp" bindMethod="datatable">
+                    </dataBinding>
+                </tranSection>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>

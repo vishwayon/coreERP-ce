@@ -1,0 +1,16 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Mfg" type="Master" bindingBO="mfg/Mfg">    
+        <header>Manufacturer</header>    
+        <keyField>mfg_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="mfg" label="Manufacturer" type="string" control="TextBox" size="m" maxLength="250" />
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

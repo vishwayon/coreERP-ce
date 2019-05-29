@@ -1,0 +1,14 @@
+<wizard id="GstDebitNote" name="Purchase Return/Debit/Credit Note Wizard">     
+    <codeBehind>
+        <className>\app\core\ap\gstDebitNote\GstDebitNoteWiz</className>
+    </codeBehind>
+    <wizardStep id="SelectSupplier">
+        <path>gstDebitNote/GstDebitNoteWiz/SelectSupplier</path>
+    </wizardStep>
+    <wizardStep id="SelectBill">
+        <path>gstDebitNote/GstDebitNoteWiz/SelectBill</path>
+    </wizardStep>
+    <postWizard id="GstDebitNote">
+        <path>gstDebitNote/GstDebitNoteEditForm</path>
+    </postWizard>
+</wizard>

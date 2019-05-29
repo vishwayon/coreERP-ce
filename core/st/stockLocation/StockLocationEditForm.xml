@@ -1,0 +1,59 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="StockLocation" type="Master" bindingBO="stockLocation/StockLocation">    
+        <header>Stock Location</header>    
+        <keyField>stock_location_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <clientJsCode>stockLocation/StockLocation_cc.js</clientJsCode>
+        <clientJsCodeRefs>
+            <clientJsCodeRef>../core/st/st_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/st/stockLocationMatInfo/MatInfo_cc.js</clientJsCodeRef>
+        </clientJsCodeRefs>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="branch_id" label="Branch" type="int" control="SmartCombo" size="s" cdata-enable-on="core_st.sl_enable_info">
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/Branch.xml</namedLookup>
+                    </lookup>
+                </field>
+                <nextRow/>
+                <field id="stock_location_code" label="Code" type="string" control="TextBox" size="s" maxLength="4" />
+                <nextRow/>
+                <field id="stock_location_name" label="Name" type="string" control="TextBox" size="s" maxLength="250" />
+                <nextRow/>
+                <field id="sl_type_id" label="Stock Location Type" type="int" control="SmartCombo" size="s" cdata-enable-on="core_st.sl_enable_info">
+                    <lookup>
+                        <valueMember>sl_type_id</valueMember>
+                        <displayMember>sl_type</displayMember>
+                        <namedLookup>../core/st/lookups/SlType.xml</namedLookup>
+                    </lookup>
+                </field>
+                <field id="jdata.capacity" label="Capacity" type="decimal" control="TextBox" size="2" scale="amt" isOptional="true"/>
+                <field id="is_default_for_branch" label="Is Default For Branch" type="bool" control="CheckBox" size="s"/>
+                <nextRow/>     
+                <xdiv size="2"/>
+                    <field id="jdata.allow_all_si" label="Allow All Stock Items" type="bool" control="CheckBox" size="12"/>       
+                <xdivEnd/>
+                <dummy size="1"/>
+                <xdiv id="tds" cdata-bind="visible: jdata.allow_all_si() == false" size="6"/>
+                    <field id="jdata.filter_type" label="Filter By" type="int" control="SimpleCombo" size="2" isOptional="true"
+                           mdata-event="subscribe:st.sl.filter_type_change">                    
+                        <options defaultValue="2">
+                            <option value="1">Stock Type(s)</option>
+                            <option value="2">Stock Items(s)</option>
+                        </options>
+                    </field>
+                    <cButton id="btn_select_ovrd" label="Select Item(s)" onClick="st.sl.select_items($data)" />
+                    <cButton id="btn_disp" label="..." onClick="st.sl.disp_selected($data)" />
+                    <field id="jdata.mat_type_ids" label="" type="string" control="Hidden" size="1" isOptional="true"/> 
+                    <field id="jdata.mat_ids" label="" type="string" control="Hidden" size="1" isOptional="true"/>
+                <xdivEnd/>
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

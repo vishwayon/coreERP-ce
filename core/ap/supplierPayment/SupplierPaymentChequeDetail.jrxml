@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2017-07-25T12:09:01 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BankPaymentChequeDetail" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="545" leftMargin="50" rightMargin="0" topMargin="9" bottomMargin="0" whenResourceMissingType="Error" uuid="4c307fb7-97ec-429f-a8e6-44533a037434">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Local_P_db_1"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="inch"/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pcwf_header_template" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["cwf/report-templates/header-template.jasper"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_company_name" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["First Company Private Limtied"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_branch_name" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["First Branch"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_branch_address" class="java.lang.String">
+		<defaultValueExpression><![CDATA["First Floor, Technology Park, Pune"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_company_logo" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["cwf/vsla/assets/coreerp_logo.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_ccy_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_txn_ccy" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["INR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_coreerp_ver" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["CoreERP Ver. 0.5.4"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_base_path" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_date_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["dd-MM-yyyy"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_qty_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_fc_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.#"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pvoucher_id" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["BPV16HO/3"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pamt_in_words" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[select 
+					a.annex_info->'bank_details'->>'bank_name' as bank_name, 
+					a.annex_info->'bank_details'->>'title' as title,
+					a.annex_info->'bank_details'->>'account_no' as account_no,
+					a.annex_info->'bank_details'->>'ifsc_code' as ifsc_code,
+					(a.annex_info->'bank_details'->>'branch_name')::varchar || ' ' || (a.annex_info->'bank_details'->>'branch_address')::varchar as bank_addr
+					from ap.supplier a
+					inner join ap.pymt_control b on a.supplier_id = b.supplier_account_id
+					where b.voucher_id = $P{pvoucher_id};]]>
+	</queryString>
+	<field name="bank_name" class="java.lang.String"/>
+	<field name="title" class="java.lang.String"/>
+	<field name="account_no" class="java.lang.String"/>
+	<field name="ifsc_code" class="java.lang.String"/>
+	<field name="bank_addr" class="java.lang.String"/>
+	<group name="Group1" footerPosition="CollateAtBottom">
+		<groupHeader>
+			<band height="742">
+				<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				<staticText>
+					<reportElement style="NormalLabel" x="14" y="44" width="76" height="12" uuid="656bf46f-5a31-4213-9b4e-b598122a64bd"/>
+					<text><![CDATA[Bank Name]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="" style="NormalLabel" x="90" y="44" width="11" height="12" uuid="94371a82-f2f0-4f4a-9c65-708f2d828ac6"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<textField>
+					<reportElement style="NormalText" x="101" y="44" width="349" height="12" uuid="837d3c41-c809-4588-a038-600a04b5831a">
+						<printWhenExpression><![CDATA[$F{bank_name}!=null]]></printWhenExpression>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{bank_name}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="NormalLabel" x="14" y="16" width="76" height="12" uuid="e0ac6fd8-f257-44c0-bf6a-87ae9a2f92e5"/>
+					<text><![CDATA[Account Name]]></text>
+				</staticText>
+				<textField>
+					<reportElement style="NormalText" x="101" y="16" width="349" height="12" uuid="2db58098-f237-487b-b2a0-301005994f48">
+						<printWhenExpression><![CDATA[$F{title}!=null]]></printWhenExpression>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="" style="NormalLabel" x="90" y="16" width="11" height="12" uuid="5a7414d0-310b-4065-addd-107f3981d174"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" x="14" y="30" width="76" height="12" uuid="cd420073-eee5-4ee3-adc7-b92c6cb35d8c"/>
+					<text><![CDATA[Account #]]></text>
+				</staticText>
+				<textField>
+					<reportElement style="NormalLabel" x="101" y="30" width="349" height="12" uuid="f1f3bb72-ea10-40f8-97dd-bd0c989bdd3f">
+						<printWhenExpression><![CDATA[$F{account_no}!=null]]></printWhenExpression>
+					</reportElement>
+					<textElement>
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{account_no}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="" style="NormalLabel" x="90" y="30" width="11" height="12" uuid="83a8ed05-3650-494e-ac39-c5c6e931dc8c"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" x="14" y="72" width="76" height="12" uuid="1352141f-5a27-4cf0-acfc-7b729fac0942"/>
+					<textElement>
+						<font isItalic="false"/>
+					</textElement>
+					<text><![CDATA[IFSC Code]]></text>
+				</staticText>
+				<textField>
+					<reportElement style="NormalText" x="101" y="72" width="349" height="12" uuid="9eb45841-7e06-48b5-92aa-6f7aee653c8c">
+						<printWhenExpression><![CDATA[$F{ifsc_code}!=null]]></printWhenExpression>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{ifsc_code}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="" style="NormalLabel" x="90" y="72" width="11" height="12" uuid="de3d94ec-ec28-49bd-bec8-8e8024a010a2"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<textField>
+					<reportElement style="NormalText" x="101" y="58" width="349" height="12" uuid="7c78e3e6-dbd3-461c-91b9-329180d63f9f">
+						<printWhenExpression><![CDATA[$F{bank_name}!=null]]></printWhenExpression>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{bank_addr}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="" style="NormalLabel" x="90" y="58" width="11" height="12" uuid="1618cb0c-7e1c-4389-a930-c35fcae40a82"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" x="14" y="58" width="76" height="12" uuid="5c9cb7f4-45e7-4fea-9ff9-ed6ce3d43f9a"/>
+					<text><![CDATA[Bank Address]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+</jasperReport>

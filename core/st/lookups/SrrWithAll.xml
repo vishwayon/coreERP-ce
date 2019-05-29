@@ -1,0 +1,22 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="SrrWithAll">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                Select 0 srr_id, 'All' srr_desc
+                Union All 
+                select srr_id, srr_desc from st.srr
+                Where company_id={company_id}
+                order by srr_desc
+            </command>
+        </sql>
+        <keyField id="material_type_id"/>
+    </lookup>
+</cwFramework>
+
+    

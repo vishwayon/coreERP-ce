@@ -1,0 +1,24 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="SubClass" type="Master" bindingBO="subClass/SubClass">    
+        <header>Sub Class</header>    
+        <keyField>sub_class_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="asset_class_id" label="Asset Class" type="int" control="SmartCombo" size="s" >
+                    <lookup>
+                        <valueMember>asset_class_id</valueMember>
+                        <displayMember>asset_class</displayMember>
+                        <namedLookup>../core/fa/lookups/AssetClass.xml</namedLookup>
+                    </lookup>   
+                </field> 
+                <nextRow/>
+                <field id="sub_class_desc" label="Sub Class Description" type="string" control="TextBox" size="4" maxLength="100" />
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

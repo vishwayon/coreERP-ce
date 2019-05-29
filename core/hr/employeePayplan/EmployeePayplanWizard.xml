@@ -1,0 +1,11 @@
+<wizard id="EmployeePayplan" name="Employee Payplan Wizard">
+    <codeBehind>
+        <className>\app\core\hr\employeePayplan\EmployeePayplanWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectEmployee">
+        <path>employeePayplan/EmployeePayplanWizard/SelectEmployee</path>
+    </wizardStep>
+    <postWizard id="EmployeePayplan">
+        <path>employeePayplan/EmployeePayplanEditForm</path>
+    </postWizard>
+</wizard>

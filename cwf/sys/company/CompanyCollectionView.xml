@@ -1,0 +1,24 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="Company" type="Master" bindingBO="Company" editView="company/CompanyEditForm">        
+        <header>Company</header>
+        <collectionSection>
+            <connectionType>
+                <mainDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    SELECT company_id,company_code,company_name,company_address FROM sys.company 
+                    
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="company_code" displayName="Company Code"/>
+                <displayField columnName="company_name" displayName="Company Name"/>
+                <displayField columnName="company_address" displayName="Company Address"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

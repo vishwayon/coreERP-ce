@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2019-04-01T15:43:52 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="stock_ledger_al_summary_tran" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="36" bottomMargin="0" isFloatColumnFooter="true" whenResourceMissingType="Empty" uuid="4c307fb7-97ec-429f-a8e6-44533a037434">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="local_skm_prod_db_1"/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<property name="net.sf.jasperreports.export.xls.white.page.background" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.columns" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="inch"/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pcwf_header_template" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["cwf/report-templates/header-template.jasper"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_company_name" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["First Company Private Limtied"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_branch_name" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["First Branch"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_branch_address" class="java.lang.String">
+		<defaultValueExpression><![CDATA["First Floor, Technology Park, Pune"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_company_logo" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["cwf/vsla/assets/coreerp_logo.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_ccy_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_txn_ccy" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["INR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_coreerp_ver" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["CoreERP Ver. 0.5.4"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_base_path" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcompany_id" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pbranch_id" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1000001]]></defaultValueExpression>
+	</parameter>
+	<parameter name="preport_period" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["As On 31-03-2015"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_date_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["dd-MM-yyyy"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pyear" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["1516"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pmaterial_id" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2000023]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pfrom_date" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2015-04-01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pto_date" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2016-03-31"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pstock_location_id" class="java.lang.Integer" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_qty_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_rate_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_fc_rate_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.#"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_lc_rate_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.0000"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pmaterial_name" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="pstock_location_name" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT material_id, material_name, branch_id, branch_name, stock_location_id, stock_location_name, 
+					sum(case when vch_tran_id = 'Opening Balance' then received_qty else 0 end) opening_bal,
+					 sum(case when vch_tran_id = 'Opening Balance' then 0 else received_qty end) received_qty, sum(issued_qty) issued_qty, sum(received_qty - issued_qty) closing_bal
+FROM st.fn_sl_group_by_stock_loc_report
+(	$P{pcompany_id}, 
+	$P{pbranch_id}, 
+	$P{pyear}, 
+	$P{pmaterial_id}, 
+	$P{pfrom_date}::Date, 
+	$P{pto_date}::Date, 
+	$P{pstock_location_id}
+)
+Group by material_id, material_name, branch_id, branch_name, stock_location_id, stock_location_name
+ORDER BY material_name, branch_name, stock_location_name;]]>
+	</queryString>
+	<field name="material_id" class="java.lang.Long"/>
+	<field name="material_name" class="java.lang.String"/>
+	<field name="branch_id" class="java.lang.Long"/>
+	<field name="branch_name" class="java.lang.String"/>
+	<field name="stock_location_id" class="java.lang.Long"/>
+	<field name="stock_location_name" class="java.lang.String"/>
+	<field name="opening_bal" class="java.math.BigDecimal"/>
+	<field name="received_qty" class="java.math.BigDecimal"/>
+	<field name="issued_qty" class="java.math.BigDecimal"/>
+	<field name="closing_bal" class="java.math.BigDecimal"/>
+	<variable name="op_bal_tot" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{opening_bal}]]></variableExpression>
+	</variable>
+	<variable name="received_qty_tot" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{received_qty}]]></variableExpression>
+	</variable>
+	<variable name="issued_qty_tot" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{issued_qty}]]></variableExpression>
+	</variable>
+	<variable name="closing_bal_tot" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{closing_bal}]]></variableExpression>
+	</variable>
+	<group name="group_material_id">
+		<groupExpression><![CDATA[$F{material_id}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="29" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+			<textField>
+				<reportElement style="CaptionLabel" x="0" y="0" width="620" height="14" isRemoveLineWhenBlank="true" uuid="83ba9ffe-261c-4028-82c5-7463c32871d2">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<box topPadding="0"/>
+				<textElement verticalAlignment="Middle" markup="none"/>
+				<textFieldExpression><![CDATA["Summary " + (($F{material_name} == null) ? $P{pmaterial_name} : $F{material_name}) ]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="0" y="14" width="620" height="15" backcolor="#008080" uuid="0351e262-a452-4df2-9dff-af812f528baf">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<staticText>
+					<reportElement style="NormalLabel" x="0" y="0" width="130" height="15" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="cea4a8af-5d4f-4e03-b141-449d4ca4761c">
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Branch]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" mode="Transparent" x="320" y="0" width="100" height="15" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="f92d7a24-5d90-447a-8d3d-03f997a3c254">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Receipts]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" mode="Transparent" x="420" y="0" width="100" height="15" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="61716141-9c2e-425a-8928-d6b3f36b039d">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Issues]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" mode="Transparent" x="520" y="0" width="100" height="15" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="202a9ef2-f89d-4593-9054-67d0f01d8161">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Closing Balance]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" x="130" y="0" width="90" height="15" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="ea232327-5d38-413f-a664-7011592766e4">
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Stock Location]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" x="220" y="0" width="100" height="15" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="2415c483-126c-4d60-b356-b504a3ff4acf"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Opening Balance]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="13">
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" x="0" y="0" width="130" height="13" uuid="ec101506-ddce-49a7-9f59-ca426f46190e">
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="3"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{branch_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalLabel" x="130" y="0" width="90" height="13" uuid="68dc4abb-6a92-4ab7-a978-e17072cfcaf8">
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="3"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock_location_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement style="NormalText" x="320" y="0" width="100" height="13" uuid="bf4a74d5-2acd-46a1-8d13-ed144c014dd9">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					<printWhenExpression><![CDATA[$F{received_qty}!=0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{received_qty}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_qty_format}]]></patternExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement style="NormalText" x="420" y="0" width="100" height="13" uuid="8ec95702-c32d-4b05-8eaa-6e3b7768103b">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					<printWhenExpression><![CDATA[$F{issued_qty}!=0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{issued_qty}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_qty_format}]]></patternExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement style="NormalText" x="220" y="0" width="100" height="13" uuid="9fa4e1cf-dcc0-48d9-9f2b-20fc44104da6">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					<printWhenExpression><![CDATA[$F{opening_bal}!=0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{opening_bal}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_qty_format}]]></patternExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement style="NormalText" x="520" y="0" width="100" height="13" uuid="6f078df3-c494-4812-80bb-0d0f277977e1">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					<printWhenExpression><![CDATA[$F{closing_bal}!=0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{closing_bal}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_qty_format}]]></patternExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band height="13">
+			<staticText>
+				<reportElement style="NormalText" x="58" y="0" width="132" height="13" isRemoveLineWhenBlank="true" uuid="8c120285-0014-476b-b4af-bcdc9490389f">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<textField evaluationTime="Group" evaluationGroup="group_material_id" pattern="">
+				<reportElement style="NormalText" x="220" y="0" width="100" height="13" uuid="ae66cc0e-efa5-4f1e-9e95-9747e550a6ee">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					<printWhenExpression><![CDATA[$V{op_bal_tot}!=0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{op_bal_tot}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_qty_format}]]></patternExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="group_material_id" pattern="">
+				<reportElement style="NormalText" x="420" y="0" width="100" height="13" uuid="e4b149bf-7818-4fb6-89c4-a2a5e87e2e9c">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					<printWhenExpression><![CDATA[$V{issued_qty_tot} !=0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{issued_qty_tot}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_qty_format}]]></patternExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="group_material_id" pattern="">
+				<reportElement style="NormalText" x="320" y="0" width="100" height="13" uuid="787b4262-74fb-4440-862c-b1470d561a88">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					<printWhenExpression><![CDATA[$V{received_qty_tot}!=0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{received_qty_tot}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_qty_format}]]></patternExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="group_material_id" pattern="">
+				<reportElement style="NormalText" x="520" y="0" width="100" height="13" uuid="75f11860-c8cb-4eb7-976c-3f6465882b3a">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					<printWhenExpression><![CDATA[$V{closing_bal_tot} !=0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{closing_bal_tot}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_qty_format}]]></patternExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,32 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="SubHead" type="Master" bindingBO="subHead/SubHead">    
+        <header>Sub Head</header>    
+        <keyField>sub_head_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <clientJsCode>ac_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="sub_head_dim_id" label="Sub Head Dimension" type="int" control="SmartCombo" size="3" cdata-enable-on="core_ac.enable_sub_head_dim">
+                    <lookup>
+                        <valueMember>sub_head_dim_id</valueMember>
+                        <displayMember>sub_head_dim</displayMember>
+                        <namedLookup>../core/ac/lookups/SubHeadDimension.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <field id="sub_head_code" label="Sub Head Code" type="string" control="TextBox" size="s" maxLength="10" isOptional="true"/>
+                <nextRow/>
+                <field id="sub_head" label="Sub Head" type="string" control="TextBox" size="3" maxLength="250"/>
+                <nextRow/>
+                <field id="is_closed" label="Closed" type="bool" control="CheckBox" size="xs"/> 
+                <field id="closed_date" label="Closed On" type="date" control="Date" size="ms" range="finYear" isOptional="true"
+                       cdata-enable-on="core_ac.sub_head_closed">
+                </field>
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

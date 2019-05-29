@@ -1,0 +1,33 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'> 
+    
+    <collectionView id="Feedback" type="Master" bindingBO="Feedback" editView="feedback/FeedbackEditForm">        
+        <header>Support/Issue</header>
+        <collectionSection>
+            <connectionType>
+                <mainDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select feedback_id, feedback, menu, username, b.category, c.description,  a.last_updated,
+                    case when a.is_closed = True then 'Yes' else 'No' end as is_closed 
+                    from sys.feedback a 
+                    inner join sys.feedback_category b on a.category_id= b.category_id
+                    inner join sys.feedback_priority c on a.priority_id = c.priority_id
+                    where a.user_id={user_id} and a.company_id ={company_id}                        
+                    order by a.last_updated desc
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="feedback_id" displayName="Support/Issue #"/>
+                <displayField columnName="menu" displayName="Menu" />
+                <displayField columnName="username" displayName="User" />
+                <displayField columnName="category" displayName="Category"/>
+                <displayField columnName="description" displayName="Priority"/>
+                <displayField columnName="last_updated" displayName="Date"/>
+                <displayField columnName="is_closed" displayName="Closed"/>
+            </displayFields>
+        </collectionSection>    
+    </collectionView>
+</cwFramework>

@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2018-02-21T11:57:41 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="UserAccessRights" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="523" leftMargin="36" rightMargin="36" topMargin="36" bottomMargin="36" isSummaryWithPageHeaderAndFooter="true" uuid="4c307fb7-97ec-429f-a8e6-44533a037434">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="local_db_1"/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pcwf_header_template" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["cwf/report-templates/header-template.jasper"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_company_name" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["First Company Private Limtied"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_branch_name" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["First Branch"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_branch_address" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["First Floor, Technology Park, Pune"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_company_logo" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["cwf/vsla/assets/coreerp_logo.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_ccy_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.00"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_txn_ccy" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["INR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_coreerp_ver" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["CoreERP Ver. 0.5.4"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_base_path" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcompany_id" class="java.lang.Integer" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pbranch_id" class="java.lang.Integer" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[1000001]]></defaultValueExpression>
+	</parameter>
+	<parameter name="puser_id" class="java.lang.Long" isForPrompting="false"/>
+	<parameter name="prole_id" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="pmenu_id" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="pmenu_type" class="java.lang.Integer" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[select a.user_id, user_name, full_user_name, email, mobile, is_active, is_admin, is_owner, b.branch_id, c.branch_name,
+b.role_id,d.role_name, e.menu_id, f.menu_text, f.menu_type,
+case f.menu_type
+     when 1 then 'Master'
+     when 2 then 'Document'
+     when 3 then 'Report'
+     when 4 then 'Utilities'
+     else ''
+     end as menu_type_text, e.en_access_level,
+case e.en_access_level 
+	 when 1 then 'ReadOnly'
+     when 2 then 'Dataentry'
+     when 3 then 'Authorise'
+     when 4 then 'Consolidated'
+     else 'NoAccess'
+end as access_level, e.doc_stages
+from sys.user a
+inner join sys.user_branch_role b on a.user_id=b.user_id
+inner join sys.branch c on b.branch_id=c.branch_id
+inner join sys.role d on b.role_id=d.role_id
+inner join sys.role_access_level e on b.role_id=e.role_id
+inner join sys.menu f on e.menu_id=f.menu_id
+where  (b.branch_id= $P{pbranch_id}  or   $P{pbranch_id}=0) 
+and  (a.user_id= $P{puser_id}  or   $P{puser_id}=-99) 
+and  (d.role_id= $P{prole_id}  or   $P{prole_id}=0) 
+and (f.menu_type=$P{pmenu_type}  or   $P{pmenu_type}=0)
+and  (f.menu_id= $P{pmenu_id}  or   $P{pmenu_id}=0) 
+ORDER BY branch_id, user_name, d.role_name, f.menu_type, f.menu_text]]>
+	</queryString>
+	<field name="user_id" class="java.lang.Long"/>
+	<field name="user_name" class="java.lang.String"/>
+	<field name="full_user_name" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="mobile" class="java.lang.String"/>
+	<field name="is_active" class="java.lang.Boolean"/>
+	<field name="is_admin" class="java.lang.Boolean"/>
+	<field name="is_owner" class="java.lang.Boolean"/>
+	<field name="branch_id" class="java.lang.Long"/>
+	<field name="branch_name" class="java.lang.String"/>
+	<field name="role_id" class="java.lang.Long"/>
+	<field name="role_name" class="java.lang.String"/>
+	<field name="menu_id" class="java.lang.Long"/>
+	<field name="menu_text" class="java.lang.String"/>
+	<field name="menu_type" class="java.lang.Integer"/>
+	<field name="menu_type_text" class="java.lang.String"/>
+	<field name="en_access_level" class="java.lang.Integer"/>
+	<field name="access_level" class="java.lang.String"/>
+	<field name="doc_stages" class="java.sql.Array"/>
+	<group name="group_branchh_id">
+		<groupExpression><![CDATA[$F{branch_id}]]></groupExpression>
+		<groupHeader>
+			<band>
+				<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="21">
+				<frame>
+					<reportElement x="0" y="6" width="523" height="14" uuid="52be7dd0-6936-4576-a067-081943e849c9"/>
+					<box>
+						<topPen lineWidth="3.0" lineStyle="Double"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+				</frame>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="group_branch_id">
+		<groupExpression><![CDATA[$F{branch_id}]]></groupExpression>
+		<groupHeader>
+			<band height="19">
+				<frame>
+					<reportElement x="0" y="2" width="523" height="14" uuid="f14de6d1-c493-439b-91d9-5b4ee9d8555e"/>
+					<box>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement style="NormalLabel" x="2" y="0" width="175" height="14" uuid="5e55841b-7ede-4c48-9762-204fbf1e3fef">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+						</reportElement>
+						<box topPadding="0">
+							<topPen lineWidth="0.0"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="0.0"/>
+						</box>
+						<textElement verticalAlignment="Middle">
+							<font isBold="true"/>
+							<paragraph lineSpacing="Single"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{branch_name}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band>
+				<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="group_role_id">
+		<groupExpression><![CDATA[$F{role_id}]]></groupExpression>
+		<groupHeader>
+			<band height="21">
+				<frame>
+					<reportElement x="0" y="0" width="522" height="14" uuid="a5630477-d967-4ce8-8e9b-e0f429198b32"/>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement style="NormalLabel" x="1" y="0" width="174" height="14" uuid="fc832482-72ed-47ec-8ebc-ab10c61e8620">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+						</reportElement>
+						<box topPadding="0">
+							<topPen lineWidth="0.0"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="0.0"/>
+						</box>
+						<textElement verticalAlignment="Middle">
+							<font isBold="true"/>
+							<paragraph lineSpacing="Single"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{role_name}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+			<band/>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="90" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="523" height="40" uuid="fd573bde-26a5-467c-9601-ef6eedfc55d1"/>
+				<subreportParameter name="pcwf_company_name">
+					<subreportParameterExpression><![CDATA[$P{pcwf_company_name}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_branch_name">
+					<subreportParameterExpression><![CDATA[$P{pcwf_branch_name}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_branch_address">
+					<subreportParameterExpression><![CDATA[$P{pcwf_branch_address}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_company_logo">
+					<subreportParameterExpression><![CDATA[$P{pcwf_company_logo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{pcwf_header_template}]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement style="ReportTitle" positionType="Float" x="0" y="48" width="523" height="19" uuid="b683b080-0c74-4af7-bae8-2231bc5a13eb">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["User Access Rights"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="62" splitType="Stretch">
+			<textField>
+				<reportElement style="CaptionLabel" positionType="Float" x="0" y="2" width="80" height="14" uuid="1707e88e-524d-4cec-8a58-99f375c2d490"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["User Name "]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="NormalLabel" x="90" y="2" width="180" height="15" uuid="7fdb476a-dea0-43a6-bf04-fe50d25d346f">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<box topPadding="0">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{user_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="CaptionLabel" positionType="Float" x="0" y="15" width="80" height="14" uuid="010264d4-7fa2-4a80-b9c2-2fb17aaae871"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Mobile"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="NormalLabel" x="90" y="15" width="180" height="14" uuid="c10fde49-33ce-42e8-b934-005a38dfeaa9">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<box topPadding="0">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="16" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mobile}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="NormalLabel" x="443" y="2" width="77" height="14" uuid="47d6dacf-e463-44ee-8205-fa22faccff06">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<box topPadding="0">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{is_admin} == true ? "Yes" : "No")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="CaptionLabel" positionType="Float" x="433" y="2" width="10" height="15" uuid="24d6db5d-6d3e-41b1-b76e-8a6818edee6c"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="CaptionLabel" positionType="Float" x="380" y="2" width="52" height="14" uuid="952d5278-9900-47f0-b17b-568fdd683164"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Admin"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="CaptionLabel" positionType="Float" x="380" y="15" width="52" height="14" uuid="0d313dff-4e39-4064-b538-8cc82431fcb8"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Active"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="NormalLabel" x="443" y="15" width="77" height="14" uuid="dbe66bda-ddb7-41d7-8fbc-28ab0f5a76a0">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<box topPadding="0">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{is_active} == true ? "Yes" : "No")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="CaptionLabel" positionType="Float" x="433" y="15" width="10" height="15" uuid="139a7d39-4ef3-4b98-aae7-b00c578d51c4"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="CaptionLabel" positionType="Float" x="80" y="2" width="10" height="15" uuid="eb1e68ad-a96f-43b0-981c-c3e498b41e31"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="CaptionLabel" positionType="Float" x="80" y="15" width="10" height="15" uuid="20529ee3-578e-406c-8255-1e6c5e4726c7"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="NormalLabel" mode="Transparent" x="226" y="0" width="201" height="21" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="033fc7cc-df4b-4471-8033-42cc74b11f63">
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Stock Item]]></text>
+			</staticText>
+			<frame>
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="0" y="40" width="523" height="21" backcolor="#008080" uuid="be72c70a-8723-4755-964b-84b09c5b0b5b">
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+				</reportElement>
+				<staticText>
+					<reportElement style="NormalLabel" mode="Transparent" x="90" y="0" width="40" height="21" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="10a279cb-f728-4510-986c-c72709dad3e7"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Type]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" mode="Transparent" x="400" y="0" width="119" height="21" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="cd0e6b7b-8173-4b91-85c6-ca4343ddcbf3"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Stages]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" mode="Transparent" x="323" y="0" width="77" height="21" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="889384e3-8306-486c-96d0-fc037c4cf483">
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Access Rights]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" mode="Transparent" x="156" y="0" width="153" height="21" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="54bb4418-3272-4768-8d23-919197492a31">
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Menu]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" mode="Transparent" x="2" y="0" width="80" height="21" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="d35ec27a-45dc-417e-abd8-e0fb6ced24f6"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Branch / Role]]></text>
+				</staticText>
+			</frame>
+			<staticText>
+				<reportElement style="NormalLabel" mode="Transparent" x="156" y="0" width="70" height="21" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="09a84678-7e38-4773-b5e2-4ca244bd8b9e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<frame>
+				<reportElement x="-1" y="0" width="524" height="14" uuid="1feba0df-864e-40f1-b2fc-f488f09fbc51"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="NormalText" x="410" y="0" width="110" height="14" isRemoveLineWhenBlank="true" printWhenGroupChanges="group_branch_id" uuid="9a8f1bf7-68db-40fd-a314-8b913a00612c">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<box topPadding="0"/>
+					<textElement verticalAlignment="Middle" markup="none"/>
+					<textFieldExpression><![CDATA[$F{doc_stages}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="NormalText" positionType="Float" x="150" y="0" width="180" height="14" isRemoveLineWhenBlank="true" uuid="20f729f8-8a8f-451b-912b-aa6122d63842">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<box topPadding="0"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{menu_text}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" x="330" y="0" width="71" height="14" isRemoveLineWhenBlank="true" uuid="6a76b1f2-99ee-4dec-be16-8c6753b421b9">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<box topPadding="0"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{access_level}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" x="91" y="0" width="49" height="14" isRemoveLineWhenBlank="true" uuid="eda2b8af-d169-4f0e-9cf0-e9bb6f6617aa">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<box topPadding="0"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{menu_type_text}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="2" width="523" height="18" uuid="f076449a-5000-4e68-939b-02c04c801cea"/>
+				<box topPadding="0">
+					<topPen lineWidth="0.2"/>
+				</box>
+				<textField>
+					<reportElement style="CoreERPVer" x="0" y="2" width="170" height="15" uuid="8e97d3c7-b3d7-4f3d-8447-4af7aa72f166">
+						<propertyExpression name="net.sf.jasperreports.export.html.id"><![CDATA["version_no"]]></propertyExpression>
+					</reportElement>
+					<textFieldExpression><![CDATA[$P{pcwf_coreerp_ver}]]></textFieldExpression>
+				</textField>
+				<textField pattern="">
+					<reportElement style="FooterPageNo" x="429" y="2" width="51" height="15" uuid="644eb7ad-acec-43c2-ba68-8e776b3da650"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report">
+					<reportElement style="FooterPageNo" x="480" y="2" width="43" height="15" uuid="18705ccc-3218-4d82-a399-f0338af0bb03"/>
+					<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+</jasperReport>

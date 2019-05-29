@@ -1,0 +1,26 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="SubClass" type="Master" bindingBO="SubClass" editView="subClass/SubClassEditForm">    
+        <header>Sub Class</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    Select a.sub_class_id, a.asset_class_id, b.asset_class, a.sub_class_desc
+                    From fa.sub_class a
+                    Inner Join fa.asset_class b on a.asset_class_id=b.asset_class_id
+                    Where a.company_id={company_id}
+                    Order by a.sub_class_desc
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="asset_class" displayName="Asset Class"/>
+                <displayField columnName="sub_class_desc" displayName="Sub Class"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

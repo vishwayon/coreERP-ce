@@ -1,0 +1,90 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="AssetSale" type="Document" bindingBO="assetSale/AssetSale">
+        <header>Asset Sale</header>
+        <keyField>as_id</keyField>
+        <printView rptOption="assetSale/AssetSalePrint">
+            <rptParams>
+                <param id="pas_id">as_id</param>
+            </rptParams>
+        </printView>
+        <newDocEnabled wizard="assetSale/AssetSaleWizard" step="SelectAssetClass">
+            <docType>AS</docType>
+        </newDocEnabled>
+        <deleteDocEnabled/>
+        <clientJsCode>fa_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="as_id" label="Voucher No" type="string" control="TextBox" size="s" maxLength="50" isOptional="true" readOnly="true" forStatus="true"/>
+                <dummy/>
+                <dummy/>
+                <field id="doc_date" label="Date" type="date" control="Date"  size="ms" readOnly="true"/>
+                <nextRow/>
+                <field id="en_sales_type" label="Sales type" control="SimpleCombo" type="int" size="ms">
+                    <options>
+                        <option value="0">Cash</option>
+                        <option value="1">Bank</option>
+                        <option value="2">Credit</option>
+                        <option value="3">Journal</option>
+                    </options>
+                </field>
+                <nextRow/>
+                <field id="customer_id" label="Account" type="int" control="SmartCombo"  size="m">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/AccountWithDebtorsCreditors.xml</namedLookup>
+                        <filterEvent>core_fa.asset_sale_account_combo_filter</filterEvent>
+                    </lookup>   
+                </field>
+                <field id="asset_class" label="Asset Class" type="string" control="TextBox" size="s" readOnly="true"/>
+                <tranSection label="Sale Info" editMode="Auto" size="8">
+                    <dataBinding dataProperty="as_tran">
+                        <!--  <field id="asset_code" label="Asset Code" type="string" control="TextBox" size="ms" maxLength="50" isOptional="true" readOnly="true"/>                   -->
+                        <field id="asset_item_id" label="Asset Item ID" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>                      
+                        <field id="asset_name" label="Asset name" type="string" control="TextBox" size="3" maxLength="250" readOnly="true"/>
+                        <field id="purchase_amt" label="Purchase Amt" type="decimal" control="TextBox" size="3" maxLength="50" isOptional="true" readOnly="true"/>
+                        <field id="dep_amt" label="Dep Amt" type="decimal" control="TextBox" size="3" isOptional="true" readOnly="true"/>
+                        <field id="credit_amt" label="Credit Amt" type="decimal" control="TextBox" size="3" isOptional="true" readOnly="true"/>
+                    </dataBinding>
+                </tranSection>
+                <nextRow/>
+                <dummy/>
+                <dummy/>
+                <dummy/>
+                <field id="debit_amt" label="Debit Amount" type="decimal" control="TextBox" allowNegative="true" size="ms" readOnly="true">
+                    <computedField>
+                        var total = new Number();
+                        for(var p = 0; p &lt; coreWebApp.ModelBo.as_tran().length; ++p)
+                        {
+                        total += new Number(coreWebApp.ModelBo.as_tran()[p].credit_amt());
+                        }
+                        return total.toFixed(2);
+                    </computedField>
+                </field>
+                <tranSection label="Book Info" editMode="Auto" size="8">
+                    <dataBinding dataProperty="as_book_tran">                    
+                        <field id="asset_item_id" label="Asset Item ID" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>                      
+                        <field id="asset_class_id" label="Asset Class ID" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>                      
+                        <field id="asset_name" label="Asset Name" type="string" control="TextBox" size="3" maxLength="250" isOptional="true" readOnly="true"/>  
+                        <field id="asset_book_id" label="Asset Book ID" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>     
+                        <field id="asset_book" label="Asset Book" type="string" control="TextBox" size="3" maxLength="250" isOptional="true" readOnly="true"/>   
+                        <field id="dep_amt" label="Dep Amt" type="decimal" scale="amt" control="TextBox" size="2" isOptional="true" readOnly="true"/>
+                        <field id="acc_dep_amt" label="Acc Dep Amt" type="decimal" scale="amt" control="TextBox" size="2" isOptional="true" readOnly="true"/>
+                        <field id="profit_loss_amt" label="Profit Loss Amt" type="decimal" scale="amt" control="TextBox" size="2" isOptional="true" readOnly="true"/>
+                    </dataBinding>
+                </tranSection>  
+                <nextRow/>                       
+                <field id="narration" label="Narration" type="string" control="TextArea" size="m" maxLength="500" rows="3" isOptional="true"/>  
+                <nextRow/>
+                <field id="cheque_number" label="Cheque#" type="string" control="TextBox" isOptional="true" maxLength="20" size="m"/>        
+                <field id="cheque_date" label="Cheque Date" type="date" control="Date" size="m"/> 
+                <nextRow/>         
+                <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" size="m"  isOptional="true"/>  
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" size="m" readOnly="true" isOptional="true"/>         
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

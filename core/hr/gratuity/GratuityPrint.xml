@@ -1,0 +1,37 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="Gratuity" type="Report" rptPath="/core/hr/gratuity" rptName="Gratuity">
+        <header>Final Settlement</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pgratuity_id" label="Gratuity No." type="string" control="TextBox" size="l"/>            
+                <param id="pcompany_id">
+                    <session>company_id</session>
+                </param>
+                <param id="pbranch_id">
+                    <session>branch_id</session>
+                </param>  
+                 <param id="pcompany_name">
+                    <preset/>
+                </param> 
+                <param id="pbranch_name">
+                    <preset/>
+                </param> 
+                <param id="pbranch_address">
+                    <preset/>
+                </param> 
+                <param id="pdate_format">
+                    <dateFormat/>
+                </param> 
+                <param id="pcurrency_decimal_format">
+                    <numberFormat/>
+                </param>
+                <param id="pcompany_logo_physical">
+                     <preset/>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

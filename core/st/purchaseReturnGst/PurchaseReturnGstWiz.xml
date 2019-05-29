@@ -1,0 +1,15 @@
+<wizard id="PurchaseReturnGst" name="Purchase Return GST Wiz">
+        <clientJsCode>purchaseReturnGst/PurchaseReturnGst_clientcode.js</clientJsCode>       
+    <codeBehind>
+        <className>\app\core\st\purchaseReturnGst\PurchaseReturnGstWiz</className>
+    </codeBehind>
+    <wizardStep id="SelectSupplier">
+        <path>purchaseReturnGst/PurchaseReturnGstWiz/SelectSupplier</path>
+    </wizardStep>
+    <wizardStep id="SelectStockPurchase">
+        <path>purchaseReturnGst/PurchaseReturnGstWiz/SelectStockPurchase</path>
+    </wizardStep>
+    <postWizard id="PurchaseReturnGst">
+        <path>purchaseReturnGst/PurchaseReturnGstEditForm</path>
+    </postWizard>
+</wizard>

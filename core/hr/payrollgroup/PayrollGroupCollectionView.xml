@@ -1,0 +1,27 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>             
+    
+    <collectionView id="PayrollGroup" type="Master" bindingBO="PayrollGroup" editView="payrollgroup/PayrollGroupEditForm">        
+        <header>Payroll Group</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select payroll_group_id, payroll_group,
+                    case when en_pay_period = 1 then 'Bi-Monthly'
+                        when en_pay_period=2 then 'Monthly' end as pay_period,
+                    case when overtime_applicable = True then 'Yes' else 'No' end as 
+                    overtime_applicable from hr.payroll_group order by payroll_group
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="payroll_group" displayName="Payroll Group"/>
+                <displayField columnName="pay_period" displayName="Pay period"/>
+                <displayField columnName="overtime_applicable" displayName="Overtime Applicable"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

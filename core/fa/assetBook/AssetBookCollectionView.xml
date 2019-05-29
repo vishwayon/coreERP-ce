@@ -1,0 +1,24 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="AssetBook" type="Master" bindingBO="AssetBook" editView="assetBook/AssetBookEditForm">        
+        <header>Asset Book</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select asset_book_id, asset_book_desc, 
+                    case when is_accounting_asset_book = True then 'Yes' else 'No' end as 
+                    is_accounting_asset_book FROM fa.asset_book
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="asset_book_desc" displayName="Description"/>
+                <displayField columnName="is_accounting_asset_book" displayName="Is accounting asset book"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

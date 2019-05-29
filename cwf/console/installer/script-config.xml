@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'>
+
+    <scriptInfo>
+        <mainDB>
+            <scriptFile>cwf/sys/scripts/Table_Main_Schema.sql</scriptFile>
+            <scriptFile>cwf/sys/scripts/Procedure_Main_Schema.sql</scriptFile>
+            <scriptFile>cwf/sys/scripts/Function_Main_Schema.sql</scriptFile>
+            <!-- Menus -->
+            <scriptFile>cwf/sys/scripts/Admin_Menu_Entry.sql</scriptFile>
+            <scriptFile>cwf/sys/scripts/Owner_Menu_Entry.sql</scriptFile>
+        </mainDB> 
+        <companyDB>
+            <!-- System -->
+            <scriptFile>cwf/sys/scripts/Table_Schema.sql</scriptFile>
+            <scriptFile>cwf/sys/scripts/Procedure_Schema.sql</scriptFile>
+            <scriptFile>cwf/sys/scripts/Function_Schema.sql</scriptFile>
+            <scriptFile>cwf/sys/scripts/Menu_Entry.sql</scriptFile>
+        </companyDB>
+        <auditDB>
+            <scriptFile>cwf/sys/scripts/AuditTrail_schema.sql</scriptFile>
+        </auditDB>
+    </scriptInfo>
+</cwFramework>

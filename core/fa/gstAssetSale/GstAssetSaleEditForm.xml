@@ -1,0 +1,175 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="GstAssetSale" type="Document" bindingBO="gstAssetSale/GstAssetSale">
+        <header>GST Asset Sale</header>
+        <keyField>as_id</keyField>
+        <printView rptOption="gstAssetSale/GstAssetSalePrint">
+            <rptParams>
+                <param id="pas_id">as_id</param>
+            </rptParams>
+            <printOptions>
+                <printOption desc="Duplicate Copy" rptOption="gstInvoice/GstInvoiceDuplicatePrint"/>
+            </printOptions>
+        </printView>
+        <newDocEnabled wizard="gstAssetSale/GstAssetSaleWizard" step="SelectAssetClass">
+            <docType>AS2</docType>
+        </newDocEnabled>
+        <deleteDocEnabled/>
+        <clientJsCode>gstAssetSale/GstAssetSale_clientcode.js</clientJsCode>    
+        <clientJsCodeRefs>
+            <clientJsCodeRef>../core/tx/tx_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/ar/ar_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/ac/ac_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/tx/ovrdGstRate/gst_rate_cc.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/tx/ovrdHsnSc/hsn_cc.js</clientJsCodeRef>
+        </clientJsCodeRefs> 
+        <jsEvents>
+            <afterLoadEvent>core_fa.as.afterload</afterLoadEvent>
+        </jsEvents>     
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="as_id" label="Voucher No" type="string" control="TextBox" size="s" maxLength="50" isOptional="true" readOnly="true" forStatus="true"/>
+                 <field id="annex_info.gst_output_info.vat_type_id" label="Sale VAT/GST Type" type="int" control="SmartCombo" size="2" readOnly="true">
+                    <lookup>
+                        <valueMember>vat_type_id</valueMember>
+                        <displayMember>vat_type_desc</displayMember>
+                        <namedLookup>../core/tx/lookups/VatTypeSale.xml</namedLookup>
+                    </lookup>
+                </field>
+                <dummy size="2"/>
+                <field id="doc_date" label="Date" type="date" control="Date"  size="ms" readOnly="true"/>
+                
+                <nextRow/>                         
+                <xdiv size="6"/>
+                    <field id="en_sales_type" label="Sales type" control="SimpleCombo" type="int" size="6">
+                        <options>
+                            <option value="0">Cash</option>
+                            <option value="1">Bank</option>
+                            <option value="2">Credit</option>
+                            <option value="3">Journal</option>
+                        </options>
+                    </field>
+                    <nextRow/> 
+                    <field id="customer_id" label="Account" type="int" control="SmartCombo"  size="9"
+                                    mdata-event="subscribe:core_fa.as.fetch_cust_info" >
+                        <lookup>
+                            <valueMember>account_id</valueMember>
+                            <displayMember>account_head</displayMember>
+                            <namedLookup>../core/ac/lookups/AccountWithDebtorsCreditors.xml</namedLookup>
+                            <filterEvent>core_fa.as.account_combo_filter</filterEvent>
+                        </lookup>   
+                    </field>
+                    <nextRow/>
+                <field id="annex_info.gst_output_info.customer_state_id" label="" type="int" control="SmartCombo" size="3" inline="true" 
+                       cdata-enable-on="core_fa.as.enable_gst" mdata-event="subscribe: core_fa.as.customer_state_update">
+                    <lookup>
+                        <valueMember>gst_state_id</valueMember>
+                        <displayMember>gst_state_with_code</displayMember>
+                        <namedLookup>../core/tx/lookups/GstState.xml</namedLookup>
+                    </lookup>
+                </field>
+                <field id="annex_info.gst_output_info.customer_gstin" label="" type="string" control="TextBox" size="3" class="fg-total" inline="true" 
+                        cdata-enable-on="core_fa.as.enable_gst"/>
+                <cLink label="Edit" inline="true" onClick="core_fa.as.select_cust_addr" size="1" cdata-enable-on="core_fa.as.disable_gst"/> <xdivEnd/>  
+                <dummy size="1"/>         
+                <xdiv size="5"/> 
+                    <field id="asset_class" label="Asset Class" type="string" control="TextBox" size="8" readOnly="true"/> 
+                    <nextRow/>                    
+                    <cButton id="gl_distribution" onClick="core_fa.as.view_gl" label="GL Distribution" cdata-visible-on="core_fa.as.visible_gl_distribution"/>
+                    
+                <xdivEnd/> 
+                <tranSection label="Sale Info" editMode="Add|Edit|Delete" fixedWidth="800" afterDeleteMethod="core_fa.as.after_delete_method">
+                    <dataBinding dataProperty="as_tran">
+                        <field id="sl_no" label="#" type="int" control="TextBox" size="1" inline="true" readOnly="true" isOptional="true" style="border: none; background: none;"/>
+                        <field id="asset_name" label="Asset name" type="string" control="TextBox" size="6" maxLength="250" readOnly="true"/>
+                        <field id="purchase_amt" label="Purchase Amt" type="decimal" control="TextBox" size="3" maxLength="50" isOptional="true" readOnly="true"/>
+                        <field id="dep_amt" label="Dep Amt" type="decimal" control="TextBox" size="3" isOptional="true" readOnly="true"/>
+                        <field id="gtt_bt_amt" label="Credit Amt" type="decimal" control="TextBox" size="3" isOptional="true" mdata-event="subscribe: core_fa.as.item_calc"/>
+                        <nextRow/>
+                        <dummy size="1"/>
+                        <xdiv colspan="4"/>  
+                            <field id="gtt_hsn_sc_code" label="" type="string" control="TextBox" size="2" class="fg-total" placeholder="HSN/SC" maxLength="8"/>
+                            <cButton id="btn_hsn_select" label="..." onClick="core_fa.as.select_hsn($data)" />
+                            
+                            <field id="gtt_sgst_pcnt" type="decimal" control="Hidden" size="1" readOnly="true" class="fg-total" scale="1"/>
+                            <field id="gtt_sgst_amt" type="decimal" control="Hidden" size="2" readOnly="true" class="fg-total"/>
+                            <!--<field label="CGST" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true"/>-->
+                            <field id="gtt_cgst_pcnt" type="decimal" control="Hidden" size="1" readOnly="true" class="fg-total" scale="1"/>
+                            <field id="gtt_cgst_amt" type="decimal" control="Hidden" size="2" readOnly="true" class="fg-total"/>
+                            <!--<field label="IGST" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true"/>-->
+                            <field id="gtt_igst_pcnt" type="decimal" control="Hidden" size="1" readOnly="true" class="fg-total" scale="1"/>
+                            <field id="gtt_igst_amt" type="decimal" control="Hidden" size="2" readOnly="true" class="fg-total"/>
+                            <!--<field label="Cess" type="string" control="Hidden" size="1" style="border: none; margin-top: 5px;" inline="true"/>-->
+                            <field id="gtt_cess_pcnt" type="decimal" control="Hidden" size="1" readOnly="true" class="fg-total" scale="1"/>
+                            <field id="gtt_cess_amt" type="decimal" control="Hidden" size="2" readOnly="true" class="fg-total"/>
+                            <field id="vtax_desc" type="string" control="TextBox" size="10" readOnly="true" class="fg-total" 
+                                style="border: none; text-align: right; font-style: italic;" inline="true" colspan="4"
+                                cdata-bind="value: core_tx.gst.tax_desc($data)"/>
+                            <cButton id="btn_gst_rate" label="..." onClick="core_fa.as.gst_rate_select($data)"/>  
+                            <field id="tax_amt" label="Tax Amt" type="decimal" control="TextBox" size="2" readOnly="true" inline="true"/>
+                            <field id="gtt_cess_pcnt" type="decimal" control="Hidden" size="1" readOnly="true" class="fg-total"/>
+                            <field id="gtt_cess_amt" type="decimal" control="Hidden" size="2" readOnly="true" class="fg-total"/>
+                            <field id="gtt_hsn_sc_code" type="string" control="Hidden" />
+                            <field id="gtt_hsn_sc_type" type="string" control="Hidden" />
+                            <field id="gtt_gst_rate_id" type="int" control="Hidden" />
+                            <field id="gtt_bt_amt" type="decimal" control="Hidden" isOptional="true" />
+                            <field id="gtt_sgst_itc_account_id" type="int" control="Hidden" />
+                            <field id="gtt_sgst_account_id" type="int" control="Hidden" />
+                            <field id="gtt_cgst_itc_account_id" type="int" control="Hidden" />
+                            <field id="gtt_cgst_account_id" type="int" control="Hidden" />
+                            <field id="gtt_igst_itc_account_id" type="int" control="Hidden" />
+                            <field id="gtt_igst_account_id" type="int" control="Hidden" />
+                            <field id="gtt_cess_itc_account_id" type="int" control="Hidden" />
+                            <field id="gtt_cess_account_id" type="int" control="Hidden" />                            
+                        <xdivEnd/> 
+                        <field id="credit_amt" label="Credit Amt" type="decimal" control="Hidden" size="3" isOptional="true" readOnly="true"/>
+                        <field id="asset_item_id" label="Asset Item ID" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>                                             
+                    </dataBinding>
+                </tranSection>
+                <cButton id="seleAssetItem" onClick="core_fa.as.asset_item_sel" label="Add" icon="glyphicon glyphicon-plus" inline="true"/>  
+                <nextRow/>
+                <tranSection label="Book Info" editMode="Auto" size="8">
+                    <dataBinding dataProperty="as_book_tran">                    
+                        <field id="asset_item_id" label="Asset Item ID" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>                      
+                        <field id="asset_class_id" label="Asset Class ID" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>                      
+                        <field id="asset_name" label="Asset Name" type="string" control="TextBox" size="3" maxLength="250" isOptional="true" readOnly="true"/>  
+                        <field id="asset_book_id" label="Asset Book ID" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>     
+                        <field id="asset_book" label="Asset Book" type="string" control="TextBox" size="3" maxLength="250" isOptional="true" readOnly="true"/>   
+                        <field id="dep_amt" label="Dep Amt" type="decimal" scale="amt" control="TextBox" size="2" isOptional="true" readOnly="true"/>
+                        <field id="acc_dep_amt" label="Acc Dep Amt" type="decimal" scale="amt" control="TextBox" size="2" isOptional="true" readOnly="true"/>
+                        <field id="profit_loss_amt" label="Profit Loss Amt" type="decimal" scale="amt" control="TextBox" size="2" isOptional="true" readOnly="true"/>
+                    </dataBinding>
+                </tranSection>
+                <nextRow/>    
+                <xdiv id="narration_div" size="5"/>   
+                    <field id="narration" label="Narration" type="string" rows="3" control="TextArea"  size="12" maxLength="500" isOptional="true"/>    
+                    <nextRow/>
+                    <field id="cheque_number" label="Cheque#" type="string" control="TextBox" isOptional="true" size="6" maxLength="20" cdata-visible-on="core_fa.as.cheque_info_visible"/>  
+                    <field id="cheque_date" label="Cheque Date" type="date" control="Date" size="4" inline="true" cdata-visible-on="core_fa.as.cheque_info_visible"/>                                    
+                    <field id="annex_info.is_pdc" label="Post Dated" type="bool" control="CheckBox" size="2" cdata-visible-on="core_fa.as.cheque_info_visible"/>                                 
+                <xdivEnd/>
+                <dummy size="1"/>
+                <xdiv id="total_div" size="6"/>
+                    <field id="gross_total" label="Items Total" type="string" control="Label" size="2"  isOptional="true" inline="true"/>
+                    <field id="gross_debit_amt" label="" type="decimal" control= "TextBox" size="3" isOptional="true"  inline="true" readOnly="true"  class="fg-total"/>
+                   
+                    <field label="Tax Amount" type="string" control="Label" size="2" isOptional="true" inline="true"/>          
+                    <field id="annex_info.tax_amt" label="" type="decimal" control="TextBox" size="3" readOnly="true" inline="true" class="fg-total"/> 
+                    <nextRow/> 
+                    <field label="Round Off" type="string" control="Label" size="2"  isOptional="true" inline="true"/>
+                    <field id="annex_info.round_off_amt" label="" type="decimal" control="TextBox" size="3" allowNegative="true" isOptional="true" inline="true"
+                           mdata-event="subscribe:core_fa.as.total_calc"/>
+                    <field label="Sale Total" type="string" control="Label" size="2" isOptional="true" inline="true"/>  
+                    <field id="debit_amt" label="" type="decimal" control="TextBox" size="3" readOnly="true" inline="true" class="fg-total"/>   
+                    <field id="net_debit_amt" label="" type="decimal" control= "Hidden" size="3" isOptional="true"  readOnly="true" inline="true"
+                             class="fg-total"/>  
+                <xdivEnd/>            
+                <nextRow/>         
+                <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" size="m"  isOptional="true"/>  
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" size="m" readOnly="true" isOptional="true"/>         
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

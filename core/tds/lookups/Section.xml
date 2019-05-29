@@ -1,0 +1,22 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="Section">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>                
+                select a.section_id, a.section, a.section_desc, c.person_type_id, 
+                coalesce(b.tds_account_id, -1) as tds_account_id
+                from tds.section a
+                inner Join tds.section_acc b on a.section_id=b.section_id
+                Inner Join tds.rate c On a.section_id = c.section_id
+                Group by a.section_id, a.section, a.section_desc, c.person_type_id, b.tds_account_id
+                order by section
+            </command>
+        </sql>
+        <keyField id="section_id"/>
+    </lookup>
+</cwFramework>

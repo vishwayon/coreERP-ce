@@ -1,0 +1,19 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="BOlist">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                    Select distinct a.bo_id, b.menu_text 
+                    From sys.doc_wf a
+                    inner join sys.menu b on md5(a.bo_id)::uuid = b.bo_id
+                    order by b.menu_text asc
+            </command>
+        </sql>
+        <keyField id="bo_id"/>
+    </lookup> 
+</cwFramework>

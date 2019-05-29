@@ -1,0 +1,50 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="MatRetGatePass" type="Document" bindingBO="mrgp/Mrgp">
+        <header>Returnable Gate Pass</header>
+        <keyField>stock_id</keyField>
+        <printView rptOption="mrgp/MrgpPrint">
+            <rptParams>
+                <param id="pvoucher_id">stock_id</param>
+            </rptParams>
+        </printView>
+        <newDocEnabled>
+            <docType>RGP</docType>
+        </newDocEnabled>
+        <deleteDocEnabled/>
+        <clientJsCode>mrgp/Mrgp_cc.js</clientJsCode>         
+        <clientJsCodeRefs>
+            <clientJsCodeRef>../core/st/st_clientcode.js</clientJsCodeRef>
+        </clientJsCodeRefs> 
+        <jsEvents>
+            <afterLoadEvent>st.mrgp.after_load</afterLoadEvent>               
+        </jsEvents>          
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="stock_id" label="Voucher No" type="string" control="TextBox" size="s" maxLength="50" isOptional="true" readOnly="true"/>
+                <dummy size="4"/>
+                <field id="doc_date" label="Date" type="date" control="Date" size="ms" range="finYear"/>
+                <tranSection label="Item Details" editMode="Add|Edit|Delete"  fixedWidth="800"
+                                afterDeleteMethod="st.mrgp.mrgp_tran_delete">
+                    <dataBinding dataProperty="mrgp_tran">
+                        <field id="sl_no" label="#" type="int" control="TextBox" size="1" inline="true" readOnly="true" isOptional="true" style="border: none; background: none;"/>
+                        <field id="item_name" label="Item" type="string" control="TextBox" size="4" maxLength="250"/>
+                        <field id="description" label="Description" type="string" control="TextArea" size="3" rows="2" maxLength="250" isOptional="true"/>
+                        
+                        <field id="out_qty" label="Outward Qty" type="decimal" control="TextBox" size="2" scale="qty" cdata-enable-on="st.mrgp.outward_stage_enable"/>
+                        <field id="in_qty" label="Inward Qty" type="decimal" control="TextBox" size="2" scale="qty" isOptional="true"
+                               cdata-enable-on="st.mrgp.inward_stage_visible"/>
+                        <addRowEvent>st.mrgp.mrgp_tran_add</addRowEvent>
+                    </dataBinding>
+                </tranSection>
+                <nextRow/> 
+                <field id="narration" label="Narration" type="string" control="TextArea" size="m" maxLength="500" rows="3" isOptional="true"/>      
+                <nextRow/>
+                <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" size="m"  isOptional="true"/>  
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" size="m" readOnly="true" isOptional="true"/> 
+            </dataBinding>   
+        </controlSection>
+    </formView>
+</cwFramework>

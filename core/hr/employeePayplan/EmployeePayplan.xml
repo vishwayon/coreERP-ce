@@ -1,0 +1,47 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="EmployeePayplan" type="Master">  
+        <controlTable>
+            <tableName>hr.employee_payplan</tableName>
+            <primaryKey>employee_payplan_id</primaryKey>
+            <customColumns>                              
+                <customColumn name="pay_schedule_desc" type="string" /> 
+                <customColumn name="do_not_display" type="bool" /> 
+            </customColumns>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save> 
+            <delete>
+                <useEntity/>
+            </delete> 
+            <tranTable id="epp_detail_tran">
+                <tableName>hr.employee_payplan_detail</tableName>
+                <primaryKey>employee_payplan_detail_id</primaryKey>
+                <customColumns>
+                    <customColumn name="is_select" type="bool" />           
+                </customColumns>
+                <relation linkType="OneToMany">
+                    <foreignKey>employee_payplan_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity orderby="step_id"/>
+                </fetchOrCreate>
+                <save>
+                    <useOnSave/>
+                    <primaryKeyPattern/>
+                </save>
+                <delete>
+                    <useEntity/>
+                </delete>
+            </tranTable>
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\hr\employeePayplan\EmployeePayplanEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

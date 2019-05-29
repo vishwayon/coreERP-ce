@@ -1,0 +1,149 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'> 
+    
+    <businessObject id="Supplier" type="Master" extends="../core/ac/accountHead/AccountHead">
+         <controlTable method="Extends">
+            <tableName>ap.supplier</tableName>
+            <primaryKey>supplier_id</primaryKey>
+            <basePrimaryKey>account_id</basePrimaryKey>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save> 
+            <delete>
+                <useEntity/>
+            </delete> 
+            <tranTable id="supplier_tax_info_tran">
+                <tableName>ap.supplier_tax_info</tableName>
+                <primaryKey>supplier_tax_info_id</primaryKey>  
+                <customColumns>
+                    <customColumn name="base_rate_perc" type="numeric"/>
+                    <customColumn name="ecess_perc" type="numeric"/>
+                    <customColumn name="surcharge_perc" type="numeric"/>
+                </customColumns>    
+                <relation linkType="OneToOne">
+                    <foreignKey>supplier_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{supplier_id}:{RowID}</primaryKeyPattern>
+                </save>
+                <delete>
+                    <useEntity/>
+                </delete>
+            </tranTable>    
+            <reverseTranTable id="supplier_address_tran">       
+                <tableName>sys.address</tableName>
+                <primaryKey>address_id</primaryKey>      
+                <relation linkType="OneToOne">
+                    <foreignKey>address_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern/>
+                </save>
+                <delete>
+                    <useEntity/>
+                </delete>    
+            </reverseTranTable>
+            <jsonField id="annex_info">
+                <jfield name="has_kyc_docs" type="bool"/>  
+                <jfield name="is_overridden" type="boolean"/>
+                <jfield name="supp_type_id" type="int"/>  
+                <jfield name="supplier_type" type="string"/>  
+                <jfield name="block_pymt" type="boolean"/>
+                <jfield name="pay_cycle_id" type="int"/>  
+                <jobject name="msmeda" type="simple">
+                    <jfield name="is_msmeda_registered" type="boolean"/> 
+                    <jfield name="registration_no" type="string"/>   
+                </jobject> 
+                <jobject name="branch_addrs" type="array">
+                    <jfield name="branch_addr" type="string"/>
+                    <jfield name="gst_state_id" type="int"/>  
+                    <jfield name="gstin" type="string"/>
+                </jobject>
+                <jobject name="contact_org" type="simple">
+                    <jfield name="phone" type="string"/>
+                    <jfield name="fax" type="string"/>
+                    <jfield name="mobile" type="string"/>
+                    <jfield name="email" type="string"/>
+                    <jfield name="web" type="string"/>
+                </jobject>
+                <jobject name="contact_person_details" type="simple">
+                    <jfield name="name" type="string"/>
+                    <jfield name="designation" type="string"/>
+                    <jfield name="department" type="string"/>
+                    <jfield name="phone" type="string"/>
+                    <jfield name="fax" type="string"/>
+                    <jfield name="mobile" type="string"/>
+                    <jfield name="email" type="string"/>
+                </jobject>
+                <jobject name="satutory_details" type="simple">
+                    <jfield name="pan" type="string"/>
+                    <jfield name="tan" type="string"/>
+                    <jfield name="service_tax_no" type="string"/>
+                    <jfield name="cin_no" type="string"/>
+                    <jfield name="vat_no" type="string"/>
+                    <jfield name="cst_no" type="string"/>
+                    <jfield name="epf_no" type="string"/>
+                    <jfield name="epf_no" type="string"/>
+                    <jfield name="esi_no" type="string"/>
+                    <jfield name="prof_tax" type="string"/>
+                    <jfield name="labour_reg" type="string"/>
+                    <jfield name="ssi_reg" type="string"/>
+                    <jobject name="excise" type="simple">
+                        <jfield name="ecc_no" type="string"/>
+                        <jfield name="range" type="string"/>
+                        <jfield name="division" type="string"/>
+                        <jfield name="commissionerate" type="string"/>
+                    </jobject>
+                    <jfield name="gst_state_id" type="int"/>  
+                    <jfield name="gstin" type="string"/>
+                    <jfield name="is_ctp" type="bool"/> 
+                    <jfield name="dup_pan" type="bool"/> 
+                    <jfield name="dup_gstin" type="bool"/>
+                    <jfield name="diff_gst_name" type="bool"/> 
+                    <jfield name="gst_reg_name" type="string"/> 
+                </jobject>
+                <jobject name="bank_details" type="simple">
+                    <jfield name="title" type="string"/>
+                    <jfield name="account_type" type="string"/>
+                    <jfield name="bank_name" type="string"/>
+                    <jfield name="account_no" type="string"/>
+                    <jfield name="ifsc_code" type="string"/>
+                    <jfield name="micr_no" type="string"/>
+                    <jfield name="swift_code" type="string"/>
+                    <jfield name="branch_name" type="string"/>
+                    <jfield name="bank_city" type="string"/>
+                    <jfield name="branch_address" type="string"/>
+                    <jfield name="contact" type="string"/>
+                    <jfield name="email" type="string"/>
+                    <jfield name="contact_person" type="string"/>
+                    <jfield name="contact_person_designation" type="string"/>
+                </jobject> 
+                <jobject name="comm_info" type="array">
+                    <jfield name="sl_no" type="int"/>
+                    <jfield name="fat_min" type="decimal"/>
+                    <jfield name="fat_max" type="decimal"/>                
+                    <jfield name="rate_per_ltr" type="decimal"/> 
+                </jobject>   
+                <jobject name="other_info" type="simple">
+                    <jfield name="head_charge_per_ltr" type="decimal"/>
+                    <jfield name="incentive_per_ltr" type="decimal"/>     
+                </jobject>    
+            </jsonField>   
+        </controlTable> 
+        <codeBehind>
+            <className>app\core\ap\supplier\SupplierEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

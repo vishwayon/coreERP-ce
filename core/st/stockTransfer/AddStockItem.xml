@@ -1,0 +1,30 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    <allocView id="AddStockItem" type="alloc" width="735pt">
+        <header>Add Stock Item</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="mat-loading" control="Label" label="Loading ..." />     
+                <field label="Stock Type: " type="string" control="Label" size="2" inline="true"/>
+                <field id="material_type_id" label="" type="int" control="SmartCombo" size="4" isOptional="true" inline="true">
+                    <lookup>
+                        <valueMember>material_type_id</valueMember>
+                        <displayMember>material_type</displayMember>
+                        <namedLookup>../core/st/lookups/MaterialType.xml</namedLookup>
+                    </lookup>
+                </field>
+                <cButton id="get_mat_detail" onClick="core_stocktransfer.get_detail" label="Refresh" style="margin-top: 5px;" inline="true"/> 
+                <field label="Items: " type="string" control="Label" size="1" inline="true"/>
+                <field id="item_cnt" label="" type="decimal" control="TextBox" scale="0" size="1" isOptional="true" class="fg-total" inline="true" />
+                <field label="Units: " type="string" control="Label" size="1" inline="true"/>
+                <field id="unit_cnt" label="" type="decimal" control="TextBox" scale="0" size="1" isOptional="true" class="fg-total" inline="true" />
+                <nextRow/>
+                <tranSection label="" editMode="Edit">
+                    <dataBinding dataProperty="mat_temp"  bindMethod="datatable">
+                    </dataBinding>
+                </tranSection>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>

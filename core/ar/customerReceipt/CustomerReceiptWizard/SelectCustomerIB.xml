@@ -1,0 +1,16 @@
+<wizardView>
+    <header>Select Customer</header>
+    <sections>
+        <formSection id="SelectCustomer">
+            <displayFields>
+                <displayField id="customer_id" label="Customer" type="int" control="SmartCombo" size="m"  editMode="edit" >
+                    <lookup>
+                        <valueMember>customer_id</valueMember>
+                        <displayMember>customer</displayMember>
+                        <namedLookup>../core/ar/lookups/Customer.xml</namedLookup>
+                    </lookup>   
+                </displayField>   
+            </displayFields>
+        </formSection>
+    </sections>
+</wizardView>

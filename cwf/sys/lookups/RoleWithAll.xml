@@ -1,0 +1,25 @@
+
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="RoleWithAll">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+           select a.role_id, a.role_name
+                from (        
+                Select 0 as role_id, 'All' as role_name
+                union All
+                (select role_id, role_name
+                from sys.role 
+                where company_id={company_id}
+                order by role_name asc)
+                ) a
+            </command>
+        </sql>
+        <keyField id="role_id"/>
+    </lookup>
+</cwFramework>

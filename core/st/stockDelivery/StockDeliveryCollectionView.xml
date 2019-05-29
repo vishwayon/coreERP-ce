@@ -1,0 +1,41 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="StockDelivery" type="Document" bindingBO="StockDelivery" editView="stockDelivery/StockDeliveryEditForm">
+        <header>Stock Delivery</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    Select a.stock_id, a.doc_date, b.customer, c.reference_id as invoice_id, c. a.net_amt, a.net_amt_fc, a.status 
+                    from st.stock_control a
+                    inner join ar.customer b on a.account_id = b.customer_id
+                    left join st.stock_control c On a.stock_id = c.reference_id
+                    Where doc_type='DO' and a.finyear=:pfinyear and a.company_id=:pcompany_id and a.branch_id=:pbranch_id
+                    Order by a.doc_date, a.stock_id
+                </command>
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                    <param id="pbranch_id">
+                        <session>branch_id</session>
+                    </param>
+                    <param id="pfinyear">
+                        <session>finyear</session>
+                    </param>
+                </params>
+            </sql>
+            <displayFields>
+                <displayField columnName="doc_date" displayName="Date" format="Date"/>
+                <displayField columnName="stock_id" displayName="Document No"/>
+                <displayField columnName="invoice_id" displayName="Invoice No"/>
+                <displayField columnName="customer" displayName="Customer"/>
+                <displayField columnName="net_amt" displayName="Amount" format="Amount"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

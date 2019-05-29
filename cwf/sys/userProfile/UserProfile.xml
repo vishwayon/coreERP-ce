@@ -1,0 +1,31 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="UserProfile" type="Master">
+        <connectionType>
+            <mainDB/>
+        </connectionType>
+        <controlTable>
+            <tableName>sys.user</tableName>
+            <primaryKey>user_id</primaryKey>   
+            <customColumns>
+                <customColumn name="user_pass_confirm" type="varchar" length="50"/>
+                <customColumn name="old_user_pass" type="varchar" length="50"/>
+                <customColumn name="old_entered_pass" type="varchar" length="50"/>
+            </customColumns>
+            <fetchOrCreate>
+                <useOnFetch/>
+            </fetchOrCreate>
+            <save>
+                <useOnSave/>
+            </save> 
+            <delete>
+                <useOnDelete/>
+            </delete>
+        </controlTable> 
+        <codeBehind>
+            <className>\app\cwf\sys\userProfile\UserProfileEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

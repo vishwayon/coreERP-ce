@@ -1,0 +1,44 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    <allocView id="PrTranDetailView" type="alloc" width="1000px">
+        <header>Pay Sheet Info</header> 
+        <clientJsCode>payrollGeneration/payrollgeneration_clientcode.js</clientJsCode>  
+        <controlSection editMode="Edit">
+            <dataBinding>        
+                <field id="employee_no" label="Employee No" type="string" control="TextBox" size="2" maxLength="500" isOptional="true" readOnly="true"/> 
+                <field id="employee_fullname" label="Employee Name" type="string" control="TextBox" size="5" maxLength="500" isOptional="true" readOnly="true"/>  
+                
+                <field id="pay_days" label="Pay Days" type="int" control="TextBox" size="1" maxLength="250" isOptional="true" readOnly="true"/>  
+                <nextRow/>
+                <field id="tot_emolument_amt" label="Total Emolument Amt" type="decimal" scale="amt" control="TextBox" size="2" isOptional="true" readOnly="true"/>
+                <field id="tot_deduction_amt" label="Total Deduction Amt" type="decimal" scale="amt" control="TextBox" size="2" isOptional="true" readOnly="true"/>
+                <field id="net_amt" label="Net Amt" type="decimal" control="TextBox" allowNegative="true" size="2" readOnly="true"/>
+                                    
+                <tranSection label="Pay Details" editMode="Auto" >
+                    <dataBinding dataProperty="payroll_tran_detail"> 
+                        <field id="employee_id" label="Employee ID" type="Hidden" control="Hidden" size="ms" maxLength="250"/>
+                        <field id="payhead_id" label="Payhead" type="int" control="SmartCombo" size="4" mdata-event="subscribe:core_payrollgeneration.get_payhead_detail" cdata-enable-on="core_payrollgeneration.enable_payhead" >
+                            <lookup>
+                                <valueMember>payhead_id</valueMember>
+                                <displayMember>payhead</displayMember>
+                                <namedLookup>../core/hr/lookups/Payhead.xml</namedLookup>
+                                <filterEvent> core_payrollgeneration.payhead_combo_filter </filterEvent>                                    
+                            </lookup>   
+                        </field>
+                        <field id="payhead_type" label="Payhead Type" control="SimpleCombo" type="string" size="ms" readOnly="true">      
+                            <options>
+                                <option value="E">Emoulment</option>
+                                <option value="D">Deduction</option>
+                                <option value="C">Company Contribution</option>
+                            </options>
+                        </field>
+                        <field id="emolument_amt" label="Emolument Amt" type="decimal" scale="amt" control="TextBox" size="ms" isOptional="true" cdata-enable-on="core_payrollgeneration.enable_emo_amt"/>
+                        <field id="deduction_amt" label="Deduction Amt" type="decimal" scale="amt" control="TextBox" size="ms" isOptional="true" cdata-enable-on="core_payrollgeneration.enable_ded_amt"/>
+                         
+                    </dataBinding>
+                </tranSection>  
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>

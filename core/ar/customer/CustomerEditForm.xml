@@ -1,0 +1,156 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Customer" type="Master"  bindingBO="customer/Customer">
+        <header>Customer</header>
+        <keyField>customer_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <clientJsCode>ar_clientcode.js</clientJsCode>     
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="customer_code" label="Customer Code" type="string" control="TextBox" size="ms" maxLength="10" isOptional="true"/>         
+                <nextRow/>
+                <field id="customer" label="Customer" type="string" control="TextBox" size="4" maxLength="250" 
+                         mdata-event="subscribe: core_ar.customer_desc_changed"/>
+                <field id="salesman_id" label="Salesman" type="int" control="SmartCombo"  size="ms">
+                    <lookup>
+                        <valueMember>salesman_id</valueMember>
+                        <displayMember>salesman_name</displayMember>
+                        <namedLookup>../core/ar/lookups/Salesman.xml</namedLookup>
+                    </lookup>
+                </field> 
+                <nextRow/> 
+                <field id="customer_name" label="Customer Name" type="string" control="TextBox" size="4" maxLength="250" 
+                        cdata-enable-on="core_ar.cust_name_enable"/>
+                <field id="annex_info.is_overridden" label="Override Name" type="bool" control="CheckBox" size="3"/> 
+                <field id="annex_info.has_kyc_docs" label="KYC Documents" type="bool" control="CheckBox" size="3"/> 
+                <nextRow/>
+                <field id="annex_info.segment_id" label="Segment" type="int" control="SmartCombo"  size="4">
+                    <lookup>
+                        <valueMember>segment_id</valueMember>
+                        <displayMember>segment</displayMember>
+                        <namedLookup>../core/ar/lookups/Segment.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <nextRow/> 
+                <field id="credit_limit_type" label="Credit Limit type" control="SimpleCombo" type="int" size="ms">
+                    <options>
+                        <option value="0">No Credit</option>
+                        <option value="1">Unlimited Credit</option>
+                        <option value="2">Apply Credit Limit</option>
+                    </options>
+                </field>        
+                <field id="credit_limit" label="Credit Limit" type="decimal" control="TextBox" size="ms" isOptional="true"  />
+                <field id="pay_term_id" label="Pay Term" type="int" control="SmartCombo"  size="ms">
+                    <lookup>
+                        <valueMember>pay_term_id</valueMember>
+                        <displayMember>pay_term</displayMember>
+                        <namedLookup>../core/ar/lookups/CustPayTerm.xml</namedLookup>
+                    </lookup>   
+                </field> 
+                <nextRow/> 
+                <field id="control_account_id" label="Control Account" type="int" control="SmartCombo"  size="4">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id=46</filter>
+                    </lookup>   
+                </field> 
+                <field id="tax_schedule_id" label="Default Tax" type="int" control="SmartCombo"  size="s" isOptional="true">
+                    <lookup>
+                        <valueMember>tax_schedule_id</valueMember>
+                        <displayMember>tax_schedule</displayMember>
+                        <namedLookup>../core/tx/lookups/TaxSchedule.xml</namedLookup>
+                        <filter>applicable_to_customer = true</filter>
+                    </lookup>   
+                </field>   
+                <dummy style="height:75px"/>
+                <nextRow/>
+                <xtab id="cust_tab" size="12" />   
+                <xtabPage id="bill_addr_tab_page" label="Billing Address" tabid="cust_tab" size="12"/>
+                    <tranSection label=""  editMode="Edit" dataRelation="OneToOne">
+                        <dataBinding dataProperty="customer_address_tran">
+                            <field id="address_type_id" label="Address Type" type="Hidden" control="Hidden" size="s" readOnly="true">
+                            </field>                
+                            <field id="contact_person" label="Contact Person" type="string" control="TextBox" size="s" maxLength="50" />      
+                            <field id="fax" label="Fax" type="string" control="TextBox" size="s" maxLength="50"  isOptional="true"/>       
+                            <nextRow/>                       
+                            <field id="mobile" label="Mobile No" type="string" control="TextBox" size="s" maxLength="50" />               
+                            <field id="phone" label="Phone" type="string" control="TextBox" size="s" maxLength="50"  isOptional="true"/> 
+                            <field id="email" label="Email" type="string" control="TextBox" size="s" maxLength="50"  isOptional="true"/>        
+                            <nextRow/>                       
+                            <field id="address" label="Address" type="string" rows="4" control="TextArea" size="m" maxLength="500" /> 
+                            <nextRow/>
+                            <field id="city" label="City" type="string" control="TextBox" size="s" maxLength="50" isOptional="true"/>                
+                            <field id="pin" label="Pin" type="string" control="TextBox" size="ms" maxLength="8" isOptional="true"/>          
+                            <nextRow/>   
+                            <field id="state" label="State" type="string" control="TextBox" size="s" maxLength="50" isOptional="true"/>                                 
+                            <field id="country" label="Country" type="string" control="TextBox" size="s" maxLength="50" isOptional="true"/>
+                        </dataBinding>
+                    </tranSection>                
+                <xtabPageEnd/>
+                <xtabPage id="shipping_addr_tab_page" label="Shipping Address" tabid="cust_tab" size="12"/>
+                    <dummy style="height:25px"/>
+                    <nextRow/>
+                    <tranSection label=""  editMode="Add|Edit|Delete" dataRelation="OneToMany">
+                        <dataBinding dataProperty="annex_info.ship_addrs">                      
+                            <field id="ship_to" label="Address" type="string" rows="4" control="TextArea" size="4" maxLength="500" /> 
+                            <field id="gst_state_id" label="GST State" type="int" control="SmartCombo" size="3">
+                                <lookup>
+                                    <valueMember>gst_state_id</valueMember>
+                                    <displayMember>gst_state_with_code</displayMember>
+                                    <namedLookup>../core/tx/lookups/GstState.xml</namedLookup>
+                                </lookup>   
+                            </field>   
+                            <field id="gstin" label="GSTIN" type="string" control="TextBox" size="2" maxLength="15"/>  
+                            <field id="city" label="City" type="string" control="TextBox" size="2" maxLength="50" />
+                            <field id="pin" label="Pin" type="string" control="TextBox" size="1" maxLength="8" /> 
+                        </dataBinding>
+                    </tranSection>                 
+                <xtabPageEnd/>
+                <xtabPage id="tax_tab_page" label="Tax Regn Details" tabid="cust_tab" size="12"/>
+                    <field id="annex_info.tax_info.gst_state_id" label="GST State" type="int" control="SmartCombo" size="s">
+                        <lookup>
+                            <valueMember>gst_state_id</valueMember>
+                            <displayMember>gst_state_with_code</displayMember>
+                            <namedLookup>../core/tx/lookups/GstState.xml</namedLookup>
+                        </lookup>   
+                    </field>  
+                    <field id="annex_info.tax_info.gstin" label="GSTIN" type="string" control="TextBox" size="s" maxLength="15"/> 
+                    <field id="annex_info.tax_info.dup_gstin" label="Acknowledge Duplicate GSTIN" type="bool" control="CheckBox" size="4"/> 
+                    <nextRow/>  
+                    <field id="annex_info.tax_info.diff_gst_name" label="Different GST Registered Name" type="bool" control="CheckBox" size="3"/> 
+                    <field id="annex_info.tax_info.gst_reg_name" label="GST Registered Name" type="string" control="TextBox" size="s" maxLength="250"
+                            cdata-enable-on="core_ar.gst_reg_name_enable" isOptional="true"/> 
+                    <nextRow/>
+                    <field id="annex_info.tax_info.tan" label="TAN" type="string" control="TextBox" size="s" isOptional="true" maxLength="10"/>
+                    <field id="annex_info.tax_info.pan" label="PAN" type="string" control="TextBox" size="s" isOptional="true" maxLength="10"/> 
+                    <field id="annex_info.tax_info.dup_pan" label="Acknowledge Duplicate PAN" type="bool" control="CheckBox" size="4"/>   
+                    <nextRow/>
+                    <field id="annex_info.tax_info.ctin" label="CST Regn No" type="string" control="TextBox" size="s" isOptional="true" maxLength="50"/> 
+                    <field id="annex_info.tax_info.vtin" label="VAT Regn No" type="string" control="TextBox" size="s" isOptional="true" maxLength="50"/> 
+                    <field id="annex_info.tax_info.stin" label="Service Tax Regn No" type="string" control="TextBox" size="s" isOptional="true"
+                             maxLength="50"/>   
+                <xtabPageEnd/>
+                <xtabPage id="bank_tab_page" label="Bank Details" tabid="cust_tab" size="12"/>
+                
+                <dummy style="height:25px"/>
+                <nextRow/>
+                <tranSection label=""  editMode="Add|Edit|Delete">
+                    <dataBinding dataProperty="customer_bank_info_tran">
+                        <field id="bank_name" label="Bank Name" type="string" control="TextBox" size="s" maxLength="250"/> 
+                        <field id="bank_branch" label="Bank Branch" type="string" control="TextBox" size="s" maxLength="250"/> 
+                        <field id="address" label="Bank Address" type="string" control="TextBox" size="s" maxLength="500"/>
+                        <field id="switch_no" label="Switch No" type="string" control="TextBox" size="xs" maxLength="50"/>
+                        <field id="other_bank_info" label="Other Bank Datails" type="string" control="TextBox" size="s" maxLength="500"/>
+                        <field id="default_bank" label="Default Bank" type="bool" control="CheckBox" size="2"/> 
+                    </dataBinding>
+                </tranSection>
+                <xtabPageEnd/>
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

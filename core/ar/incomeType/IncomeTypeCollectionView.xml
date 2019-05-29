@@ -1,0 +1,25 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="IncomeType" type="Master" bindingBO="IncomeType" editView="incomeType/IncomeTypeEditForm">
+        <header>Income Type</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    SELECT a.income_type_id, a.income_type_name, a.tax_schedule_id, COALESCE(b.description, '') as tax_schedule, seq_type
+                    FROM ar.income_type a
+                    left Join tx.tax_schedule b on a.tax_schedule_id = b.tax_schedule_id
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="income_type_name" displayName="Income Type"/>
+                <displayField columnName="tax_schedule" displayName="Tax Schedule"/>
+                <displayField columnName="seq_type" displayName="Invoice Sequence"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

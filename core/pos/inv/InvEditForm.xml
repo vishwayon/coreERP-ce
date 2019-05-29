@@ -1,0 +1,309 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Inv" type="Document" bindingBO="inv/Inv">
+        <header>POS Invoice</header>
+        <keyField>inv_id</keyField>
+        <printView rptOption="inv/InvPrint">
+            <rptParams>
+                <param id="pinv_id">inv_id</param>
+            </rptParams>
+            <printOptions>
+                <printOption desc="Transporter Copy" rptOption="inv/InvTransportPrint"/>
+                <printOption desc="Extra Copy" rptOption="inv/InvExtraPrint"/>
+            </printOptions>
+        </printView>
+        <newDocEnabled>
+            <docType>PI</docType>
+        </newDocEnabled>
+        <deleteDocEnabled/>
+        <clientJsCode>inv/PosInv_clientcode.js</clientJsCode>
+        <clientJsCodeRefs>
+            <clientJsCodeRef>@app/core/st/stockInvoice/StockInvoice_clientcode.js</clientJsCodeRef>
+        </clientJsCodeRefs> 
+        <jsEvents>
+            <afterLoadEvent>core_pos.inv.after_load</afterLoadEvent>      
+        </jsEvents>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="inv_id" label="Invoice No" type="string" control="TextBox" size="s" maxLength="50" isOptional="true" readOnly="true" forStatus="true"/>
+                <dummy size="3"/>
+                <field id="doc_date" label="Date" type="date" control="Date" size="ms" range="finYear" readOnly="true"/>
+                <nextRow/>
+                <tranSection label="Stock Items" editMode="Add|Edit|Delete" fixedWidth="800" fixedHeight="210" afterDeleteMethod="core_pos.inv.inv_tran_delete">
+                    <dataBinding dataProperty="inv_tran">
+                        <field id="sl_no" label="#" type="int" control="TextBox" size="1" inline="true" readOnly="true" isOptional="true" style="border: none; background: none;"/>
+                        <field id="bar_code" label="Bar Code" type="string" control="TextBox" size="3" isOptional="true" />
+                        <field id="material_type_id" label="Type" type="int" control="SmartCombo" size="3" isOptional="true">
+                            <lookup>
+                                <valueMember>material_type_id</valueMember>
+                                <displayMember>material_type</displayMember>
+                                <namedLookup>../core/st/lookups/MaterialType.xml</namedLookup>
+                            </lookup>
+                        </field>
+                        <field id="material_id" label="Stock Item" type="int" control="SmartCombo" size="6"
+                            mdata-event="subscribe: core_pos.inv.fetch_mat_info" >
+                            <lookup>
+                                <valueMember>material_id</valueMember>
+                                <displayMember>material_name</displayMember>
+                                <namedLookup>../core/st/lookups/Material.xml</namedLookup>
+                                <filterEvent>core_pos.inv.material_filter</filterEvent>
+                            </lookup>
+                        </field>
+                        <field id="issued_qty" label="Issued Qty" type="decimal" control="TextBox" size="3" scale="qty"
+                               mdata-event="subscribe:core_pos.inv.item_calc"/>
+                        <cButton label="..." inline="true" onClick="core_pos.inv.view_war_info($data)" style="height: 21px; background: blue;"
+                            />
+                        <field id="rate" label="Rate" type="decimal" control="TextBox" size="3" scale="rate" isOptional="true"
+                               mdata-event="subscribe:core_pos.inv.item_calc"/>
+                        <field id="disc_is_value" label="" type="bool" control="CheckBox" size="1" isOptional="true" style="width: 20px;"
+                            mdata-event="subscribe: core_pos.inv.disc_is_value_change"/>
+                        <field id="disc_pcnt" label="Disc %" type="decimal" control="TextBox" size="2"  isOptional="true" maxVal="99.99"
+                               mdata-event="subscribe:core_pos.inv.item_calc" cdata-enable-on="core_pos.inv.disc_pcnt_enable" />
+                        <field id="disc_amt" label="Disc" type="decimal" control="TextBox" size="2" isOptional="true"
+                               mdata-event="subscribe:core_pos.inv.item_calc" cdata-enable-on="core_pos.inv.disc_amt_enable" />
+                        <field id="bt_amt" label="Item Amt" type="decimal" control="TextBox" size="3" readOnly="true" isOptional="true" />
+                        <nextRow/>
+                        <dummy size="1"/>
+                        <field id="uom_id" label="UoM" type="int" control="SmartCombo" readOnly="true" size="1">
+                            <lookup>
+                                <valueMember>uom_id</valueMember>
+                                <displayMember>uom_desc</displayMember>
+                                <namedLookup>../core/st/lookups/UoM.xml</namedLookup>
+                                <filterEvent>core_st.sp_uom_combo_filter</filterEvent>
+                            </lookup>
+                        </field>
+                        <field id="stock_location_id" label="Location" type="int" control="SmartCombo" size="1">
+                            <lookup>
+                                <valueMember>stock_location_id</valueMember>
+                                <displayMember>stock_location_name</displayMember>
+                                <namedLookup>../core/st/lookups/StockLocation.xml</namedLookup>
+                            </lookup>
+                        </field>
+                        <field id="bal_qty" label="" type="string" control="TextBox" size="1" readOnly="true" inline="true" class="fg-total" style="font-style: italic; font-size: small;" 
+                            cdata-bind="style: { color: has_bal() ? 'green' : 'red' }"/>
+                        <field id="has_bal" label="" type="bool" control="Hidden" readOnly="true" isOptional="true"/>
+                        <field id="tax_schedule_id" label="" type="int" control="SmartCombo" colspan="3"
+                            mdata-event="subscribe: core_pos.inv.tax_schedule_change">
+                            <lookup>
+                                <valueMember>tax_schedule_id</valueMember>
+                                <displayMember>tax_schedule</displayMember>
+                                <namedLookup>../core/tx/lookups/TaxSchedule.xml</namedLookup>
+                                <filter>applicable_to_customer = true</filter>
+                            </lookup>
+                        </field>
+                        <field id="en_tax_type" label="" type="int" control="Hidden" isOptional="true"/>
+                        <dummy size="1"/>
+                        <field id="tax_pcnt" label="Tax %" type="decimal" control="TextBox" size="2" isOptional="true"
+                            cdata-enable-on="core_pos.inv.tax_pcnt_enable" mdata-event="subscribe:core_pos.inv.item_calc"/>
+                        <field label="Tax:" type="string" control="Label" style="border: none; margin-top: 5px; float: right;" inline="true"/>
+                        <field id="tax_amt" label="Tax Amt" type="decimal" control="TextBox" size="3" isOptional="true"
+                            cdata-enable-on="core_pos.inv.tax_amt_enable" mdata-event="subscribe:core_pos.inv.item_calc"/>
+                        <field id="item_amt" label="Amount" type="decimal" control="Hidden" readOnly="true" isOptional="true"/>
+                        <tranSection label="Stock Tran War" editMode="Auto"  cdata-visible-on="core_pos.inv.stock_tran_war_hide" >
+                            <dataBinding dataProperty="stock_tran_war">
+                                <field id="stock_tran_war_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="stock_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="stock_tran_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="material_id" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="mfg_serial" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>
+                                <field id="mfg_date" label="Sl No." type="Hidden" control="Hidden" isOptional="true" size="1" readOnly="true"/>                               
+                            </dataBinding>
+                        </tranSection>
+                        <addRowEvent>core_pos.inv.inv_tran_add</addRowEvent>
+                    </dataBinding>
+                </tranSection>
+                <xtab id="tab_tot_settle" size="12"/>
+                    <xtabPage id="tbp_tot_settle" tabid="tab_tot_settle" label="Total and Settlements" />
+                        <xdiv id="tot_div_top1" size="6"/>
+                            <xdiv id="tot_div1" size="12"/>
+                                <field label="Total Taxes" type="string" control="Label" size="2" isOptional="true" inline="true"/>
+                                <field id="tax_amt_tot" label="" type="decimal" control="TextBox" size="2" inline="true" readOnly="true" class="fg-total"/>
+                                <field label="Items Total" type="string" control="Label" size="2" isOptional="true" inline="true"/>
+                                <field id="item_amt_tot" label="" type="decimal" control="TextBox" size="2" inline="true" readOnly="true" class="fg-total"/>                                
+                            <xdivEnd/>
+                            <xdiv id="tot_div2" size="12"/>
+                                <field label="Buy Back(s)" type="string" control="Label" size="2" isOptional="true" inline="true"/>
+                                <field id="nt_amt" label="" type="decimal" control="TextBox" size="2" allowNegative="true" inline="true" readOnly="true" class="fg-total"/>
+                                <field label="Round Off" type="string" control="Label" size="2" isOptional="true" inline="true"/>
+                                <field id="rof_amt" label="" type="decimal" control="TextBox" size="2" inline="true" readOnly="true" class="fg-total"/>
+                                <field label="Invoice Amt" type="string" control="Label" size="2" isOptional="true" inline="true" style="font-weight: bold;"/>
+                                <field id="inv_amt" label="" type="decimal" control="TextBox" size="2" inline="true" readOnly="true" class="fg-total" style="font-weight: bold;"/>
+                                <nextRow/>
+                                <field id="narration" label="Narration" type="string" control="TextArea" size="12" rows="4" maxLength="500" isOptional="true"/>
+                                
+                            <xdivEnd/>
+                        <xdivEnd/>
+                        <xdiv id="tot_div_top1" size="6"/> 
+                            <xdiv id="settle_btn_div" size="12"/>
+                                <cButton id="btn_save_settle" onClick="core_pos.inv.save_settle" label="Save + Settle" cdata-visible-on="core_pos.inv.for_settle" class="btn-primary"/>
+                            <xdivEnd/>
+                            <xdiv id="settle_div" size="12" />
+                                <tranSection editMode="Edit" dataRelation="OneToOne" cdata-visible-on="core_pos.inv.show_settle_print" >
+                                    <dataBinding dataProperty="inv_settle">
+                                        <field id="is_cash" label="In Cash" type="bool" control="CheckBox" size="2" inline="true" isOptional="true" mdata-event="subscribe: core_pos.inv.settle_cash" />
+                                        <field id="cash_account_id" label="" type="int" control="SmartCombo" size="6" cdata-enable-on="core_pos.inv.is_cash" inline="true" isOptional="true">
+                                            <lookup>
+                                                <valueMember>account_id</valueMember>
+                                                <displayMember>account_head</displayMember>
+                                                <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                                                <filter>account_type_id = 2</filter>
+                                            </lookup>
+                                        </field>
+                                        <field id="cash_amt" label="" type="decimal" control="TextBox" size="3" cdata-enable-on="core_pos.inv.is_cash" inline="true" isOptional="true"/>
+                                        <nextRow/>
+                                        <field id="is_cheque" label="In Cheque" type="bool" control="CheckBox" size="2" inline="true" isOptional="true" mdata-event="subscribe: core_pos.inv.settle_cheque" />
+                                        <field id="cheque_account_id" label="" type="int" control="SmartCombo" size="6" inline="true" readOnly="true" isOptional="true">
+                                            <lookup>
+                                                <valueMember>account_id</valueMember>
+                                                <displayMember>account_head</displayMember>
+                                                <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                                                <filter>account_type_id = 14</filter>
+                                            </lookup>
+                                        </field>
+                                        <field id="cheque_amt" label="" type="decimal" control="TextBox" size="3" cdata-enable-on="core_pos.inv.is_cheque" inline="true" isOptional="true"/>
+                                        <dummy size="2"/>
+                                        <field label="Cheque No." type="string" control="Label" size="2" inline="true"/>
+                                        <field id="cheque_no" label="" type="string" control="TextBox" size="4" cdata-enable-on="core_pos.inv.is_cheque" isOptional="true" inline="true"/>
+                                        <nextRow/>
+                                        <field id="is_card" label="By Card" type="bool" control="CheckBox" size="2" inline="true" isOptional="true" mdata-event="subscribe: core_pos.inv.settle_card" />
+                                        <field id="cc_mac_id" label="" type="int" control="SmartCombo" size="6" cdata-enable-on="core_pos.inv.is_card" inline="true" isOptional="true">
+                                            <lookup>
+                                                <valueMember>cc_mac_id</valueMember>
+                                                <displayMember>cc_mac_code</displayMember>
+                                                <namedLookup>../core/pos/lookups/CcMac.xml</namedLookup>
+                                            </lookup>
+                                        </field>
+                                        <field id="card_amt" label="" type="decimal" control="TextBox" size="3" cdata-enable-on="core_pos.inv.is_card" inline="true" isOptional="true"/>
+                                        <nextRow/>
+                                        <field label="Card No." type="string" control="Label" size="2" inline="true"/>
+                                        <field id="card_no" label="" type="string" control="TextBox" size="4" cdata-enable-on="core_pos.inv.is_card" isOptional="true" inline="true"/>
+                                        <field label="Settle No." type="string" control="Label" size="2" inline="true"/>
+                                        <field id="card_ref_no" label="" type="string" control="TextBox" size="2" cdata-enable-on="core_pos.inv.is_card" isOptional="true" inline="true"/>
+                                        <nextRow/>
+                                        <field id="is_customer" label="Customer" type="bool" control="CheckBox" size="2" inline="true" isOptional="true" mdata-event="subscribe: core_pos.inv.settle_cust"/>
+                                        <field id="customer_id" label="" type="int" control="SmartCombo" size="6" cdata-enable-on="core_pos.inv.is_customer" inline="true" readOnly="true" isOptional="true">
+                                            <lookup>
+                                                <valueMember>account_id</valueMember>
+                                                <displayMember>account_head</displayMember>
+                                                <namedLookup>../core/ac/lookups/AccountWithDebtorsCreditors.xml</namedLookup>
+                                            </lookup>
+                                        </field>
+                                        <field id="customer_amt" label="" type="decimal" control="TextBox" size="3" cdata-enable-on="core_pos.inv.is_customer" inline="true" isOptional="true"/>
+                                    </dataBinding>
+                                </tranSection>
+                                <dummy size="5"/>
+                                <cButton id="btn_post_print" onClick="core_pos.inv.post_print" label="Post + Print" inline="true" style="border: none;"
+                                        cdata-visible-on="core_pos.inv.allowPost"/>
+                                <customField id="settle_total" label="" type="decimal" control= "TextBox" size="3" isOptional="true"  inline="true"
+                                            readOnly="true" cdata-bind="style: {color: settle_total() != 0 ? &quot;red&quot; : &quot;green&quot; }"  cdata-visible-on="core_pos.inv.allowSave">
+                                   <computedField>
+                                       var inv_tot = new Number(this.inv_amt());
+                                        var settle_tot = new Number(0.00);
+                                        if(this.inv_settle().length > 0) {
+                                            var is = this.inv_settle()[0];
+                                            settle_tot = Number.parseFloat(is.cash_amt()) + Number.parseFloat(is.cheque_amt()) + Number.parseFloat(is.card_amt()) + Number.parseFloat(is.customer_amt());
+                                            if(inv_tot === settle_tot) {
+                                                 $('#btn_settle_print').removeAttr('disabled');
+                                                 $('#btn_settle_print').addClass('btn-success');
+                                            } else {
+                                                 $('#btn_settle_print').attr('disabled', true);
+                                            }
+                                        } else {
+                                            $('#btn_settle_print').attr('disabled', true);
+                                        }
+                                        return (inv_tot - settle_tot).toFixed(2);
+                                   </computedField>
+                               </customField>
+                            <xdivEnd/>
+                        <xdivEnd/>
+                    <xtabPageEnd/>
+                    <xtabPage id="tbp_cust_tin" tabid="tab_tot_settle" label="Walk-in TIN" />
+                        <xdiv id="cust_div" size="6"/>
+                            <field id="cust_name" label="Walk-in Customer" type="string" control="TextBox" size="6" maxLength="50" isOptional="true"/>
+                            <field id="cust_tin" label="Customer TIN (VAT/GST)" type="string" control="TextBox" size="6" maxLength="20" isOptional="true"/>
+                            <nextRow/>
+                            <field id="cust_address" label="Address" type="string" control="TextArea" size="12" rows="3" maxLength="500" isOptional="true"/>
+                        <xdivEnd/>
+                        <xdiv id="cust_div_2" size="6"/>
+                            <field id="cust_tel" label="Telephone" type="string" control="TextBox" size="6" maxLength="20" isOptional="true"/>
+                            <field id="annex_info.order_ref" label="Order Ref" type="string" control="TextBox" size="6" maxLength="20" isOptional="true"/>
+                            <nextRow/>
+                            <field id="cust_mob" label="Mobile" type="string" control="TextBox" size="6" maxLength="20" isOptional="true"/>
+                            <field id="annex_info.order_date" label="Order Date" type="date" control="TextBox" size="6" isOptional="true"/>
+                        <xdivEnd/>
+                    <xtabPageEnd/>
+                    <xtabPage id="tbp_stock_bb" tabid="tab_tot_settle" label="Buy Back(s)" />
+                        <tranSection label="" editMode="Add|Edit|Delete" fixedWidth="800" fixedHeight="120"  
+                                     afterDeleteMethod="core_pos.inv.inv_tran_delete">
+                            <dataBinding dataProperty="inv_bb">
+                                <field id="sl_no" label="#" type="int" control="TextBox" size="1" inline="true" readOnly="true" isOptional="true" style="border: none; background: none;"/>
+                                <field id="bar_code" label="Bar Code" type="string" control="TextBox" size="3" isOptional="true" />
+                                <field id="material_type_id" label="Type" type="int" control="SmartCombo" size="3" isOptional="true">
+                                    <lookup>
+                                        <valueMember>material_type_id</valueMember>
+                                        <displayMember>material_type</displayMember>
+                                        <namedLookup>../core/st/lookups/MaterialType.xml</namedLookup>
+                                    </lookup>
+                                </field>
+                                <field id="material_id" label="Stock Item" type="int" control="SmartCombo" size="6"
+                                    mdata-event="subscribe: core_pos.inv.fetch_bb_mat_info" >
+                                    <lookup>
+                                        <valueMember>material_id</valueMember>
+                                        <displayMember>material_name</displayMember>
+                                        <namedLookup>../core/st/lookups/Material.xml</namedLookup>
+                                        <filterEvent>core_pos.inv.material_filter</filterEvent>
+                                    </lookup>
+                                </field>
+                                <field id="received_qty" label="Received Qty" type="decimal" control="TextBox" size="2" scale="qty"
+                                       mdata-event="subscribe:core_pos.inv.item_bb_calc"/>
+                                <field id="rate" label="Rate" type="decimal" control="TextBox" size="2" scale="rate" isOptional="true"
+                                       mdata-event="subscribe:core_pos.inv.item_bb_calc"/>
+                                <field id="bt_amt" label="Item Amt" type="decimal" control="TextBox" size="2" readOnly="true" isOptional="true" />
+                                <nextRow/>
+                                <dummy/>
+                                <field id="uom_id" label="UoM" type="int" control="SmartCombo" size="1" readOnly="true">
+                                    <lookup>
+                                        <valueMember>uom_id</valueMember>
+                                        <displayMember>uom_desc</displayMember>
+                                        <namedLookup>../core/st/lookups/UoM.xml</namedLookup>
+                                        <filterEvent>core_st.sp_uom_combo_filter</filterEvent>
+                                    </lookup>
+                                </field>
+                                <field id="stock_location_id" label="Location" type="int" control="SmartCombo" size="1">
+                                    <lookup>
+                                        <valueMember>stock_location_id</valueMember>
+                                        <displayMember>stock_location_name</displayMember>
+                                        <namedLookup>../core/st/lookups/StockLocation.xml</namedLookup>
+                                    </lookup>
+                                </field>
+                                <field id="tax_schedule_id" label="" type="int" control="SmartCombo" size="1" readOnly="true"
+                                    mdata-event="subscribe: core_pos.inv.tax_schedule_change">
+                                    <lookup>
+                                        <valueMember>tax_schedule_id</valueMember>
+                                        <displayMember>tax_schedule</displayMember>
+                                        <namedLookup>../core/tx/lookups/TaxSchedule.xml</namedLookup>
+                                        <filter>applicable_to_customer = true</filter>
+                                    </lookup>
+                                </field>
+                                <dummy/>
+                                <field id="en_tax_type" label="" type="int" control="Hidden" isOptional="true"/>
+                                <field id="tax_pcnt" label="Tax %" type="decimal" control="TextBox" size="1" isOptional="true"
+                                    cdata-enable-on="core_pos.inv.tax_pcnt_enable" mdata-event="subscribe:core_pos.inv.item_bb_calc"/>
+                                <field id="tax_amt" label="Tax Amt" type="decimal" control="TextBox" size="1" isOptional="true"
+                                    cdata-enable-on="core_pos.inv.tax_amt_enable" mdata-event="subscribe:core_pos.inv.item_bb_calc"/>
+                                <field id="item_amt" label="Amount" type="decimal" control="Hidden" readOnly="true" isOptional="true"/>
+                                
+                                <addRowEvent>core_pos.inv.inv_bb_add</addRowEvent>
+                            </dataBinding>
+                        </tranSection>
+                    <xtabPageEnd/>
+                <xtabEnd/>
+                <field id="entered_by" label="Entered By" type="string" control="TextBox" size="m" isOptional="true" readOnly="true" />
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" size="m" isOptional="true" readOnly="true" />                
+            </dataBinding>
+        </controlSection>   
+    </formView>
+</cwFramework>
+

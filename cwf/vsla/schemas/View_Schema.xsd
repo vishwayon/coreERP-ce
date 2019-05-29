@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="View">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Header" type="xs:string" />
+        <xs:element name="CollectionSection" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ConnectionType">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="CompanyDB" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Sql" type="xs:string" />
+              <xs:element name="KeyField">
+                <xs:complexType>
+                  <xs:attribute name="ID" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="DisplayFields">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="DisplayField">
+                      <xs:complexType>
+                        <xs:attribute name="ColumnName" type="xs:string" use="required" />
+                        <xs:attribute name="DisplayName" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ControlSection"  minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DataBinding" type="DataBinding_Type"/>
+            </xs:sequence>
+            <xs:attribute name="EditMode" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="Id" type="xs:string" use="required" />
+      <xs:attribute name="Type" type="xs:string" use="required" />
+      <xs:attribute name="BindingBO" type="xs:string" use="required" />
+      <xs:attribute name="EditView" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="DataBinding_Type">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="Field">
+        <xs:complexType>
+          <xs:sequence minOccurs="0">
+            <xs:element minOccurs="0" name="Options">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element maxOccurs="unbounded" name="Option">
+                    <xs:complexType>
+                      <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                          <xs:attribute name="Value" type="xs:unsignedByte" use="required" />
+                        </xs:extension>
+                      </xs:simpleContent>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element minOccurs="0" name="Lookup">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="DataMember" type="xs:string" />
+                  <xs:element name="DisplayMember" type="xs:string" />
+                  <xs:element name="NamedLookup" type="xs:string" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="ID" type="xs:string" use="required" />
+          <xs:attribute name="Label" type="xs:string" use="required" />
+          <xs:attribute name="Type" type="Field_Type" use="required" />
+          <xs:attribute name="Control" type="Control_Type" use="required" />
+          <xs:attribute name="Size" type="Size_Type" use="optional" />
+          <xs:attribute name="MaxLength" type="xs:unsignedByte" use="optional" />
+          <xs:attribute name="Scale" type="Scale_Type" use="optional" />
+          <xs:attribute name="MaxVal" type="xs:unsignedByte" use="optional" />
+          <xs:attribute name="IsOptional" type="xs:string" use="optional"/>
+          <xs:attribute name="AllowNegative" type="xs:string" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+        <xs:element name="TranSection" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DataBinding" type="DataBinding_Type"/>
+            </xs:sequence>
+            <xs:attribute name="Label" type="xs:string" use="required" />
+            <xs:attribute name="EditMode" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+    </xs:sequence>
+    <xs:attribute name="DataProperty" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:simpleType name="Field_Type">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="string" />
+      <xs:enumeration value="int" />
+      <xs:enumeration value="decimal" />
+      <xs:enumeration value="date"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Control_Type">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TextBox" />
+      <xs:enumeration value="SmartCombo" />
+      <xs:enumeration value="SimpleCombo" />
+      <xs:enumeration value="DateTime"/>
+      <xs:enumeration value="CheckBox"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Size_Type">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Large" />
+      <xs:enumeration value="Small" />
+      <xs:enumeration value="Medium" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="Scale_Type">
+      <xs:restriction base="xs:string">
+          <xs:enumeration value="amt" />
+          <xs:enumeration value="rate" />
+          <xs:enumeration value="qty" />
+          <xs:enumeration value="fc" />
+      </xs:restriction>
+  </xs:simpleType>
+      
+</xs:schema>

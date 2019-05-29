@@ -1,0 +1,50 @@
+<wizardView>
+    <header>Select Bill</header>
+    <sections>
+        <collectionSection id="SelectBill">
+        <connectionType>
+          <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+               Select bill_id, doc_date, sum(bill_amt) as bill_amt, supp_state_id, supp_gstin, supp_addr, sum(tax_amt) as tax_amt, vat_type_id
+                From ap.fn_bill_for_dn(:pbranch_id, :psupplier_id, :pfrom_date, :pto_date, :pvoucher_id)
+                Group by bill_id, doc_date, supp_state_id, supp_gstin, supp_addr, vat_type_id 
+                order by doc_date, bill_id
+            </command>
+            <params>
+                <param id="pbranch_id">
+                    <session>branch_id</session>
+                </param>
+                <param id="psupplier_id">
+                    <wizard step="SelectSupplier">supplier_id</wizard>
+                </param>
+                <param id="pfrom_date">
+                    <wizard step="SelectSupplier">from_date</wizard>
+                </param>
+                <param id="pto_date">
+                    <wizard step="SelectSupplier">to_date</wizard>
+                </param>
+                <param id="pvoucher_id">
+                    <text></text>
+                </param>
+            </params>
+        </sql>
+        <keyField id="bill_id"/>
+        <displayFields>
+            <displayField columnName="doc_date" displayName="Doc Date" 
+                        id="doc_date" label="Doc Date" type="date" 
+                        control="TextBox" size="s"/>
+            <displayField columnName="bill_id" displayName="Voucher No" 
+                        id="bill_id" label="Voucher No" type="string" 
+                        control="TextBox" size="s"/>
+            <displayField columnName="tax_amt" displayName="Tax Amt" 
+                        id="tax_amt" label="Tax Amt" type="decimal" 
+                        control="TextBox" size="s"/>
+            <displayField columnName="bill_amt" displayName="Invoice Amt" 
+                        id="bill_amt" label="Bill Amt" type="decimal" 
+                        control="TextBox" size="s"/>
+        </displayFields>
+    </collectionSection>
+    </sections>
+</wizardView>

@@ -1,0 +1,111 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="SupplierOPBLRef" type="Master"  bindingBO="supplierOPBLRef/SupplierOPBLRef">
+        <header>Supplier OPBL Ref</header>
+        <keyField>supplier_id</keyField>
+        <clientJsCode>ap_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+          <dataBinding>
+                <field id="supplier_code" label="Supplier Code" type="string" control="TextBox" size="3" maxLength="20" readOnly="true"  isOptional="true"/>         
+                <nextRow/>
+                <field id="supplier" label="Supplier" type="string" control="TextBox" size="l" maxLength="250"  readOnly="true"/>
+                
+                <field id="branch_id" label="Branch" type="int" control="SmartCombo" size="2"  readOnly="true">
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/Branch.xml</namedLookup>
+                    </lookup>   
+                </field>   
+                
+                <nextRow/>
+                <tranSection label="Supplier OPBL Details"  editMode="Add|Edit|Delete"   fixedWidth="1200">
+                    <dataBinding dataProperty="supplier_payable_ledger">
+                        <field id="voucher_id" label="Bill Ref No" type="string" control="TextBox" size="ms" maxLength="50" />  
+                        <field id="doc_date" label="Bill Date" type="date" control="Date" size="xs" />
+                          <field id="fc_type_id" label="FC" type="int" control="SmartCombo" size="xs"
+                                 mdata-event="subscribe:core_ap.SuppOPBL_fc_tran_changed">
+                              <lookup>
+                                  <valueMember>fc_type_id</valueMember>
+                                  <displayMember>fc_type</displayMember>
+                                  <namedLookup>../core/ac/lookups/FCType.xml</namedLookup>
+                              </lookup>
+                          </field>
+                          <field id="exch_rate" label="Exch Rate" type="decimal" control="TextBox" size="xs" scale="fc"
+                                  cdata-enable-on="core_ap.suppOPBL_enable_visible_fc"  mdata-event="subscribe:core_ap.SuppOPBL_fc_tran_changed"/>
+                          <field id="debit_amt" label="Debit Amt" type="decimal" control="TextBox" size="xs"  isOptional="true"
+                                 cdata-enable-on="core_ap.suppOPBL_enable_visible_local" mdata-event="subscribe:core_ap.SuppOPBL_fc_tran_changed"/>
+                          <field id="debit_amt_fc" label="Debit Amt FC" type="decimal" control="TextBox" size="xs" 
+                                 cdata-enable-on="core_ap.suppOPBL_enable_visible_fc" isOptional="true"
+                                 mdata-event="subscribe:core_ap.SuppOPBL_fc_tran_changed"/>
+                          <field id="credit_amt" label="Credit Amt" type="decimal" control="TextBox" size="xs"  isOptional="true"
+                                  cdata-enable-on="core_ap.suppOPBL_enable_visible_local" mdata-event="subscribe:core_ap.SuppOPBL_fc_tran_changed"/>
+                          <field id="credit_amt_fc" label="Credit Amt FC" type="decimal" control="TextBox" size="xs"  isOptional="true"
+                                   cdata-enable-on="core_ap.suppOPBL_enable_visible_fc" mdata-event="subscribe:core_ap.SuppOPBL_fc_tran_changed"/>
+                        <field id="narration" label="Narration" type="string" control="TextArea" rows="2" maxLength="500" isOptional="true" size="3"/>
+                    </dataBinding>
+                </tranSection>
+                <field id="net_label" label="Net Balance" type="string" control="Label" size="1"  isOptional="true"/>
+                <customField id="net_amt" label="" type="decimal" allowNegative="true" control= "TextBox" size="2" isOptional="true" readOnly="true" >
+                    <computedField>
+                        var total_debit_amt = new Number(0.00);
+                        var total_credit_amt = new Number(0.00);
+                        for(var p = 0; p &lt; this.supplier_payable_ledger().length; ++p)
+                        {
+                            total_credit_amt += parseFloat(this.supplier_payable_ledger()[p].credit_amt());
+                            total_debit_amt += parseFloat(this.supplier_payable_ledger()[p].debit_amt());
+                        }
+                        return (total_debit_amt - total_credit_amt).toFixed(2);
+                    </computedField>
+                </customField>
+                <dummy size="3"/>
+                <field id="debit_total_label" label="Debit Total" type="string" control="Label" size="1"  isOptional="true"/>
+                <customField id="debit_total" label="" type="decimal" control= "TextBox" size="ms" isOptional="true" readOnly="true" >
+                    <computedField>
+                        var total_debit_amt = new Number();
+                        for(var p = 0; p &lt; this.supplier_payable_ledger().length; ++p)
+                        {
+                            total_debit_amt += new Number(this.supplier_payable_ledger()[p].debit_amt());
+                        }
+                        return total_debit_amt.toFixed(2);
+                    </computedField>
+                </customField>   
+                <customField id="debit_total_fc" label="" type="decimal" control= "TextBox" size="ms" isOptional="true" readOnly="true" >
+                    <computedField>
+                        var total_debit_amt = new Number();
+                        for(var p = 0; p &lt; this.supplier_payable_ledger().length; ++p)
+                        {
+                            total_debit_amt += new Number(this.supplier_payable_ledger()[p].debit_amt_fc());
+                        }
+                        return total_debit_amt.toFixed(2);
+                    </computedField>
+                </customField>   
+                <nextRow/>
+                <dummy size="6"/>
+                <field id="credit_total_label" label="Credit Total" type="string" control="Label" size="1"  isOptional="true"/>
+                <customField id="credit_total" label="" type="decimal" control= "TextBox" size="ms" isOptional="true" readOnly="true" >
+                    <computedField>
+                        var total_debit_amt = new Number();
+                        for(var p = 0; p &lt; this.supplier_payable_ledger().length; ++p)
+                        {
+                            total_debit_amt += new Number(this.supplier_payable_ledger()[p].credit_amt());
+                        }
+                        return total_debit_amt.toFixed(2);
+                    </computedField>
+                </customField>  
+                <customField id="credit_total_fc" label="" type="decimal" control= "TextBox" size="ms" isOptional="true" readOnly="true">
+                    <computedField>
+                        var total_debit_amt = new Number();
+                        for(var p = 0; p &lt; this.supplier_payable_ledger().length; ++p)
+                        {
+                            total_debit_amt += new Number(this.supplier_payable_ledger()[p].credit_amt_fc());
+                        }
+                        return total_debit_amt.toFixed(2);
+                    </computedField>
+                </customField>
+          </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

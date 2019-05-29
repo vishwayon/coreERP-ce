@@ -1,0 +1,75 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Company" type="Master" bindingBO="company/Company" helpLink="setup-guide/company.html">
+        <header>Company</header>
+        <keyField>company_id</keyField>
+        <newDocEnabled/>
+        <clientJsCode>company/Company_clientcode.js</clientJsCode> 
+        <controlSection editMode="Edit">  
+            <dataBinding>
+                <field id="company_code" label="Code" type="string" control="TextBox" size="xs" maxLength="2" />
+                <field id="company_name" label="Name" type="string" control="TextBox" size="m" maxLength="500" />
+                <nextRow/>          
+                <field id="company_short_name" label="Short Name" type="string" control="TextBox" size="s" maxLength="80" /> 
+                <nextRow/> 
+                <field id="company_address" label="Company Address" rows="4" type="string" control="TextArea" size="m" maxLength="1000" />            
+                <nextRow/> 
+                <field id="company_logo" label="Company Logo" type="string" control="TextBox" size="m" maxLength="50" isOptional="true"/>
+                <field id="user_time_zone" label="Time Zone" type="string" control="SmartCombo" size="s" >
+                    <lookup>
+                        <displayMember>time_zone</displayMember>
+                        <valueMember>time_zone_id</valueMember>
+                        <namedLookup>../cwf/sys/lookups/TimeZone.xml</namedLookup>
+                    </lookup>
+                </field>
+                <nextRow/>
+                <field id="database" label="Database" type="string" control="TextBox" size="s" maxLength="50" readOnly="true" isOptional="true"/>
+                <nextRow/>  
+                <field id="branch_code" label="Branch Code" type="string" control="TextBox" size="ms" maxLength="2" 
+                       cdata-visible-on="cwf_company.enable_visible"  isOptional="true"/> 
+                <field id="branch_name" label="Branch Name" type="string" control="TextBox" size="s" maxLength="100" 
+                       cdata-visible-on="cwf_company.enable_visible" isOptional="true"/>   
+                <nextRow/>  
+                <field id="branch_description" label="Branch Description" type="string" control="TextBox" size="m" maxLength="100" 
+                       cdata-visible-on="cwf_company.enable_visible" isOptional="true"/>   
+                <field id="br_gst_state_id" label="Branch GST State" type="int" control="SmartCombo" size="2">
+                    <lookup>
+                        <valueMember>gst_state_id</valueMember>
+                        <displayMember>gst_state_with_code</displayMember>
+                        <namedLookup>../cwf/sys/lookups/GstState.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <nextRow/>  
+                <field id="currency" label="Currency" type="string" control="TextBox" size="s" maxLength="50" isOptional="true"/>
+                <field id="sub_currency" label="Sub Currency" type="string" control="TextBox" size="s" maxLength="50" isOptional="true"/>
+                <nextRow/>  
+                <field id="currency_displayed" label="Currency Displayed" type="string" control="TextBox" size="s" maxLength="50" isOptional="true"/>  
+                <field id="currency_system" label="Currency System" type="int" control="SimpleCombo" size="s" isOptional="true">           
+                    <options>
+                        <option value="1">Lakhs</option>
+                        <option value="2">Millions</option>
+                    </options>
+                </field>            
+                <field id="branch_date_format" label="Date Format" type="string" control="SimpleCombo" size="ms" maxLength="50" >
+                    <options>
+                        <option value="dd/mm/yyyy">dd/mm/yyyy</option>
+                        <option value="dd-mm-yyyy">dd-mm-yyyy</option>
+                        <option value="mm-dd-yyyy">mm-dd-yyyy</option>
+                        <option value="mm/dd/yyyy">mm/dd/yyyy</option>
+                    </options>
+                </field>
+                <nextRow/>
+                <field id="finyear_code" label="Fin Year" type="string" control="TextBox" size="s" maxLength="4"  
+                       cdata-visible-on="cwf_company.enable_visible" isOptional="true"/>  
+                <field id="fin_year_begin" label="Year Begin" type="date" control="Date" size="s"  
+                       cdata-visible-on="cwf_company.enable_visible"/>  
+                <field id="fin_year_end" label="Year End" type="date" control="Date" size="s" cdata-visible-on="cwf_company.enable_visible"/>  
+                <nextRow/>                 
+                <field id="server_message" label="Server Messages" type="string" rows="8" control="TextArea" size="l" maxLength="8500" isOptional="true" readOnly="true"/>  
+                <nextRow/> 
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

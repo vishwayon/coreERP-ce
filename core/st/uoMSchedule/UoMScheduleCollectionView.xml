@@ -1,0 +1,25 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="UoMSchedule" type="Master" bindingBO="UoMSchedule" editView="uoMSchedule/UoMScheduleEditForm">
+        <header>UoM Schedule</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    SELECT uom_sch_id, uom_sch_desc
+                    FROM st.uom_sch
+                    Where company_id={company_id}
+                    order by uom_sch_desc
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="uom_sch_desc" displayName="Description"/>
+            </displayFields>
+        </collectionSection>   
+    </collectionView>
+</cwFramework>
+

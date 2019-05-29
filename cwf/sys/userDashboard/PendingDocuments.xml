@@ -1,0 +1,30 @@
+<widget id="pendingDocuments">
+    <title>Pending Documents</title>    
+    <widgetType>grid</widgetType>
+    <series id="pDocs">
+        <label>Pending Documents</label>
+        <sql>
+            <command>
+                select a.doc_id, a.doc_sender_comment, a.user_id_from, a.doc_sent_on::date, a.doc_action, 
+                a.user_id_to, a.doc_stage_id, a.doc_stage_id_from, a.branch_id, b.branch_name, a.bo_id,
+                '' as from_user from sys.doc_wf a
+                inner join sys.branch b on a.branch_id = b.branch_id 
+                where a.user_id_to &lt;&gt; -1 and a.user_id_to = {user_id}
+            </command>
+        </sql>
+        <seriesType>grid</seriesType>
+        <xField/>
+        <yField/>
+        <displayFields>
+          <displayField columnName="branch_name" displayName="Branch"/>
+          <displayField columnName="bo_id" displayName="Doc Type"/>
+          <displayField columnName="doc_id" displayName="Voucher id"/>
+          <displayField columnName="doc_sent_on" displayName="Assign Date"/>
+          <displayField columnName="doc_action" displayName="Action"/>
+          <displayField columnName="from_user" displayName="From User"/>
+        </displayFields>
+    </series>    
+    <codeBehind>
+        <className>\app\cwf\sys\userDashboard\UserDashboardEventHandler</className>
+    </codeBehind>
+</widget>

@@ -1,0 +1,23 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <allocView id="RcPopUp" type="alloc" width="400px">
+        <header>Reverse Charge Information</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="rc_sec_id" label="Under Sec." type="int" control="SmartCombo" size="9">
+                    <lookup>
+                        <valueMember>rc_sec_id</valueMember>
+                        <displayMember>rc_sec_desc</displayMember>
+                        <namedLookup>../core/tx/lookups/GstRcSec.xml</namedLookup>
+                    </lookup>
+                </field>
+                <nextRow/>
+                <field id="supp_name" label="Supplier Name" type="string" control="TextBox" size="12"/>
+                <nextRow/>
+                <field id="supp_addr" label="Address" type="string" control="TextArea" rows="3" size="12"/>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>

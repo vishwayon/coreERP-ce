@@ -1,0 +1,97 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="StockBalance" type="Report" rptPath="/core/st/reports/stockBalance" rptName="StockClosingBalWAC">
+        <header>Stock Balance</header>
+        <clientJsCodeRefs>
+            <clientJsCodeRef>../core/st/st_clientcode.js</clientJsCodeRef>
+        </clientJsCodeRefs>
+        <controlSection editMode="Edit">
+            <dataBinding>    
+                <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="ms" forConsolidated="true" on-change-event="core_st.rpt_st_bal_after_page_refresh"> 
+                    <value>
+                        <session>branch_id</session>
+                    </value>
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>             
+                    </lookup>  
+                </field>            
+                <field id="preport_type" label="Report" type="int" control="SimpleCombo"  size="s">
+                    <options defaultValue="0">
+                        <option value="0">Stock Closing Balance (WAC)</option>
+                        <option value="1">Stock Movement Value (WAC)</option>
+                        <option value="2">Stock Movement Value And Quantity (WAC)</option>
+                        <option value="3">Stock Movement Quantity</option>
+                        <option value="4">Stock Balance Columnar</option>
+                        <option value="5">Stock Balance By Stock Location</option>
+                    </options>
+                </field>   
+                <field id="pfrom_date" label="From" type="date" control="Date" size="ms" range="finYear">
+                    <value>
+                        <session>year_begin</session>
+                    </value>
+                </field>
+                <field id="pto_date" label="To" type="date" control="Date" size="ms" range="finYear">                   
+                    <value>
+                        <currentDate/>
+                    </value>    
+                </field>
+                <field id="pgroup_type" label="Group" type="int" control="SimpleCombo"  size="s">
+                    <options defaultValue="1">
+                        <option value="1">Group By Stock Type</option>
+                        <option value="2">Group By Inventory Account</option>
+                    </options>
+                </field>
+                <nextRow/>
+                <field id="pmaterial_type_id" label="Stock Type" type="int" control="SmartCombo"  size="s">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <displayMember>material_type</displayMember>
+                        <valueMember>material_type_id</valueMember>
+                        <namedLookup>../core/st/lookups/MaterialTypeWithAll.xml</namedLookup>
+                    </lookup>
+                </field>
+                <field id="psl_id" label="Stock Location" type="int" control="SmartCombo"  size="s">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <displayMember>stock_location_name</displayMember>
+                        <valueMember>stock_location_id</valueMember>
+                        <namedLookup>../core/st/lookups/StockLocationAllforRpt.xml</namedLookup>                        
+                        <filterEvent>core_st.rpt_stock_location_branch_filter</filterEvent>
+                    </lookup>
+                </field>
+                <field id="psl_type_id" label="Loc. Type" type="int" control="SmartCombo"  size="2">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <displayMember>sl_type</displayMember>
+                        <valueMember>sl_type_id</valueMember>
+                        <namedLookup>../core/st/lookups/SlTypeAll.xml</namedLookup>
+                    </lookup>
+                </field>
+                <field id="psuppress_blank" label="Suppress Blank" type="bool" control="CheckBox" size="2"/> 
+                <field id="psub_tot_qv" label="Sub-total Qty/Value" type="bool" control="CheckBox" size="2"/>   
+                <param id="pcompany_id">                
+                    <session>company_id</session>
+                </param>
+                <param id="pyear">
+                    <session>finyear</session>
+                </param>
+                <param id="preport_name">
+                    <text>Stock Ledger</text>
+                </param>
+                <param id="pcwf_lc_rate_format">
+                    <text>#,##0.0000</text>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

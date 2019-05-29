@@ -1,0 +1,56 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Role" type="Master"  bindingBO="role/Role">
+        <header>Role</header>
+        <keyField>role_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <clientJsCode>sys_clientcode.js</clientJsCode>
+        <jsEvents>
+            <afterLoadEvent>core_sys.get_access_levels</afterLoadEvent>
+        </jsEvents>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="role_name" label="Role Name" type="string" control="TextBox" size="4" maxLength="50" />
+                <field id="role_description" label="Description" type="string" control="TextBox" size="8" maxLength="250" />         
+                <field id="menu_items" label="Menu" type="string" control="Hidden" size="s" readOnly="True"/>
+                <nextRow/>
+                <cHtml id="accesslevels" label="Access Levels">
+                <![CDATA[
+                    <style type="text/css">
+                        .ui-widget-content .ui-state-active{border:0;}
+                     </style>
+                    <script type="text/html" id="tree-node">
+                        <li data-bind="attr: { cmenutype: menu_type, id: menu_name }">
+                            <input data-bind="attr: {id: menu_name()+'-chk' }, checked: selected, visible: access_levels().length>0, click:core_sys.check_menuitem.bind($data)" type="checkbox"/>
+                                <span data-bind="text: menu_text"></span>
+                                <span data-bind="template: {name: 'access-levels', foreach: access_levels, as: 'opt'},visible: selected"
+                                     style="margin-right:30%;float:right;"></span>
+                                <span data-bind="template: {name: 'docstages', foreach: stages, as: 'stg'}, visible: core_sys.handlestages($data,$element)"
+                                        style="margin-right:30%;float:right;"></span>
+                                <ul data-bind="template: {name: 'tree-node', foreach: children, as: 'chld'}"></ul>
+                        </li>
+                    </script>
+                    <script type="text/html" id="access-levels">
+                        &nbsp&nbsp<input type="radio" data-bind="attr: { name: chld.menu_name},checked: chld.access_level,value: val"/><span data-bind="text: name"></span>
+                    </script>
+                    <script type="text/html" id="docstages">
+                        &nbsp&nbsp<input type="checkbox" data-bind="attr: { name: chld.menu_name()+'_stages'}, checked: chld.doc_stages, value: val"/><span data-bind="text: desc"></span>
+                    </script>  
+                    <div id="mitem" data-bind="if: menu_items">
+                        <div class="form-group col-md-12">
+                            <label class="control-label" for="menu_items">Access Levels</label>
+                            <input id="checkall" type="checkbox" style="margin-left:50px;" onclick="core_sys.check_all()"/> Select All
+                            <div id="divtree">
+                                <ul data-bind="template: {name: 'tree-node', foreach: menu_items, as: 'mitem'}"></ul>
+                            </div>
+                        </div>
+                    </div>
+                ]]>
+                </cHtml>       
+            </dataBinding> 
+        </controlSection>
+    </formView>
+</cwFramework>

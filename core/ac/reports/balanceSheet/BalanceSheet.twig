@@ -1,0 +1,129 @@
+<div id="twig_rpt" name="twig_rpt" class="col-md-8" style="background-color: #ffffff;border-radius: 5px;">
+    <style>
+        #twig_rpt>table td {word-wrap:break-word;}
+    </style>
+    <div class="cformheader">
+        <h3>Balance Sheet
+            <span style="font-size: 12px;"><i>{{ " As On " ~ model.toDate }}</i></span>
+        </h3>
+        <div>
+            <span style="font-size: 12px;">{{ model.rptHeader }}</span>
+        </div>
+    </div>
+    <div>
+        <h4>{{ model.branchName }}</h4>
+    </div>
+    <table id="tcons" style="margin: 10px auto auto;">
+        <style type="text/css">
+            td {padding: 0.55em;}
+            tr {padding: 0.55em;}
+        </style>
+        <thead style="background-color: lightgrey;line-height: 2.75em;">
+            <tr >
+                <th class="col-md-7">Particulars</th>
+                <th class="col-md-1">Sch.</th>
+                <th class="col-md-2">Amount</th>
+                <th class="col-md-2">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if model.showBs %}
+                {% for item in model.getAssets %}
+                    <tr>
+                        <td style="{{ item.item_name_style }}">{{ item.item_name }}</td>
+                        <td style="{{ item.sch_no_style }}">{{item.sch_no}}</td>
+                        <td class="datatable-col-right" style="{{ item.amt2_style }}">{{ formatHelper.FormatAmt(item.amt2) }}</td>
+                        <td class="datatable-col-right" style="{{ item.amt1_style }}">{{ formatHelper.FormatAmt(item.amt1) }}</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td style="display: block; text-align: center;">Total</td>
+                    <td></td>
+                    <td></td>
+                    <td class="datatable-col-right" style="border-top: 1pt solid; border-bottom: 1pt double">{{ formatHelper.FormatAmt(model.getSum(model.getAssets, 'amt1')) }}</td>
+                </tr>
+                <tr><td><br></td></tr>
+                {% for item in model.getLiabs %}
+                    <tr>
+                        <td style="{{ item.item_name_style }}">{{ item.item_name }}</td>
+                        <td style="{{ item.sch_no_style }}">{{item.sch_no}}</td>
+                        <td class="datatable-col-right" style="{{ item.amt2_style }}">{{ formatHelper.FormatAmt(item.amt2) }}</td>
+                        <td class="datatable-col-right" style="{{ item.amt1_style }}">{{ formatHelper.FormatAmt(item.amt1) }}</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td style="display: block; text-align: center;">Total</td>
+                    <td></td>
+                    <td></td>
+                    <td class="datatable-col-right" style="border-top: 1pt solid; border-bottom: 1pt double">{{ formatHelper.FormatAmt(model.getSum(model.getLiabs, 'amt1')) }}</td>
+                </tr>
+                <tr><td><br></td></tr>
+            {% endif %}
+            {% if model.showPnl %}
+                {% for item in model.getIncome %}
+                    <tr>
+                        <td style="{{ item.item_name_style }}">{{ item.item_name }}</td>
+                        <td style="{{ item.sch_no_style }}">{{item.sch_no}}</td>
+                        <td class="datatable-col-right" style="{{ item.amt2_style }}">{{ formatHelper.FormatAmt(item.amt2) }}</td>
+                        <td class="datatable-col-right" style="{{ item.amt1_style }}">{{ formatHelper.FormatAmt(item.amt1) }}</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td style="display: block; text-align: center;">Total</td>
+                    <td></td>
+                    <td></td>
+                    <td class="datatable-col-right" style="border-top: 1pt solid; border-bottom: 1pt double">{{ formatHelper.FormatAmt(model.getSum(model.getIncome, 'amt1')) }}</td>
+                </tr>
+                <tr><td><br></td></tr>
+                {% for item in model.getExpense %}
+                    <tr>
+                        <td style="{{ item.item_name_style }}">{{ item.item_name }}</td>
+                        <td style="{{ item.sch_no_style }}">{{item.sch_no}}</td>
+                        <td class="datatable-col-right" style="{{ item.amt2_style }}">{{ formatHelper.FormatAmt(item.amt2) }}</td>
+                        <td class="datatable-col-right" style="{{ item.amt1_style }}">{{ formatHelper.FormatAmt(item.amt1) }}</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td style="display: block; text-align: center;">Total</td>
+                    <td></td>
+                    <td></td>
+                    <td class="datatable-col-right" style="border-top: 1pt solid; border-bottom: 1pt double">{{ formatHelper.FormatAmt(model.getSum(model.getExpense, 'amt1')) }}</td>
+                </tr>
+                <tr><td><br></td></tr>
+                <tr>
+                    <td style="font-weight: bold;">Profit/(Loss) for the period</td>
+                    <td></td>
+                    <td></td>
+                    {% set profitAmt = model.getSum(model.getIncome, 'amt1') - model.getSum(model.getExpense, 'amt1') %}
+                    <td class="datatable-col-right" style="border-top: 1pt solid; border-bottom: 1pt double">{{ formatHelper.FormatAmt(profitAmt) }}</td>
+                </tr>
+                <tr><td><br></td></tr>
+            {% endif %}
+            {% if model.showSch %}
+                <tr>
+                    <td style="display: block; text-align: center; font-weight: bold;" >Schedules Forming Part of Balance Sheet</td>
+                </tr>
+                {% for schedule in model.getSchedule %}
+                    <tr>
+                        <td style="font-weight: bold;">{{ "Schedule " ~ schedule[0].sch_no ~ " - " ~ schedule[0].sch_name }}</td>
+                    </tr>
+                    {% for item in schedule %}
+                        <tr>
+                            <td style="{{ item.item_name_style }}">{{ item.item_name }}</td>
+                            <td></td>
+                            <td class="datatable-col-right" style="{{ item.amt2_style }}">{{ formatHelper.FormatAmt(item.amt2) }}</td>
+                            <td class="datatable-col-right" style="{{ item.amt1_style }}">{{ formatHelper.FormatAmt(item.amt1) }}</td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="datatable-col-right" style="border-top: 1pt solid; border-bottom: 1pt double">{{ formatHelper.FormatAmt(model.getSum(schedule, 'amt1')) }}</td>
+                    </tr>
+                    <tr><td><br></td></tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+</div>

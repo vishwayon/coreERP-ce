@@ -1,0 +1,65 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="AccountHead" type="Master"  bindingBO="accountHead/AccountHead">
+        <header>Account Head</header>
+        <keyField>account_id</keyField>
+        <newDocEnabled label="Account"/>
+        <deleteDocEnabled/>
+        <noRefreshOnClose/>
+        <clientJsCode>ac_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="group_id" label="Account Group" type="int" control="SmartCombo"  size="s">
+                    <lookup>
+                        <valueMember>group_id</valueMember>
+                        <displayMember>group_name</displayMember>
+                        <namedLookup>../core/ac/lookups/AccountGroup.xml</namedLookup>
+                    </lookup>   
+                </field> 
+                <nextRow/> 
+                <field id="account_type_id" label="Account Type" type="int" control="SmartCombo"  size="s" cdata-enable-on="core_ac.enable_account_type">
+                    <lookup>
+                        <valueMember>account_type_id</valueMember>
+                        <displayMember>account_type_desc</displayMember>
+                        <namedLookup>../core/ac/lookups/AccountType.xml</namedLookup>
+                    </lookup>   
+                </field> 
+                <dummy/>
+                <field id="is_ref_ledger" label="Reference Ledger" type="bool" control="CheckBox" size="2"/>
+                <field id="sub_head_dim_id" label="Sub Head Dimension" type="int" control="SmartCombo" size="2" isOptional="true">
+                    <lookup>
+                        <valueMember>sub_head_dim_id</valueMember>
+                        <displayMember>sub_head_dim</displayMember>
+                        <namedLookup>../core/ac/lookups/SubHeadDimension.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <nextRow/> 
+
+                <field id="account_code" label="Account Code" type="string" control="TextBox" size="s" maxLength="20"  isOptional="true"/>
+                <nextRow/> 
+                <field id="account_head" label="Account Head" type="string" control="TextBox" size="m" maxLength="250"/>
+                <nextRow/> 
+                <tranSection label="Availability" editMode="Edit" size="4">
+                    <dataBinding dataProperty="acc_head_hidden_temp">
+                        <field id="branch_name" label="Branch" type="string" control="TextBox" size="10" readOnly="True"/>
+                        <field id="is_hidden" label="Available" type="bool" control="CheckBox" size="2"/>
+                        <!--<cButton id="select_all" onClick="core_ac.acc_head_hidden_tran_select_all" label="Select All"/>-->
+                        <cLink id="select_all" onClick="core_ac.acc_head_hidden_tran_select_all" label="Select All" size="xs"/>
+                        <cLink id="deselect_all" onClick="core_ac.acc_head_hidden_tran_deselect_all" label="Deselect All" size="ms"/>
+                    </dataBinding>
+                </tranSection> 
+                <nextRow/> 
+                <tranSection label="Balance" editMode="Edit" size ="8">
+                    <dataBinding dataProperty="acc_bal_tran">
+                        <field id="finyear" label="Year" type="string" control="TextBox" size="1" readOnly="True"/>
+                        <field id="branch_name" label="Branch" type="string" control="TextBox" size="5" readOnly="True"/>
+                        <field id="debit_balance" label="Debit Balance" type="decimal" control="TextBox" isOptional="true" size="3"/>
+                        <field id="credit_balance" label="Credit Balance" type="decimal" control="TextBox" isOptional="true" size="3" />
+                    </dataBinding>
+                </tranSection> 
+            </dataBinding> 
+        </controlSection>
+    </formView>
+</cwFramework>

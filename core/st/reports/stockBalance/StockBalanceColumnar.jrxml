@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2019-03-26T13:40:10 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StockBalColumnar" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="770" leftMargin="36" rightMargin="36" topMargin="36" bottomMargin="36" uuid="4c307fb7-97ec-429f-a8e6-44533a037434">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="local_db_1"/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="inch"/>
+	<property name="net.sf.jasperreports.export.xls.white.page.background" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.columns" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<style name="Crosstab_CH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CG" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CT" mode="Opaque" backcolor="#008080">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 1_CH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 1_CG" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 1_CT" mode="Opaque" backcolor="#008080">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 1_CD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="CrossTabDataSet" uuid="554493d1-d8ad-409a-bc29-b39e5615258d">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="local_db_1"/>
+		<parameter name="pcompany_id" class="java.lang.Integer" isForPrompting="false">
+			<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+		</parameter>
+		<parameter name="pbranch_id" class="java.lang.Integer" isForPrompting="false">
+			<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+		</parameter>
+		<parameter name="pcwf_date_format" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA["dd-MM-yyyy"]]></defaultValueExpression>
+		</parameter>
+		<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+		</parameter>
+		<parameter name="pcwf_qty_format" class="java.lang.String" isForPrompting="false">
+			<parameterDescription><![CDATA[]]></parameterDescription>
+			<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+		</parameter>
+		<parameter name="pcwf_rate_format" class="java.lang.String" isForPrompting="false">
+			<parameterDescription><![CDATA[]]></parameterDescription>
+			<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+		</parameter>
+		<parameter name="pcwf_fc_rate_format" class="java.lang.String" isForPrompting="false">
+			<parameterDescription><![CDATA[]]></parameterDescription>
+			<defaultValueExpression><![CDATA["#,##0.#"]]></defaultValueExpression>
+		</parameter>
+		<parameter name="pto_date" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA["2018-06-30"]]></defaultValueExpression>
+		</parameter>
+		<parameter name="pyear" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA["1819"]]></defaultValueExpression>
+		</parameter>
+		<parameter name="psl_id" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+		</parameter>
+		<parameter name="pmaterial_type_id" class="java.lang.Integer">
+			<parameterDescription><![CDATA[]]></parameterDescription>
+			<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[Select a.*, b.branch_name, c.material_name,
+c.material_type_id, d.material_type, e.stock_location_name
+from st.fn_material_balance_wac_detail(
+	$P{pcompany_id}, 
+	$P{pbranch_id}, 
+	0, 
+	$P{psl_id}, 
+	$P{pyear}, 
+	$P{pto_date}::Date
+) a
+inner join sys.branch b on a.branch_id=b.branch_id
+inner join st.material c on a.material_id=c.material_id
+inner join st.material_type d on c.material_type_id=d.material_type_id
+inner join st.stock_location e on a.stock_location_id=e.stock_location_id
+WHERE a.branch_id IS NOT NULL
+and (c.material_type_id= $P{pmaterial_type_id} or  $P{pmaterial_type_id} =0)
+and a.balance_qty_base !=0
+ORDER BY material_name, branch_name;]]>
+		</queryString>
+		<field name="branch_id" class="java.lang.Long"/>
+		<field name="stock_location_id" class="java.lang.Long"/>
+		<field name="material_id" class="java.lang.Long"/>
+		<field name="balance_qty_base" class="java.math.BigDecimal"/>
+		<field name="rate" class="java.math.BigDecimal"/>
+		<field name="branch_name" class="java.lang.String"/>
+		<field name="material_name" class="java.lang.String"/>
+		<field name="material_type_id" class="java.lang.Long"/>
+		<field name="material_type" class="java.lang.String"/>
+		<field name="stock_location_name" class="java.lang.String"/>
+		<variable name="NetQty" class="java.math.BigDecimal">
+			<variableExpression><![CDATA[$F{balance_qty_base}]]></variableExpression>
+		</variable>
+		<variable name="NetValue" class="java.math.BigDecimal">
+			<variableExpression><![CDATA[$F{balance_qty_base} * $F{rate}]]></variableExpression>
+		</variable>
+	</subDataset>
+	<parameter name="pcwf_header_template" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["cwf/report-templates/header-template.jasper"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_company_name" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["First Company Private Limtied"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_branch_name" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["First Branch"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_branch_address" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["First Floor, Technology Park, Pune"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_company_logo" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["/cwf/vsla/assets/coreerp_logo.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_ccy_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_txn_ccy" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["INR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_coreerp_ver" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["CoreERP Ver. 0.5.4"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_base_path" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcompany_id" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pbranch_id" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="preport_period" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["As On 31-03-2015"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_date_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["dd-MM-yyyy"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_qty_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_fc_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.#"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pto_date" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2016-03-31"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pyear" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["1516"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="psl_id" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="pmaterial_type_id" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="pcwf_data_only" class="java.lang.Boolean" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[Select a.*, b.branch_name, c.material_name,
+c.material_type_id, d.material_type, e.stock_location_name
+from st.fn_material_balance_wac_detail(
+	$P{pcompany_id}, 
+	$P{pbranch_id}, 
+	0, 
+	$P{psl_id}, 
+	$P{pyear}, 
+	$P{pto_date}::Date
+) a
+inner join sys.branch b on a.branch_id=b.branch_id
+inner join st.material c on a.material_id=c.material_id
+inner join st.material_type d on c.material_type_id=d.material_type_id
+inner join st.stock_location e on a.stock_location_id=e.stock_location_id
+WHERE a.branch_id IS NOT NULL 
+and (c.material_type_id= $P{pmaterial_type_id} or  $P{pmaterial_type_id} =0)
+and a.balance_qty_base !=0
+ORDER BY material_name, branch_name;]]>
+	</queryString>
+	<field name="branch_id" class="java.lang.Long"/>
+	<field name="stock_location_id" class="java.lang.Long"/>
+	<field name="material_id" class="java.lang.Long"/>
+	<field name="balance_qty_base" class="java.math.BigDecimal"/>
+	<field name="rate" class="java.math.BigDecimal"/>
+	<field name="branch_name" class="java.lang.String"/>
+	<field name="material_name" class="java.lang.String"/>
+	<field name="material_type_id" class="java.lang.Long"/>
+	<field name="material_type" class="java.lang.String"/>
+	<field name="stock_location_name" class="java.lang.String"/>
+	<variable name="NetBal" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{balance_qty_base}]]></variableExpression>
+	</variable>
+	<group name="Group1">
+		<groupExpression><![CDATA[$P{pcompany_id}]]></groupExpression>
+		<groupHeader>
+			<band height="46">
+				<crosstab isRepeatColumnHeaders="false" isRepeatRowHeaders="false" ignoreWidth="true">
+					<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="520" height="40" uuid="9b6db9b2-48b3-4944-ba20-f81f3a1a4b4b">
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<crosstabDataset>
+						<dataset>
+							<datasetRun subDataset="CrossTabDataSet" uuid="19358721-45e5-4d2e-abb4-804c57eb0dd0">
+								<datasetParameter name="pbranch_id">
+									<datasetParameterExpression><![CDATA[$P{pbranch_id}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="pcompany_id">
+									<datasetParameterExpression><![CDATA[$P{pcompany_id}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="pcwf_amt_format">
+									<datasetParameterExpression><![CDATA[$P{pcwf_amt_format}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="pcwf_date_format">
+									<datasetParameterExpression><![CDATA[$P{pcwf_date_format}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="pcwf_fc_rate_format">
+									<datasetParameterExpression><![CDATA[$P{pcwf_fc_rate_format}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="pcwf_qty_format">
+									<datasetParameterExpression><![CDATA[$P{pcwf_qty_format}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="pcwf_rate_format">
+									<datasetParameterExpression><![CDATA[$P{pcwf_rate_format}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="pto_date">
+									<datasetParameterExpression><![CDATA[$P{pto_date}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="pyear">
+									<datasetParameterExpression><![CDATA[$P{pyear}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="psl_id">
+									<datasetParameterExpression><![CDATA[$P{psl_id}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="pmaterial_type_id">
+									<datasetParameterExpression><![CDATA[$P{pmaterial_type_id}]]></datasetParameterExpression>
+								</datasetParameter>
+								<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+							</datasetRun>
+						</dataset>
+					</crosstabDataset>
+					<crosstabHeaderCell>
+						<cellContents>
+							<frame>
+								<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="0" y="0" width="260" height="30" backcolor="#008080" uuid="836d30df-3b27-4877-86ac-4ef38bd17dba">
+									<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+									<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+								</reportElement>
+								<box>
+									<topPen lineWidth="0.2"/>
+									<leftPen lineWidth="0.2"/>
+									<bottomPen lineWidth="0.2"/>
+									<rightPen lineWidth="0.2"/>
+								</box>
+								<textField isStretchWithOverflow="true">
+									<reportElement style="NormalLabel" positionType="Float" stretchType="RelativeToTallestObject" x="40" y="0" width="60" height="30" forecolor="#FCFCFC" backcolor="#000000" uuid="bac7baac-b1fa-4918-8ecc-caf6a73df4d1"/>
+									<box topPadding="2" leftPadding="4">
+										<topPen lineWidth="0.2" lineColor="#000000"/>
+										<leftPen lineWidth="0.2" lineColor="#000000"/>
+										<bottomPen lineWidth="0.2" lineColor="#000000"/>
+										<rightPen lineWidth="0.2" lineColor="#000000"/>
+									</box>
+									<textElement verticalAlignment="Top"/>
+									<textFieldExpression><![CDATA["Stock Type"]]></textFieldExpression>
+								</textField>
+								<textField isStretchWithOverflow="true">
+									<reportElement style="NormalLabel" positionType="Float" stretchType="RelativeToTallestObject" x="100" y="0" width="160" height="30" forecolor="#FCFCFC" backcolor="#000000" uuid="30fd7c56-cfb8-4e12-a748-0a392a4afb36">
+										<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+									</reportElement>
+									<box topPadding="2" leftPadding="4">
+										<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textElement verticalAlignment="Top"/>
+									<textFieldExpression><![CDATA[" Stock Item"]]></textFieldExpression>
+								</textField>
+							</frame>
+						</cellContents>
+					</crosstabHeaderCell>
+					<rowGroup name="material_type1" width="100">
+						<bucket class="java.lang.String">
+							<bucketExpression><![CDATA[$F{material_type}]]></bucketExpression>
+						</bucket>
+						<crosstabRowHeader>
+							<cellContents mode="Opaque" style="Crosstab 1_CH">
+								<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+								<textField isStretchWithOverflow="true">
+									<reportElement style="NormalText" x="0" y="0" width="100" height="20" uuid="246f4048-ac0b-4dee-a602-367896bd665b">
+										<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+									</reportElement>
+									<box leftPadding="4"/>
+									<textFieldExpression><![CDATA[$V{material_type1}]]></textFieldExpression>
+								</textField>
+							</cellContents>
+						</crosstabRowHeader>
+						<crosstabTotalRowHeader>
+							<cellContents>
+								<staticText>
+									<reportElement x="0" y="0" width="-2147483648" height="-2147483648" uuid="6261cdcb-9c3c-4ea6-a9fc-422c160401bd"/>
+									<text><![CDATA[Total material_type1]]></text>
+								</staticText>
+							</cellContents>
+						</crosstabTotalRowHeader>
+					</rowGroup>
+					<rowGroup name="material_name1" width="160">
+						<bucket class="java.lang.String">
+							<bucketExpression><![CDATA[$F{material_name}]]></bucketExpression>
+						</bucket>
+						<crosstabRowHeader>
+							<cellContents mode="Opaque" style="Crosstab 1_CH">
+								<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+								<textField isStretchWithOverflow="true">
+									<reportElement style="NormalText" x="0" y="0" width="160" height="20" uuid="7fa9ce81-2922-429c-b761-9a2a0251b7d9"/>
+									<box leftPadding="4" rightPadding="0"/>
+									<textFieldExpression><![CDATA[$V{material_name1}]]></textFieldExpression>
+								</textField>
+							</cellContents>
+						</crosstabRowHeader>
+						<crosstabTotalRowHeader>
+							<cellContents>
+								<staticText>
+									<reportElement x="0" y="0" width="-2147483648" height="-2147483648" uuid="9f9dffac-2d94-41d3-b553-be793c24378b"/>
+									<text><![CDATA[Total account_head1]]></text>
+								</staticText>
+							</cellContents>
+						</crosstabTotalRowHeader>
+					</rowGroup>
+					<columnGroup name="branch_name1" height="30" totalPosition="End">
+						<bucket class="java.lang.String">
+							<bucketExpression><![CDATA[$F{branch_name}]]></bucketExpression>
+						</bucket>
+						<crosstabColumnHeader>
+							<cellContents mode="Opaque" style="Crosstab 1_CH">
+								<box>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textField isStretchWithOverflow="true">
+									<reportElement style="NormalLabel" x="0" y="0" width="130" height="16" uuid="3853d107-8a86-4789-a613-aebdadb75bf7">
+										<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+										<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+									</reportElement>
+									<textElement textAlignment="Center" verticalAlignment="Middle"/>
+									<textFieldExpression><![CDATA[$V{branch_name1}]]></textFieldExpression>
+								</textField>
+								<staticText>
+									<reportElement style="NormalLabel" x="0" y="16" width="60" height="14" uuid="985aa52a-668c-4d21-adee-5216375b75f7"/>
+									<box>
+										<topPen lineWidth="0.4"/>
+									</box>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font size="8" isBold="true"/>
+									</textElement>
+									<text><![CDATA[Qty]]></text>
+								</staticText>
+								<staticText>
+									<reportElement style="NormalLabel" x="60" y="16" width="70" height="14" uuid="ab545113-01a3-4758-91f5-6b79ef0af12e"/>
+									<box>
+										<topPen lineWidth="0.4"/>
+										<leftPen lineWidth="0.4"/>
+									</box>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font size="8" isBold="true"/>
+									</textElement>
+									<text><![CDATA[Value]]></text>
+								</staticText>
+							</cellContents>
+						</crosstabColumnHeader>
+						<crosstabTotalColumnHeader>
+							<cellContents mode="Opaque" style="Crosstab 1_CT">
+								<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+								<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+								<staticText>
+									<reportElement style="NormalLabel" x="0" y="0" width="130" height="16" forecolor="#FFFFFF" uuid="113988db-ef33-41f1-9b17-3db112c94412">
+										<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+										<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+										<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+									</reportElement>
+									<textElement textAlignment="Center" verticalAlignment="Middle"/>
+									<text><![CDATA[Total]]></text>
+								</staticText>
+								<staticText>
+									<reportElement style="NormalLabel" x="60" y="16" width="70" height="14" forecolor="#FFFFFF" backcolor="#000000" uuid="9334b49c-78a5-4507-ba75-e0df7cebc6a4"/>
+									<box>
+										<topPen lineWidth="0.4"/>
+										<leftPen lineWidth="0.4"/>
+									</box>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font size="8" isBold="true"/>
+									</textElement>
+									<text><![CDATA[Value]]></text>
+								</staticText>
+								<staticText>
+									<reportElement style="NormalLabel" x="0" y="16" width="60" height="14" forecolor="#FFFFFF" backcolor="#000000" uuid="28743fcb-da53-4cbc-8f44-55170dbcbb87"/>
+									<box>
+										<topPen lineWidth="0.4"/>
+									</box>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font size="8" isBold="true"/>
+									</textElement>
+									<text><![CDATA[Qty]]></text>
+								</staticText>
+							</cellContents>
+						</crosstabTotalColumnHeader>
+					</columnGroup>
+					<measure name="NetQty_MEASURE1" class="java.lang.Integer" calculation="Sum">
+						<measureExpression><![CDATA[$V{NetQty}]]></measureExpression>
+					</measure>
+					<measure name="NetValue_Measure1" class="java.lang.Integer" calculation="Sum">
+						<measureExpression><![CDATA[$V{NetValue}]]></measureExpression>
+					</measure>
+					<crosstabCell width="130" height="20">
+						<cellContents mode="Opaque" style="Crosstab 1_CD">
+							<textField>
+								<reportElement style="NormalText" stretchType="RelativeToBandHeight" x="0" y="0" width="60" height="20" uuid="9682f94f-3edf-40cb-a461-3e43aad72ab2"/>
+								<box topPadding="1" rightPadding="4"/>
+								<textElement textAlignment="Right" markup="none">
+									<font size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{NetQty_MEASURE1}]]></textFieldExpression>
+								<patternExpression><![CDATA["#,##0.000"]]></patternExpression>
+							</textField>
+							<textField>
+								<reportElement style="NormalText" stretchType="RelativeToBandHeight" x="60" y="0" width="70" height="20" uuid="8023b59d-02ff-4e60-99b6-871bcd99e301"/>
+								<box topPadding="1" leftPadding="0" rightPadding="4">
+									<leftPen lineWidth="0.4"/>
+								</box>
+								<textElement textAlignment="Right">
+									<font size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($V{NetValue_Measure1})]]></textFieldExpression>
+								<patternExpression><![CDATA["#,##0.00"]]></patternExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="130" height="20" columnTotalGroup="branch_name1">
+						<cellContents mode="Opaque" style="Crosstab 1_CT">
+							<textField>
+								<reportElement style="NormalText" stretchType="RelativeToBandHeight" x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="c29ca14e-5297-44f9-870b-34d1e0f8ab4f"/>
+								<box topPadding="1" rightPadding="4"/>
+								<textElement textAlignment="Right">
+									<font size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{NetQty_MEASURE1}]]></textFieldExpression>
+								<patternExpression><![CDATA["#,##0.000"]]></patternExpression>
+							</textField>
+							<textField>
+								<reportElement style="NormalText" stretchType="RelativeToBandHeight" x="60" y="0" width="70" height="20" forecolor="#FFFFFF" uuid="984d9ae6-d515-4a11-a531-5fe7f20f0631"/>
+								<box topPadding="1" rightPadding="4">
+									<leftPen lineWidth="0.4"/>
+								</box>
+								<textElement textAlignment="Right">
+									<font size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($V{NetValue_Measure1})]]></textFieldExpression>
+								<patternExpression><![CDATA["#,##0.00"]]></patternExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="material_type1">
+						<cellContents mode="Opaque" style="Crosstab 1_CT">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="9161fe49-6d6b-4f2b-aed6-0b6bd42cec92"/>
+								<textFieldExpression><![CDATA[$V{NetQty_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="material_type1" columnTotalGroup="branch_name1">
+						<cellContents mode="Opaque" style="Crosstab 1_CT">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="6aacfcab-cda1-420c-9826-6825247ac38a"/>
+								<textFieldExpression><![CDATA[$V{NetQty_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="material_name1">
+						<cellContents mode="Opaque" style="Crosstab 1_CG">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="20" uuid="c0ac0454-379e-428a-993e-e2ea442eca9b"/>
+								<textFieldExpression><![CDATA[$V{NetQty_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="60" height="20" rowTotalGroup="material_name1" columnTotalGroup="branch_name1">
+						<cellContents mode="Opaque" style="Crosstab 1_CT">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="c9437d37-1f76-44e9-8f21-db79b206d7a1"/>
+								<textFieldExpression><![CDATA[$V{NetQty_MEASURE1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+				</crosstab>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="74" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="475" height="41" isRemoveLineWhenBlank="true" uuid="fd573bde-26a5-467c-9601-ef6eedfc55d1">
+					<printWhenExpression><![CDATA[!$P{pcwf_data_only}]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="pcwf_company_name">
+					<subreportParameterExpression><![CDATA[$P{pcwf_company_name}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_branch_name">
+					<subreportParameterExpression><![CDATA[$P{pcwf_branch_name}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_branch_address">
+					<subreportParameterExpression><![CDATA[$P{pcwf_branch_address}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_company_logo">
+					<subreportParameterExpression><![CDATA[$P{pcwf_company_logo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{pcwf_header_template}]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement style="ReportTitle" positionType="Float" x="0" y="41" width="520" height="19" isRemoveLineWhenBlank="true" uuid="b683b080-0c74-4af7-bae8-2231bc5a13eb">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					<printWhenExpression><![CDATA[!$P{pcwf_data_only}]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Stock Balance"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="CaptionLabel" positionType="Float" x="0" y="60" width="100" height="14" uuid="1707e88e-524d-4cec-8a58-99f375c2d490"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Report Period :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="CaptionText" positionType="Float" x="100" y="60" width="420" height="14" uuid="cbba0ceb-c9ad-4af5-bc9d-f71c273a3909"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{preport_period}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<printWhenExpression><![CDATA[!$P{pcwf_data_only}]]></printWhenExpression>
+			<frame>
+				<reportElement x="0" y="0" width="520" height="18" uuid="f076449a-5000-4e68-939b-02c04c801cea"/>
+				<box topPadding="0">
+					<topPen lineWidth="0.2"/>
+				</box>
+				<textField>
+					<reportElement style="CoreERPVer" x="0" y="0" width="100" height="18" uuid="8e97d3c7-b3d7-4f3d-8447-4af7aa72f166">
+						<propertyExpression name="net.sf.jasperreports.export.html.id"><![CDATA["version_no"]]></propertyExpression>
+					</reportElement>
+					<textFieldExpression><![CDATA[$P{pcwf_coreerp_ver}]]></textFieldExpression>
+				</textField>
+				<textField pattern="">
+					<reportElement style="FooterPageNo" x="390" y="0" width="85" height="18" uuid="644eb7ad-acec-43c2-ba68-8e776b3da650"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report">
+					<reportElement style="FooterPageNo" x="475" y="0" width="45" height="18" uuid="18705ccc-3218-4d82-a399-f0338af0bb03"/>
+					<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+</jasperReport>

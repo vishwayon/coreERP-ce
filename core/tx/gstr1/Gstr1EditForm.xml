@@ -1,0 +1,47 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Gstr1" type="Master" bindingBO="gstr1/Gstr1">    
+        <header>GSTR 1</header>    
+        <keyField>gst_ret_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <clientJsCode>gstr1/Gstr1_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="gst_ret_type_id" label="Return Type" type="int" control="SmartCombo" size="s" readOnly="true">
+                    <lookup>
+                        <valueMember>gst_ret_type_id</valueMember>
+                        <displayMember>ret_type</displayMember>
+                        <namedLookup>../core/tx/lookups/GstRetType.xml</namedLookup>
+                    </lookup>
+                </field>
+                <field id="gst_state_id" label="GST State" type="int" control="SmartCombo" size="s" readOnly="true">
+                    <lookup>
+                        <valueMember>gst_state_id</valueMember>
+                        <displayMember>gst_state_with_code</displayMember>
+                        <namedLookup>../core/tx/lookups/GstState.xml</namedLookup>
+                    </lookup>
+                </field>
+                <nextRow/>
+                <field id="ret_period" label="Return Period" type="string" control="TextBox" size="2" maxLength="6" readOnly="true"/>
+                <field id="ret_period_from" label="From" type="date" control="Date" size="2" readOnly="true"/>
+                <field id="ret_period_to" label="To" type="date" control="Date" size="2" readOnly="true"/>
+                <field id="ret_status" label="" type="int" control="Hidden" readOnly="true"/>
+                <field id="ret_status_desc" label="Return Status" type="string" control="TextBox" size="2" readOnly="true"/>
+                <cButton id="btn_preprocess" label="Pre-Process" onClick="core_tx.gstr1.pre_process_click" />
+                <nextRow/>
+                <field id="annex_info.gt" label="Previous Year Turnover" type="decimal" control="TextBox" size="2" isOptional="true"/>
+                <field id="annex_info.cur_gt" label="C/Y Tov. Upto Prev. Month" type="decimal" control="TextBox" size="2" isOptional="true"/>
+                <xdiv id="div_pending_doc" size="12" />
+                    
+                <xdivEnd/>
+                <nextRow/>
+                <xdiv id="div_gstr1_summary" size="12" />
+                    
+                <xdivEnd/>
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

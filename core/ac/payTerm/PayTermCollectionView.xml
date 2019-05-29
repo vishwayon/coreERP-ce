@@ -1,0 +1,31 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="PayTerm" type="Master" bindingBO="PayTerm" editView="payTerm/PayTermEditForm">
+        <header>Pay Term</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    SELECT pay_term_id, pay_term, pay_term_desc, pay_days, 
+                        case calc_type when 0 then 'End of Month'
+                                        When 1 then 'Date of Document'
+                                        When 2 then 'Bill Date (Payable only)'
+                        End as calc_type
+                    FROM ac.pay_term 
+                    ORDER BY pay_term 
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="pay_term" displayName="Pay Term"/>
+                <displayField columnName="pay_term_desc" displayName="Pay Term Description"/>
+                <displayField columnName="pay_days" displayName="Pay Days"/>
+                <displayField columnName="calc_type" displayName="Calculation Type"/>
+            </displayFields>
+        </collectionSection>   
+    </collectionView>
+</cwFramework>
+

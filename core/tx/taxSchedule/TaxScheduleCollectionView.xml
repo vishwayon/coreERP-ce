@@ -1,0 +1,30 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="TaxSchedule" type="Master" bindingBO="TaxSchedule" editView="taxSchedule/TaxScheduleEditForm">        
+        <header>Tax Schedule</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select a.tax_schedule_id, b.tax_type, a.tax_schedule_code, a.description,
+                        a.applicable_to_customer, a.applicable_to_supplier
+                    from tx.tax_schedule a
+                    Inner Join tx.tax_type b On a.tax_type_id=b.tax_type_id
+                    Where a.company_id={company_id}
+                    order by b.tax_type, a.description
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="tax_type" displayName="Tax Type"/>
+                <displayField columnName="tax_schedule_code" displayName="Schedule Code"/>
+                <displayField columnName="description" displayName="Tax Schedule"/>
+                <displayField columnName="applicable_to_customer" displayName="For Customer"/>
+                <displayField columnName="applicable_to_supplier" displayName="For Supplier"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

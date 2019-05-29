@@ -1,0 +1,29 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="AccountGroup" type="Master" bindingBO="AccountGroup" editView="accountGroup/AccountGroupEditForm">
+        <header>Account Group</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select a.parent_key, b.group_name as parent_group, a.group_id, a.group_name, a.group_code, case when a.parent_key='0' then true else false End as edit_not_allowed
+                    from ac.account_group a
+                    left Join ac.account_group b on a.parent_key=b.group_key
+                    Order by a.group_path
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="parent_group" displayName="Parent Group Name" />
+                <displayField columnName="group_name" displayName="Group Name" />
+                <displayField columnName="group_code" displayName="Group Code" />
+            </displayFields>
+            <editNotAllowed field='edit_not_allowed'/>
+        </collectionSection>
+    </collectionView>
+</cwFramework>
+
+

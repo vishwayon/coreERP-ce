@@ -1,0 +1,22 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="SalesmanWithAll">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select a.salesman_id, a.salesman_name
+                from (        
+                Select 0 as salesman_id, 'All' as salesman_name
+                union All
+                ( SELECT salesman_id, salesman_name
+                FROM ar.salesman order by salesman_name asc)
+                ) a
+            </command>
+        </sql>
+        <keyField id="salesman_id"/>
+    </lookup>
+</cwFramework>

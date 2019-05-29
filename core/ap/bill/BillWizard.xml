@@ -1,0 +1,11 @@
+<wizard id="Bill" name="Bill Wizard">
+    <codeBehind>
+        <className>\app\core\ap\bill\BillWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectSupplier">
+        <path>bill/BillWizard/SelectSupplier</path>
+    </wizardStep>
+    <postWizard id="Bill">
+        <path>bill/BillEditForm</path>
+    </postWizard>
+</wizard>

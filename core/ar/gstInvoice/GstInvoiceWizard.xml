@@ -1,0 +1,11 @@
+<wizard id="GstInvoice" name="GST Invoice Wizard">
+    <codeBehind>
+        <className>\app\core\ar\gstInvoice\GstInvoiceWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectIncomeType">
+        <path>gstInvoice/GstInvoiceWizard/SelectIncomeType</path>
+    </wizardStep>
+    <postWizard id="GstInvoice">
+        <path>gstInvoice/GstInvoiceEditForm</path>
+    </postWizard>
+</wizard>

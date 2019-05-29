@@ -1,0 +1,40 @@
+
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Attendance" type="Master"  bindingBO="attendance/Attendance">
+        <header>Attendance</header>
+        <keyField>attendance_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <clientJsCode>attendance/Attendance_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>   
+                <field id="employee_id" label="Employee" type="int" control="SmartCombo" size="4">
+                    <lookup>
+                        <valueMember>employee_id</valueMember>
+                        <displayMember>full_employee_name</displayMember>
+                        <namedLookup>../core/hr/lookups/Employee.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <nextRow/>           
+                <field id="attendance_date" label="Attendance" type="date" control="Date" size="ms" range="finYear" />
+                <nextRow/>
+                <field id="in_hrs" label="In (Hrs)" type="int" control="TextBox" size="xs"/>
+                <field id="in_mins" label="In (Mins)" type="int" control="TextBox" size="xs" isOptional="true"/>
+                <field id="out_hrs" label="Out (Hrs)" type="int" control="TextBox" size="xs"/>
+                <field id="out_mins" label="Out (Mins)" type="int" control="TextBox" size="xs" isOptional="true"/>
+                <nextRow/>
+                <field id="overtime" label="Overtime (Mins)" type="decimal" control="TextBox" readOnly="true" isOptional="true" size="1" />
+                <field id="ot_special" label="Special OT (Mins)" type="decimal" control="TextBox" readOnly="true" isOptional="true" size="1" />
+                <cButton id="refresh_button" onClick="core_attendance.calculate_overtime" label="Refresh"/>
+                <nextRow/>             
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>
+              
+              
+ 
+ 

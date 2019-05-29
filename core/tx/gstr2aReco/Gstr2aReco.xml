@@ -1,0 +1,27 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'> 
+    
+    <businessObject id="Gstr2aReco" type="Master">
+        <controlTable>
+            <tableName>tx.gst_ret</tableName>
+            <primaryKey>gst_ret_id</primaryKey>
+            <customColumns>
+                <customColumn name="b2b_data" type="string"/>
+            </customColumns>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <!--This is to ensure that Anchor table does not use entity for save-->
+                <useOnSave/>
+            </save>
+            <delete>
+                <useOnDelete/>
+            </delete>
+        </controlTable> 
+        <codeBehind>
+            <className>\app\core\ap\supplierOPBLRef\SupplierOPBLRefEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

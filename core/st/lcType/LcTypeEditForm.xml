@@ -1,0 +1,39 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="LcType" type="Master" bindingBO="lcType/LcType">    
+        <header>Landed Cost Type</header>    
+        <keyField>lc_type_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <clientJsCode>lcType/LcType_cc.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="lc_desc" label="Description" type="string" control="TextBox" size="s" maxLength="250" />
+                <nextRow/>
+                <field id="jdata.req_alloc" label="Require Allocation" type="bool" control="CheckBox" size="2"/>
+                <field id="exp_ac_id" label="Expense Account (COGC)" type="int" control="SmartCombo" size="s" isOptional="true"
+                    cdata-enable-on="core_st.lc_type.exp_ac_enable" >
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id = 49</filter>
+                    </lookup>
+                </field>
+                <nextRow/>
+                <field id="jdata.post_gl" label="Post in General Ledger" type="bool" control="CheckBox" size="2"/>
+                <field id="liab_ac_id" label="Liability Account" type="int" control="SmartCombo" size="s" isOptional="true"
+                    cdata-enable-on="core_st.lc_type.liab_ac_enable">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id = 36</filter>
+                    </lookup>
+                </field>
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

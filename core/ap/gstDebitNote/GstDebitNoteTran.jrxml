@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2017-12-15T16:05:49 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BillTran" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="eef1d7ef-0a48-4112-a0a5-5588cebe7537">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="local_db_1"/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="inch"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pvoucher_id" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="pcwf_date_format" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="pcwf_qty_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="pcwf_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="pcwf_fc_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="pfc_type_id" class="java.lang.Long" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[select 	a.voucher_id, a.vch_tran_id, a.sl_no, a.account_id, b.account_head, a.credit_amt, a.credit_amt_fc, a.description,
+   c.bt_amt, c.hsn_sc_code, c.sgst_pcnt, c.sgst_amt, c.cgst_pcnt, c.cgst_amt, c.igst_pcnt, c.igst_amt, c.cess_pcnt, c.cess_amt		
+from ap.pymt_tran a
+inner join ac.account_head b on a.account_id = b.account_id
+inner join tx.gst_tax_tran c on a.vch_tran_id = c.gst_tax_tran_id
+where a.voucher_id =  $P{pvoucher_id}
+order by a.sl_no;]]>
+	</queryString>
+	<field name="voucher_id" class="java.lang.String"/>
+	<field name="vch_tran_id" class="java.lang.String"/>
+	<field name="sl_no" class="java.lang.Integer"/>
+	<field name="account_id" class="java.lang.Long"/>
+	<field name="account_head" class="java.lang.String"/>
+	<field name="credit_amt" class="java.math.BigDecimal"/>
+	<field name="credit_amt_fc" class="java.math.BigDecimal"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="bt_amt" class="java.math.BigDecimal"/>
+	<field name="hsn_sc_code" class="java.lang.String"/>
+	<field name="sgst_pcnt" class="java.math.BigDecimal"/>
+	<field name="sgst_amt" class="java.math.BigDecimal"/>
+	<field name="cgst_pcnt" class="java.math.BigDecimal"/>
+	<field name="cgst_amt" class="java.math.BigDecimal"/>
+	<field name="igst_pcnt" class="java.math.BigDecimal"/>
+	<field name="igst_amt" class="java.math.BigDecimal"/>
+	<field name="cess_pcnt" class="java.math.BigDecimal"/>
+	<field name="cess_amt" class="java.math.BigDecimal"/>
+	<variable name="DebitAmount" class="java.math.BigDecimal" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{credit_amt}]]></variableExpression>
+	</variable>
+	<variable name="DebitAmountFC" class="java.math.BigDecimal" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{credit_amt_fc}]]></variableExpression>
+	</variable>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{voucher_id}]]></groupExpression>
+		<groupHeader>
+			<band height="15">
+				<frame>
+					<reportElement style="NormalText" positionType="Float" stretchType="RelativeToTallestObject" mode="Opaque" x="0" y="0" width="522" height="15" isPrintWhenDetailOverflows="true" backcolor="#008080" uuid="6cd18b79-7252-4c3f-81f8-55c0ce9ed528">
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<staticText>
+						<reportElement style="NormalLabel" positionType="Float" mode="Transparent" x="20" y="0" width="188" height="14" isPrintWhenDetailOverflows="true" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="b023712e-3b39-42da-b549-006a66926ca8">
+							<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						</reportElement>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<text><![CDATA[Account]]></text>
+					</staticText>
+					<staticText>
+						<reportElement style="NormalLabel" positionType="Float" mode="Transparent" x="423" y="0" width="99" height="14" isPrintWhenDetailOverflows="true" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="590e54de-be4a-4f12-a9d8-0db87009cfd3">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						</reportElement>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<text><![CDATA[Amount]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="0" y="1" width="20" height="13" forecolor="#FFFFFF" backcolor="#A19C9C" uuid="4afa3d45-dbf2-413a-9681-56169fea80b1"/>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<text><![CDATA[Sr]]></text>
+					</staticText>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band>
+				<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="39" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" positionType="Float" x="20" y="0" width="188" height="14" uuid="bb6b7a75-472a-4fa7-b811-5735d84b94fb">
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{account_head}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" x="20" y="14" width="403" height="14" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="a05bf879-0cc7-4613-b381-c14e918e064e"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" x="423" y="0" width="99" height="14" uuid="70a3af09-952e-4200-8361-285f8bac6db5">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($P{pfc_type_id}.longValue() != 0) ? $F{credit_amt_fc} : $F{credit_amt}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" hyperlinkType="">
+				<reportElement style="NormalText" positionType="FixRelativeToBottom" x="397" y="28" width="53" height="10" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="d92a2d08-c159-4c4f-87ae-5a69db3d35ee">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<box leftPadding="0"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($F{cess_amt})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" positionType="FixRelativeToBottom" x="356" y="28" width="41" height="10" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="23369f3c-170a-41cd-b6cd-7785198d9eed">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cess: " + TEXT($F{cess_pcnt}, "#0.##") + "%"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" positionType="FixRelativeToBottom" x="305" y="28" width="51" height="10" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="b757529f-bd2b-420e-8568-8502316e22af">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<box leftPadding="0"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($F{igst_amt})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" positionType="FixRelativeToBottom" x="264" y="28" width="41" height="10" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="9116d07c-6aba-46d8-becc-85deabd5bb76">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["IGST: " + TEXT($F{igst_pcnt}, "#0.##") + "%"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" positionType="FixRelativeToBottom" x="213" y="28" width="51" height="10" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="b1e00346-a4a6-4ebd-9fa4-9a24de18f568">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<box leftPadding="0"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($F{cgst_amt})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" positionType="FixRelativeToBottom" x="172" y="28" width="41" height="10" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="8479c701-0cbe-4d23-952c-4d61dd5ddd97">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CGST: " + TEXT($F{cgst_pcnt}, "#0.##") + "%"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" positionType="FixRelativeToBottom" x="121" y="28" width="51" height="10" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="758f1eca-c787-4e4c-bdec-c02432623029">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<box leftPadding="0"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($F{sgst_amt})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" positionType="FixRelativeToBottom" x="80" y="28" width="41" height="10" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="32e21b02-b1b9-4a6c-a4e6-a07e6a9b2e92">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["SGST: " + TEXT($F{sgst_pcnt}, "#0.##") + "%"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" positionType="FixRelativeToBottom" x="20" y="28" width="20" height="10" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="63291a8d-1293-4d37-8d44-f2b28ff9f315">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["SAC"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" positionType="FixRelativeToBottom" x="40" y="28" width="40" height="10" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="6b5f5c15-a4a1-412a-8651-55ae4ef3df9a">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hsn_sc_code}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="20" y="38" width="430" height="1" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#7D7D7D" uuid="8317900c-7f0a-4284-a696-43cd52871d12">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="0" width="20" height="14" uuid="88956ba5-24cc-4ac5-84f9-d4e21c7f29bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{sl_no}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

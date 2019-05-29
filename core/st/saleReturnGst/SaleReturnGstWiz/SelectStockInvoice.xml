@@ -1,0 +1,93 @@
+<wizardView>
+    <header>Select Stock Invoice</header>
+    <sections>
+        <collectionSection id="SelectStockInvoice">
+        <connectionType>
+          <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                Select a.doc_date, a.stock_id, a.tax_amt, a.gross_amt 
+                From st.stock_control a
+                Where a.status=5 
+                    And a.doc_type In ('SIV')
+                    And (a.account_id=:paccount_id or :paccount_id =0)
+                    And a.branch_id=:pbranch_id
+                    And a.doc_date between :pfrom_date and :pto_date
+                Order by a.doc_date, a.stock_id
+            </command>
+            <params>
+                <param id="pbranch_id">
+                    <session>branch_id</session>
+                </param>
+                <param id="paccount_id">
+                    <wizard step="SelectCustomer">account_id</wizard>
+                </param>
+                <param id="pfrom_date">
+                    <wizard step="SelectCustomer">from_date</wizard>
+                </param>
+                <param id="pto_date">
+                    <wizard step="SelectCustomer">to_date</wizard>
+                </param>
+            </params>
+        </sql>
+        <keyField id="stock_id"/>
+        <displayFields>
+            <displayField columnName="doc_date" displayName="Doc Date" 
+                        id="doc_date" label="Doc Date" type="date" format="date"
+                        control="TextBox" size="s"/>
+            <displayField columnName="stock_id" displayName="Voucher #" 
+                        id="stock_id" label="Voucher #" type="string" 
+                        control="TextBox" size="s"/>
+            <displayField columnName="tax_amt" displayName="Tax Amt" 
+                        id="tax_amt" label="Tax Amt" type="decimal" 
+                        control="TextBox" size="s"/>
+            <displayField columnName="gross_amt" displayName="Invoice Amt" 
+                        id="gross_amt" label="Invoice Amt" type="decimal" 
+                        control="TextBox" size="s"/>
+        </displayFields>
+    </collectionSection>
+    </sections>
+</wizardView>
+
+<!-- Old SQL
+With si_tran
+                As
+                (	Select a.stock_id, b.stock_tran_id, b.material_id, b.uom_id, b.issued_qty
+                        From st.stock_control a
+                        Inner Join st.stock_tran b on a.stock_id=b.stock_id
+                        Where a.status=5 
+                                And a.doc_type In ('SIV')
+                                And (a.account_id=:paccount_id or :paccount_id =0)
+                                And a.branch_id=:pbranch_id
+                                And a.doc_date between :pfrom_date and :pto_date
+                ),
+                si_union
+                As
+                (	Select a.stock_id, a.stock_tran_id, a.material_id, a.uom_id, a.issued_qty
+                        From si_tran a
+                        Union All
+                        Select c.stock_id, b.reference_tran_id, c.material_id, c.uom_id, -1 * b.received_qty
+                        From st.stock_control a
+                        Inner Join st.stock_tran b on a.stock_id=b.stock_id
+                        Inner Join si_tran c On b.reference_tran_id = c.stock_tran_id
+                        Where a.doc_type = 'SRV'
+                ),
+                si_bal
+                As
+                (       Select a.stock_id, a.stock_tran_id, a.material_id, a.uom_id, Sum(a.issued_qty) as bal_qty
+                        From si_union a
+                        Group by a.stock_id, a.stock_tran_id, a.material_id, a.uom_id
+                        Having Sum(a.issued_qty) > 0
+                
+                )
+                Select d.doc_date, a.stock_id, a.stock_tran_id, a.material_id, b.material_name, a.uom_id, c.uom_desc, a.bal_qty,
+                    0.00 as return_qty
+                From si_bal a
+                Inner Join st.material b On a.material_id = b.material_id
+                Inner Join st.uom c On a.uom_id = c.uom_id
+                Inner Join st.stock_control d On a.stock_id = d.stock_id
+                Order by d.doc_date, a.stock_id, a.stock_tran_id
+
+
+-->

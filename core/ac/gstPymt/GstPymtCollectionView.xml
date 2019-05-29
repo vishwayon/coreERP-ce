@@ -1,0 +1,44 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="GstPymt" type="Document" bindingBO="GstPymt" editView="gstPymt/GstPymtEditForm">
+        <header>GST Payment Voucher</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    Select voucher_id, doc_date, vch_caption, credit_amt, credit_amt_fc, status , 
+                        COALESCE((annex_info->'gst_rc_info'->>'rc_tax_amt')::numeric, 0.00) rc_tax_amt, 
+                        COALESCE((annex_info->>'tax_amt')::numeric, 0.00) tax_amt, 
+                        COALESCE((annex_info->>'bt_amt')::numeric, 0.00) bt_amt
+                    from ac.vch_control 
+                    Where doc_type='PAYV' and finyear=:pfinyear and company_id=:pcompany_id and branch_id=:pbranch_id
+                    Order by voucher_id
+                </command>
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                    <param id="pbranch_id">
+                        <session>branch_id</session>
+                    </param>
+                    <param id="pfinyear">
+                        <session>finyear</session>
+                    </param>
+                </params>
+            </sql>
+            <displayFields>
+              <displayField columnName="doc_date" displayName="Date" format="Date"/>
+              <displayField columnName="voucher_id" displayName="Document No"/>
+              <displayField columnName="vch_caption" displayName="Supplier"/>
+              <displayField columnName="credit_amt" displayName="Credits" format="Amount"/>
+              <displayField columnName="bt_amt" displayName="Taxable Amount" format="Amount"/>
+              <displayField columnName="rc_tax_amt" displayName="RC Taxes" format="Amount"/>
+              <displayField columnName="tax_amt" displayName="Taxes" format="Amount"/>
+            </displayFields>
+      </collectionSection>
+    </collectionView>
+</cwFramework>

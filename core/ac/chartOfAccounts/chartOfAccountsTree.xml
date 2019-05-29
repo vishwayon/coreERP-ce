@@ -1,0 +1,50 @@
+<treeView id="ChartOfAccounts">        
+    <header>Chart Of Accounts</header>
+    <relationKeyField>group_id</relationKeyField>
+    <search id="account_id" label="Search" type="int" control="SmartCombo" size="m" >
+        <lookup>
+            <valueMember>account_id</valueMember>
+            <displayMember>account_head</displayMember>
+            <namedLookup>../core/ac/lookups/AccountWithHidden.xml</namedLookup>
+        </lookup>   
+    </search>
+    <parentSection>
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                SELECT group_id, parent_key, group_key, group_name, group_code 
+                FROM ac.account_group ORDER BY sys.fn_sort_key(parent_key), sys.fn_sort_key(group_key)
+            </command>
+        </sql>
+        <keyField id="group_id"/>
+        <displayFields>
+          <displayField columnName="group_name" displayName="Group Name"/>
+          <displayField columnName="group_code" displayName="Code"/>
+        </displayFields>
+        <parentKeyField>parent_key</parentKeyField>
+        <childKeyField>group_key</childKeyField>
+    </parentSection>
+    <childSection type="Master" bindingBO="AccountHead" editView="accountHead/AccountHeadEditForm">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                SELECT  a.account_id, a.account_head, a.account_code, 
+                a.group_id, a.account_type_id, b.account_type_desc 
+                FROM ac.account_head a
+                inner join ac.account_type b on a.account_type_id=b.account_type_id
+                where a.account_type_id not in (0, 7, 12)
+                Order by a.account_head
+            </command>
+        </sql>
+        <keyField id="account_id"/>
+        <displayFields>
+            <displayField columnName="account_head" displayName="Account Head"/>
+            <displayField columnName="account_code" displayName="Code"/>
+            <displayField columnName="account_type_desc" displayName="type"/>
+        </displayFields>
+    </childSection>
+</treeView>

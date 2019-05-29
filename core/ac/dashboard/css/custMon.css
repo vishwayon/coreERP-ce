@@ -1,0 +1,79 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 26 Sep, 2016, 12:45:07 PM
+    Author     : girish
+*/
+
+.db-widget {
+    height: 220px;
+    padding: 4px 0px 4px 4px;
+}
+
+.db-widget-cont {
+    background-color: white;
+    height: 100%;
+    padding: 2px;
+}
+
+.db-widget-cont .row {
+    margin: 0 -5px 10px -10px;
+}
+
+.db-widget h4 {
+    margin: 1px 10px 1px 15px; 
+    border-bottom: 1px solid silver;
+}
+
+.db-widget .graph {
+    height: 136px; 
+    margin-left: 5px;
+    margin-right: 0px;
+}
+
+.db-widget .graph > div {
+    height: 100%; 
+    background-color: white;
+}
+
+.db-widget .kpi-s {
+    border-right: 1px dotted silver;
+    color: rgb(103, 106, 108);
+}
+
+.db-widget .kpi-s:last-child {
+    border-right: none;
+}
+
+.db-widget .text-muted {
+    display: block; 
+    font-size: 11px;
+}
+
+.db-widget .no-margins {
+    margin: 0px !important;
+}
+
+
+.col-td-right {
+    text-align: right;
+}
+
+.table-fixed thead {
+    width: 97%;
+}
+.table-fixed tbody {
+    height: 230px;
+    overflow-y: auto;
+    width: 100%;
+}
+.table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+    display: block;
+}
+.table-fixed tbody td, .table-fixed thead > tr> th {
+    float: left;
+    border-bottom-width: 0;
+}

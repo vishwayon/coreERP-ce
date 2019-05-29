@@ -1,0 +1,48 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="Branch" type="Master">
+        <controlTable>
+            <tableName>sys.branch</tableName>
+            <primaryKey>branch_id</primaryKey>
+            <jsonField id="annex_info">
+                <jfield name="has_lot_alloc" type="bool"/>
+                <jfield name="has_str_qc" type="bool"/>
+                <jfield name="gst_sez_wop" type="bool"/>
+                <jfield name="gst_exp_wop" type="bool"/>
+                <jfield name="allow_ib_po" type="bool"/>
+            </jsonField>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save> 
+            <delete>
+                <useEntity/>
+            </delete>   
+            <tranTable id="branch_tax_info">
+                <tableName>sys.branch_tax_info</tableName>
+                <primaryKey>branch_tax_info_id</primaryKey>      
+                <relation linkType="OneToMany">
+                    <foreignKey>branch_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity orderby="sl_no"/>                    
+                </fetchOrCreate>      
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{branch_id}:{tax_info_type_id}</primaryKeyPattern>
+                </save>     
+                <delete>
+                    <useEntity/>
+                </delete>                 
+            </tranTable>
+        </controlTable>  
+        <codeBehind>
+            <className>\app\cwf\sys\branch\BranchEventHandler</className>
+        </codeBehind>
+    </businessObject> 
+</cwFramework>
+

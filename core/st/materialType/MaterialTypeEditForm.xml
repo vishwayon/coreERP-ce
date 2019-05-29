@@ -1,0 +1,24 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="MaterialType" type="Master" bindingBO="materialType/MaterialType">    
+        <header>Stock Type</header>    
+        <keyField>material_type_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="material_type_code" label="Stock Type Code" type="string" control="TextBox" size="s" maxLength="10" isOptional="true" />
+                <nextRow/>
+                <field id="material_type" label="Stock Type" type="string" control="TextBox" size="s" maxLength="50" />
+                <nextRow/>
+                <field id="rof_dec" label="Round Off Decimal" type="int" control="TextBox" size="2"/>
+                <nextRow/>
+                <dummy/>
+                <nextRow/>
+                <field id="note" label="Note : Please enter Stock Type. This will help you in identifying and classifying Stock Items." type="string" control="Label" size="l"/>
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

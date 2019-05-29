@@ -1,0 +1,33 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <businessObject id="StockLocation" type="Master">
+        <connectionType>
+            <companyDB/>
+        </connectionType> 
+        <controlTable>
+            <tableName>st.stock_location</tableName>
+            <primaryKey>stock_location_id</primaryKey>
+            <jsonField id="jdata">
+                <jfield name="allow_all_si" type="bool"/>
+                <jfield name="capacity" type="decimal"/>
+                <jfield name="filter_type" type="int"/>
+                <jfield name="mat_type_ids" type="string"/>
+                <jfield name="mat_ids" type="string"/>
+            </jsonField>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save> 
+            <delete>
+                <useEntity/>
+            </delete>
+        </controlTable>  
+        <codeBehind>
+            <className>\app\core\st\stockLocation\StockLocationEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

@@ -1,0 +1,39 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    <allocView id="TaxScheduleNew" type="alloc"  width="950px">
+        <header>Tax Detail</header>
+        <clientJsCode>material/Material_clientcode.js</clientJsCode> 
+        <controlSection editMode="Edit">        
+            <dataBinding>                    
+                <field id="annex_info.mat_cat_info.mat_cat_id" label="Stock Category" type="int" control="SmartCombo" size="5" readOnly="true">
+                    <lookup>
+                        <valueMember>mat_cat_id</valueMember>
+                        <displayMember>mat_cat</displayMember>
+                        <namedLookup>../core/st/lookups/MatCat.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <nextRow/>   
+                <xdiv id="div_cat_key" size="5"/>
+                <tranSection label="Category Keys">
+                    <dataBinding dataProperty="annex_info.mat_cat_info.mat_cat_keys">                      
+                        <field id="mat_cat_key" label="Category Key" type="string" control="TextBox" size="s"  readOnly="true"/>
+                        <field id="mat_cat_key_value" label="Applicable" type="bool" control="CheckBox" size="s"/>
+                    </dataBinding>
+                </tranSection>
+                <xdivEnd/>
+                <xdiv id="div_dummy" size="1"/>
+                
+                <xdivEnd/>
+                <xdiv id="div_cat_attr" size="6"/>
+                <tranSection label="Category Keys">
+                    <dataBinding dataProperty="annex_info.mat_cat_info.mat_cat_attrs">                      
+                        <field id="mat_cat_attr" label="Category Attr" type="string" control="TextBox" size="s"  readOnly="true"/>
+                        <field id="mat_cat_attr_value" label="Value" type="string" control="TextBox" size="s" />
+                    </dataBinding>
+                </tranSection>
+                <xdivEnd/>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>

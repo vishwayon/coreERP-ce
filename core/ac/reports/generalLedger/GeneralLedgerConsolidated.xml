@@ -1,0 +1,65 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="GeneralLedgerConsolidated" type="Report" rptPath="/core/ac/reports/generalLedger" rptName="GeneralLedger">
+        <header>General Ledger Consolidated</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="ms" forConsolidated="true"> 
+                    <value>
+                        <session>branch_id</session>
+                    </value>
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>
+                    </lookup>  
+                </field>
+                <field id="pfrom_date" label="From" type="date" control="Date" size="ms" range="finYear">
+                    <value>
+                        <session>year_begin</session>
+                    </value>
+                </field>
+                <field id="pto_date" label="To" type="date" control="Date" size="ms" range="finYear">                   
+                    <value>
+                        <currentDate/>
+                    </value>    
+                </field>  
+                <field id="paccount_id" label="Account" type="int" control="SmartCombo" size="m">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id not in (7, 12)</filter>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <field id="pshow_narration" label="Display Narration" type="bool" control="CheckBox" size="ms">            
+                    <value>
+                        <text>True</text>
+                    </value>
+                </field>
+                <field id="pshow_cheque_details" label="Display Cheque Details" type="bool" control="CheckBox" size="ms">       
+                    <value>
+                        <text>True</text>
+                    </value>
+                </field>
+                <field id="pdisplay_fc_amount" label="Display Foregin Currency" type="bool" control="CheckBox" size="ms"/>       
+
+                <param id="pcompany_id">                
+                        <session>company_id</session>
+                </param>
+                <param id="pyear">
+                        <session>finyear</session>
+                </param>
+                <param id="pcategory">
+                        <text>Bank</text>
+                </param>
+                <param id="preport_caption">
+                    <text>General Ledger</text>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

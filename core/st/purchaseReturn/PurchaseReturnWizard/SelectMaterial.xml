@@ -1,0 +1,52 @@
+<wizardView>
+    <header>Select Stock Items</header>
+    <sections> 
+        <collectionSection id="SelectMaterial">
+        <connectionType>
+          <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select a.*, b.account_head, 0 as return_qty from st.fn_sp_balance_for_prtn (:pcompany_id, :pbranch_id, :paccount_id, :pfrom_date, :pto_date, :pvoucher_id) a
+                Inner Join ac.account_head b on a.account_id = b.account_id 
+                Where a.stock_id = :pstock_id
+                Order by a.stock_tran_id
+            </command>
+            <params>
+                <param id="pcompany_id">
+                    <session>company_id</session>
+                </param>
+                <param id="pbranch_id">
+                    <session>branch_id</session>
+                </param>
+                <param id="paccount_id">
+                    <wizard step="SelectSupplier">account_id</wizard>
+                </param>
+                <param id="pfrom_date">
+                    <wizard step="SelectSupplier">from_date</wizard>
+                </param>
+                <param id="pto_date">
+                    <wizard step="SelectSupplier">to_date</wizard>
+                </param>
+                <param id="pvoucher_id">
+                    <text></text>
+                </param>
+                <param id="pstock_id">
+                    <wizard step="SelectStockPurchase">stock_id</wizard>
+                </param>
+            </params>
+        </sql>
+        <keyField id="stock_id"/>
+        <displayFields>
+            <displayField columnName="stock_tran_id" id="stock_tran_id" label="Voucher No" type="string" control="TextBox" size="s"/>
+            <displayField columnName="material_name" id="material_name" label="Stock Item" type="string" control="TextBox" size="s"/>
+            <displayField columnName="uom_desc" id="uom_desc" label="Unit" type="string" control="TextBox" size="xs"/>
+            <displayField columnName="stock_location_name" id="stock_location_name" label="Stock Location" type="string" control="TextBox" size="xs"/>
+            <displayField columnName="balance_qty" id="balance_qty" label="Balance Qty" type="decimal" control="TextBox" size="s" scale="qty"/>  
+            <displayField columnName="return_qty" id="return_qty" label="Return Qty" type="decimal" control="TextBox" size="s" editMode="Edit"
+                        cdata-enable-on="core_purchasereturn.return_qty_enable" scale="qty"/>
+            <displayField columnName="rate" id="rate" label="Rate" type="decimal" control="TextBox" size="s" scale="rate"/> 
+        </displayFields>
+    </collectionSection>
+    </sections>
+</wizardView>

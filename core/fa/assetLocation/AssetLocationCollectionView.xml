@@ -1,0 +1,26 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="AssetLocation" type="Master" bindingBO="AssetLocation" editView="assetLocation/AssetLocationEditForm">    
+        <header>Asset Location</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    SELECT asset_location_id, asset_location_code, asset_location, a.branch_id , b.branch_name
+                    FROM fa.asset_location a
+                    Inner join sys.branch b on a.branch_id=b.branch_id
+                    Where a.company_id={company_id}
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="branch_name" displayName="Branch"/>
+                <displayField columnName="asset_location" displayName="Asset Location"/>
+                <displayField columnName="asset_location_code" displayName="Code"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

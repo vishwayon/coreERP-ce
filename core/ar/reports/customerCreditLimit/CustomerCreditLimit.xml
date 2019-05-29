@@ -1,0 +1,47 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="CustomerCreditLimit" type="Report" rptPath="/core/ar/reports/customerCreditLimit" rptName="CustomerCreditLimit">
+        <header>Customer Credit Limit</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="preport_type" label="Report" type="int" control="SimpleCombo"  size="3">
+                    <options defaultValue="0">
+                        <option value="0">Customer Credit Limit</option>
+                        <option value="1">Customer Credit Limit Detailed</option>
+                        <option value="2">By Branch</option>
+                    </options>  
+                </field>
+                <field id="pto_date" label="As On" type="date" control="Hidden" size="ms" range="finYear">                   
+                    <value>
+                        <currentDate/>
+                    </value>    
+                </field>  
+                <field id="pcustomer_id" label="Customer" type="int" control="SmartCombo" size="4">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <valueMember>customer_id</valueMember>
+                        <displayMember>customer</displayMember>
+                        <namedLookup>../core/ar/lookups/CustomerWithAll.xml</namedLookup>
+                        <!--<filter>account_type_id not in (7, 12)</filter>-->
+                    </lookup>   
+                </field>
+                <param id="pcompany_id">                
+                    <session>company_id</session>
+                </param>
+                <param id="pyear">
+                    <session>finyear</session>
+                </param>
+                <param id="pbranch_id">
+                    <text>0</text>
+                </param>
+                <param id="preport_caption">
+                    <text>Customer Credit Limit</text>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

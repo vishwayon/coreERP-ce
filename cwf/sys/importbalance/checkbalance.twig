@@ -1,0 +1,73 @@
+<div class="col-md-12">
+    <div class="col-md-12" style="margin-top: 0px;">
+        <span id='impmsg' style="color: green;">{{ model.msg }}</span>
+    </div>
+    <br/>
+    <br/>
+    <ul class="nav nav-tabs">
+        {% if model.importAccBal == true and model.importInvBal == false %}
+        <li class="active"><a data-toggle="tab" href="#daccbal">Account Balance</a></li>
+        {% elseif model.importAccBal == false and model.importInvBal == true %}
+        <li class="active"><a data-toggle="tab" href="#dinvbal">Inventory Balance</a></li>
+        {% elseif model.importAccBal == true and model.importInvBal == true %}
+        <li class="active"><a data-toggle="tab" href="#daccbal">Account Balance</a></li>
+        <li><a data-toggle="tab" href="#dinvbal">Inventory Balance</a></li>
+        {% endif %}
+    </ul>
+    <div class="tab-content">
+        <style type="text/css">
+            td {padding: 0.55em;}
+            tr {padding: 0.55em;}
+        </style>
+        {% if model.importAccBal == true %}
+        <div id="daccbal" class="tab-pane fade in active">       
+            <table class="col-md-12" id="accbal" style="margin: 10px auto auto;">
+                <thead style="background-color: lightgrey;line-height: 2.75em;">
+                    <tr >
+                        <th class="col-md-8">Account</th>
+                        <th class="col-md-2">Debit Opening</th>
+                        <th class="col-md-2">Credit Opening</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for item in model.getAccBal %}
+                    <tr>
+                        <td>{{ item.account_head }}</td>
+                        <td class="datatable-col-right">{{item.debit_opening_balance|number_format(2,'.',',')}}</td>
+                        <td class="datatable-col-right">{{item.credit_opening_balance|number_format(2,'.',',')}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+        {% if model.importInvBal == true %}
+        <div id="dinvbal" class="tab-pane fade in active">
+            <table class="col-md-12" id="invbal" style="margin: 10px auto auto;">
+                <thead style="background-color: lightgrey;line-height: 2.75em;">
+                    <tr >
+                        <th class="col-md-5">Material</th>
+                        <th class="col-md-2">Balance Quantity</th>
+                        <th class="col-md-1">UoM</th>
+                        <th class="col-md-2">Rate</th>
+                        <th class="col-md-2">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for item in model.getInvBal %}
+                    <tr>
+                        <td>{{ item.material_name }}</td>
+                        <td class="datatable-col-right">{{item.balance_qty_base|number_format(2,'.',',')}}</td>
+                        <td>{{ item.uom_desc }}</td>
+                        <td class="datatable-col-right">{{item.rate|number_format(2,'.',',')}}</td>
+                        <td class="datatable-col-right">{{item.mat_value|number_format(2,'.',',')}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+</div>
+    
+    

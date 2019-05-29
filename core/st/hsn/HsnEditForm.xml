@@ -1,0 +1,18 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Hsn" type="Master" bindingBO="hsn/Hsn">    
+        <header>HS Codes</header>    
+        <keyField>hsn_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="hsn_code" label="HS Code" type="string" control="TextBox" size="s" maxLength="20" />
+                <nextRow/>
+                <field id="hsn" label="HS Description" type="string" control="TextBox" size="m" maxLength="250" />
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

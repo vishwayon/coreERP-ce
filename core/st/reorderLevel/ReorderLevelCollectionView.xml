@@ -1,0 +1,28 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'> 
+    
+    <collectionView id="ReorderLevel" type="Master" bindingBO="ReorderLevel" editView="reorderLevel/ReorderLevelEditForm">        
+        <header>Stock Item Reorder Level</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select a.material_id, a.material_name, b.material_type, a.material_code, 
+                    (select case when count(*)>0 then (count(*)::varchar) else '' end 
+                    from st.mat_level x where x.material_id=a.material_id) as no_of_branches
+                    from 
+                    st.material a  
+                    inner join st.material_type b on a.material_type_id=b.material_type_id
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="material_name" displayName="Stock Item"/>
+                <displayField columnName="material_type" displayName="Stock Type"/>
+                <displayField columnName="no_of_branches" displayName="No of Branch"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

@@ -1,0 +1,50 @@
+<wizardView>
+    <header>Select Stock Invoice</header>
+    <sections>
+        <collectionSection id="SelectStockInvoice">
+        <connectionType>
+          <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select a.stock_id, a.doc_date, a.account_id, b.account_head from st.fn_si_balance_for_sr (:pcompany_id, :pbranch_id, :paccount_id, :pfrom_date, :pto_date, :pvoucher_id) a
+                Inner Join ac.account_head b on a.account_id = b.account_id 
+                group by a.stock_id, a.doc_date, a.account_id, b.account_head
+                order by a.doc_date, a.stock_id
+            </command>
+            <params>
+                <param id="pcompany_id">
+                    <session>company_id</session>
+                </param>
+                <param id="pbranch_id">
+                    <session>branch_id</session>
+                </param>
+                <param id="paccount_id">
+                    <wizard step="SelectCustomer">account_id</wizard>
+                </param>
+                <param id="pfrom_date">
+                    <wizard step="SelectCustomer">from_date</wizard>
+                </param>
+                <param id="pto_date">
+                    <wizard step="SelectCustomer">to_date</wizard>
+                </param>
+                <param id="pvoucher_id">
+                    <text></text>
+                </param>
+            </params>
+        </sql>
+        <keyField id="stock_id"/>
+        <displayFields>
+            <displayField columnName="stock_id" displayName="Voucher No" 
+                          id="stock_id" label="Voucher No" type="string" 
+                          control="TextBox" size="s"/>
+            <displayField columnName="doc_date" displayName="Date" 
+                          id="doc_date" label="Date" type="date" 
+                          control="Date" size="s"/>
+            <displayField columnName="account_head" displayName="Bill No" 
+                          id="account_head" label="Account" type="string" 
+                          control="TextBox" size="s"/>
+        </displayFields>
+    </collectionSection>
+    </sections>
+</wizardView>

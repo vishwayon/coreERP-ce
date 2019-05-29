@@ -1,0 +1,29 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>             
+    
+    <collectionView id="Payhead" type="Master" bindingBO="Payhead" editView="payhead/PayheadEditForm">        
+        <header>Payhead</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select a.payhead_id, a.payhead, a.payhead_alias, a.payhead_type, a.account_id, b.account_head, a.accrual_account_id, c.account_head as accrual_account_head
+                    from hr.payhead a
+                    Inner join ac.account_head b on a.account_id = b.account_id
+                    inner join ac.account_head c on a.accrual_account_id = c.account_id 
+                    order by payhead
+                </command>
+          </sql>
+          <displayFields>
+            <displayField columnName="payhead" displayName="Payhead"/>
+            <displayField columnName="payhead_alias" displayName="Payhead Alias"/>
+            <displayField columnName="payhead_type" displayName="Payhead Type"/>
+            <displayField columnName="account_head" displayName="Account Head"/>
+            <displayField columnName="accrual_account_head" displayName="Accrual Account Head"/>
+          </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

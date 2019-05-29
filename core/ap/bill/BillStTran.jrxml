@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.1.final using JasperReports Library version 6.1.1  -->
+<!-- 2016-08-08T15:46:48 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BillStTran" language="groovy" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4f77b06c-ced3-4f69-bc60-86a505f51ecb">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="fusion DB"/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="inch"/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_qty_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_fc_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.#"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pvoucher_id" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="pfc_type_id" class="java.lang.Long" isForPrompting="false"/>
+	<parameter name="preport_caption" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["Supplier Payment"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from tx.fn_tax_tran_report
+(
+$P{pvoucher_id}
+) ORDER BY step_id;]]>
+	</queryString>
+	<field name="voucher_id" class="java.lang.String"/>
+	<field name="step_id" class="java.lang.Short"/>
+	<field name="tax_tran_id" class="java.lang.String"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="tax_detail_id" class="java.lang.Long"/>
+	<field name="tax_amt_fc" class="java.math.BigDecimal"/>
+	<field name="tax_amt" class="java.math.BigDecimal"/>
+	<field name="tax_perc" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="15">
+			<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+			<frame>
+				<reportElement x="0" y="0" width="522" height="14" forecolor="#6B6B6B" uuid="1ef09315-78e5-4967-8e0f-9cc46c7276c6"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+				</box>
+				<textField isStretchWithOverflow="true" evaluationTime="Report">
+					<reportElement style="NormalLabel" positionType="Float" x="335" y="0" width="113" height="14" uuid="afe54035-dbe9-4c44-8138-7e1f445f1579">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<box leftPadding="4">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					</box>
+					<textFieldExpression><![CDATA["Tax Details"]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+			<frame>
+				<reportElement x="0" y="0" width="523" height="14" uuid="9f056f78-a6fd-4b2f-a9d3-4fd07dcfb3a9">
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+				</box>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="FineNotes" x="339" y="0" width="121" height="14" uuid="c3c3ceb4-bff7-49ac-9569-cc4ecb1507ef">
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					</reportElement>
+					<box leftPadding="4">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					</box>
+					<textFieldExpression><![CDATA[$F{description} + " @ " + new java.text.DecimalFormat($P{pcwf_amt_format}).format($F{tax_perc}) + "%"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="NormalText" positionType="Float" x="460" y="0" width="63" height="14" uuid="ae361069-da9d-458c-aef5-00ad2de0d739"/>
+					<textElement textAlignment="Right">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($P{pfc_type_id} != 0) ? $F{tax_amt_fc} : $F{tax_amt}]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+</jasperReport>

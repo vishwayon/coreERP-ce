@@ -1,0 +1,34 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="VatUpload" type="Report" rptPath="" rptName="">
+        <header>Vat Returns (for Upload)</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="VatTin" label="VAT TIN" type="string" control="TextBox" size="ms"/>
+                <field id="RetPerdEnd" label="Return Period" type="int" control="TextBox" size="ms"/>
+                <field id="rpt_type" label="Report Type" type="string" control="SimpleCombo" size="ms">
+                    <options>
+                        <option value="sales">Sales - Local</option>
+                        <option value="saleRet">Sale Returns - Local</option>
+                        <option value="salesInterState">Sales - Inter State</option>
+                        <option value="saleRetInterState">Sales Returns - Inter State</option>
+                        <option value="purchase">Purchase - Local</option>
+                        <option value="purchaseInterState">Purchase - Inter State</option>
+                    </options>
+                </field>
+                <field id="pfrom_date" label="First Day of Return Month" type="date" control="Date" size="ms" range="finYear">
+                    <value>
+                        <session>year_begin</session>
+                    </value>
+                </field>
+                <field id="pto_date" label="Last Day of Return Month" type="date" control="Date" size="ms" range="finYear">
+                    <value>
+                        <session>year_begin</session>
+                    </value>
+                </field>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

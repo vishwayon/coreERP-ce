@@ -1,0 +1,11 @@
+<wizard id="DebitNote" name="Debit Note Wizard">
+    <codeBehind>
+        <className>\app\core\ar\debitNote\DebitNoteWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectIncomeType">
+        <path>debitNote/DebitNoteWizard/SelectIncomeType</path>
+    </wizardStep>
+    <postWizard id="DebitNote">
+        <path>debitNote/DebitNoteEditForm</path>
+    </postWizard>
+</wizard>

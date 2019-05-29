@@ -1,0 +1,88 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="JobWorkReceipt" type="Document" bindingBO="jobWorkReceipt/JobWorkReceipt">
+        <header>Job Work Receipt</header>
+        <keyField>stock_id</keyField>
+        <printView rptOption="jobWorkReceipt/JobWorkReceiptPrint">
+            <rptParams>
+                <param id="pstock_id">stock_id</param>
+            </rptParams>
+        </printView>
+        <newDocEnabled>
+            <docType>JWR</docType>
+        </newDocEnabled>
+        <deleteDocEnabled/>
+        <clientJsCode>jobWorkReceipt/JobWorkReceipt_clientcode.js</clientJsCode>
+        <clientJsCodeRefs>
+            <clientJsCodeRef>../cwf/sys/sys_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/tx/tx_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/st/st_clientcode.js</clientJsCodeRef>
+            <clientJsCodeRef>../core/st/lotAlloc/lot_alloc.js</clientJsCodeRef>
+        </clientJsCodeRefs>  
+        <jsEvents>
+            <afterLoadEvent>core_st.jwr.after_load</afterLoadEvent>               
+        </jsEvents>            
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="stock_id" label="Voucher No" type="string" control="TextBox" size="s" maxLength="50" isOptional="true" readOnly="true" forStatus="true" />             
+                <dummy size="6"/>
+                <field id="doc_date" label="Date" type="date" control="Date" size="ms" range="finYear"/>
+                <nextRow/>
+                <tranSection label="Stock Items" editMode="Add|Edit|Delete" fixedWidth="750" 
+                    afterDeleteMethod="core_st.jwr.st_tran_delete">
+                    <dataBinding dataProperty="stock_tran">
+                        <field id="sl_no" label="#" type="int" control="TextBox" size="1" inline="true" readOnly="true" isOptional="true" style="border: none; background: none;"/>
+                        <field id="bar_code" label="Bar Code" type="string" control="TextBox" size="2" isOptional="true"/>
+                        <field id="material_type_id" label="Type" type="int" control="SmartCombo" size="3"  >
+                            <lookup>
+                                <valueMember>material_type_id</valueMember>
+                                <displayMember>material_type</displayMember>
+                                <namedLookup>../core/st/lookups/MaterialType.xml</namedLookup>
+                            </lookup>
+                        </field>
+                        <field id="material_id" label="Stock Item" type="int" control="SmartCombo" size="6"
+                            mdata-event="subscribe: core_st.jwr.fetch_mat_info" > 
+                            <lookup>
+                                <valueMember>material_id</valueMember>
+                                <displayMember>material_name</displayMember>
+                                <namedLookup>../core/st/lookups/Material.xml</namedLookup>
+                                 <filterEvent>core_st.jwr.material_filter</filterEvent>
+                            </lookup>   
+                        </field>
+                        <field id="uom_id" label="UoM" type="int" control="SmartCombo" size="2">
+                            <lookup>
+                                <valueMember>uom_id</valueMember>
+                                <displayMember>uom_desc</displayMember>
+                                <namedLookup>../core/st/lookups/UoM.xml</namedLookup>
+                                <filterEvent>core_st.sp_uom_combo_filter</filterEvent>
+                            </lookup>   
+                        </field>
+                        <field id="received_qty" label="Received Qty" type="decimal" control="TextBox" size="2" scale="qty" />
+                        <nextRow/>
+                        <dummy size="1"/>
+                        <xdiv colspan="5"/>
+                        <field id="stock_location_id" label="Stock Location" type="int" control="SmartCombo" size="3" mdata-event="subscribe: core_st.jwr.fetch_avl_qty" >
+                            <lookup>
+                                <valueMember>stock_location_id</valueMember>
+                                <displayMember>stock_location_name</displayMember>
+                                <namedLookup>../core/st/lookups/StockLocation.xml</namedLookup>
+                            </lookup>   
+                        </field>
+                        <field id="bal_qty" label="" type="string" control="TextBox" size="2" readOnly="true" inline="true" class="fg-total" style="font-style: italic; font-size: small;" 
+                                cdata-bind="style: { color: has_bal() ? 'green' : 'red' }"/>
+                        <field id="has_bal" label="" type="bool" control="Hidden" readOnly="true" isOptional="true"/>
+                        <xdivEnd/>
+                        <addRowEvent>core_st.jwr.st_tran_add</addRowEvent>
+                    </dataBinding>
+                </tranSection>
+                <nextRow/>
+                <field id="narration" label="Narration" type="string" control="TextArea" size="m" maxLength="500" rows="3" isOptional="true"/>  
+                <nextRow/>
+                <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" size="m"  isOptional="true"/>  
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" size="m" readOnly="true" isOptional="true"/> 
+            </dataBinding>
+        </controlSection>   
+    </formView>
+</cwFramework>

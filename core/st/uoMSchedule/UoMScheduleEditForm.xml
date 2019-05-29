@@ -1,0 +1,23 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="UoMSchedule" type="Master" bindingBO="uoMSchedule/UoMSchedule">
+        <header>UoM Schedule</header>
+        <keyField>uom_sch_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="uom_sch_desc" label="UoM Description" type="string" control="TextBox" size="s" maxLength="50"/>
+                <tranSection label="UoM Schedule Items"  editMode="Add|Edit|Delete" size="6">
+                    <dataBinding dataProperty="uom_sch_item">
+                        <field id="is_base" label="Base Unit" type="bool" control="CheckBox" size="2"/>
+                        <field id="uom_desc" label="Description" type="string" control="TextBox" size="7" maxLength="20"/>
+                        <field id="uom_qty" label="UoM Quantity" type="int" control="TextBox" size="3"/>
+                    </dataBinding>
+                </tranSection>           
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

@@ -1,0 +1,22 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="TaxSchedule">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select tax_schedule_id, description as tax_schedule, applicable_to_customer, applicable_to_supplier, tax_type_id
+                from tx.tax_schedule
+                Where company_id={company_id}
+                and is_discontinued = false
+                order by description
+            </command>
+        </sql>
+        <keyField id="tax_schedule_id"/>
+    </lookup>
+</cwFramework>
+
+    

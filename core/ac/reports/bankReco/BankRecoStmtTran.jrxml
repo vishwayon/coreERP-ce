@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2018-08-30T10:01:04 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BankRecoStmtTran" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="523" leftMargin="0" rightMargin="72" topMargin="0" bottomMargin="0" uuid="e40e46d0-6a2f-4ee4-ac89-ba2e7e89d877">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="local_hi_db_1"/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pcompany_id" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pbranch_id" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1000001]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_qty_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_fc_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.#"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="paccount_id" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1000001]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pas_on" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2016-03-31"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pyear" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["1516"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pview" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_date_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["dd-MM-yyyy"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pBookBalance" class="java.math.BigDecimal" isForPrompting="false"/>
+	<parameter name="pBalanceDrCr" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="pBankBalanceAmt" class="java.math.BigDecimal" isForPrompting="false"/>
+	<parameter name="pfrom_date" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2016-03-31"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from ac.sp_bank_reco_collection
+(	$P{pcompany_id}, 
+	$P{pbranch_id},
+	$P{paccount_id}, 
+	$P{pview}, 
+	$P{pfrom_date}::Date, 
+	$P{pas_on}::Date
+) order by doc_date;]]>
+	</queryString>
+	<field name="reco_type" class="java.lang.String"/>
+	<field name="doc_date" class="java.sql.Date"/>
+	<field name="voucher_id" class="java.lang.String"/>
+	<field name="vch_caption" class="java.lang.String"/>
+	<field name="cheque_number" class="java.lang.String"/>
+	<field name="cheque_date" class="java.sql.Date"/>
+	<field name="debit_amt" class="java.math.BigDecimal"/>
+	<field name="debit_amt_fc" class="java.math.BigDecimal"/>
+	<field name="credit_amt" class="java.math.BigDecimal"/>
+	<field name="credit_amt_fc" class="java.math.BigDecimal"/>
+	<field name="collected" class="java.lang.Boolean"/>
+	<field name="collection_date" class="java.sql.Date"/>
+	<variable name="DebitAmt" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{debit_amt}]]></variableExpression>
+	</variable>
+	<variable name="CreditAmt" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{credit_amt}]]></variableExpression>
+	</variable>
+	<variable name="BankBookBalance" class="java.math.BigDecimal" resetType="None">
+		<variableExpression><![CDATA[((($V{CreditAmt} == null) || ($V{CreditAmt} == 0)) && (($V{DebitAmt} == null) || ($V{DebitAmt} == 0)))? $P{pBankBalanceAmt} : $P{pBankBalanceAmt} - $V{DebitAmt} + $V{CreditAmt}]]></variableExpression>
+	</variable>
+	<variable name="CrClosingBalance" class="java.math.BigDecimal" resetType="None">
+		<variableExpression><![CDATA[($V{BankBookBalance} > 0) ? $V{BankBookBalance} : 0]]></variableExpression>
+	</variable>
+	<variable name="DrClosingBalance" class="java.math.BigDecimal" resetType="None">
+		<variableExpression><![CDATA[($V{BankBookBalance} < 0) ? $V{BankBookBalance} * -1 : 0]]></variableExpression>
+	</variable>
+	<variable name="BankBalanceType" class="java.lang.String" resetType="None">
+		<variableExpression><![CDATA[($V{BankBookBalance} < 0) ? "Dr" : (($V{BankBookBalance} > 0) ? "Cr" : "")]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" positionType="Float" x="440" y="0" width="83" height="14" uuid="ecef1016-0e53-4a64-a2aa-310ea641251d">
+					<printWhenExpression><![CDATA[$F{credit_amt} != 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($F{credit_amt})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" positionType="Float" x="360" y="0" width="80" height="14" uuid="de9d1b47-617c-4577-b45c-b8a990168656">
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					<printWhenExpression><![CDATA[$F{debit_amt} != 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($F{debit_amt})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement style="NormalText" positionType="Float" x="220" y="0" width="140" height="14" uuid="adc34c49-f085-43a7-808b-c1269e45a804">
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{vch_caption}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="NormalText" positionType="Float" x="150" y="0" width="70" height="14" uuid="54afa509-0f05-4b83-a705-eb1929b64d75">
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cheque_number}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" positionType="Float" x="60" y="0" width="90" height="14" isRemoveLineWhenBlank="true" uuid="f16949c1-27d4-443a-b7f8-bd1ba2b5afee">
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{voucher_id}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" positionType="Float" x="0" y="0" width="60" height="14" isRemoveLineWhenBlank="true" uuid="994ef3c4-0d30-40e3-9c9d-f7e37eedca69"/>
+				<textFieldExpression><![CDATA[$F{doc_date}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_date_format}]]></patternExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="36">
+			<textField>
+				<reportElement style="NormalText" x="0" y="1" width="360" height="14" uuid="12a5147d-314a-4503-ab72-f847330dc99e">
+					<printWhenExpression><![CDATA[((($V{CreditAmt} == null) || ($V{CreditAmt} == 0)) && (($V{DebitAmt} == null) || ($V{DebitAmt} == 0)))]]></printWhenExpression>
+				</reportElement>
+				<textFieldExpression><![CDATA["There are no Unreconciled items."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement style="NormalText" positionType="Float" x="360" y="1" width="80" height="14" uuid="c40e2e08-faf0-4621-95f5-1a030342d253">
+					<printWhenExpression><![CDATA[((($V{CreditAmt} == null) || ($V{CreditAmt} == 0)) && (($V{DebitAmt} == null) || ($V{DebitAmt} == 0))) ?  false : true]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.2"/>
+					<bottomPen lineWidth="0.2"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($V{DebitAmt})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement style="NormalText" positionType="Float" x="440" y="1" width="83" height="14" uuid="c33f3aca-b0a7-477a-b57a-12c37574ba5b">
+					<printWhenExpression><![CDATA[((($V{CreditAmt} == null) || ($V{CreditAmt} == 0)) && (($V{DebitAmt} == null) || ($V{DebitAmt} == 0))) ?  false : true]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.2"/>
+					<bottomPen lineWidth="0.2"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($V{CreditAmt})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" positionType="Float" x="0" y="20" width="360" height="14" uuid="b05f7912-3298-4265-a4d6-4496d323a253"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Balance as per Bank Pass Book - " + $V{BankBalanceType}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="NormalText" positionType="Float" x="440" y="20" width="83" height="14" uuid="8a28d16e-bf51-44c9-b6d3-ae564832c9d3">
+					<printWhenExpression><![CDATA[$V{CrClosingBalance} != 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($V{CrClosingBalance})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement style="NormalText" positionType="Float" x="360" y="20" width="80" height="14" uuid="4276d4e3-56a1-4433-9262-4d5e97c47fff">
+					<printWhenExpression><![CDATA[$V{DrClosingBalance} != 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($V{DrClosingBalance})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

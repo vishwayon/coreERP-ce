@@ -1,0 +1,215 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Material" type="Master" bindingBO="material/Material">    
+        <header>Stock Item</header>    
+        <keyField>material_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <noRefreshOnClose/>
+        <clientJsCode>material/Material_clientcode.js</clientJsCode>
+        <jsEvents>
+            <afterLoadEvent>core_material.after_load</afterLoadEvent>      
+        </jsEvents>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="material_type_id" label="Stock Type" type="int" control="SmartCombo" size="ms">
+                    <lookup>
+                        <valueMember>material_type_id</valueMember>
+                        <displayMember>material_type</displayMember>
+                        <namedLookup>../core/st/lookups/MaterialType.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <field id="material_code" label="Stock Item Code" type="string" control="TextBox" size="s" maxLength="20" isOptional="true" />
+                <field id="annex_info.gst_info.hsn_sc_id" label="HSN for GST" control="SmartCombo" size="s">
+                    <lookup>
+                        <valueMember>hsn_sc_id</valueMember>
+                        <displayMember>hsn_sc_desc</displayMember>
+                        <namedLookup>../core/tx/lookups/HsnSc.xml</namedLookup>
+                    </lookup>
+                </field>
+                <field id="annex_info.gst_info.purch_gst_rate_id" label="Override Purchase GST" control="SmartCombo" size="s" isOptional="true">
+                    <lookup>
+                        <valueMember>gst_rate_id</valueMember>
+                        <displayMember>gst_rate_desc</displayMember>
+                        <namedLookup>../core/tx/lookups/GSTRate.xml</namedLookup>
+                    </lookup>
+                </field>
+                <field id="annex_info.gst_info.sale_gst_rate_id" label="Override Sale GST" control="SmartCombo" size="s" isOptional="true">
+                    <lookup>
+                        <valueMember>gst_rate_id</valueMember>
+                        <displayMember>gst_rate_desc</displayMember>
+                        <namedLookup>../core/tx/lookups/GSTRate.xml</namedLookup>
+                    </lookup>  
+                </field>
+                <nextRow/>
+                <xdiv id="stock_info" size="6"/>
+                    <field id="material_name" label="Stock Item" type="string" control="TextBox" size="12" maxLength="250" />
+                    <nextRow/>
+                    <field id="material_desc" label="Stock Item Description" type="string" control="TextArea" size="12" maxLength="2000" rows="3" isOptional="true"/>
+                    <nextRow/>
+                    <field id="inventory_account_id" label="Inventory Account" type="int" control="SmartCombo" size="6">
+                        <lookup>
+                            <valueMember>account_id</valueMember>
+                            <displayMember>account_head</displayMember>
+                            <namedLookup>../core/ac/lookups/AccountWithHidden.xml</namedLookup>
+                            <filter>account_type_id = 6</filter>
+                        </lookup>   
+                    </field>
+                    <field id="consumed_account_id" label="Consumption Account" type="int" control="SmartCombo" size="6">
+                        <lookup>
+                            <valueMember>account_id</valueMember>
+                            <displayMember>account_head</displayMember>
+                            <namedLookup>../core/ac/lookups/AccountWithHidden.xml</namedLookup>
+                            <filter>account_type_id = 25</filter>
+                        </lookup>   
+                    </field>
+                <xdivEnd/>
+                <dummy size="1"/>
+                <xdiv id="uom_info" size="5"/>
+                <!--<dummy size="4"/>
+                <cButton id="uom_schedule" onClick="core_material.MaterialUomAlloc" label="Select UoM Schedule" readOnly="OnEdit"/>-->
+                <nextRow/>
+                <tranSection label="UoM" editMode="Add|Edit" size="12">
+                    <dataBinding dataProperty="uom">                       
+                        <field id="uom_type_id" label="Type" type="int" control="SmartCombo" size="s" readOnly="true">
+                            <lookup>
+                                <valueMember>uom_type_id</valueMember>
+                                <displayMember>uom_type</displayMember>
+                                <namedLookup>../core/st/lookups/UoMType.xml</namedLookup>
+                            </lookup>   
+                        </field>
+                        <field id="uom_desc" label="Description" type="string" control="TextBox" size="s" maxLength="20"/>
+                        <field id="uom_qty" label="Base Qty (=)" type="int" control="TextBox" size="ms" cdata-enable-on="core_material.uom_qty_enabled"/>
+                        <field id="is_discontinued" label="Is Discont." type="bool" control="CheckBox" size="1"/>
+                    </dataBinding>
+                </tranSection> 
+                <xdivEnd/>
+                <xtab id="supp_price_tab" size="12" style="margin-top: 20px;" />        
+                <xtabPage id="sale_price_tab" label="Sale Price" tabid="supp_price_tab" size="12" style="height: 300px;"/>
+                    <xdiv id="div_sp" size="6"/>
+                        <field id="annex_info.sale_price.price_type" type="string" control="SimpleCombo" label="Price Type" size="6">
+                            <options defaultValue="FP">
+                                <option value="WAC">Weighted Avg. Cost + Markup</option>
+                                <option value="LP">Latest Purchase Cost + Markup</option>
+                                <option value="FP">Fixed Price</option>
+                            </options>
+                        </field>
+                        <nextRow/>
+                        <field id="annex_info.sale_price.sp_calc.fixed_pu" type="decimal" control="TextBox" label="Fixed Price Per Unit" isOptional="true" size="6"
+                               cdata-enable-on="core_material.enable_fp_price"/>
+                        <field id="annex_info.sale_price.sp_calc.disc_pcnt" type="decimal" control="TextBox" label="Standard Discount (%)" isOptional="true" size="6"
+                               cdata-enable-on="core_material.enable_fp_price"/>
+                        <nextRow/>                        
+                        <field id="annex_info.sale_price.wac_calc.markup_pcnt" type="decimal" control="TextBox" label="Weighted Avg. Cost Markup (%)" isOptional="true" size="6"
+                               cdata-enable-on="core_material.enable_wac_price"/>
+                        <field id="annex_info.sale_price.wac_calc.markup_pu" type="decimal" control="TextBox" label="Weighted Avg. Cost Markup Per Unit" isOptional="true" size="6"
+                               cdata-enable-on="core_material.enable_wac_price"/>
+                        <nextRow/>
+                        <field id="annex_info.sale_price.lp_calc.markup_pcnt" type="decimal" control="TextBox" label="Latest Purchase Cost Markup (%)" isOptional="true" size="6"
+                               cdata-enable-on="core_material.enable_lp_price"/>
+                        <field id="annex_info.sale_price.lp_calc.markup_pu" type="decimal" control="TextBox" label="Latest Purchase Cost Markup Per Unit" isOptional="true" size="6"
+                               cdata-enable-on="core_material.enable_lp_price"/>                        
+                    <xdivEnd/>
+                <xtabPageEnd/>
+                <xtabPage id="supp_mfg_tab" label="Manufacturer Info" tabid="supp_price_tab" size="12" style="height: 300px;"/>
+                    <xdiv size="6"/>
+                    <field id="annex_info.supp_info.mfg_id" label="Manufacturer" type="int" control="SmartCombo" size="6" isOptional="true">
+                        <lookup>
+                            <valueMember>mfg_id</valueMember>
+                            <displayMember>mfg</displayMember>
+                            <namedLookup>../core/st/lookups/Mfg.xml</namedLookup>
+                        </lookup>
+                    </field>
+                    <!--<field id="annex_info.supp_info.mfg" label="Manufacturer" type="string" control="TextBox" size="6" />-->
+                    <field id="annex_info.supp_info.mfg_part_no" label="Mfg. Part No." type="string" control="TextBox" size="3" isOptional="true" />
+                    <field id="annex_info.supp_info.mfg_part_desc" label="Mfg. Part Desc" type="string" control="TextArea" size="9" rows="4" isOptional="true" />
+                    <xdivEnd/> 
+                    <dummy size="1"/>                       
+                    <xdiv size="5" style="max-height: 224px; overflow-y: auto;"/>
+                        <tranSection label="Preferred Supplier(s)" editMode="Add|Edit|Delete">
+                            <dataBinding dataProperty="annex_info.supp_info.pref_supp">
+                                <field id="supplier_id" label="Supplier" type="int" control="SmartCombo" size="9">
+                                    <lookup>
+                                        <valueMember>supplier_id</valueMember>
+                                        <displayMember>supplier</displayMember>
+                                        <namedLookup>../core/ap/lookups/Supplier.xml</namedLookup>
+                                    </lookup>
+                                </field>
+                                <field id="lead_days" label="Lead Days" type="int" control="TextBox" size="3" isOptional="true" />
+                            </dataBinding> 
+                        </tranSection>
+                    <xdivEnd/> 
+                <xtabPageEnd/>
+                <xtabPage id="op_bal_tab" label="Opening Balance" tabid="supp_price_tab" size="12" style="height: 300px; overflow-y: auto;"/>
+                    <field label="Opening Balance from" type="string" control="Label" size="2" inline="true"/>
+                    <field id="first_fin_year" label="" type="string" control="TextBox" size="xs" maxLength="250" readOnly="true" inline="true"/>    
+                    <tranSection label="Opening Balance" editMode="Add|Edit|Delete">
+                        <dataBinding dataProperty="stock_ledger">
+                            <field id="branch_id" label="Branch" type="int" control="SmartCombo" size="s">
+                                <lookup>
+                                    <valueMember>branch_id</valueMember>
+                                    <displayMember>branch_name</displayMember>
+                                    <namedLookup>../cwf/sys/lookups/Branch.xml</namedLookup>
+                                </lookup>   
+                            </field>
+                            <field id="stock_location_id" label="Stock Location" type="int" control="SmartCombo" size="3" >
+                                <lookup>
+                                    <valueMember>stock_location_id</valueMember>
+                                    <displayMember>stock_location_name</displayMember>
+                                    <namedLookup>../core/st/lookups/StockLocationWithoutBranch.xml</namedLookup>
+                                    <filterEvent>core_material.stock_loc_combo_filter</filterEvent>
+                                </lookup>   
+                            </field>
+                            <field id="received_qty" label="Received Qty" type="decimal" control="TextBox" size="2" scale="qty" isOptional="true"
+                                   mdata-event="subscribe:core_material.calculate_stock_ledger_item_amt"/>
+                            <field id="unit_rate_lc" label="Rate" type="decimal" control="TextBox" size="2" scale="rate" isOptional="true"
+                                   mdata-event="subscribe:core_material.calculate_stock_ledger_item_amt"/>
+                            <field id="item_amt" label="Amount" type="decimal" control="TextBox" size="ms" readOnly="true"/>
+                        </dataBinding>
+                    </tranSection> 
+                <xtabPageEnd/>
+                <xtabPage id="mat_cat_tab" label="Stock Category" tabid="supp_price_tab" size="12" style="height: 300px; overflow-y: auto;"/>
+                    <field id="annex_info.mat_cat_info.mat_cat_id" label="Stock Category" type="int" control="SmartCombo" size="3" isOptional="true">
+                        <lookup>
+                            <valueMember>mat_cat_id</valueMember>
+                            <displayMember>mat_cat</displayMember>
+                            <namedLookup>../core/st/lookups/MatCat.xml</namedLookup>
+                        </lookup>   
+                    </field>  
+                    <cButton id="mat_cat_info" onClick="core_material.mat_cat_info" label="..." tooltip="Set Stock Category Properties"/>
+                    <nextRow/>    
+                    <xdiv id="div_cat_key" size="5"/>
+                    <tranSection label="Category Keys" editMode="Auto">
+                        <dataBinding dataProperty="annex_info.mat_cat_info.mat_cat_keys">                      
+                            <field id="mat_cat_key" label="Category Key" type="string" control="TextBox" size="s"  readOnly="true"/>
+                            <field id="mat_cat_key_value" label="Applicable" type="bool" control="CheckBox" size="s"/>
+                        </dataBinding>
+                    </tranSection>
+                    <xdivEnd/>
+                    <xdiv id="div_dummy" size="1"/>
+
+                    <xdivEnd/>
+                    <xdiv id="div_cat_attr" size="6"/>
+                        <tranSection label="Category Attributes" editMode="Auto">
+                            <dataBinding dataProperty="annex_info.mat_cat_info.mat_cat_attrs">
+                                <field id="mat_cat_attr" label="Category Attr" type="string" control="TextBox" size="s"  readOnly="true"/>
+                                <field id="mat_cat_attr_value" label="Value" type="string" control="TextBox" size="s" isOptional="true"/>
+                            </dataBinding>
+                        </tranSection>
+                    <xdivEnd/>
+                <xtabPageEnd/>
+                <xtabPage id="mat_war_tab" label="Warranty Info" tabid="supp_price_tab" size="12" style="height: 300px; overflow-y: auto;"/>
+                    <field id="annex_info.war_info.has_war" label="Has Warranty" type="bool" control="CheckBox" size="2" isOptional="true"/>
+                    <field id="annex_info.war_info.war_days" label="Warranty Period (In Days)" type="int" control="TextBox" size="2" isOptional="true"
+                        cdata-enable-on="core_material.war_info_enabled"/>
+                    <field id="annex_info.war_info.from_mfg_date" label="From date of Mfg." type="bool" control="CheckBox" size="2" isOptional="true"
+                        cdata-enable-on="core_material.war_info_enabled"/>
+                <xtabPageEnd/>
+                <xtabEnd/>
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

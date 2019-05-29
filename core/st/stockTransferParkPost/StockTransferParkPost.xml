@@ -1,0 +1,21 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    <allocView id="StockTransferParkPost" type="alloc" width="620pt">
+        <header>Stock Transfer/Received</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="stpp-loading" control="Label" label="Loading ..." />
+                <tranSection label="" editMode="Edit" fixedWidth="600">
+                    <dataBinding dataProperty="stpp_temp">
+                        <field id="sl_no" label=" Sl # " type="int" control="TextBox" size=".5" readOnly="true" />
+                        <field id="material_type" label="Stock Type" type="string" control="TextBox" size="2" readOnly="true"/>
+                        <field id="material_name" label="Stock Item" type="string" control="TextBox" size="4" readOnly="true"/>
+                        <field id="uom_desc" label="UoM" type="string" control="TextBox" size="1"  readOnly="true"/>
+                        <field id="issued_qty" label="Qty" type="decimal" control="TextBox" size="1" scale="3"  readOnly="true"/>
+                    </dataBinding>
+                </tranSection>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>

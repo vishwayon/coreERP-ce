@@ -1,0 +1,77 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="AssetDep" type="Document" bindingBO="assetDep/AssetDep">
+        <header>Asset Depreciation</header>
+        <keyField>ad_id</keyField>
+        <printView rptOption="assetDep/AssetDepPrint">
+            <rptParams>
+                <param id="pvoucher_id">ad_id</param>
+            </rptParams>
+        </printView>
+        <newDocEnabled>
+            <docType>AD</docType>
+        </newDocEnabled>
+        <deleteDocEnabled/>
+        <clientJsCode>fa_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="ad_id" label="Voucher No" type="string" control="TextBox" size="s" maxLength="50" isOptional="true" readOnly="true" forStatus="true"/>
+                <dummy/>
+                <dummy/>
+                <field id="doc_date" label="Date" type="date" control="Date"  size="ms" range="finYear"/>
+                <nextRow/>
+                <field id="dep_date_from" label="Dep Date From" type="date" control="Date" size="s" range="finYear" readOnly="true"/>
+                <field id="dep_date_to" label="Dep Date To" type="date" control="Date"  size="s" range="finYear"/>
+                <dummy/>
+                <cButton id="select_all" onClick="core_fa.calculate_dep" label="Calculate Dep"/>
+
+                <tranSection label="Asset Dep Info" editMode="Auto">
+                    <dataBinding dataProperty="ad_tran">
+                        <field id="asset_class_id" label="Asset Class ID" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>
+                        <field id="asset_class" label="Asset Class" type="string" control="TextBox" size="ms" maxLength="250" isOptional="true" readOnly="true"/>  
+                        <field id="asset_book_id" label="Asset Book ID" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>  
+                        <field id="asset_book" label="Asset Book" type="string" control="TextBox" size="ms" maxLength="250" isOptional="true" readOnly="true"/>   
+                        <field id="dep_account_id" label="Dep Account ID" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>   
+                        <field id="dep_account" label="Dep Account" type="string" control="TextBox" size="ms" maxLength="250" isOptional="true" readOnly="true"/> 
+                        <field id="acc_dep_account_id" label="Acc Dep Account ID" type="Hidden" control="Hidden" size="ms" maxLength="250" isOptional="true" readOnly="true"/>  
+                        <field id="acc_dep_account" label="Acc Dep Account" type="string" control="TextBox" size="ms" maxLength="250" isOptional="true" readOnly="true"/>                       
+                        <field id="dep_amt" label="Dep Amt" type="decimal" scale="amt" control="TextBox" size="ms" isOptional="true" readOnly="true"/>
+                    </dataBinding>
+                </tranSection>           
+                <dummy/>
+                <dummy/>
+                <dummy/>
+                <field id="total_dep_amt" label="Total Dep Amount" type="decimal" control="TextBox" allowNegative="true" size="ms" readOnly="true">
+                    <computedField>
+                        var total = new Number();
+                        for(var p = 0; p &lt; coreWebApp.ModelBo.ad_tran().length; ++p)
+                        {
+                        total += new Number(coreWebApp.ModelBo.ad_tran()[p].dep_amt());
+                        }
+                        return total.toFixed(2);
+                    </computedField>
+                </field> 
+                <tranSection label="Ledger Info" editMode="Auto" size="8">
+                    <dataBinding dataProperty="asset_dep_ledger"> 
+                        <field id="asset_item_id" label="Asset Item ID" type="Hidden" control="Hidden" size="ms" isOptional="true" readOnly="true"/>              
+                        <field id="asset_name" label="Asset Name" type="string" control="TextBox" size="3" maxLength="250" isOptional="true" readOnly="true"/> 
+                        <field id="asset_class_id" label="Asset Class ID" type="Hidden" control="Hidden" size="ms" isOptional="true" readOnly="true"/>              
+                        <field id="asset_class" label="Asset Class" type="string" control="TextBox" size="3" maxLength="250" isOptional="true" readOnly="true"/>   
+                        <field id="asset_book_id" label="Asset Book ID" type="Hidden" control="Hidden" size="ms" isOptional="true" readOnly="true"/>   
+                        <field id="asset_book" label="Asset Book" type="string" control="TextBox" size="3" maxLength="250" isOptional="true" readOnly="true"/>   
+                        <field id="dep_amt" label="Dep Amount" type="decimal" scale="amt" control="TextBox" size="3" isOptional="true" readOnly="true"/>
+                    </dataBinding>
+                </tranSection>    
+
+                <field id="narration" label="Narration" type="string" control="TextArea" size="m" maxLength="500" rows="3" isOptional="true"/>  
+
+                <nextRow/>
+                <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" size="m"  isOptional="true"/>  
+                <field id="posted_by" label="Posted By" type="string" control="TextBox" size="m" readOnly="true" isOptional="true"/> 
+
+            </dataBinding>
+        </controlSection>  
+    </formView>
+</cwFramework>

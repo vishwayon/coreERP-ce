@@ -1,0 +1,39 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    <allocView id="AdvAlloc" type="alloc">
+        <header>Advanced Allocation</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="adv-alloc-loading" control="Label" label="Loading ..." />
+                <tranSection label="" editMode="Edit">
+                    <dataBinding dataProperty="rl_temp">
+                        <field id="voucher_id" label="Reference" type="string" control="TextBox" size="ms" readOnly="true"/>
+                        <field id="doc_date" label="Date" type="date" control="Date" size="ms" maxLength="50" readOnly="true"/>
+                        <field id="balance" label="Balance" type="decimal" control="TextBox" size="ms"  readOnly="true"/>
+                        <field id="balance_fc" label="Balance FC" type="decimal" control="TextBox" size="ms"  readOnly="true"/>
+                        <field id="alloc_amt" label="Amount" type="decimal" control="TextBox" size="ms" readOnly="true"/>
+                        <field id="alloc_amt_fc" label="Amount FC" type="decimal" control="TextBox" size="ms"
+                                mdata-event="subscribe:core_ar.inv_alloc_fc_tran_changed"/>
+                    </dataBinding>
+                </tranSection>
+
+                <xdiv size="12"/>
+                    <field label="Inv Amt" type="string" control="Label" size="2" isOptional="true" inline="true"/>
+                    <field id="debit_amt_total" label="" type="decimal" control="TextBox" size="2" readOnly="true" inline="true"  class="fg-total"/>
+                    <field label="Less:Adv" type="string" control="Label" size="2" isOptional="true" inline="true"/>
+                    <field id="total_amt" label="" type="decimal" control="TextBox" size="2"  readOnly="true" inline="true" class="fg-total"/>
+                    <field label="Net Amt" type="string" control="Label" size="2" isOptional="true" inline="true"/>
+                    <field id="balance_total" label="" type="decimal" control="TextBox" size="2"  readOnly="true" inline="true" class="fg-total"/>
+                    <nextRow/>
+                    <field label="Inv Amt FC" type="string" control="Label" size="2" isOptional="true" inline="true"/>
+                    <field id="debit_amt_total_fc" label="" type="decimal" control="TextBox" size="2" readOnly="true" inline="true"  class="fg-total"/>
+                    <field label="Less:Adv FC" type="string" control="Label" size="2" isOptional="true" inline="true"/>
+                    <field id="total_amt_fc" label="" type="decimal" control="TextBox" size="2"  readOnly="true" inline="true" class="fg-total"/>
+                    <field label="Net Amt FC" type="string" control="Label" size="2" isOptional="true" inline="true"/>                    
+                    <field id="balance_total_fc" label="" type="decimal" control="TextBox" size="2"  readOnly="true" inline="true" class="fg-total"/>
+                <xdivEnd/>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>

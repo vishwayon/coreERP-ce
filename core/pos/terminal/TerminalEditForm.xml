@@ -1,0 +1,97 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Terminal" type="Master" bindingBO="terminal/Terminal">    
+        <header>POS Terminal</header>    
+        <keyField>terminal_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <clientJsCode>pos_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="terminal_code" label="Terminal Code" type="string" control="TextBox" size="1" maxLength="2" />
+                <field id="terminal" label="Terminal Name" type="string" control="TextBox" size="s" maxLength="50" />
+                <nextRow/>
+                <field id="terminal_loc" label="Physical Location" type="string" control="TextBox" size="m" maxLength="250"  isOptional="true"/>
+                <nextRow/>
+                <field id="branch_id" label="Branch" type="int" control="SmartCombo" size="m">
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/Branch.xml</namedLookup>
+                    </lookup>
+                </field>
+                <field id="stock_location_id" label="Default Stock Location" type="int" control="SmartCombo" size="m">
+                    <lookup>
+                        <valueMember>stock_location_id</valueMember>
+                        <displayMember>stock_location_name</displayMember>
+                        <namedLookup>../core/st/lookups/StockLocationWithoutBranch.xml</namedLookup>
+                        <filterEvent>core_pos.filter_stock_loc</filterEvent>
+                    </lookup>
+                </field>
+                <nextRow/>
+                <field id="sale_account_id" label="Sale Account" type="int" control="SmartCombo" size="s" isOptional="true">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id = 18</filter>
+                    </lookup>
+                </field>
+                <field id="cash_account_id" label="Cash Account" type="int" control="SmartCombo" size="s" isOptional="true">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id = 2</filter>
+                    </lookup>
+                </field>
+                <field id="cheque_account_id" label="Cheque(s) On Hand Account" type="int" control="SmartCombo" size="s" isOptional="true">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id = 14</filter>
+                    </lookup>
+                </field>
+                <field id="annex_info.customer_id" label="Walk-in Customer Account" type="int" control="SmartCombo" size="s">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/AccountWithDebtorsCreditors.xml</namedLookup>
+                        <filter>account_type_id = 7</filter>
+                    </lookup>
+                </field>
+                <field id="cc_mac_id" label="Credit Card Machine" type="int" control="SmartCombo" size="s" isOptional="true">
+                    <lookup>
+                        <valueMember>cc_mac_id</valueMember>
+                        <displayMember>cc_mac_code</displayMember>
+                        <namedLookup>../core/pos/lookups/CcMac.xml</namedLookup>
+                    </lookup>
+                </field>
+                <nextRow/>
+                <field id="is_remote" label="Is Remote" type="bool" control="CheckBox" size="2"/>
+                <field id="remote_server_id" label="Connected Server" type="int" control="SmartCombo" size="4">
+                    <lookup>
+                        <valueMember>remote_server_id</valueMember>
+                        <displayMember>remote_server_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/RemoteServer.xml</namedLookup>
+                    </lookup>
+                </field>
+                <nextRow/>
+                <tranSection editMode="Add|Edit|Delete">
+                    <dataBinding dataProperty="annex_info.users">
+                        <field id="user_id" label="Allow Login(s)" type="int" control="SmartCombo" size="4">
+                            <lookup>
+                                <valueMember>user_id</valueMember>
+                                <displayMember>user_name</displayMember>
+                                <namedLookup>../cwf/sys/lookups/RemoteServer.xml</namedLookup>
+                            </lookup>
+                        </field>
+                    </dataBinding>
+                </tranSection>
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

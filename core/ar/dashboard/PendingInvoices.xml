@@ -1,0 +1,52 @@
+<widget id="PendingInvoices">
+    <title>Pending Invoices (Due in next 3 days)</title>
+    <widgetType>grid</widgetType>
+    <series id="PendingInvoices">
+        <label>Pending Invoices</label>
+        <sql>
+            <command>
+                select a.rl_pl_id, a.account_id, b.customer, a.voucher_id, a.doc_date, a.balance, a.balance_fc, a.fc_type_id, a.fc_type, a.due_date 
+                from ar.fn_pending_inv(:pcompany_id, :pbranch_id, :paccount_id, :pto_date, :pvoucher_id, :pdc) a
+                Inner Join ar.customer b on a.account_id = b.customer_id
+                Where a.due_date between :pfrom_date and :pto_date
+                Order by customer, voucher_id
+            </command>
+            <params>
+                <param id="pcompany_id">
+                    <session>company_id</session>
+                </param>
+                <param id="pbranch_id">
+                    <text>0</text>
+                </param>
+                <param id="paccount_id">
+                    <text>0</text>
+                </param>
+                <param id="pvoucher_id">
+                    <text></text>
+                </param>
+                <param id="pdc">
+                    <text>D</text>
+                </param>
+                <param id="pfrom_date">
+                    <currentDate/>
+                </param>
+                <param id="pto_date">
+                    <currentDate/>
+                </param>
+            </params>
+        </sql>
+        <seriesType>grid</seriesType>
+        <xField/>
+        <yField/>
+        <displayFields>
+            <displayField columnName="customer" displayName="Customer"/>
+            <displayField columnName="voucher_id" displayName="Voucher No" />
+            <displayField columnName="doc_date" displayName="Date" format="Date"/>
+            <displayField columnName="due_date" displayName="Due Date" format="Date"/>
+            <displayField columnName="balance" displayName="Balance" format="Amount"/>
+        </displayFields>
+    </series> 
+    <codeBehind>
+        <className>\app\core\ar\dashboard\PendingInvoicesEventHandler</className>
+    </codeBehind>
+</widget>

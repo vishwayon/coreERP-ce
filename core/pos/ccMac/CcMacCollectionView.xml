@@ -1,0 +1,24 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="CcMac" type="Master" bindingBO="CcMac" editView="ccMac/CcMacEditForm">        
+        <header>Credit Card Swipe Machine(s)</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    Select a.cc_mac_id, a.cc_mac_code
+                    From pos.cc_mac a
+                    Where a.company_id={company_id}
+                    order by a.cc_mac_code
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="cc_mac_code" displayName="Card Machine"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

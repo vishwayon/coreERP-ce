@@ -1,0 +1,20 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="Invoice" type="Report" rptPath="/core/ar/invoice" rptName="Invoice">
+        <header>Invoice</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pvoucher_id" label="Voucher No" type="string" control="TextBox" size="l"/>            
+                <param id="pcompany_id">
+                    <session>company_id</session>
+                </param>
+                <param id="pbranch_id">
+                    <session>branch_id</session>
+                </param>
+                <rptCompanyInfoPrefix>inv_</rptCompanyInfoPrefix>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

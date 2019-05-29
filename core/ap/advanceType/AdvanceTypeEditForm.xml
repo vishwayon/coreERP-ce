@@ -1,0 +1,16 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="AdvanceType" type="Master" bindingBO="advanceType/AdvanceType">
+        <header>Advance Type</header>
+        <keyField>adv_type_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>    
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="adv_type" label="Advance Type" type="string" control="TextBox" size="s" maxLength="20"/> 
+            </dataBinding>
+        </controlSection>   
+    </formView>
+</cwFramework>

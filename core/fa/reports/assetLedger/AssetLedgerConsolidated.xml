@@ -1,0 +1,58 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="AssetLedgerConsolidated" type="Report" rptPath="/core/fa/reports/assetLedger" rptName="rptAssetLedger">
+        <header>Asset Ledger Consolidated</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="s" forConsolidated="true">
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="passet_class_id" label="Asset Class" type="int" control="SmartCombo" size="m">
+                    <lookup>
+                        <valueMember>asset_class_id</valueMember>
+                        <displayMember>asset_class</displayMember>
+                        <namedLookup>../core/fa/lookups/AssetClassWithAll.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="pas_on" label="As On" type="date" control="Date" size="s" range="finYear">                   
+                    <value>
+                        <currentDate/>
+                    </value>    
+                </field>  
+                <param id="pcompany_id">
+                    <session>company_id</session>
+                </param>
+                <param id="pbranch_name">
+                    <preset/>
+                </param>
+                <param id="pbranch_address">
+                    <preset/>
+                </param>
+                <param id="pcompany_name">
+                    <preset/>
+                </param>
+                <param id="pcurrency_displayed">
+                    <preset/>
+                </param>
+                <param id="pdate_format">
+                    <dateFormat/>
+                </param>
+                <param id="piso_number">
+                    <text></text>
+                </param>
+                <param id="pcurrency_decimal_format">
+                    <numberFormat/>
+                </param>
+                <param id="pcompany_logo_physical">
+                    <preset/>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

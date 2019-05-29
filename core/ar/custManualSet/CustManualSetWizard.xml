@@ -1,0 +1,14 @@
+<wizard id="CustManualSet" name="Customer Manual Settlement Wizard">
+    <codeBehind>
+        <className>\app\core\ar\custManualSet\CustManualSetWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectCustomer">
+        <path>custManualSet/CustManualSetWizard/SelectCustomer</path>
+    </wizardStep>
+    <wizardStep id="SelectVch">
+        <path>custManualSet/CustManualSetWizard/SelectVch</path>
+    </wizardStep>
+    <postWizard id="CustManualSet">
+        <path>custManualSet/CustManualSetEditForm</path>
+    </postWizard>
+</wizard>

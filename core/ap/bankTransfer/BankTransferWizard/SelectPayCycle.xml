@@ -1,0 +1,25 @@
+<wizardView>
+    <header>Select Pay Cycle and Bank Account</header>
+    <sections>
+        <formSection id="SelectPayCycle">
+            <displayFields>
+                <dummy size="8"/>  
+                <displayField id="pay_cycle_id" label="Pay Cycle" type="int" control="SmartCombo" size="s"  editMode="edit" >
+                    <lookup>
+                        <valueMember>pay_cycle_id</valueMember>
+                        <displayMember>pay_cycle</displayMember>
+                        <namedLookup>../core/ap/lookups/PayCycle.xml</namedLookup>
+                    </lookup>    
+                </displayField> 
+                <displayField id="bank_account_id" label="Bank Account" type="int" control="SmartCombo" size="s"  editMode="edit">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>                        
+                        <filter>account_type_id = 1</filter>
+                    </lookup>   
+                </displayField> 
+            </displayFields>
+        </formSection>
+    </sections>
+</wizardView>

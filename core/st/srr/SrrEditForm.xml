@@ -1,0 +1,16 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="Srr" type="Master" bindingBO="srr/Srr">    
+        <header>Sales Return Reason</header>    
+        <keyField>srr_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="srr_desc" label="Description" type="string" control="TextBox" size="6" maxLength="500" />
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

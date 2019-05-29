@@ -1,0 +1,32 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'> 
+    
+    <collectionView id="Supplier" type="Master" bindingBO="Supplier" editView="supplier/SupplierEditForm">        
+        <header>Supplier</header>
+        <collectionSection>
+            <connectionType>
+              <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    Select a.supplier_id, a.supplier_code, a.supplier_name, b.supp_type, d.account_head, c.contact_person, 
+                        c.mobile || Case When c.phone != '' Then ', ' || c.phone Else '' End as mobile
+                    From ap.supplier a
+                    Left Join ap.supp_type b On (a.annex_info-&gt;&gt;'supp_type_id')::BigInt = b.supp_type_id
+                    Inner Join sys.address c On a.address_id = c.address_id
+                    Inner Join ac.account_head d On a.control_account_id = d.account_id
+                    Order By supplier_name
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="supplier_name" displayName="Supplier"/>
+                <displayField columnName="supplier_code" displayName="Code"/>
+                <displayField columnName="supp_type" displayName="Type"/>
+                <displayField columnName="account_head" displayName="Control A/C"/>
+                <displayField columnName="contact_person" displayName="Contact"/>
+                <displayField columnName="mobile" displayName="Mobile/Phone"/>
+            </displayFields>
+        </collectionSection>       
+    </collectionView>
+</cwFramework>  

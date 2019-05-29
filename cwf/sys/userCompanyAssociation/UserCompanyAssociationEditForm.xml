@@ -1,0 +1,31 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="UserCompanyAssociation" type="Master"  bindingBO="userCompanyAssociation/UserCompanyAssociation">
+        <header>User Company Association</header>
+        <keyField>company_id</keyField>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="company_name" label="Company Name" type="string" control="TextBox" size="m" maxLength="50" readOnly="True"/>
+                <field id="company_code" label="Company Code" type="string" control="TextBox" size="s" maxLength="2" readOnly="True"/>
+                <!--<field id="company_id" label="company id" type="int" control="TextBox" />-->
+                <nextRow/> 
+
+                <tranSection label="User(s)" editMode="Add|Edit|Delete">
+                    <dataBinding dataProperty="user_to_company">
+                        <field id="user_id" label="User Name" type="int" control="SmartCombo" size="s">
+                            <lookup> 
+                                <valueMember>user_id</valueMember>
+                                <displayMember>user_name</displayMember>
+                                <namedLookup>../cwf/sys/lookups/User.xml</namedLookup>
+                            </lookup>    
+                        </field>
+
+                        <!--<field id="email" label="E-mail" type="string" control="TextBox" size="l" maxLength="50" />-->
+                    </dataBinding>
+                </tranSection>  
+            </dataBinding> 
+        </controlSection>
+    </formView>
+</cwFramework>

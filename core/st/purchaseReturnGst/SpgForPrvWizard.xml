@@ -1,0 +1,12 @@
+<wizard id="SpgForPrvWiz" name="Purchase Return GST Wizard">
+    <clientJsCode>purchaseReturnGst/PurchaseReturnGst_clientcode.js</clientJsCode>   
+    <codeBehind>
+        <className>\app\core\st\purchaseReturnGst\SpgForPrvWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectStockPurchase">
+        <path>purchaseReturnGst/SpgForPrvWizard/SelectStockPurchase</path>
+    </wizardStep>
+    <postWizard id="PurchaseReturnGst">
+        <path>purchaseReturnGst/PurchaseReturnGstEditForm</path>
+    </postWizard>
+</wizard>

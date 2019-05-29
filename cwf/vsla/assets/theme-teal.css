@@ -1,0 +1,68 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 24 Aug, 2015, 2:34:40 PM
+    Author     : dev
+*/
+
+form label{
+    font-weight: normal;
+    color: lightslategray;
+}
+
+.ui-dialog label{
+    font-weight: normal;
+    color: lightslategray;
+}
+
+form h3{
+    color: teal;
+}
+
+table caption h5{
+    border: none;
+    color:teal;
+    margin:0px;
+    font-weight: normal;
+}
+
+form table thead tr {
+    border-top: 1px solid teal;
+    color: lightslategray;     
+    border-radius: 5px;
+}
+
+form .table thead tr th {
+    border-bottom: 1px solid teal;
+    font-weight: normal;
+}
+
+.ch5 {
+    background-color: teal;
+    border: medium none;
+    color: aliceblue;
+    margin: 0;
+    padding: 4px;
+}
+
+.cformheader{
+    border-bottom-color: teal;
+}
+
+.cformfooter{
+    border-top-color: teal;
+}
+
+.dataTables_scrollHead{
+    background-color:teal;
+    color: aliceblue;
+    border-radius: 5px;
+}
+
+.cSectionHeader{
+    color: teal;
+    font-weight: normal;
+}

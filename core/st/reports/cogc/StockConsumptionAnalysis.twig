@@ -1,0 +1,104 @@
+
+<div id="twig_rpt" name="twig_rpt" class="col-md-6" style="background-color: #ffffff;border-radius: 5px;">
+    <div class="cformheader">
+        <h3>Stock Consumption Analysis</h3>
+    </div>
+    <table id="tcons" style="margin: 10px auto auto;">
+        <style type="text/css">
+            td {padding: 0.55em;}
+            tr {padding: 0.55em;}
+        </style>
+        <thead style="background-color: lightgrey;line-height: 2.75em;">
+            <tr >
+                <th>Particulars</th>
+                <th>Amount</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Opening Stock Value</td>
+                <td></td>
+                <td class="datatable-col-right">{{ model.openingStockValue|number_format(2,'.',',') }}</td>
+            </tr>
+            <tr>
+                <td>Add: Purchased during the period</td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% set i = 0 %}
+            {% for item in model.purchases %}
+                {% set i = i+1 %}
+                <tr>
+                    <td>
+                        <span style="padding-left: 30px;">{{ item.stock_movement_type }}</span>
+                    </td>
+                    <td class="datatable-col-right">
+                        {{ item.mat_value|number_format(2,'.',',') }}
+                    </td>  
+                    {% if i == model.purchases|length %}
+                        <td class="datatable-col-right">{{ model.getSum(model.purchases, 'mat_value')|number_format(2,'.',',') }}</td>
+                    {% else %}
+                        <td></td>
+                    {% endif %}
+
+                </tr>
+            {% endfor %}
+            <tr>
+                <td>Adjustments for the period</td>
+                <td></td>
+                <td class="datatable-col-right">{{ model.getSum(model.adjustments, 'mat_value')|number_format(2,'.',',') }}</td>
+            </tr>
+            <tr>
+                <td>Stock Transfer In</td>
+                <td></td>
+                <td class="datatable-col-right">{{ model.stockTransferIn|number_format(2,'.',',') }}</td>
+            </tr>
+            <tr>
+                <td>Total Receipts</td>
+                <td></td>
+                <td class="datatable-col-right" style="border-top: 1px solid black;">{{ (model.openingStockValue + model.getSum(model.purchases, 'mat_value') 
+                            + model.getSum(model.adjustments, 'mat_value') + model.stockTransferIn)|number_format(2,'.',',') }}</td>
+            </tr>
+            <tr>
+                <td>Less: Closing Stock</td>
+                <td></td>
+                <td class="datatable-col-right">{{ model.closingStockValue|number_format(2,'.',',') }}</td>
+            </tr>
+            <tr>
+                <td>Net Consumption</td>
+                <td></td>
+                {% set netConsumption = (model.openingStockValue + model.getSum(model.purchases, 'mat_value') 
+                            - model.closingStockValue + model.getSum(model.adjustments, 'mat_value') + model.stockTransferIn) %}
+                <td class="datatable-col-right" style="border-top: 1px solid black; border-bottom: 3px double black">{{ netConsumption|number_format(2,'.',',') }}</td>
+            </tr>
+            <tr>
+                <td><h4>Consumption break-up</h4></td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% set i = 0 %}
+            {% for item in model.consumption %}
+                {% set i = i + 1 %}
+                <tr>
+                    <td>
+                        <span style="padding-left: 30px;">{{ item.stock_movement_type }}</span>
+                    </td>
+                    <td class="datatable-col-right" >
+                        {{ (item.mat_value * -1)|number_format(2,'.',',') }}
+                    </td> 
+                    {% if i == model.consumption|length %}
+                        <td class="datatable-col-right" style="border-bottom: 1px solid black;">{{ (model.getSum(model.consumption, 'mat_value') * -1)|number_format(2,'.',',') }}</td>
+                    {% else %}
+                        <td></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            <tr>
+                <td style="font-weight: bold;">Net difference</td>
+                <td></td>
+                <td class="datatable-col-right" style="font-weight: bold; color: red;">{{ (model.getSum(model.consumption, 'mat_value') + netConsumption)|number_format(2,'.',',') }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

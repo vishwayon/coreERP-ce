@@ -1,0 +1,11 @@
+<wizard id="GirWizard" name="GST Sale Return Wizard">
+    <codeBehind>
+        <className>\app\core\pos\gir\GirWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectOriginInv">
+        <path>gir/GirWizard/SelectOriginInv</path>
+    </wizardStep>
+    <postWizard id="InvRet">
+        <path>gir/GstInvRetEditForm</path>
+    </postWizard>
+</wizard>

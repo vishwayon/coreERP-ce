@@ -1,0 +1,18 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="SupplierType">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                Select supp_type_id , supp_type  from ap.supp_type  order by supp_type  asc
+            </command>
+        </sql>
+        <keyField id="supp_type_id"/>
+    </lookup>
+</cwFramework>
+
+    

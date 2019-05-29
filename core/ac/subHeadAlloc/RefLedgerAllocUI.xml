@@ -1,0 +1,39 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <allocView id="RefLedgerAllocUI" type="alloc" width="850px">
+        <header>Reference</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <cButton id="create_ref" onClick="core_ac.create_ref_alloc_click($data)" label="Create Reference" tooltip="Create Reference"/>
+                <cButton id="alloc_ref" onClick="core_ac.ref_alloc_click($data);" label="Allocate Reference" tooltip="Allocate Reference"/>
+                <nextRow/>
+                <field id="ref_no" label="Reference No" type="string" control="TextBox" size="3" maxLength="50" isOptional="true"
+                         cdata-visible-on="core_ac.create_ref_visible"/>
+                <nextRow/>
+                <field id="ref_desc" label="Reference Desc" type="string" control="TextBox" size="4" maxLength="250" isOptional="true"
+                         cdata-visible-on="core_ac.create_ref_visible"/>
+                
+                <tranSection label="" editMode="Edit" cdata-visible-on="core_ac.alloc_ref_visible">
+                    <dataBinding dataProperty="ref_ledger_temp">
+                        <displayField columnName="affect_voucher_id" displayName="Reference" id="affect_voucher_id" label="Voucher #" type="string" control="TextBox" size="ms" readOnly="true"/>
+                        <displayField columnName="affect_doc_date" displayName="Date" format="Date" id="affect_doc_date" label="Date" type="date" control="Date" size="xs" maxLength="50" readOnly="true"/>
+                        <displayField columnName="balance" displayName="Balance" format="Amount" id="balance" label="Balance" type="decimal" control="TextBox" size="ms"  readOnly="true"/>
+                        <displayField columnName="ref_no" displayName="Reference" id="ref_no" label="Reference No" type="string" control="TextBox" size="ms" readOnly="true"/>
+                        <field id="alloc_amt" label="Amount" type="decimal" control="TextBox" size="ms"/>
+                     </dataBinding>
+                </tranSection>
+
+                <field id="debit_amt_total" label="Debits" type="decimal" control="TextBox" size="3"  readOnly="true" 
+                       cdata-visible-on="core_ac.alloc_ref_visible"/>
+                <dummy/>
+                <field id="total_amt" label="Total" type="decimal" control="TextBox" size="3"  readOnly="true"
+                         cdata-visible-on="core_ac.alloc_ref_visible"/>
+                <nextRow/>
+                <field id="balance_total" label="Balance" type="decimal" control="TextBox" size="3"  readOnly="true"
+                         cdata-visible-on="core_ac.alloc_ref_visible"/>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>    

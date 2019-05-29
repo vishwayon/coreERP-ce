@@ -1,0 +1,23 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="BusinessUnitWithAll">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select a.business_unit_id, a.business_unit 
+                from (        
+                Select -99 as business_unit_id, 'All' as business_unit
+                union All
+                (
+                SELECT business_unit_id, business_unit
+                From sys.business_unit Where company_id={company_id} order by business_unit)
+                ) a
+            </command>
+        </sql>
+        <keyField id="business_unit_id"/>
+    </lookup> 
+</cwFramework>

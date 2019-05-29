@@ -1,0 +1,12 @@
+<wizard id="EntityExtn" name="Entity Extension Wizard">
+    <codeBehind>
+        <className>\app\cwf\sys\entityExtn\EntityExtnWizard</className>
+    </codeBehind>
+    <clientJsCode>entityExtn/EntityExtn_clientcode.js</clientJsCode>
+    <wizardStep id="SelectEntity">
+        <path>entityExtn/EntityExtnWizard/SelectEntity</path>
+    </wizardStep>
+    <postWizard id="EntityExtn">
+        <path>entityExtn/EntityExtnEditForm</path>
+    </postWizard>
+</wizard>

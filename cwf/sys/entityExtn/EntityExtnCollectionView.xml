@@ -1,0 +1,22 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="EntityExtn" type="Master" bindingBO="EntityExtn" editView="entityExtn/EntityExtnEditForm">        
+        <header>Entity Extension</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    SELECT a.entity_extn_id, b.menu_text FROM sys.entity_extn a
+                        left join sys.menu b on a.bo_id = b.bo_id
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="menu_text" displayName="Entity"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

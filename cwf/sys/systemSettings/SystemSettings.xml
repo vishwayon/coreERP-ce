@@ -1,0 +1,56 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="SystemSettings" type="Master">
+        <controlTable>
+            <tableName>sys.company</tableName>
+            <primaryKey>company_id</primaryKey>
+            <customColumns>
+                <customColumn name= "ac_start_finyear" type="string"/>
+                <customColumn name= "ac_AcHeadCodeReqd" type="boolean"/>
+                <customColumn name= "ac_AcGroupCodeReqd" type="boolean"/>
+                <customColumn name= "ac_exch_diff_account" type="bigint"/>                
+                <customColumn name= "bs_closing_stock" type="boolean"/>
+                <customColumn name= "bs_pnl_account" type="bigint"/>     
+                <customColumn name= "tds_interest_penalty_account" type="bigint"/>           
+                <customColumn name= "ap_SupplierCodeReqd" type="boolean"/>
+                <customColumn name= "ap_pymt_write_off_account" type="bigint"/>             
+                <customColumn name= "ar_CustomerCodeReqd" type="boolean"/>
+                <customColumn name= "ar_rcpt_other_exp_account" type="bigint"/>
+                <customColumn name= "ar_rcpt_tds_account" type="bigint"/> 
+                <customColumn name= "ar_rcpt_write_off_account" type="bigint"/>              
+                <customColumn name= "st_MaterialCodeReqd" type="boolean"/>
+                <customColumn name= "st_round_off_account" type="bigint"/>
+                <customColumn name= "fa_round_off_account" type="bigint"/>
+                <customColumn name= "hr_days_in_month" type="numeric"/>
+                <customColumn name= "hr_notice_pay_payhead" type="bigint"/>
+                <customColumn name= "hr_suppress_payhead_in_pay_slip" type="boolean"/>
+                <customColumn name= "export_allow" type="boolean"/>
+                <customColumn name= "print_allow_post" type="bigint"/>
+                <customColumn name= "print_allow_unpost" type="bigint"/>
+                <customColumn name= "print_allow_post_option" type="bigint"/>
+                <customColumn name= "print_allow_unpost_option" type="bigint"/>
+                <customColumn name= "no_of_prints_post" type="bigint"/>
+                <customColumn name= "no_of_prints_unpost" type="bigint"/>
+                <customColumn name="confirm_post" type="boolean"/>
+                <customColumn name="tx_sez_without_gst" type="boolean"/>
+                <customColumn name="st_walk_in_cust_id" type="bigint"/>
+                <customColumn name="ac_payc_limit" type="decimal"/>
+                <customColumn name="md_comm_acc" type="bigint"/>
+                <customColumn name="md_head_charge_acc" type="bigint"/>
+                <customColumn name="md_inc_acc" type="bigint"/>
+            </customColumns>
+            <fetchOrCreate>
+                <useOnFetch/>
+            </fetchOrCreate>
+            <save>
+                <useOnSave/>
+            </save> 
+        </controlTable>  
+        <codeBehind>
+            <className>\app\cwf\sys\systemSettings\SystemSettingsEventHandler</className>
+        </codeBehind>
+    </businessObject> 
+</cwFramework>
+

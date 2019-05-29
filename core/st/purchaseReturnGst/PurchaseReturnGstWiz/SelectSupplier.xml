@@ -1,0 +1,33 @@
+<wizardView>
+    <header>Select Supplier</header>
+    <sections>
+        <formSection id="SelectSupplier">
+            <displayFields>
+                <displayField id="account_id" label="Supplier" type="int" control="SmartCombo" size="m" editMode="edit" defaultValue="-1">
+                    <lookup>
+                        <valueMember>supplier_id</valueMember>
+                        <displayMember>supplier</displayMember>
+                        <namedLookup>../core/ap/lookups/Supplier.xml</namedLookup>
+                    </lookup>  
+                </displayField>
+                <displayField id="from_date" label="Bills From" type="date" control="Date" size="ms" editMode="edit">
+                    <value>
+                        <currentDate/>
+                    </value>
+                </displayField>
+                <displayField id="to_date" label="To" type="date" control="Date" size="ms" editMode="edit" range="finYear">
+                    <value>
+                        <currentDate/>
+                    </value>
+                </displayField>
+                <displayField id="dcn_type" label="Debit/Credit Note Type" control="SimpleCombo" editMode="edit" defaultValue="0">
+                    <options>
+                        <option value="0">Purchase Return</option>
+                        <option value="1">Rate Adjustment</option>
+                        <option value="2">Post Purchase Discount</option>
+                    </options>
+                </displayField>
+            </displayFields>
+        </formSection>
+    </sections>
+</wizardView>

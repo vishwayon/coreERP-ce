@@ -1,0 +1,74 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="SupplierOverdue" type="Report" rptPath="/core/ap/reports/supplierOverdue" rptName="SupplierOverdue">
+        <header>Supplier Overdue</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="ms" forConsolidated="true"> 
+                    <value>
+                        <session>branch_id</session>
+                    </value>
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>
+                    </lookup>  
+                </field>
+                <field id="preport_type" label="Report" type="int" control="SimpleCombo"  size="ms">
+                    <options defaultValue="0">
+                        <option value="0">Supplier Overdue</option>
+                        <option value="1">Supplier Overdue Detailed</option>
+                    </options>  
+                </field>
+                <field id="pto_date" label="As On" type="date" control="Date" size="ms" range="finYear">                   
+                    <value>
+                        <currentDate/>
+                    </value>    
+                </field>  
+                <field id="psupplier_id" label="Supplier" type="int" control="SmartCombo" size="3">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <valueMember>supplier_id</valueMember>
+                        <displayMember>supplier</displayMember>
+                        <namedLookup>../core/ap/lookups/SupplierWithAll.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="pcon_account_id" label="Control Account" type="int" control="SmartCombo" size="3">
+                    <value>
+                        <text>-99</text>
+                    </value>
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/BillsPayableControlAccountWithAll.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="pcurr_pos" label="Based On Current Position" type="bool" control="CheckBox" size="2">       
+                    <value>
+                        <text>True</text>
+                    </value>
+                </field>
+                <field id="preg_msmeda" label="Registered under MSMEDA" type="bool" control="CheckBox" size="3"/>
+                <param id="pcompany_id">                
+                    <session>company_id</session>
+                </param>
+                <param id="pvoucher_id">
+                    <text></text>
+                </param>
+                <param id="ppdc">
+                    <text>C</text>
+                </param>
+                <param id="pyear">
+                    <session>finyear</session>
+                </param>
+                <param id="preport_caption">
+                    <text>Supplier Overdue</text>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

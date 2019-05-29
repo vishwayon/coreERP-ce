@@ -1,0 +1,115 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="Customer" type="Master" extends="../core/ac/accountHead/AccountHead">  
+        <controlTable  method="Extends">
+            <tableName>ar.customer</tableName>
+            <primaryKey>customer_id</primaryKey>
+            <basePrimaryKey>account_id</basePrimaryKey>
+            <jsonField id="annex_info">
+                <jobject name="tax_info" type="simple">
+                    <jfield name="pan" type="string"/>  
+                    <jfield name="tan" type="string"/> 
+                    <jfield name="ctin" type="string"/> 
+                    <jfield name="vtin" type="string"/> 
+                    <jfield name="gstin" type="string"/> 
+                    <jfield name="stin" type="string"/>
+                    <jfield name="gst_state_id" type="bigint"/> 
+                    <jfield name="dup_pan" type="bool"/> 
+                    <jfield name="dup_gstin" type="bool"/>
+                    <jfield name="diff_gst_name" type="bool"/> 
+                    <jfield name="gst_reg_name" type="string"/> 
+                </jobject>      
+                <jfield name="is_overridden" type="bool"/>
+                <jfield name="segment_id" type="bigint"/> 
+                <jobject name="ship_addrs" type="array">
+                    <jfield name="sl_no" type="int"/>
+                    <jfield name="ship_to" type="string"/>
+                    <jfield name="gst_state_id" type="bigint"/>
+                    <jfield name="gstin" type="string"/> 
+                    <jfield name="city" type="string"/> 
+                    <jfield name="pin" type="string"/> 
+                </jobject>   
+                <jfield name="has_kyc_docs" type="bool"/>
+                <!-- Following Price List is customised for SKM via crm/customer -->
+                <jobject name="pl_info" type="array">
+                    <jfield name="mt_id" type="int"/>
+                    <jfield name="pl_id" type="int"/>
+                </jobject>
+                <!-- Following Additional Product Discount for SKM via crm/customer -->
+                <jobject name="disc_info" type="array">
+                    <jfield name="mt_id" type="int"/>
+                    <jfield name="mat_id" type="int"/>
+                    <jfield name="disc_min_qty" type="decimal"/>
+                    <jfield name="is_disc_amt" type="bool"/>
+                    <jfield name="disc_amt" type="decimal"/>
+                    <jfield name="disc_pcnt" type="decimal"/>
+                </jobject>
+            </jsonField>  
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save> 
+            <delete>
+                <useEntity/>
+            </delete> 
+            <tranTable id="customer_bank_info_tran">
+                <tableName>ar.customer_bank_info</tableName>
+                <primaryKey>customer_bank_info_id</primaryKey>      
+                <relation linkType="OneToOne">
+                    <foreignKey>customer_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{customer_id}:{RowID}</primaryKeyPattern>
+                </save>  
+                <delete>
+                    <useEntity/>
+                </delete>   
+            </tranTable>    
+            <reverseTranTable id="customer_address_tran">       
+                <tableName>sys.address</tableName>
+                <primaryKey>address_id</primaryKey>      
+                <relation linkType="OneToOne">
+                    <foreignKey>address_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern/>
+                </save>   
+                <delete>
+                    <useEntity/>
+                </delete>  
+            </reverseTranTable>
+            <!--<reverseTranTable id="customer_shipping_address_tran">       
+                <tableName>sys.address</tableName>
+                <primaryKey>address_id</primaryKey>      
+                <relation linkType="OneToOne">
+                    <foreignKey>shipping_address_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern/>
+                </save>   
+                <delete>
+                    <useEntity/>
+                </delete>  
+            </reverseTranTable>-->
+        </controlTable> 
+        <codeBehind>
+            <className>\app\core\ar\customer\CustomerEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

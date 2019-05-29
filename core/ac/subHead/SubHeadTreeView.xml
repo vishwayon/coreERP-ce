@@ -1,0 +1,41 @@
+<treeView id="SubHead">        
+    <header>Sub Head</header>
+    <relationKeyField>sub_head_dim_id</relationKeyField>
+    <parentSection>
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select sub_head_dim_id, sub_head_dim, 
+                'A'||cast(sub_head_dim_id as text) as group_key, '0' as parent_key 
+                from ac.sub_head_dim 
+                order by sub_head_dim
+            </command>
+        </sql>
+        <keyField id="sub_head_dim_id"/>
+        <displayFields>
+            <displayField columnName="sub_head_dim" displayName="Sub Head Dimension"/>
+        </displayFields>
+        <parentKeyField>parent_key</parentKeyField>
+        <childKeyField>group_key</childKeyField>
+    </parentSection>
+    <childSection type="Master" bindingBO="SubHead" editView="subHead/SubHeadEditForm">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select sub_head_id, sub_head, sub_head_code, closed_date, sub_head_dim_id 
+                from ac.sub_head
+                Order by sub_head
+            </command>
+        </sql>
+        <keyField id="sub_head_id"/>
+        <displayFields>
+            <displayField columnName="sub_head" displayName="Sub Head"/>
+            <displayField columnName="sub_head_code" displayName="Sub Head Code"/>
+            <displayField columnName="closed_date" displayName="Closed On"/>
+        </displayFields>
+    </childSection>
+</treeView>

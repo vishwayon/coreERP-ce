@@ -1,0 +1,71 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="TaxPayable" type="Report" rptPath="/core/ac/reports/taxPayable" rptName="TaxPayableSummary">
+        <header>Tax Payable Report</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="ms" forConsolidated="true"> 
+                    <value>
+                        <session>branch_id</session>
+                    </value>
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>
+                    </lookup>  
+                </field>
+                <field id="preport_type" label="Report Type" type="int" control="SimpleCombo" size="s" >
+                    <options defaultValue="0">
+                        <option value="0">Tax Payable By Tax Type</option>
+                        <option value="1">Tax Payable By Tax Schedule</option>
+                        <option value="2">Tax Payable By Tax Schedule With Detail</option>
+                    </options>
+                </field> 
+                <field id="pview_type" label="View Type" type="int" control="SimpleCombo" size="s" >
+                    <options defaultValue="0">
+                        <option value="0">By Invoice Type</option>
+                        <option value="1">By Invoice Detail</option>
+                    </options>
+                </field> 
+                <field id="pfrom_date" label="From" type="date" control="Date" size="ms" range="finYear">
+                    <value>
+                        <session>year_begin</session>
+                    </value>
+                </field>
+                <field id="pto_date" label="To" type="date" control="Date" size="ms" range="finYear">
+                    <value>
+                        <currentDate/>
+                    </value>
+                </field> 
+                <field id="ptin_type" label="Tax Reg No" type="int" control="SimpleCombo" size="s" >
+                    <options defaultValue="0">
+                        <option value="0">Service Tax Regn No</option>
+                        <option value="1">TAN</option>
+                        <option value="2">CST Regn No</option>
+                        <option value="3">VAT Regn No</option>
+                        <option value="4">GSTIN</option>
+                        <option value="5">PAN</option>
+                    </options>
+                </field> 
+                <field id="ptax_type_id" label="Tax Type" type="int" control="SmartCombo" size="ms"> 
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <valueMember>tax_type_id</valueMember>
+                        <displayMember>tax_type</displayMember>
+                        <namedLookup>../core/tx/lookups/TaxTypeWithAll.xml</namedLookup>
+                    </lookup>  
+                </field>
+                <param id="pcompany_id">
+                    <session>company_id</session>
+                </param>
+                <param id="pyear">
+                    <session>finyear</session>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

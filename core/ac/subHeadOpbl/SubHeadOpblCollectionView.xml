@@ -1,0 +1,25 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>             
+    
+    <collectionView id="SubHeadOpbl" type="Master" bindingBO="SubHeadOpbl" editView="subHeadOpbl/SubHeadOpblEditForm">        
+        <header>Sub Head Opening Balance</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select a.*, b.account_id, b.account_head
+                    from ac.sub_head_dim a
+                    inner join ac.account_head b on a.sub_head_dim_id = b.sub_head_dim_id
+
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="sub_head_dim" displayName="Sub Head Dimension"/>
+                <displayField columnName="account_head" displayName="Ledger Account"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

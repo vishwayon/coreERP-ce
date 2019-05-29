@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2016-09-28T13:07:33 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FinalSettlementPayrollTran" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f1d9644a-1342-48cb-816f-cb7b54684ffb">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="local"/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<template><![CDATA["/opt/tomcat/webapps/cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pcwf_txn_ccy" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["INR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pfinal_settlement_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA["FS/C1B1/1617/10"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT *  FROM hr.fn_fin_set_payroll_tran_report
+(
+	$P{pfinal_settlement_id}
+);]]>
+	</queryString>
+	<field name="final_settlement_id" class="java.lang.String"/>
+	<field name="emolument_payhead_id" class="java.lang.Long"/>
+	<field name="emolument_payhead" class="java.lang.String"/>
+	<field name="emolument_amt" class="java.math.BigDecimal"/>
+	<field name="deduction_payhead_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="deduction_payhead" class="java.lang.String"/>
+	<field name="deduction_amt" class="java.math.BigDecimal"/>
+	<variable name="EmolumentTotal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{emolument_amt}]]></variableExpression>
+	</variable>
+	<variable name="DeductionTotal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{deduction_amt}]]></variableExpression>
+	</variable>
+	<columnHeader>
+		<band height="31">
+			<frame>
+				<reportElement mode="Opaque" x="5" y="0" width="495" height="29" backcolor="#008080" uuid="cc13bc03-5351-4813-9a63-689a32090c62">
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="252" y="1" width="248" height="28" uuid="2c97f81c-00b1-40b8-acb2-58e3d24fecc8"/>
+				<box>
+					<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+				</box>
+				<textField>
+					<reportElement style="NormalLabel" positionType="Float" x="0" y="2" width="79" height="14" forecolor="#FFFFFF" backcolor="#000000" uuid="c67ee924-36ee-4efa-9207-23e5d1250f70"/>
+					<box leftPadding="4"/>
+					<textFieldExpression><![CDATA["Deductions"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalLabel" positionType="Float" x="174" y="1" width="71" height="14" forecolor="#FFFFFF" backcolor="#000000" uuid="ce5e1907-bdc4-466e-aa0a-cc284dc2cf6f"/>
+					<box leftPadding="0" rightPadding="2"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA["Amount"]]></textFieldExpression>
+				</textField>
+				<textField pattern="">
+					<reportElement style="FineNotes" positionType="Float" x="174" y="15" width="71" height="10" forecolor="#FFFFFF" backcolor="#000000" uuid="77aceb50-b9ba-4f9e-90fe-ee32abe304c8"/>
+					<box rightPadding="2"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["("  + $P{pcwf_txn_ccy} + ")"]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="1" width="247" height="28" backcolor="#003333" uuid="b7bccb51-9af2-498d-9648-b12c58479ec1"/>
+				<box>
+					<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+				</box>
+				<textField>
+					<reportElement style="NormalLabel" positionType="Float" x="173" y="1" width="71" height="14" forecolor="#FFFFFF" backcolor="#000000" uuid="64b89b86-c3f0-41b2-b0fe-4049ec436688"/>
+					<box leftPadding="0" rightPadding="2"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA["Amount"]]></textFieldExpression>
+				</textField>
+				<textField pattern="">
+					<reportElement style="FineNotes" positionType="Float" x="173" y="16" width="71" height="10" forecolor="#FFFFFF" backcolor="#000000" uuid="4e682898-8002-45c9-85f2-f434e753c7d8"/>
+					<box rightPadding="2"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["("  + $P{pcwf_txn_ccy} + ")"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalLabel" positionType="Float" x="4" y="2" width="79" height="14" forecolor="#FFFFFF" backcolor="#000000" uuid="21514fa2-6489-4bb0-bbab-dd9ee5d44bc4"/>
+					<box leftPadding="4"/>
+					<textFieldExpression><![CDATA["Emoulments"]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<frame>
+				<reportElement positionType="Float" x="5" y="-1" width="247" height="17" forecolor="#FFFFFF" backcolor="#000000" uuid="26f85acf-cef3-4033-8792-de429193e230"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+				</box>
+				<textField isBlankWhenNull="true">
+					<reportElement style="NormalText" positionType="Float" x="4" y="2" width="166" height="14" isRemoveLineWhenBlank="true" uuid="0cd63201-9ba5-43f6-bc1c-f45fdc58e908"/>
+					<box leftPadding="4"/>
+					<textFieldExpression><![CDATA[$F{emolument_payhead}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" positionType="Float" x="172" y="2" width="71" height="14" isRemoveLineWhenBlank="true" uuid="795f7fea-4b30-4e3a-a769-e52936c19761">
+						<printWhenExpression><![CDATA[$F{emolument_payhead} != null]]></printWhenExpression>
+					</reportElement>
+					<box leftPadding="4"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{emolument_amt}]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="252" y="-1" width="248" height="17" uuid="b567d427-ad76-499a-9e42-9c5d890fcec7"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#6B6B6B"/>
+				</box>
+				<textField isBlankWhenNull="true">
+					<reportElement style="NormalText" positionType="Float" x="0" y="2" width="174" height="14" isRemoveLineWhenBlank="true" uuid="0eda376a-8b45-4cf2-b3b2-9659d9db730a"/>
+					<box leftPadding="4"/>
+					<textFieldExpression><![CDATA[$F{deduction_payhead}]]></textFieldExpression>
+				</textField>
+				<textField pattern="">
+					<reportElement style="NormalText" positionType="Float" x="176" y="2" width="71" height="14" isRemoveLineWhenBlank="true" uuid="834b2419-6936-4f92-9192-bd2e2b2a0180">
+						<printWhenExpression><![CDATA[$F{deduction_payhead} != null]]></printWhenExpression>
+					</reportElement>
+					<box leftPadding="4"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{deduction_amt}]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<summary>
+		<band height="17">
+			<frame>
+				<reportElement positionType="Float" x="5" y="-1" width="247" height="17" uuid="1709f93c-bb52-417d-9f7a-4f1c6f53a703"/>
+				<box>
+					<leftPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textField>
+					<reportElement style="NormalLabel" positionType="Float" isPrintRepeatedValues="false" x="30" y="2" width="143" height="14" isRemoveLineWhenBlank="true" uuid="cdfa89ce-bc38-4345-a381-fb27038577c8">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<box topPadding="0"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["Total Emoluments :"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalLabel" positionType="Float" x="175" y="2" width="71" height="14" uuid="f77d00b1-3b60-4ec9-a006-9176780dd610">
+						<printWhenExpression><![CDATA[$F{emolument_payhead} != null]]></printWhenExpression>
+					</reportElement>
+					<box leftPadding="0" rightPadding="1">
+						<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{EmolumentTotal}]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="252" y="-1" width="248" height="17" uuid="dd214545-a3fe-4451-becc-45a16745b09a"/>
+				<box>
+					<bottomPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textField>
+					<reportElement style="NormalLabel" positionType="Float" isPrintRepeatedValues="false" x="22" y="2" width="153" height="14" isRemoveLineWhenBlank="true" uuid="fe516757-9b85-4777-aeac-ffac8439f88d">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<box topPadding="0"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["Total Deductions :"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalLabel" positionType="Float" x="177" y="2" width="71" height="14" uuid="65846b86-4c58-43bc-8396-0685b9e00ddf">
+						<printWhenExpression><![CDATA[$F{emolument_payhead} != null]]></printWhenExpression>
+					</reportElement>
+					<box leftPadding="0" rightPadding="1">
+						<topPen lineWidth="0.2" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{DeductionTotal}]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+			</frame>
+		</band>
+	</summary>
+</jasperReport>

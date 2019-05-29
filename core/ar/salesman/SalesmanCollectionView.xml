@@ -1,0 +1,27 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="Salesman" type="Master" bindingBO="Salesman" editView="salesman/SalesmanEditForm">        
+        <header>Salesman</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select salesman_id, salesman_name, case salesman_type when 0 then 'Internal'
+                    when 1 then 'Independent Representative'
+                    when 2 then 'Relationship Manager' end as salesman_type
+                    from ar.salesman
+                    Where company_id={company_id}
+                    order by salesman_name
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="salesman_name" displayName="Salesman"/>
+                <displayField columnName="salesman_type" displayName="Salesman Type"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

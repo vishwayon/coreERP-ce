@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2018-09-26T16:37:20 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StockGstPurchaseBarcode" language="groovy" columnCount="4" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="207" leftMargin="8" rightMargin="5" topMargin="14" bottomMargin="14" uuid="6dbb4104-7cfa-481a-b583-f9f5dab8e9f1">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="local_mrr"/>
+	<property name="com.jaspersoft.studio.unit." value="mm"/>
+	<parameter name="pbc_id" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[With base_data
+As
+(   select spg->>'stock_id' as stock_id, 
+        --case when length(COALESCE(spg->>'material_code','0'))<13 then lpad(COALESCE(spg->>'material_code','0'),13,'0') else COALESCE(spg->>'material_code','0') end as material_code,
+        case when spg->>'material_code' = '' then '0000000000000' else spg->>'material_code' end as material_code,    
+        spg->>'stock_tran_id' as stock_tran_id,
+        (spg->>'material_id')::bigint as material_id, 
+        (spg->>'labelcount')::bigint as labelcount
+    from st.stock_barcode_print, jsonb_array_elements(barcode_info) spg
+    where stock_barcode_print_id = $P{pbc_id}::int
+)
+Select a.*, generate_series(1, a.labelcount),'* '||b.material_name::varchar(55) as mat_name,
+(b.annex_info->'sale_price'->'sp_calc'->>'fixed_pu')::numeric as mat_price
+From base_data a
+inner join st.material b on a.material_id = b.material_id]]>
+	</queryString>
+	<field name="stock_id" class="java.lang.String"/>
+	<field name="material_code" class="java.lang.String"/>
+	<field name="stock_tran_id" class="java.lang.String"/>
+	<field name="material_id" class="java.lang.Long"/>
+	<field name="labelcount" class="java.lang.Long"/>
+	<field name="generate_series" class="java.lang.Long"/>
+	<field name="mat_name" class="java.lang.String"/>
+	<field name="mat_price" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="56" splitType="Prevent">
+			<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+			<componentElement>
+				<reportElement x="4" y="8" width="194" height="18" uuid="891f3a5e-428c-41b7-918c-ff4e993f7f96">
+					<property name="com.jaspersoft.studio.unit.barWidth" value="mm"/>
+					<printWhenExpression><![CDATA[$F{material_code}!='0']]></printWhenExpression>
+				</reportElement>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false" barHeight="14">
+					<jr:codeExpression><![CDATA[$F{material_code}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<textField>
+				<reportElement x="13" y="45" width="185" height="11" uuid="88dbef0e-5977-4157-a0a2-ab3ada04b3a6">
+					<printWhenExpression><![CDATA[$F{mat_price}!=0]]></printWhenExpression>
+				</reportElement>
+				<textElement markup="none">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["SP.RS."+CoreJSFormatUtils.Formatter.formatDecimal($F{mat_price})+"*"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="13" y="26" width="185" height="19" uuid="1caa28e5-93ee-4bca-93b3-1fe143ea5edd"/>
+				<textElement markup="none">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{material_code}=='0'?$F{mat_name}:$F{material_code}+' '+$F{mat_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

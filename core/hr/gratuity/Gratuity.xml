@@ -1,0 +1,49 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="Gratuity" type="Document">  
+        <controlTable>
+            <tableName>hr.gratuity_control</tableName>
+            <primaryKey>gratuity_id</primaryKey>
+            <customColumns>
+                <customColumn name="total_days" type="int"/>
+                <customColumn name="gratuity_days" type="int"/>
+                <customColumn name="gratuity_note" type="varchar" length="500"/>
+                <customColumn name="two_years_wages_amt" type="numeric" />
+            </customColumns>     
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save> 
+            <delete>
+                <useEntity/>
+            </delete> 
+            <tranTable id="gratuity_tran">
+                <tableName>hr.gratuity_tran</tableName>
+                <primaryKey>gratuity_tran_id</primaryKey> 
+                <customColumns>
+                    <customColumn name="employee_fullname" type="varchar" length="500"/>
+                </customColumns>         
+                <relation linkType="OneToMany">
+                    <foreignKey>gratuity_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{gratuity_id}:{RowID}</primaryKeyPattern>
+                </save>  
+                <delete>
+                    <useEntity/>
+                </delete> 
+            </tranTable> 
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\hr\gratuity\GratuityEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

@@ -1,0 +1,18 @@
+<wizard id="CustomerReceipt" name="Customer Receipt Wizard">
+    <clientJsCode>ar_clientcode.js</clientJsCode>
+    <clientJsCodeRefs>
+        <clientJsCodeRef>../core/ar/customerReceipt/customerreceipt_clientcode.js</clientJsCodeRef>
+    </clientJsCodeRefs>
+    <codeBehind>
+        <className>\app\core\ar\customerReceipt\CustomerReceiptWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectCustomerAll">
+        <path>customerReceipt/CustomerReceiptWizard/SelectCustomerAll</path>
+    </wizardStep>
+    <wizardStep id="SelectCustomer">
+        <path>customerReceipt/CustomerReceiptWizard/SelectCustomer</path>
+    </wizardStep>
+    <postWizard id="CustomerReceipt">
+        <path>customerReceipt/CustomerReceiptEditForm</path>
+    </postWizard>
+</wizard>

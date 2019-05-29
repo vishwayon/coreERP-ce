@@ -1,0 +1,40 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <businessObject id="ClosedFinyearAccess" type="Master">
+        <controlTable>
+            <tableName>sys.finyear</tableName>
+            <primaryKey>finyear_id</primaryKey>   
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save>
+            <delete>
+                <useEntity/>
+            </delete>
+            <tranTable id="user_to_clfinyear">
+                <tableName>sys.user_to_clfinyear</tableName>
+                <primaryKey>user_to_clfinyear_id</primaryKey>
+                <relation linkType="OneToMany">
+                    <foreignKey>finyear_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{finyear_id}:{user_id}</primaryKeyPattern>
+                </save>
+                <delete>
+                    <useEntity/>
+                </delete>
+            </tranTable>   
+        </controlTable> 
+        <codeBehind>
+            <className>\app\cwf\sys\closedFinyearAccess\ClosedFinyearAccessEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

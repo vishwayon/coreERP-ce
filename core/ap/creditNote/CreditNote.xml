@@ -1,0 +1,137 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'> 
+    
+    <businessObject id="CreditNote" type="Document">
+        <controlTable>
+            <tableName>ap.bill_control</tableName>
+            <primaryKey>bill_id</primaryKey>
+            <customColumns>
+                <customColumn name="supplier" type="varchar" length="250"/>
+                <customColumn name="st_tran_amt" type="numeric" />   
+                <customColumn name="net_bill_amt" type="numeric" />  
+                <customColumn name="net_bill_amt_fc" type="numeric" />
+                <customColumn name="advance_amt" type="numeric" />   
+                <customColumn name="advance_amt_fc" type="numeric" /> 
+                <customColumn name="tax_amt" type="numeric"/>   
+                <customColumn name="tax_amt_fc" type="numeric"/>  
+                <customColumn name="before_tax_amt" type="numeric"/>     
+                <customColumn name ="tax_schedule_name" type="varchar" length="50"/>   
+                <customColumn name="applicable_to_customer" type="bool"/> 
+                <customColumn name="applicable_to_supplier" type="bool"/>  
+                <customColumn name="misc_amt" type="numeric" />   
+                <customColumn name="misc_amt_fc" type="numeric" /> 
+                <customColumn name="before_tax_amt" type="numeric"/> 
+                <customColumn name="before_tax_amt_fc" type="numeric"/>             
+            </customColumns>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save>    
+            <delete>
+                <useEntity/>
+            </delete> 
+
+            <tranTable id="bill_tran">
+                <tableName>ap.bill_tran</tableName>
+                <primaryKey>bill_tran_id</primaryKey>      
+                <relation linkType="OneToMany">
+                    <foreignKey>bill_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{bill_id}:{RowID}</primaryKeyPattern>
+                </save>      
+                <delete>
+                    <useEntity/>      
+                </delete>    
+            </tranTable>
+            <tranTable id="bill_lc_tran">
+                <tableName>ap.bill_lc_tran</tableName>
+                <primaryKey>bill_lc_tran_id</primaryKey>      
+                <relation linkType="OneToMany">
+                    <foreignKey>bill_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{bill_id}:{RowID}</primaryKeyPattern>
+                </save>      
+                <delete>
+                    <useEntity/>      
+                </delete>    
+            </tranTable>
+            <tranTable id="tax_tran">
+                <tableName>tx.tax_tran</tableName>
+                <primaryKey>tax_tran_id</primaryKey>  
+                <customColumns>
+                    <customColumn name="en_tax_type" type="bigint"/>  
+                </customColumns>        
+                <relation linkType="OneToOne">
+                    <foreignKey>voucher_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{bill_id}:{RowID}</primaryKeyPattern>
+                </save>         
+                <delete>
+                    <useEntity/>      
+                </delete> 
+            </tranTable>
+            <tranTable id="payable_ledger_alloc_tran">
+                <tableName>ac.rl_pl_alloc</tableName>
+                <primaryKey>rl_pl_alloc_id</primaryKey>  
+                    <customColumns>
+                        <customColumn name="adv_ref_id" type="varchar" length="50"/>
+                        <customColumn name="adv_ref_date" type="date"/>
+                        <customColumn name="balance" type="numeric" />
+                        <customColumn name="balance_fc" type="numeric" />
+                    </customColumns>    
+                <relation linkType="OneToMany">
+                    <foreignKey>voucher_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern type="md5">{bill_id}:{RowID}</primaryKeyPattern>
+                    <fieldPattern field="vch_tran_id">{bill_id}:{RowID}</fieldPattern>
+                </save>         
+                <delete>
+                    <useEntity/>      
+                </delete> 
+            </tranTable>
+            <tranTable id="bill_tds_tran">
+                <tableName>tds.bill_tds_tran</tableName>
+                <primaryKey>bill_tds_tran_id</primaryKey>      
+                <relation linkType="OneToOne">
+                    <foreignKey>voucher_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{bill_id}</primaryKeyPattern>
+                </save>      
+                <delete>
+                    <useEntity/>      
+                </delete>    
+            </tranTable>
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\ap\creditNote\CreditNoteEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

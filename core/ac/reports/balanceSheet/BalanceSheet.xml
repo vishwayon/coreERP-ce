@@ -1,0 +1,44 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="BalanceSheet" type="Report" rptPath="/core/ac/reports/balanceSheet" rptName="BalanceSheet">
+        <header>Balance Sheet</header>
+        <clientJsCode>../core/ac/reports/balanceSheet/bs_cc.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pbs_option" label="Report Type" type="int" control="SimpleCombo" size="3">
+                    <options defaultValue="0">
+                        <option value="0">Balance Sheet With P&amp;L</option>
+                        <option value="1">Balance Sheet Only</option>
+                        <option value="2">Profit &amp; Loss Only</option>
+                        <option value="3">Schedules Only</option>
+                        <option value="4">Monthly P&amp;L</option>
+                    </options>
+                </field>
+                 <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="s" forConsolidated="true">
+                    <value>
+                        <session>branch_id</session>
+                    </value>
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="pto_date" label="As On" type="date" control="Date" size="ms" range="finYear"> 
+                    <value>
+                        <currentDate/>
+                    </value>
+                </field>
+                <field id="period_tot" label="Period Total" type="bool" control="CheckBox" size="ms"/>
+                <param id="pcompany_id">                
+                    <session>company_id</session>
+                </param>
+                <param id="pfinyear">                
+                    <session>finyear</session>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

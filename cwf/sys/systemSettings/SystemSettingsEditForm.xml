@@ -1,0 +1,186 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <formView id="SystemSettings" type="Master" bindingBO="systemSettings/SystemSettings">
+        <header>System Settings</header>
+        <keyField>company_id</keyField>
+        <clientJsCode>sys_clientcode.js</clientJsCode>
+        <jsEvents>
+            <afterLoadEvent>core_sys.sys_afterload</afterLoadEvent>
+        </jsEvents>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <sectionHeader label="System Settings"/>
+                <field id="print_allow_post_option" label="Allow Print After Post" type="int" control="SimpleCombo" size="2"  isOptional = "true" >
+                    <options>
+                        <option value="-1">No Limit</option>
+                        <option value="0">Block Print</option>
+                        <option value="1">No of Prints</option>
+                    </options>
+                </field>
+                <field id="no_of_prints_post" label="No Of Print After Post" type="int" control="TextBox" size="2" isOptional = "true"
+                       cdata-enable-on="core_sys.no_of_prints_post_enable"/>
+                <nextRow/>
+                <field id="print_allow_unpost_option" label="Allow Print Before Post" type="int" control="SimpleCombo" size="2"  isOptional = "true" >
+                    <options>
+                        <option value="-1">No Limit</option>
+                        <option value="0">Block Print</option>
+                        <option value="1">No of Prints</option>
+                    </options>
+                </field>
+                <field id="no_of_prints_unpost" label="No Of Print Before Post" type="int" control="TextBox" size="2" isOptional = "true"
+                       cdata-enable-on="core_sys.no_of_prints_unpost_enable"/>
+                <nextRow/>
+                <field id="confirm_post" label="Confirmation on Posting documents" type="bool" control="CheckBox" size="s" isOptional = "true"/>                
+                <nextRow/>
+                <sectionHeader label="Financial Accounting"/> 
+                <field id="ac_start_finyear" label="Start Financial Year" type="string" control="TextBox" size="2" isOptional = "true"/>
+                <field id="ac_AcHeadCodeReqd" label="Account Code Reqd" type="bool" control="CheckBox" size="s" isOptional = "true"/>
+                <field id="bs_closing_stock" label="Balance Sheet Closing Stock" type="bool" control="CheckBox" size="s" isOptional = "true"/>
+                <field id="ac_payc_limit" label="GST Cash Payment Limit" type="decimal" control="TextBox" size="2" scale="amt"/>
+                <nextRow/>
+                <field id="ac_exch_diff_account" label="Exch Diff Account" type="int" control="SmartCombo" size="3"  isOptional = "true">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id not in (1, 2)</filter>
+                    </lookup>   
+                </field>
+                <field id="bs_pnl_account" label="P&amp;L Account For Balance Sheet" type="int" control="SmartCombo" size="3"  isOptional = "true">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id = 30</filter>
+                    </lookup>   
+                </field>
+                <field id="tds_interest_penalty_account" label="Interest Penalty Account" type="int" control="SmartCombo" size="3"  isOptional = "true">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id not in (1, 2)</filter>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <sectionHeader label="Accounts Payable"/> 
+                <field id="ap_SupplierCodeReqd" label="Supplier Code Reqd" type="bool" control="CheckBox" size="s" isOptional = "true" inline="true"/>
+                
+                <field id="ap_pymt_write_off_account" label="Discount Account" type="int" control="SmartCombo" size="3"  isOptional = "true">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id not in (1, 2)</filter>
+                    </lookup>   
+                </field>
+                <field id="md_comm_acc" label="Commission Payable Account" type="int" control="SmartCombo" size="3"  isOptional = "true">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id not in (1, 2)</filter>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <field id="md_head_charge_acc" label="Head Charge Account" type="int" control="SmartCombo" size="3"  isOptional = "true">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id not in (1, 2)</filter>
+                    </lookup>   
+                </field>
+                <field id="md_inc_acc" label="Incentive Account" type="int" control="SmartCombo" size="3"  isOptional = "true">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id not in (1, 2)</filter>
+                    </lookup>   
+                </field>
+                <sectionHeader label="Accounts Receivable"/> 
+                <field id="ar_CustomerCodeReqd" label="Customer Code Reqd" type="bool" control="CheckBox" size="s" isOptional = "true" inline="true"/> 
+                <field id="tx_sez_without_gst" label="Do not apply GST on SEZ Invoices" type="bool" control="CheckBox" size="s" isOptional = "true" inline="true"/>
+                <nextRow/>
+                <field id="ar_rcpt_write_off_account" label="Discount Account" type="int" control="SmartCombo" size="3"  isOptional = "true">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id not in (1, 2)</filter>
+                    </lookup>   
+                </field>
+                <field id="ar_rcpt_tds_account" label="Tax Ded./With. Account" type="int" control="SmartCombo" size="3"  isOptional = "true">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id not in (1, 2)</filter>
+                    </lookup>   
+                </field>
+                <field id="ar_rcpt_other_exp_account" label="Other Expense Account" type="int" control="SmartCombo" size="3"  isOptional = "true">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id not in (1, 2)</filter>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <sectionHeader label="Stocks And Inventory"/> 
+                <field id="st_MaterialCodeReqd" label="Material Code Reqd" type="bool" control="CheckBox" size="s" isOptional = "true" inline="true"/>
+                <nextRow/>            
+                <field id="st_round_off_account" label="Round Off Account" type="int" control="SmartCombo" size="3"  isOptional = "true">
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id not in (1, 2)</filter>
+                    </lookup>   
+                </field>
+                <field id="st_walk_in_cust_id" label="Walk-In Customer" type="int" control="SmartCombo" size="3"  isOptional = "true">
+                    <lookup>
+                        <valueMember>customer_id</valueMember>
+                        <displayMember>customer</displayMember>
+                        <namedLookup>../core/ar/lookups/Customer.xml</namedLookup>
+                    </lookup>   
+                </field>    
+                <nextRow/>
+                <sectionHeader label="Fixed Assets"/> 
+                <field id="fa_round_off_account" label="Round Off Account" type="int" control="SmartCombo" size="3"  isOptional = "true" >
+                    <lookup>
+                        <valueMember>account_id</valueMember>
+                        <displayMember>account_head</displayMember>
+                        <namedLookup>../core/ac/lookups/Account.xml</namedLookup>
+                        <filter>account_type_id not in (1, 2)</filter>
+                    </lookup>   
+                </field>
+                <nextRow/>
+                <sectionHeader label="HR And Payroll"/> 
+                <field id="hr_days_in_month" label="Days In Month" type="int" control="TextBox" size="2" isOptional = "true"/>
+                <field id="hr_notice_pay_payhead" label="Notice Payhead" type="int" control="SmartCombo" size="3"  isOptional = "true" >
+                    <lookup>
+                        <valueMember>payhead_id</valueMember>
+                        <displayMember>payhead</displayMember>
+                        <namedLookup>../core/hr/lookups/Payhead.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="hr_suppress_payhead_in_pay_slip" label="Suppress Payhead in Payslip" type="bool" control="CheckBox" size="s" isOptional = "true"/>                
+                <nextRow/>
+                <sectionHeader label="CRM"/> 
+                <field id="crm_val_overdue_inv" label="Validate Overdue Invoices" type="bool" control="CheckBox" size="2" isOptional = "true"/>       
+                <field id="crm_grace_period" label="Grace Period" type="int" control="TextBox" size="2" isOptional = "true"/>
+                <field id="crm_blocking" label="Blocking Options" type="int" control="SimpleCombo" size="2"  isOptional = "true" >
+                    <options>
+                        <option value="0">No Blocking</option>
+                        <option value="1">Optional Blocking</option>
+                        <option value="2">Compulsory Blocking</option>
+                    </options>
+                </field>
+            </dataBinding> 
+        </controlSection>
+    </formView>
+</cwFramework>

@@ -1,0 +1,38 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="MatConversionNote" type="Document" bindingBO="MatConversionNote" editView="matConversionNote/MatConversionNoteEditForm">
+        <header>Material Conversion Note</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    Select a.stock_id, a.doc_date, a.branch_id, a.status, COALESCE((a.annex_info-&gt;&gt;'output_mat_id')::bigint, -1), b.material_name
+                    from st.stock_control a
+                    inner join st.material b on COALESCE((a.annex_info-&gt;&gt;'output_mat_id')::bigint, -1) = b.material_id
+                    Where doc_type='MCN' and a.finyear=:pfinyear and a.company_id=:pcompany_id and a.branch_id=:pbranch_id
+                    Order by a.stock_id
+                </command>
+                <params>
+                    <param id="pcompany_id">
+                        <session>company_id</session>
+                    </param>
+                    <param id="pbranch_id">
+                        <session>branch_id</session>
+                    </param>
+                    <param id="pfinyear">
+                        <session>finyear</session>
+                    </param>
+                </params>
+            </sql>
+            <displayFields>
+                <displayField columnName="doc_date" displayName="Date" format="Date"/>
+                <displayField columnName="stock_id" displayName="Document No"/>
+                <displayField columnName="material_name" displayName="Output Stock Item"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

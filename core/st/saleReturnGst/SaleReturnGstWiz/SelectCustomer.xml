@@ -1,0 +1,34 @@
+<wizardView>
+    <header>Select Customer</header>
+    <sections>
+        <formSection id="SelectCustomer">
+            <displayFields>
+                <displayField id="account_id" label="Customer" type="int" control="SmartCombo" size="m" editMode="edit" defaultValue="-1">
+                    <lookup>
+                        <valueMember>customer_id</valueMember>
+                        <displayMember>customer</displayMember>
+                        <namedLookup>../core/ar/lookups/Customer.xml</namedLookup>
+                    </lookup>  
+                </displayField>
+                <displayField id="from_date" label="Sales From" type="date" control="Date" size="ms" editMode="edit">
+                    <value>
+                        <currentDate/>
+                    </value>
+                </displayField>
+                <displayField id="to_date" label="To" type="date" control="Date" size="ms" editMode="edit" range="finYear">
+                    <value>
+                        <currentDate/>
+                    </value>
+                </displayField>
+                <displayField id="dcn_type" label="Debit/Credit Note Type" control="SimpleCombo" editMode="edit" defaultValue="0">
+                    <options>
+                        <option value="0">Sales Return</option>
+                        <option value="1">Rate Adjustment</option>
+                        <option value="2">Post Sale Discount</option>
+                        <option value="3">Damaged Delivery</option>
+                    </options>
+                </displayField>
+            </displayFields>
+        </formSection>
+    </sections>
+</wizardView>

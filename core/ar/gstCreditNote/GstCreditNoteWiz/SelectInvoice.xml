@@ -1,0 +1,51 @@
+<wizardView>
+    <header>Select Invoice</header>
+    <sections>
+        <collectionSection id="SelectInvoice">
+        <connectionType>
+          <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                Select doc_date, invoice_id,  sum(invoice_amt) as invoice_amt, sum(tax_amt) as tax_amt, customer_state_id, 
+                        customer_gstin, customer_addr, vat_type_id
+                From ar.fn_inv_for_cn(:pbranch_id, :pcustomer_id, :pfrom_date, :pto_date, :pvoucher_id)
+                group by doc_date, invoice_id, customer_state_id, customer_gstin, customer_addr, vat_type_id
+                order by doc_date, invoice_id
+            </command>
+            <params>
+                <param id="pbranch_id">
+                    <session>branch_id</session>
+                </param>
+                <param id="pcustomer_id">
+                    <wizard step="SelectCustomer">customer_id</wizard>
+                </param>
+                <param id="pfrom_date">
+                    <wizard step="SelectCustomer">from_date</wizard>
+                </param>
+                <param id="pto_date">
+                    <wizard step="SelectCustomer">to_date</wizard>
+                </param>
+                <param id="pvoucher_id">
+                    <text></text>
+                </param>
+            </params>
+        </sql>
+        <keyField id="invoice_id"/>
+        <displayFields>
+            <displayField columnName="doc_date" displayName="Doc Date" 
+                        id="doc_date" label="Doc Date" type="date" 
+                        control="TextBox" size="s"/>
+            <displayField columnName="invoice_id" displayName="Voucher No" 
+                        id="invoice_id" label="Voucher No" type="string" 
+                        control="TextBox" size="s"/>
+            <displayField columnName="tax_amt" displayName="Tax Amt" 
+                        id="tax_amt" label="Tax Amt" type="decimal" 
+                        control="TextBox" size="s"/>
+            <displayField columnName="invoice_amt" displayName="Invoice Amt" 
+                        id="invoice_amt" label="Invoice Amt" type="decimal" 
+                        control="TextBox" size="s"/>
+        </displayFields>
+    </collectionSection>
+    </sections>
+</wizardView>

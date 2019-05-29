@@ -1,0 +1,26 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="AdminUser" type="Master">
+        <connectionType>
+            <mainDB/>
+        </connectionType>
+        <controlTable>
+            <tableName>sys.user</tableName>
+            <primaryKey>user_id</primaryKey>   
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useOnSave/>
+            </save> 
+            <delete>
+                <useEntity/>
+            </delete>
+        </controlTable> 
+        <codeBehind>
+            <className>\app\cwf\sys\adminUser\AdminUserEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

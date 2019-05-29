@@ -1,0 +1,29 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="Company" type="Master">
+        <connectionType>
+            <mainDB/>
+        </connectionType>
+        <controlTable>
+            <tableName>sys.company</tableName>
+            <primaryKey>company_id</primaryKey>
+            <customColumns>
+                <customColumn name="isnew" type="boolean"/> 
+            </customColumns>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save> 
+            <delete>
+                <useEntity/>
+            </delete>
+        </controlTable>  
+        <codeBehind>
+            <className>\app\cwf\sys\company\CompanyEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

@@ -1,0 +1,25 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="TaxType" type="Master" bindingBO="TaxType" editView="taxType/TaxTypeEditForm">        
+        <header>Tax Type(s)</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select tax_type_id, tax_type, in_use
+                    from tx.tax_type
+                    Where company_id={company_id}
+                    order by tax_type
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="tax_type" displayName="Tax Type"/>
+                <displayField columnName="in_use" displayName="In Use"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

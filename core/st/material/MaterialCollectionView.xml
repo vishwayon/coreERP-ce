@@ -1,0 +1,46 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="Material" type="Master" bindingBO="Material" editView="material/MaterialEditForm">      
+        <clientJsCode>material/Material_clientcode.js</clientJsCode>  
+        <header>Stock Item</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select a.material_id, a.material_name, a.material_code, a.material_type_id,
+                        a.inventory_account_id, a.consumed_account_id, 
+                        b.material_type, c.account_head as inc_acc, d.account_head as con_acc,
+                        e.mfg
+                        from st.material a
+                    left join st.material_type b on a.material_type_id = b.material_type_id
+                    left join ac.account_head c on a.inventory_account_id = c.account_id
+                    left join ac.account_head d on a.consumed_account_id = d.account_id
+                    left join st.mfg e On (a.annex_info->'supp_info'->>'mfg_id')::bigint = e.mfg_id
+                    Where a.company_id={company_id}
+                        And a.material_id !=0 
+                        And (a.annex_info->>'is_service' is Null Or (a.annex_info->>'is_service')::Boolean = False)
+                    order by a.material_name
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="material_name" displayName="Stock Item"/>
+                <displayField columnName="material_code" displayName="Stock Code"/>
+                <displayField columnName="material_type" displayName="Type"/>
+                <displayField columnName="mfg" displayName="Manufacturer"/>
+            </displayFields>
+            <detailView>
+               <partialAction>core_material.coll_extra_info_action</partialAction>
+                <tranView>
+                    <displayField columnName="material_code" displayName="Code"/>
+                    <displayField columnName="material_type" displayName="Type"/>
+                    <displayField columnName="inc_acc" displayName="Inventory Account"/>
+                    <displayField columnName="con_acc" displayName="Consumed Account"/>
+                </tranView>
+            </detailView>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.1.final using JasperReports Library version 6.1.1  -->
+<!-- 2017-04-29T10:44:43 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InvoiceTaxTypeDesc" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="ae5c7359-1fb2-4294-b49c-6b8f8356d028">
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="inch"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pbranch_id" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1000001]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT a.tax_info_type_id, b.tax_info_type_desc, a.branch_tax_info_desc 
+FROM sys.branch_tax_info a 
+	INNER JOIN sys.tax_info_type b ON a.tax_info_type_id = b.tax_info_type_id 
+WHERE branch_id = $P{pbranch_id}
+And a.branch_tax_info_desc != ''
+order by a.sl_no;]]>
+	</queryString>
+	<field name="tax_info_type_id" class="java.lang.Long"/>
+	<field name="tax_info_type_desc" class="java.lang.String"/>
+	<field name="branch_tax_info_desc" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="17">
+			<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+			<textField>
+				<reportElement style="CaptionLabel" positionType="Float" x="2" y="0" width="152" height="14" uuid="35f359fa-c283-40d6-94fe-f2de7af07e1f">
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<box topPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.2"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textFieldExpression><![CDATA["Tax Registration Information"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="261" height="15" uuid="e48ed945-2615-4a5c-8af6-80b593ff10b0">
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#6B6B6B"/>
+				</box>
+				<textField>
+					<reportElement style="FineNotes" positionType="Float" x="2" y="0" width="80" height="14" isRemoveLineWhenBlank="true" uuid="9334381a-2043-4841-82e7-84eee608fe1a"/>
+					<box topPadding="2"/>
+					<textFieldExpression><![CDATA[$F{tax_info_type_desc}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="FineNotes" positionType="Float" x="94" y="0" width="167" height="14" isRemoveLineWhenBlank="true" uuid="50222242-d5c5-4cb9-85bc-f4981d31783d"/>
+					<box topPadding="2"/>
+					<textFieldExpression><![CDATA[$F{branch_tax_info_desc}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="NormalText" positionType="Float" x="83" y="0" width="11" height="14" isRemoveLineWhenBlank="true" uuid="18f10ff0-0da0-481b-92a2-c47ea084a257"/>
+					<box topPadding="2"/>
+					<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="1">
+			<line>
+				<reportElement mode="Opaque" x="0" y="0" width="261" height="1" forecolor="#FFFFFF" uuid="4ad6c965-aeee-4016-8a11-486208b9d18a">
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+				</reportElement>
+			</line>
+		</band>
+	</columnFooter>
+</jasperReport>

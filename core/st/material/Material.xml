@@ -1,0 +1,130 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <businessObject id="Material" type="Master">
+        <connectionType>
+            <companyDB/>
+        </connectionType> 
+        <controlTable>
+            <tableName>st.material</tableName>
+            <primaryKey>material_id</primaryKey> 
+            <customColumns>
+                <customColumn name="first_fin_year" type="varchar" scale="4"/>   
+                <customColumn name="min_year_begin" type="varchar" scale="4"/>
+            </customColumns>
+            <jsonField id="annex_info">
+                <jfield name="is_service" type="bool"/>
+                <jfield name="sub_type" type="string"/>
+                <jfield name="st_allow_excess" type="bool"/>
+                <jfield name="st_excess_pcnt" type="decimal"/>
+                <jobject name="sale_price" type="simple">
+                    <jfield name="price_type" type="string"/>
+                    <jobject name="wac_calc" type="simple">
+                        <jfield name="markup_pcnt" type="decimal"/>
+                        <jfield name="markup_pu" type="decimal"/>
+                    </jobject>
+                    <jobject name="lp_calc" type="simple">
+                        <jfield name="markup_pcnt" type="decimal"/>
+                        <jfield name="markup_pu" type="decimal"/>
+                    </jobject>
+                    <jobject name="sp_calc" type="simple">
+                        <jfield name="fixed_pu" type="decimal"/>
+                        <jfield name="disc_pcnt" type="decimal"/>
+                    </jobject>
+                    <jfield name="tax_schedule_id" type="int"/>
+                </jobject>
+                <jobject name="supp_info" type="simple">
+                    <jfield name="mfg" type="string"/>
+                    <jfield name="mfg_id" type="int"/>
+                    <jfield name="mfg_part_no" type="string"/>
+                    <jfield name="mfg_part_desc" type="string"/>
+                    <jfield name="hsn_id" type="int"/>
+                    <jobject name="pref_supp" type="array">
+                        <jfield name="supplier_id" type="int"/>
+                        <jfield name="lead_days" type="int"/>
+                    </jobject>
+                    <jfield name="tax_schedule_id" type="int"/>
+                    <jfield name="has_batch" type="bool"/>
+                </jobject>
+                <jobject name="qty_info" type="simple">
+                    <jfield name="min_qty" type="decimal"/>
+                    <jfield name="reorder_qty" type="decimal"/>                    
+                </jobject>
+                <jobject name="mat_cat_info" type="simple">
+                    <jfield name="mat_cat_id" type="int"/>
+                    <jobject name="mat_cat_keys" type="array">
+                        <jfield name="mat_cat_key_id" type="int"/>
+                        <jfield name="mat_cat_key" type="string"/>
+                        <jfield name="mat_cat_key_value" type="boolean"/>
+                    </jobject>
+                    <jobject name="mat_cat_attrs" type="array">
+                        <jfield name="mat_cat_attr_id" type="int"/>
+                        <jfield name="mat_cat_attr" type="string"/>
+                        <jfield name="mat_cat_attr_value" type="string"/>
+                    </jobject>
+                </jobject>
+                <jobject name="war_info" type="simple">
+                    <jfield name="has_war" type="bool"/>
+                    <jfield name="war_days" type="int"/>
+                    <jfield name="from_mfg_date" type="bool"/>
+                </jobject>
+                <jobject name="gst_info" type="simple">
+                    <jfield name="hsn_sc_id" type="int"/>
+                    <jfield name="purch_gst_rate_id" type="int"/>
+                    <jfield name="sale_gst_rate_id" type="int"/>
+                </jobject>
+            </jsonField>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save> 
+            <delete>
+                <useEntity/>
+            </delete>
+            <tranTable id="uom">
+                <tableName>st.uom</tableName>
+                <primaryKey>uom_id</primaryKey>
+                <relation linkType="OneToMany">
+                    <foreignKey>material_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity  orderby="uom_type_id"/>
+                </fetchOrCreate>
+                <save>
+                    <useOnSave/>
+                    <primaryKeyPattern/>
+                </save>
+                <delete>
+                    <useEntity/>
+                </delete>
+            </tranTable>
+            <tranTable id="stock_ledger">
+                <tableName>st.stock_ledger</tableName>
+                <primaryKey>stock_ledger_id</primaryKey>  
+                <customColumns>
+                    <customColumn name="item_amt" type="numeric" scale="4"/>  
+                    <customColumn name="is_allow_edit" type="boolean"/>               
+                </customColumns>
+                <relation linkType="OneToMany">
+                    <foreignKey>material_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useOnFetch/>
+                </fetchOrCreate>
+                <save>
+                    <useOnSave/>
+                    <primaryKeyPattern/>
+                </save>
+                <delete>
+                    <useEntity/>
+                </delete>
+            </tranTable>
+        </controlTable>
+        <codeBehind>
+            <className>\app\core\st\material\MaterialEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

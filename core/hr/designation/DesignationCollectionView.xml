@@ -1,0 +1,23 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>             
+    
+    <collectionView id="Designation" type="Master" bindingBO="Designation" editView="designation/DesignationEditForm">        
+        <header>Designation</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select designation_id, designation, rank, is_training_reqd from hr.designation order by designation
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="designation" displayName="Designation"/>
+                <displayField columnName="rank" displayName="Rank"/>
+                <displayField columnName="is_training_reqd" displayName="Is Training Required"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

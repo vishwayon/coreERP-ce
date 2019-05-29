@@ -1,0 +1,18 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    <allocView id="SelectAddrAlloc" type="alloc">
+        <header>Select Address</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <tranSection label="" editMode="Edit">
+                    <dataBinding dataProperty="cust_addr_temp">
+                        <field id="is_select" label="Select" type="boolean" control="CheckBox" size="1"/>
+                        <field id="address_type" label="Address Type" type="string" control="TextBox" size="ms" readOnly="true"/>
+                        <field id="cust_address" label="Address" type="string" rows="6" control="TextArea" size="m" maxLength="500" readOnly="true"/>
+                    </dataBinding>
+                </tranSection>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>

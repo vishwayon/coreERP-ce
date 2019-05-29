@@ -1,0 +1,32 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="HSNRate" type="Master" bindingBO="hsnRate/HSNRate">
+        <header>HSN SC Rate</header>
+        <keyField>hsn_sc_id</keyField>
+        <noRefreshOnClose/>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="hsn_sc_code" label="HSN SC Code" type="string" control="TextBox" size="2" maxLength="8" readOnly="true"/>
+                <field id="gst_rate_id" label="GST Rate" type="int" control="SmartCombo" size="s" >
+                    <lookup>
+                        <valueMember>gst_rate_id</valueMember>
+                        <displayMember>gst_rate_desc</displayMember>
+                        <namedLookup>../core/tx/lookups/GSTRate.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="hsn_sc_uom_id" label="HSN UoM" type="int" control="SmartCombo" size="2" >
+                    <lookup>
+                        <valueMember>hsn_sc_uom_id</valueMember>
+                        <displayMember>uom_code_desc</displayMember>
+                        <namedLookup>../core/tx/lookups/HsnScUom.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <field id="is_exempt" label="Is Exempt" type="bool" control="CheckBox" size="2" />
+                <nextRow/>
+                <field id="hsn_sc_desc" label="HSN SC Desc" type="string" control="TextArea" rows="6" size="8" maxLength="250" readOnly="true"/>    
+            </dataBinding>
+        </controlSection>
+    </formView>
+</cwFramework>

@@ -1,0 +1,39 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="MenuWithAll">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                With Recursive menu_parent
+                As
+                (	Select parent_menu_id, menu_id, 1 as level, menu_name, menu_type, menu_text::Text, 
+                                array[menu_id] as path_info, false as cycle
+                        From sys.menu
+                        Where not is_hidden And parent_menu_id = -1
+                        Union All
+                        Select a.parent_menu_id, a.menu_id, b.level + 1, a.menu_name, a.menu_type, a.menu_text, 
+                                b.path_info||a.menu_id, a.menu_id = Any(b.path_info)
+                        From sys.menu a
+                        Inner Join menu_parent b On a.parent_menu_id = b.menu_id
+                        Where not is_hidden And not cycle
+                ),
+                menu_list
+                As
+                (   Select menu_id, (level -1) * 10 pad_left, menu_name, menu_type, menu_text, path_info
+                    From menu_parent
+                    Union All 
+                    Select 0, 0, 'mnuAll', 0, 'All', '{0}'::BigInt[]
+                )
+                Select menu_id, pad_left, menu_name, menu_type, menu_text
+                from menu_list
+                Order by path_info
+            </command>
+        </sql>
+        <keyField id="menu_id"/>
+        <padField id="pad_left"/>
+    </lookup>
+</cwFramework>

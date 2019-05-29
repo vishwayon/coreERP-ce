@@ -1,0 +1,27 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="StockLocation">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select a.stock_location_id, a.stock_location_name, a.branch_id, a.sl_type_id
+                from (        
+                Select 0 as stock_location_id, 'All' as stock_location_name, 0 as branch_id, 0 as sl_type_id
+                union All
+                (select stock_location_id, stock_location_name, branch_id, sl_type_id
+                from st.stock_location
+                Where company_id={company_id} and branch_id = {branch_id}
+                order by stock_location_name )
+                ) a
+            </command>
+        </sql>
+        <keyField id="stock_location_id"/>
+    </lookup>
+</cwFramework>
+
+
+    

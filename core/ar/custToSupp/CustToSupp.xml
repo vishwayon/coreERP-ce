@@ -1,0 +1,54 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'> 
+    
+    <businessObject id="CustToSupp" type="Master">
+         <controlTable>
+             <tableName>ar.customer</tableName>
+            <primaryKey>customer_id</primaryKey>
+            <jsonField id="annex_info">
+                <jobject name="tax_info" type="simple">
+                    <jfield name="pan" type="string"/>  
+                    <jfield name="tan" type="string"/> 
+                    <jfield name="ctin" type="string"/> 
+                    <jfield name="vtin" type="string"/> 
+                    <jfield name="gstin" type="string"/> 
+                    <jfield name="stin" type="string"/>
+                    <jfield name="gst_state_id" type="bigint"/> 
+                    <jfield name="dup_pan" type="bool"/> 
+                    <jfield name="dup_gstin" type="bool"/>
+                    <jfield name="diff_gst_name" type="bool"/> 
+                    <jfield name="gst_reg_name" type="string"/> 
+                </jobject>      
+                <jfield name="is_overridden" type="bool"/>
+                <jfield name="segment_id" type="bigint"/> 
+                <jobject name="ship_addrs" type="array">
+                    <jfield name="sl_no" type="int"/>
+                    <jfield name="ship_to" type="string"/>
+                    <jfield name="gst_state_id" type="bigint"/>
+                    <jfield name="gstin" type="string"/> 
+                    <jfield name="city" type="string"/> 
+                    <jfield name="pin" type="string"/> 
+                </jobject>   
+                <jfield name="has_kyc_docs" type="bool"/>   
+            </jsonField>  
+            <customColumns>
+                <customColumn name="supp_type_id" type="int"/>
+                <customColumn name="supp_control_account_id" type="int"/>
+                <customColumn name="supp_pay_term_id" type="int"/>
+            </customColumns>
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useOnSave/>
+            </save> 
+            <delete>
+                <useOnDelete/>
+            </delete> 
+        </controlTable> 
+        <codeBehind>
+            <className>app\core\ar\custToSupp\CustToSuppEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

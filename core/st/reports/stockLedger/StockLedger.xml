@@ -1,0 +1,91 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="StockLedger" type="Report" rptPath="/core/st/reports/stockLedger" rptName="StockLedger">
+        <header>Stock Ledger</header>
+        <clientJsCodeRefs>
+            <clientJsCodeRef>../core/st/st_clientcode.js</clientJsCodeRef>
+        </clientJsCodeRefs>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="ms" forConsolidated="true" on-change-event="core_st.afterPageRefresh" > 
+                    <value>
+                        <session>branch_id</session>
+                    </value>
+                    <lookup>
+                        <valueMember>branch_id</valueMember>
+                        <displayMember>branch_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/BranchWithAll.xml</namedLookup>                         
+                    </lookup>  
+                </field>          
+                <field id="pfrom_date" label="From" type="date" control="Date" size="ms" range="finYear">
+                    <value>
+                        <session>year_begin</session>
+                    </value>
+                </field>
+                <field id="pto_date" label="To" type="date" control="Date" size="ms" range="finYear">                   
+                    <value>
+                        <session>year_end</session>
+                    </value>    
+                </field>  
+                <field id="pstock_location_id" label="Stock Location" type="int" control="SmartCombo" size="ms" >
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <valueMember>stock_location_id</valueMember>
+                        <displayMember>stock_location_name</displayMember>
+                        <namedLookup>../core/st/lookups/StockLocationAllforRpt.xml</namedLookup>
+                        <filterEvent>core_st.rpt_stock_location_branch_filter</filterEvent>
+                    </lookup>   
+                </field>
+                <field id="pby_sl_grp" label="Group By Stock Location" type="bool" control="CheckBox" size="2"/> 
+                <nextRow/>
+                <field id="pmaterial_type_id" label="Stock Type" type="int" control="SmartCombo"  size="ms">
+                    <value>
+                        <text>0</text>
+                    </value>
+                    <lookup>
+                        <displayMember>material_type</displayMember>
+                        <valueMember>material_type_id</valueMember>
+                        <namedLookup>../core/st/lookups/MaterialTypeWithAll.xml</namedLookup>
+                    </lookup>
+                </field>
+                <field id="pmaterial_id" label="Stock/Inventory Item" type="int" control="SmartCombo" size="m">
+                    <value>
+                        <text>-1</text>
+                    </value>
+                    <lookup>
+                        <valueMember>material_id</valueMember>
+                        <displayMember>material_name</displayMember>
+                        <namedLookup>../core/st/lookups/Material.xml</namedLookup>
+                        <filterEvent>core_st.rpt_sl_lot_stmt_material_filter</filterEvent>
+                    </lookup>   
+                </field> 
+                <field id="pts_info" label="TS Info" type="bool" control="CheckBox" size="2"/> 
+                <param id="pstock_location_name">                
+                    <text></text>
+                </param>
+                <param id="puom_id">                
+                    <text>0</text>
+                </param>
+                <param id="pcompany_id">                
+                    <session>company_id</session>
+                </param>
+                <param id="pyear">
+                    <session>finyear</session>
+                </param>
+                <param id="pmaterial_name">
+                    <text></text>
+                </param>
+                <param id="preport_name">
+                    <text>Stock Ledger</text>
+                </param>
+                <param id="pcwf_lc_rate_format">
+                    <text>#,##0.0000</text>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

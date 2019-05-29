@@ -1,0 +1,21 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="PayCycle" type="Master" bindingBO="PayCycle" editView="payCycle/PayCycleEditForm">
+        <header>PayCycle</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    SELECT a.pay_cycle_id, a.pay_cycle FROM ap.pay_cycle a
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="pay_cycle" displayName="Pay Cycle"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

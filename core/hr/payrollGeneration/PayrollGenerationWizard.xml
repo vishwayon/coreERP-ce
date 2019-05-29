@@ -1,0 +1,15 @@
+<wizard id="PayrollGeneration" name="Payroll Generation Wizard">    
+    <clientJsCode>payrollGeneration/payrollgeneration_clientcode.js</clientJsCode>  
+    <codeBehind>
+        <className>\app\core\hr\payrollGeneration\PayrollGenerationWizard</className>
+    </codeBehind>
+    <wizardStep id="SelectPayrollGroup">
+        <path>payrollGeneration/PayrollGenerationWizard/SelectPayrollGroup</path>
+    </wizardStep>
+    <wizardStep id="PayheadCustomAmount">
+        <path>payrollGeneration/PayrollGenerationWizard/PayheadCustomAmount</path>
+    </wizardStep>
+    <postWizard id="PayrollGeneration">
+        <path>payrollGeneration/PayrollGenerationEditForm</path>
+    </postWizard>
+</wizard>

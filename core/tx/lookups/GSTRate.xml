@@ -1,0 +1,21 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="GSTRate">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select gst_rate_id , gst_rate_desc
+                from tx.gst_rate
+                Where company_id={company_id}
+                order by gst_rate_desc
+            </command>
+        </sql>
+        <keyField id="gst_rate_id"/>
+    </lookup>
+</cwFramework>
+
+    

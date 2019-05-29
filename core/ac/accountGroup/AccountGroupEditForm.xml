@@ -1,0 +1,29 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+            xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="AccountGroup" type="Master"  bindingBO="accountGroup/AccountGroup">
+        <header>Account Group</header>
+        <keyField>group_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="parent_group_id" label="Parent Group" type="int" control="SmartCombo"  size="m">
+                    <lookup>
+                        <valueMember>group_id</valueMember>
+                        <displayMember>group_name</displayMember>
+                        <namedLookup>../core/ac/lookups/AccountGroup.xml</namedLookup>
+                    </lookup>   
+                </field> 
+                <nextRow/> 
+                <field id="group_code" label="Group Code" type="string" control="TextBox" size="ms" maxLength="10" isOptional="true"/>
+                <nextRow/> 
+                <field id="group_name" label="Group Name" type="string" control="TextBox" size="m" maxLength="250"/>
+                <nextRow/><dummy/>
+                <nextRow/>
+                <field id="note1" label="Note : A new Account Group can be created under a parent group. Account Groups at the top level cannot be created." type="string" control="Label" size="l"/>
+            </dataBinding>         
+        </controlSection>
+    </formView>
+</cwFramework>

@@ -1,0 +1,24 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="ConsType" type="Master" bindingBO="ConsType" editView="consType/ConsTypeEditForm">        
+        <header>Consumption Type(s)</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select cons_type_id, cons_type_desc
+                    From st.cons_type 
+                    Where company_id={company_id}
+                    order by cons_type_desc
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="cons_type_desc" displayName="Consumption Type Description"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

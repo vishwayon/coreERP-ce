@@ -1,0 +1,31 @@
+
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="PayrollGroup" type="Master"  bindingBO="payrollgroup/PayrollGroup">
+        <header>Payroll Group</header>
+        <keyField>payroll_group_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+          <dataBinding>              
+              <field id="payroll_group" label="Payroll Group" type="string" control="TextBox" size="6" maxLength="250" />
+              <nextRow/> 
+              <field id="en_pay_period" label="Pay Period" type="int" control="SimpleCombo" size="ms" readOnly="true">
+                 <options>
+                       <option value="1">Bi-Monthly</option>
+                       <option value="2">Monthly</option>
+                 </options>
+              </field>
+              <nextRow/> 
+              <field id="overtime_applicable" label="Overtime" type="bool" control="CheckBox" size="ms"/>
+                        
+            </dataBinding>  
+        </controlSection>
+    </formView>
+</cwFramework>
+              
+              
+ 
+ 

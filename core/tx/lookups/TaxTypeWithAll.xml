@@ -1,0 +1,25 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="TaxType">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>select a.tax_type_id, a.tax_type
+                from ( 
+                    Select 0 as tax_type_id, 'All' as tax_type
+                    union All
+                    (select tax_type_id , tax_type
+                    from tx.tax_type
+                    Where company_id={company_id}
+                    order by tax_type)
+                ) a
+            </command>
+        </sql>
+        <keyField id="tax_type_id"/>
+    </lookup>
+</cwFramework>
+
+    

@@ -1,0 +1,581 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2018-10-24T16:02:26 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ConsumpByTypeDetailed" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="523" leftMargin="36" rightMargin="36" topMargin="36" bottomMargin="36" isSummaryWithPageHeaderAndFooter="true" uuid="4c307fb7-97ec-429f-a8e6-44533a037434">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="local_hi_db_1"/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<property name="net.sf.jasperreports.export.xls.white.page.background" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.columns" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<template><![CDATA["cwf/report-templates/CwfReportStyle.jrtx"]]></template>
+	<parameter name="pcwf_header_template" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["cwf/report-templates/header-template.jasper"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_company_name" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["First Company Private Limtied"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_branch_name" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["First Branch"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_branch_address" class="java.lang.String">
+		<defaultValueExpression><![CDATA["First Floor, Technology Park, Pune"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_company_logo" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["cwf/vsla/assets/coreerp_logo.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_ccy_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.00"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_txn_ccy" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["INR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_coreerp_ver" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["CoreERP Ver. 0.5.4"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_base_path" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcompany_id" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pbranch_id" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1000001]]></defaultValueExpression>
+	</parameter>
+	<parameter name="preport_period" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["As On 31-03-2015"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_date_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["dd-MM-yyyy"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_amt_format" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_qty_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pcwf_fc_rate_format" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["#,##0.#"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pmaterial_type_id" class="java.lang.Long" isForPrompting="false"/>
+	<parameter name="pmaterial_id" class="java.lang.Long" isForPrompting="false"/>
+	<parameter name="pfrom_date" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2017-04-01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pto_date" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2018-03-31"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="prpt_caption" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pfinyear" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="pshow_grp_tot" class="java.lang.Boolean"/>
+	<parameter name="pbranch_ids" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["{0}"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pstock_movement_type_ids" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["{0}"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT *
+FROM st.fn_stock_consump_by_type
+(	
+	$P{pcompany_id}, 
+	$P{pbranch_ids}::bigint[],
+	$P{pmaterial_id},
+	$P{pmaterial_type_id},
+	$P{pfinyear},
+	$P{pfrom_date}::Date, 
+	$P{pto_date}::Date, 
+	$P{pstock_movement_type_ids}::bigint[]
+)
+ORDER BY stock_movement_type, cons_type_desc, material_type, material_name, doc_date, voucher_id;]]>
+	</queryString>
+	<field name="voucher_id" class="java.lang.String"/>
+	<field name="doc_date" class="java.sql.Date"/>
+	<field name="branch_id" class="java.lang.Long"/>
+	<field name="stock_movement_type_id" class="java.lang.Long"/>
+	<field name="stock_movement_type" class="java.lang.String"/>
+	<field name="material_id" class="java.lang.Long"/>
+	<field name="material_name" class="java.lang.String"/>
+	<field name="material_type_id" class="java.lang.Long"/>
+	<field name="material_type" class="java.lang.String"/>
+	<field name="mat_qty" class="java.math.BigDecimal"/>
+	<field name="mat_value" class="java.math.BigDecimal"/>
+	<field name="uom_desc" class="java.lang.String"/>
+	<field name="cons_type_id" class="java.lang.Long"/>
+	<field name="cons_type_desc" class="java.lang.String"/>
+	<variable name="mat_value_tot_type" class="java.math.BigDecimal" resetType="Group" resetGroup="grp_stock_movement_type" calculation="Sum">
+		<variableExpression><![CDATA[$F{mat_value}]]></variableExpression>
+	</variable>
+	<variable name="mat_value_tot_cons" class="java.math.BigDecimal" resetType="Group" resetGroup="grp_cons_type" calculation="Sum">
+		<variableExpression><![CDATA[$F{mat_value}]]></variableExpression>
+	</variable>
+	<variable name="mat_value_tot_mt" class="java.math.BigDecimal" resetType="Group" resetGroup="grp_mat_type" calculation="Sum">
+		<variableExpression><![CDATA[$F{mat_value}]]></variableExpression>
+	</variable>
+	<variable name="mat_value_tot_rpt" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{mat_value}]]></variableExpression>
+	</variable>
+	<variable name="mat_qty_tot_type" class="java.math.BigDecimal" resetType="Group" resetGroup="grp_stock_movement_type" calculation="Sum">
+		<variableExpression><![CDATA[$F{mat_qty}]]></variableExpression>
+	</variable>
+	<variable name="mat_qty_tot_cons" class="java.math.BigDecimal" resetType="Group" resetGroup="grp_cons_type" calculation="Sum">
+		<variableExpression><![CDATA[$F{mat_qty}]]></variableExpression>
+	</variable>
+	<variable name="mat_qty_tot_mt" class="java.math.BigDecimal" resetType="Group" resetGroup="grp_mat_type" calculation="Sum">
+		<variableExpression><![CDATA[$F{mat_qty}]]></variableExpression>
+	</variable>
+	<variable name="mat_qty_tot_rpt" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{mat_qty}]]></variableExpression>
+	</variable>
+	<variable name="mat_qty_tot_mat" class="java.math.BigDecimal" resetType="Group" resetGroup="group_material_name" calculation="Sum">
+		<variableExpression><![CDATA[$F{mat_qty}]]></variableExpression>
+	</variable>
+	<variable name="mat_value_tot_mat" class="java.math.BigDecimal" resetType="Group" resetGroup="group_material_name" calculation="Sum">
+		<variableExpression><![CDATA[$F{mat_value}]]></variableExpression>
+	</variable>
+	<group name="grp_stock_movement_type">
+		<groupExpression><![CDATA[$F{stock_movement_type}]]></groupExpression>
+		<groupHeader>
+			<band height="15">
+				<frame>
+					<reportElement x="0" y="1" width="523" height="14" uuid="d55b7211-fee9-4e9f-88a8-b0f02797cb9d"/>
+					<box>
+						<bottomPen lineWidth="0.0"/>
+					</box>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement style="NormalLabel" x="0" y="0" width="290" height="14" uuid="f978a34a-5bcc-4f97-b8d1-2a5d7f5cf427">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+						</reportElement>
+						<box topPadding="0">
+							<topPen lineWidth="0.0"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="0.0"/>
+						</box>
+						<textElement verticalAlignment="Top">
+							<font size="11"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{stock_movement_type}]]></textFieldExpression>
+					</textField>
+					<textField evaluationTime="Group" evaluationGroup="grp_stock_movement_type">
+						<reportElement style="NormalLabel" x="290" y="0" width="84" height="14" isRemoveLineWhenBlank="true" uuid="0447e9de-28d9-4304-b63c-bbda44ebc8ed">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<printWhenExpression><![CDATA[$P{pshow_grp_tot}]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement textAlignment="Right" verticalAlignment="Top">
+							<font size="11"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$V{mat_qty_tot_type}]]></textFieldExpression>
+						<patternExpression><![CDATA[$P{pcwf_qty_format}]]></patternExpression>
+					</textField>
+					<textField evaluationTime="Group" evaluationGroup="grp_stock_movement_type">
+						<reportElement style="NormalLabel" x="412" y="0" width="111" height="14" isRemoveLineWhenBlank="true" uuid="58d4b339-69d4-4a4a-83de-60b5921c963e">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement textAlignment="Right" verticalAlignment="Top">
+							<font size="11"/>
+						</textElement>
+						<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($V{mat_value_tot_type})]]></textFieldExpression>
+						<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="grp_cons_type">
+		<groupExpression><![CDATA[$F{cons_type_desc}]]></groupExpression>
+		<groupHeader>
+			<band height="14">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="NormalLabel" x="0" y="0" width="290" height="14" isRemoveLineWhenBlank="true" forecolor="#660000" uuid="80bf551c-634c-467d-b013-83316f936d71">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<box topPadding="0" leftPadding="4">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font size="11" isBold="true" isItalic="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cons_type_desc}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="grp_cons_type">
+					<reportElement style="NormalLabel" x="290" y="0" width="84" height="14" isRemoveLineWhenBlank="true" forecolor="#660000" uuid="452e97ec-ee02-45f2-8d76-c2af38505c8e">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<printWhenExpression><![CDATA[$P{pshow_grp_tot} && $F{cons_type_desc}!=""]]></printWhenExpression>
+					</reportElement>
+					<box topPadding="0"/>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{mat_qty_tot_cons}]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_qty_format}]]></patternExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="grp_cons_type">
+					<reportElement style="NormalLabel" x="412" y="0" width="111" height="14" isRemoveLineWhenBlank="true" forecolor="#660000" uuid="c07cb1d9-b66a-48d2-94b6-9ab0592b8490">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<printWhenExpression><![CDATA[$F{cons_type_desc}!=""]]></printWhenExpression>
+					</reportElement>
+					<box topPadding="0"/>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($V{mat_value_tot_cons})]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="grp_mat_type">
+		<groupExpression><![CDATA[$F{material_type}]]></groupExpression>
+		<groupHeader>
+			<band height="14">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="NormalLabel" x="0" y="0" width="290" height="14" forecolor="#660000" uuid="ec03ab47-7277-4e76-b6e8-439d175df5fa">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<box topPadding="0" leftPadding="10">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font isBold="true" isItalic="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{material_type}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="grp_mat_type">
+					<reportElement style="NormalLabel" x="290" y="0" width="84" height="14" isRemoveLineWhenBlank="true" forecolor="#660000" uuid="4117b7cc-3768-4bb9-91ae-a52d27b0e70c">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						<printWhenExpression><![CDATA[$P{pshow_grp_tot}]]></printWhenExpression>
+					</reportElement>
+					<box topPadding="0"/>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{mat_qty_tot_mt}]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_qty_format}]]></patternExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="grp_mat_type">
+					<reportElement style="NormalLabel" x="412" y="0" width="111" height="14" isRemoveLineWhenBlank="true" forecolor="#660000" uuid="bd59f91f-3423-4b4c-a968-176166289d3a">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<box topPadding="0"/>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($V{mat_value_tot_mt})]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="group_material_name">
+		<groupExpression><![CDATA[$F{material_name}]]></groupExpression>
+		<groupHeader>
+			<band height="14">
+				<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+				<frame>
+					<reportElement x="0" y="0" width="523" height="14" uuid="1feba0df-864e-40f1-b2fc-f488f09fbc51"/>
+					<textField evaluationTime="Group" evaluationGroup="group_material_name">
+						<reportElement style="CaptionLabel" x="290" y="0" width="84" height="14" forecolor="#990000" uuid="fcfd03ad-7152-40a8-8967-ae6da1934dad">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement textAlignment="Right" verticalAlignment="Top">
+							<font isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$V{mat_qty_tot_mat}]]></textFieldExpression>
+						<patternExpression><![CDATA[$P{pcwf_qty_format}]]></patternExpression>
+					</textField>
+					<textField evaluationTime="Group" evaluationGroup="group_material_name">
+						<reportElement style="CaptionLabel" x="412" y="0" width="111" height="14" forecolor="#990000" uuid="10bd8053-583c-4461-9964-6201477cad4a">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+						</reportElement>
+						<box topPadding="0"/>
+						<textElement textAlignment="Right" verticalAlignment="Top">
+							<font isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($V{mat_value_tot_mat})]]></textFieldExpression>
+						<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement style="CaptionText" x="0" y="0" width="290" height="14" forecolor="#990000" uuid="5e55841b-7ede-4c48-9762-204fbf1e3fef">
+							<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+							<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+						</reportElement>
+						<box topPadding="0" leftPadding="15">
+							<topPen lineWidth="0.0"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="0.0"/>
+						</box>
+						<textElement verticalAlignment="Top">
+							<font isBold="true" isItalic="false"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{material_name}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="CaptionLabel" positionType="Float" x="374" y="0" width="38" height="14" forecolor="#990000" uuid="11e2cafd-f6aa-491d-a1ff-002edf7468a1"/>
+						<box topPadding="0"/>
+						<textElement textAlignment="Left" verticalAlignment="Top">
+							<font size="10" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[" " + $F{uom_desc}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band>
+				<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="74" splitType="Stretch">
+			<textField>
+				<reportElement style="ReportTitle" positionType="Float" x="0" y="41" width="523" height="19" uuid="b683b080-0c74-4af7-bae8-2231bc5a13eb">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{prpt_caption}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="CaptionLabel" positionType="Float" x="0" y="60" width="90" height="14" uuid="1707e88e-524d-4cec-8a58-99f375c2d490"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Report Period :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="CaptionText" positionType="Float" x="90" y="60" width="322" height="14" uuid="cbba0ceb-c9ad-4af5-bc9d-f71c273a3909"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{preport_period}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="NormalText" positionType="Float" x="412" y="60" width="111" height="14" uuid="a46d567d-bcd8-4170-9c25-6a4fe27b9c7b">
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Txn. Ccy: " + $P{pcwf_txn_ccy}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="0" width="523" height="41" uuid="2074f960-9dbd-4fe3-bb12-c9ce9b0fca65"/>
+				<subreportParameter name="pcwf_company_name">
+					<subreportParameterExpression><![CDATA[$P{pcwf_company_name}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_branch_name">
+					<subreportParameterExpression><![CDATA[$P{pcwf_branch_name}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_branch_address">
+					<subreportParameterExpression><![CDATA[$P{pcwf_branch_address}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pcwf_company_logo">
+					<subreportParameterExpression><![CDATA[$P{pcwf_company_logo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pbranch_ids">
+					<subreportParameterExpression><![CDATA[$P{pbranch_ids}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["cwf/report-templates/header-template-multi-branch.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="36" splitType="Stretch">
+			<textField>
+				<reportElement style="NormalText" positionType="Float" x="412" y="1" width="111" height="14" uuid="73299d75-40c1-4576-99bb-a1cee7072aa9">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER}!=1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Txn. Ccy: " + $P{pcwf_txn_ccy}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="0" y="15" width="523" height="21" backcolor="#008080" uuid="7193239f-d967-4477-a89a-79922d300a47">
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.y" value="inch"/>
+				</reportElement>
+				<staticText>
+					<reportElement style="NormalLabel" mode="Transparent" x="0" y="0" width="90" height="21" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="f6c2b8e1-6f7f-4059-a5a1-8fd546bfbc54">
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" mode="Transparent" x="290" y="0" width="122" height="21" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="954c87c9-e33f-4f6f-9c40-a14620adbab6">
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Qty]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" mode="Transparent" x="412" y="0" width="111" height="21" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="fd40f414-b9cb-4cd9-a503-2dc6402780e7"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Value]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="NormalLabel" mode="Transparent" x="90" y="0" width="200" height="21" forecolor="#FCFCFC" backcolor="#A19C9C" uuid="c24de576-dff6-49ff-824f-8a62ac99f9fa">
+						<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Document No]]></text>
+				</staticText>
+			</frame>
+			<textField>
+				<reportElement style="CaptionLabel" positionType="Float" x="0" y="1" width="90" height="14" isRemoveLineWhenBlank="true" uuid="4c976aa7-41dd-4f1f-b177-ff5a8afcf572">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER}!=1]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Report Period :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="CaptionText" positionType="Float" x="90" y="1" width="322" height="14" isRemoveLineWhenBlank="true" uuid="e567b373-30d3-4a94-9dd8-a6af36782ed7">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER}!=1]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{preport_period}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField>
+				<reportElement style="NormalText" x="0" y="0" width="90" height="12" uuid="c4844a0e-e083-4f37-a82a-c1681e0b2616">
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="20"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{doc_date}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_date_format}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement style="NormalText" x="90" y="0" width="200" height="12" uuid="9535d083-49d5-4e76-9e95-360757bf9bbd">
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{voucher_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="NormalText" x="290" y="0" width="84" height="12" uuid="14164113-fea3-4e3d-930f-d4e585c9e9c9"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mat_qty}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_qty_format}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement style="NormalText" x="412" y="0" width="111" height="12" uuid="001f3c40-4d24-4d90-8d04-ea28d3c44080">
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($F{mat_value})]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="2" width="523" height="18" uuid="f076449a-5000-4e68-939b-02c04c801cea"/>
+				<box topPadding="0">
+					<topPen lineWidth="0.2"/>
+				</box>
+				<textField>
+					<reportElement style="CoreERPVer" x="0" y="2" width="270" height="15" uuid="8e97d3c7-b3d7-4f3d-8447-4af7aa72f166">
+						<propertyExpression name="net.sf.jasperreports.export.html.id"><![CDATA["version_no"]]></propertyExpression>
+					</reportElement>
+					<textFieldExpression><![CDATA[$P{pcwf_coreerp_ver}]]></textFieldExpression>
+				</textField>
+				<textField pattern="">
+					<reportElement style="FooterPageNo" x="290" y="2" width="122" height="15" uuid="644eb7ad-acec-43c2-ba68-8e776b3da650"/>
+					<textElement textAlignment="Right" verticalAlignment="Top"/>
+					<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report">
+					<reportElement style="FooterPageNo" x="412" y="2" width="111" height="16" uuid="18705ccc-3218-4d82-a399-f0338af0bb03"/>
+					<textElement verticalAlignment="Top"/>
+					<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="14">
+			<frame>
+				<reportElement x="210" y="0" width="313" height="14" isRemoveLineWhenBlank="true" uuid="6675f4d1-7377-4fe7-89cb-67e200b7225c">
+					<printWhenExpression><![CDATA[$P{pshow_grp_tot}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="3.0" lineStyle="Double"/>
+				</box>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="NormalLabel" positionType="Float" isPrintRepeatedValues="false" x="0" y="0" width="80" height="14" isRemoveLineWhenBlank="true" uuid="aaa3c9d6-1278-4b61-a656-96d1c01e9fcd">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<box topPadding="0"/>
+					<textElement textAlignment="Right" verticalAlignment="Top"/>
+					<textFieldExpression><![CDATA["Grand Total:"]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report">
+					<reportElement style="NormalLabel" x="202" y="0" width="111" height="14" uuid="231b45a9-3e78-46a4-b927-e52041533243">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<box topPadding="0"/>
+					<textElement textAlignment="Right" verticalAlignment="Top"/>
+					<textFieldExpression><![CDATA[CoreJSFormatUtils.Formatter.formatDecimal($V{mat_value_tot_rpt})]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_amt_format}]]></patternExpression>
+				</textField>
+				<textField evaluationTime="Report">
+					<reportElement style="NormalLabel" x="80" y="0" width="84" height="14" uuid="38c438cb-c9cf-4916-b017-94a9d951d549">
+						<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+					</reportElement>
+					<box topPadding="0"/>
+					<textElement textAlignment="Right" verticalAlignment="Top"/>
+					<textFieldExpression><![CDATA[$V{mat_qty_tot_rpt}]]></textFieldExpression>
+					<patternExpression><![CDATA[$P{pcwf_qty_format}]]></patternExpression>
+				</textField>
+			</frame>
+		</band>
+	</summary>
+</jasperReport>

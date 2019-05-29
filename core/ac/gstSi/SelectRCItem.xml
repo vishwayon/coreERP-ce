@@ -1,0 +1,28 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    <allocView id="SeleEst" type="alloc"  width="1150px">
+        <header>Select Reverse Charge</header>
+        <clientJsCode>gstSi/GstSi_clientcode.js</clientJsCode>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="sele-rc-loading" control="Label" label="Loading ..." />
+                <tranSection label="" editMode="Edit" fixedWidth="850">
+                    <dataBinding dataProperty="rc_temp">
+                        <field id="is_select" label="..." type="bool" control="CheckBox" size="1"/>
+                        <field id="doc" label="Bill Type" type="string" control="TextBox" size="4" readOnly="true" maxLength="50" />
+                        <field id="doc_date" label="Date" type="date" control="Date" size="2" readOnly="true"/>
+                        <field id="gst_tax_tran_id" label="Document#" type="string" control="TextBox" size="4" readOnly="true" maxLength="50" />
+                        <field id="bt_amt" label="Taxable Value" type="decimal" control="TextBox" size="3"  readOnly="true"/>
+                        <field id="sgst_amt" label="SGST Payable" type="decimal" control="TextBox" size="2"  readOnly="true"/>
+                        <field id="cgst_amt" label="CGST Payable" type="decimal" control="TextBox" size="2"  readOnly="true"/>
+                        <field id="igst_amt" label="IGST Payable" type="decimal" control="TextBox" size="2"  readOnly="true"/>
+                        <field id="sgst_itc_amt" label="SGST ITC" type="decimal" control="TextBox" size="2"  readOnly="true"/>
+                        <field id="cgst_itc_amt" label="CGST ITC" type="decimal" control="TextBox" size="2"  readOnly="true"/>
+                        <field id="igst_itc_amt" label="IGST ITC" type="decimal" control="TextBox" size="2"  readOnly="true"/>
+                    </dataBinding>
+                </tranSection>
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>

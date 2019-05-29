@@ -1,0 +1,20 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <lookup id="GstState">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <sql>
+            <command>
+                select gst_state_id, gst_state_code || '-' || state_name as gst_state_with_code,
+                    gst_state_code, state_name
+                from tx.gst_state
+                Where active
+                order by gst_state_code || '-' || state_name
+            </command>
+        </sql>
+        <keyField id="gst_state_id"/>
+    </lookup>
+</cwFramework>

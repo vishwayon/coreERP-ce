@@ -1,0 +1,28 @@
+
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="HolidayList" type="Master"  bindingBO="holidayList/HolidayList">
+        <header>Holiday List</header>
+        <keyField>holiday_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>
+              
+                <field id="holiday_year" label="Year" type="string" control="TextBox" size="xs" maxLength="4" readOnly="true" />        
+                <nextRow/>
+                <field id="holiday_date" label="Holiday Date" type="date" control="Date" size="ms" range="finYear"/>        
+                <nextRow/>
+                <field id="holiday_desc" label="Description" type="string" control="TextBox" size="m" maxLength="20" />              
+                <nextRow/>
+              
+            </dataBinding>  
+        </controlSection>
+    </formView>
+</cwFramework>
+              
+              
+ 
+ 

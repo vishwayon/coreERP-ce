@@ -1,0 +1,33 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <collectionView id="Service" type="Master" bindingBO="Service" editView="service/ServiceEditForm">      
+        <clientJsCode>service/Service_clientcode.js</clientJsCode>  
+        <header>Non Inventory Stock Item (Service)</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select a.material_id, a.material_name, a.material_code, a.material_type_id,
+                        a.inventory_account_id, a.consumed_account_id, 
+                        b.material_type, c.account_head as inv_acc
+                        from st.material a
+                    left join st.material_type b on a.material_type_id = b.material_type_id
+                    left join ac.account_head c on a.inventory_account_id = c.account_id
+                    Where a.company_id={company_id}
+                        And a.material_id !=0 And (a.annex_info->>'is_service')::Boolean
+                    order by a.material_name
+                </command>
+            </sql>
+            <displayFields>
+                <displayField columnName="material_name" displayName="Service"/>
+                <displayField columnName="material_code" displayName="Service Code"/>
+                <displayField columnName="material_type" displayName="Type"/>
+                <displayField columnName="inv_acc" displayName="Income A/C"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

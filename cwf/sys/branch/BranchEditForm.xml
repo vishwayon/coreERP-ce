@@ -1,0 +1,54 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <formView id="Branch" type="Master" bindingBO="branch/Branch">
+        <header>Branch</header>
+        <keyField>branch_id</keyField>
+        <newDocEnabled/>
+        <clientJsCode>sys_clientcode.js</clientJsCode> 
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="company_code" label="Company Code" type="string" control="TextBox" size="ms" maxLength="2" readOnly="True"/>
+                <field id="company_name" label="Name" type="string" control="TextBox" size="m" maxLength="500"  readOnly="True"/>
+                <nextRow/>   
+                <field id="branch_code" label="Branch Code" type="string" control="TextBox" size="ms" maxLength="2" cdata-enable-on="core_sys.branch_code_enable"/> 
+                <field id="branch_name" label="Branch Name" type="string" control="TextBox" size="m" maxLength="100" /> 
+                <nextRow/>  
+                <field id="branch_description" label="Branch Description" type="string" control="TextBox" size="4" maxLength="100" />  
+                <field id="gst_state_id" label="GST State" type="int" control="SmartCombo" size="2">
+                    <lookup>
+                        <valueMember>gst_state_id</valueMember>
+                        <displayMember>gst_state_with_code</displayMember>
+                        <namedLookup>../core/tx/lookups/GstState.xml</namedLookup>
+                    </lookup>   
+                </field>
+                <nextRow/> 
+                <field id="branch_address" label="Branch Address" rows="4" type="string" control="TextArea" size="m" maxLength="250" />
+                <nextRow/> 
+                <field id="city" label="City" rows="4" type="string" control="TextBox" size="2" maxLength="50" />
+                <field id="pin" label="Pin" rows="4" type="string" control="TextBox" size="1" maxLength="8" />
+                <nextRow/>
+                <field id="annex_info.has_lot_alloc" label="Req. Lot Allocation" type="bool" control="CheckBox" size="2" isOptional = "true"/> 
+                <field id="annex_info.has_str_qc" label="QC Req. in STR" type="bool" control="CheckBox" size="2" isOptional = "true"/> 
+                <nextRow/>
+                <field id="annex_info.gst_sez_wop" label="SEZ Supply Without GST" type="bool" control="CheckBox" size="2" isOptional = "true"/>
+                <field id="annex_info.gst_exp_wop" label="Export Supply Without GST" type="bool" control="CheckBox" size="2" isOptional = "true"/>
+                <field id="annex_info.allow_ib_po" label="Allow Interbranch PO" type="bool" control="CheckBox" size="2" isOptional="true"/>
+                <tranSection label="Branch Tax Details"  editMode="Edit">
+                    <dataBinding dataProperty="branch_tax_info" >
+                        <nextRow/>
+                        <field id="tax_info_type_id" label="Tax Info" type="int" control="SmartCombo" readOnly="True" size="s">
+                            <lookup>
+                                <valueMember>tax_info_type_id</valueMember>
+                                <displayMember>tax_info_type_desc</displayMember>
+                                <namedLookup>../cwf/sys/lookups/TaxInfoType.xml</namedLookup>
+                            </lookup>   
+                        </field>
+                        <field id="branch_tax_info_desc" label="Description" type="string" control="TextBox" size="m"  maxLength="250" isOptional="true"/>
+                    </dataBinding>
+                </tranSection>
+            </dataBinding> 
+        </controlSection>
+    </formView>
+</cwFramework>

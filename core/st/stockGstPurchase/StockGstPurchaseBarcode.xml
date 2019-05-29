@@ -1,0 +1,20 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <reportView id="StockGstPurchase" type="Report" rptPath="/core/st/stockGstPurchase" rptName="StockGstPurchaseBarcode">
+        <header>Stock Purchase Barcode</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="pstock_id" label="Stock No" type="string" control="TextBox" size="l"/> 
+                <field id="pbc_id" label="BarCode No" type="string" control="TextBox" size="l"/>                
+                <param id="pbranch_id">
+                    <session>branch_id</session>
+                </param>  
+                <param id="pcompany_id">                
+                    <session>company_id</session>
+                </param>
+            </dataBinding>
+        </controlSection>  
+    </reportView>
+</cwFramework>

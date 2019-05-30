@@ -14,16 +14,16 @@ External Dependencies
 1. Postgresql Server 10. (detailed instructions at http://help.coreerp.net/docs/setup-guide/server-setup.html#install-postgresql)
 2. Apache2 (proxy_fcgi, mpm_event are optional) (detailed instructions at http://help.coreerp.net/docs/setup-guide/server-setup.html#install-apache2)
 3. PHP 7.3 or higher ::
-    $ sudo apt-get install php7.3 php7.3-fpm php7.3-mbstring php7.3-xml php7.3-pgsql
+    ```$ sudo apt-get install php7.3 php7.3-fpm php7.3-mbstring php7.3-xml php7.3-pgsql```
 4. Java 1.8 (required for rendering reports) ::
-    $ sudo apt-get install openjdk-8-jre-headless
+    ```$ sudo apt-get install openjdk-8-jre-headless```
 5. Liberation Fonts ::
-    $ sudo apt-get install fonts-liberation2
+    ```$ sudo apt-get install fonts-liberation2```
 
 Dependent Repositories
 ----------------------
 1. coreERP-vendor (https://github.com/vishwayon/coreERP-vendor). Create symbolic link to the vendor folder in coreERP-ce.
-2. coreERP-rsv (https://github.com/vishwayon/coreERP-rsv). This is an optional repo. You may use download only the release tar.gz for rendering reports. 
+2. coreERP-rsv (https://github.com/vishwayon/coreERP-rsv). This is an optional repo. You may download only the release tar.gz for rendering reports. 
 Follow instructions in README to complete report server installation.
 
 Setup Steps
@@ -38,7 +38,7 @@ Setup Steps
 Verify Installation
 -------------------
 
-If everything went off successfully, you should be able to open coreERP login screen using the following link ::
+If everything went off successfully, you should be able to open coreERP login screen using the following link:
     http://localhost/core-erp
 
 Proceed to the topic Getting Started (http://help.coreerp.net/docs/setup-guide/getting-started.html)

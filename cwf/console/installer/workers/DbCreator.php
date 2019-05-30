@@ -56,12 +56,22 @@ class DbCreator {
         fwrite($outstream, "audittrail db created successfully\n");
         
         self::executeScripts(self::$config->scriptInfo->auditDB, 'AuditMainDB', null);
-        fwrite($outstream, "audittrail objects created successfully\n");
+        fwrite($outstream, "audittrail objects created successfully\n");  
+        
+        fwrite($outstream, 'Importing HSN Code'."\n");       
+        $cn = self::$dbCon->getCnMainDB();
+       
+        \app\core\tx\importHsn\ImportHsn::importHsnCode($cn, $outstream);
+        \app\core\tx\importHsn\ImportHsn::importSacCode($cn, $outstream);
+        fwrite($outstream, 'HSN Code import completed'."\n");   
+        
         
         fwrite($outstream, 'DB created.'."\n");
         fwrite($outstream, 'Registering super user'."\n");
         self::registerSuperUser();
-        fwrite($outstream, 'superuser registered'."\n");        
+        fwrite($outstream, 'superuser registered'."\n");
+        
+        
     }
     
     public static function StartCompanyCreation($companyInfo, $outstream) {

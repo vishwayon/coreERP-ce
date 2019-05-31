@@ -22,7 +22,6 @@
             <clientJsCodeRef>../core/tds/ovrdTdsSec/tds_sec_cc.js</clientJsCodeRef>
             <clientJsCodeRef>../core/tx/ovrdGstRate/gst_rate_cc.js</clientJsCodeRef>
             <clientJsCodeRef>../core/tx/ovrdHsnSc/hsn_cc.js</clientJsCodeRef> 
-            <clientJsCodeRef>../core/sm/poForGstBill/poForGstBill_clientcode.js</clientJsCodeRef>
         </clientJsCodeRefs>
         <jsEvents>
             <afterLoadEvent>core_ap.gst_bill.afterload</afterLoadEvent>

@@ -409,12 +409,12 @@ class CustomerReceiptValidator extends \app\cwf\vsla\xmlbo\ValidatorBase {
             $result = \app\core\ac\subHeadAlloc\SubHeadAllocHelper::IsDetailReqd($row['account_id']);
             if ($result['is_detail_reqd'] == 'false') {
                 // remove sub head and ref ledger allocation 
-                $sub_head_cnt = count($row['sub_head_ledger_tran']);
+                $sub_head_cnt = count($row['sub_head_ledger_tran']->Rows());
                 for ($i = 0; $i <= $sub_head_cnt; $i++) {
                     $row['sub_head_ledger_tran']->removeRow(0);
                 }
 
-                $ref_cnt = count($row['ref_ledger_alloc_tran']);
+                $ref_cnt = count($row['ref_ledger_alloc_tran']->Rows());
                 for ($i = 0; $i <= $ref_cnt; $i++) {
                     $row['ref_ledger_alloc_tran']->removeRow(0);
                 }
@@ -424,7 +424,7 @@ class CustomerReceiptValidator extends \app\cwf\vsla\xmlbo\ValidatorBase {
             } else if ($result['is_detail_reqd'] == 'true') {
                 if ($result['sub_head_dim_id'] == -1) {// Ref Ledger reqd
                     // Remove rows from sub head ledger.
-                    $sub_head_cnt = count($row['sub_head_ledger_tran']);
+                    $sub_head_cnt = count($row['sub_head_ledger_tran']->Rows());
                     for ($i = 0; $i <= $sub_head_cnt; $i++) {
                         $row['sub_head_ledger_tran']->removeRow(0);
                     }
@@ -457,7 +457,7 @@ class CustomerReceiptValidator extends \app\cwf\vsla\xmlbo\ValidatorBase {
                         $shl_row['branch_id'] = $this->bo->branch_id;
                     }
                     // Remove rows from ref ledger alloc.
-                    $ref_cnt = count($row['ref_ledger_alloc_tran']);
+                    $ref_cnt = count($row['ref_ledger_alloc_tran']->Rows());
                     for ($i = 0; $i <= $ref_cnt; $i++) {
                         $row['ref_ledger_alloc_tran']->removeRow(0);
                     }

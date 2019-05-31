@@ -61,13 +61,13 @@ class WebFormController extends Controller {
             $formName = \Yii::$app->request->getBodyParams()['formName'];
             $step = \Yii::$app->request->getBodyParams()['step'];
             $oldFormParams = isset(\Yii::$app->request->getBodyParams()['oldStepData']) ?
-                    \Yii::$app->request->getBodyParams()['oldStepData'] : NULL;
+                    \Yii::$app->request->getBodyParams()['oldStepData'] : [];
             $formParams = json_decode(\Yii::$app->request->getBodyParams()['formdata']);
             $operation = \Yii::$app->request->getBodyParams()['operation'];
         } else {
             $formName = \Yii::$app->request->get('formName');
             $step = \Yii::$app->request->get('step');
-            $oldFormParams = \Yii::$app->request->get('oldStepData');
+            $oldFormParams = \Yii::$app->request->get('oldStepData') == NULL;
             $formParams = json_decode(\Yii::$app->request->get('formdata'));
         }
 
@@ -77,6 +77,7 @@ class WebFormController extends Controller {
         $currdata = NULL;
         if ($operation == 'next') {
             if ($formParams) {
+                $oldFormParams = $oldFormParams == NULL ? [] : $oldFormParams;
                 $wizparser->processStepData($wizparser->currentStep, $formParams, $oldFormParams);
             }
             $wizparser->setSteps($wizparser->currentStep, $operation);
@@ -182,7 +183,7 @@ class WebFormController extends Controller {
         \yii::$app->response->getHeaders()->set('Content-Type', "application/json");
         return \app\cwf\vsla\render\CollectionHelper::getCollection($design, $filter_array);
     }
-    
+
     public function actionGetCollData($formName, $filters) {
         $filter_array = array();
         parse_str($filters, $filter_array);
@@ -196,7 +197,6 @@ class WebFormController extends Controller {
             \yii::$app->response->setStatusCode(401); // unauthorised access
             return ['fail-msg' => 'Requested data not available to logon user.'];
         }
-        
     }
 
     public function getViewPath() {

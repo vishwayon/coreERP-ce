@@ -131,7 +131,7 @@ class GstBillValidator extends \app\cwf\vsla\xmlbo\ValidatorBase {
                 $cmm->addParam('ppo_id', $row['ref_id']);
                 $result = \app\cwf\vsla\data\DataConnect::getData($cmm);
                 
-                if (count($result->Rows()) > 0) {  
+                if (count($result->Rows()) > 0) {
                     if ($result->Rows()[0]['supplier_id'] !=  $this->bo->supplier_id)
                     {
                         $this->bo->addBRule( 'Purchase Order ' . $row['ref_tran_id'] .' does not belongs to the selected Supplier - Row [' . $RowNo .']');
@@ -167,7 +167,7 @@ class GstBillValidator extends \app\cwf\vsla\xmlbo\ValidatorBase {
             } else if ($result['is_detail_reqd'] == 'true') {
                 if ($result['sub_head_dim_id'] == -1) {// Ref Ledger reqd
                     // Remove rows from sub head ledger.
-                    $sub_head_cnt = count($row['sub_head_ledger_tran']);
+                    $sub_head_cnt = count($row['sub_head_ledger_tran']->Rows());
                     for ($i = 0; $i <= $sub_head_cnt; $i++) {
                         $row['sub_head_ledger_tran']->removeRow(0);
                     }
@@ -193,7 +193,7 @@ class GstBillValidator extends \app\cwf\vsla\xmlbo\ValidatorBase {
                         $shl_row['branch_id'] = $row['branch_id'];
                     }
                     // Remove rows from ref ledger alloc.
-                    $ref_cnt = count($row['ref_ledger_alloc_tran']);
+                    $ref_cnt = count($row['ref_ledger_alloc_tran']->Rows());
                     for ($i = 0; $i <= $ref_cnt; $i++) {
                         $row['ref_ledger_alloc_tran']->removeRow(0);
                     }

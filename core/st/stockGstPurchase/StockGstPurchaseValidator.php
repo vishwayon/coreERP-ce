@@ -226,7 +226,7 @@ class StockGstPurchaseValidator extends \app\core\st\base\StockBaseValidator {
                 }
             }
             else{
-                $ref_cnt = count($reflc_row['ref_ledger_alloc_tran']);
+                $ref_cnt = count($reflc_row['ref_ledger_alloc_tran']->Rows());
                 for ($i = 0; $i <= $ref_cnt; $i++) {
                     $reflc_row['ref_ledger_alloc_tran']->removeRow(0);
                 }

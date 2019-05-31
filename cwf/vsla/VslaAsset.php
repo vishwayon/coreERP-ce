@@ -36,7 +36,7 @@ class VslaAsset extends AssetBundle {
     public $js = [
         // JQuery Section
         'jquery-ui-1.12.1/jquery-ui.min.js',
-        'jquery-form-validator/jquery.form-validator.min.js',
+        'jquery-form-validator/jquery.form-validator-mod.min.js',
         'jquery-tree/jquery.tree.min.js',
         // Moment for Timezone
         'moment/moment.min.js',

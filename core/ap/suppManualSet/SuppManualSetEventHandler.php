@@ -134,6 +134,8 @@ class SuppManualSetEventHandler extends \app\cwf\vsla\xmlbo\EventHandlerBase {
                 $cmm->setParamValue('pnet_credit_amt', $ref_tran_row['credit_amt']);
                 $cmm->setParamValue('pnet_credit_amt_fc', $ref_tran_row['credit_amt_fc']);
                 $cmm->setParamValue('pstatus', 5);
+                $cmm->setParamValue('pgst_tds_amt_fc', 0);
+                $cmm->setParamValue('pgst_tds_amt', 0);
                 $cmm->setParamValue('ptran_group', 'payable_ledger_alloc_tran');
                 \app\cwf\vsla\data\DataConnect::exeCmm($cmm, $cn);
                 $ref_tran_row['rl_pl_alloc_id'] = $detailpkid;

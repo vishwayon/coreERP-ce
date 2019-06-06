@@ -44,6 +44,16 @@ class CoreModule extends Module {
                 'class' => 'app\core\pos\PosModule',
                 'basePath' => '@app/core/pos',
                 'defaultRoute' => 'bo'
+            ],
+            'fa' => [
+                'class' => 'app\core\fa\FaModule',
+                'basePath' => '@app/core/fa',
+                'defaultRoute' => 'bo'
+            ],
+            'hr' => [
+                'class' => 'app\core\hr\HrModule',
+                'basePath' => '@app/core/hr',
+                'defaultRoute' => 'bo'
             ]
         ];
     }

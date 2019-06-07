@@ -3,3 +3,4 @@ config/cwfconfig*.php
 runtime/*
 web/assets/*
 vendor
+**/*.jasper

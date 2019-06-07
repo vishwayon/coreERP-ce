@@ -265,7 +265,6 @@ typeof window.mcr == 'undefined' ? window.mcr = {} : '';
         sel_inv.inv_temp = {};
         sel_inv.voucher_id = opts.voucher_id;
         sel_inv.doc_date = opts.doc_date;
-        sel_inv.route_id = ko.observable(-1);
         sel_inv.customer_account_id = ko.observable(-1);
         sel_inv.branch_id = opts.branch_id;
         sel_inv.fc_type_id = opts.fc_type_id;
@@ -278,20 +277,16 @@ typeof window.mcr == 'undefined' ? window.mcr = {} : '';
     mcr.select_inv_init = select_inv_init;
 
     function get_detail() {
-        if (self.customer_account_id() == -1 && self.route_id() == -1) {
+        if (self.customer_account_id() == -1) {
             coreWebApp.toastmsg('warning', 'Filter', 'Select either Route or Customer to get invoices', false);
         } else {
             var cust_acc_id = self.customer_account_id();
             if (self.customer_account_id() == -1) {
                 cust_acc_id = 0;
             }
-            var route_id = self.route_id();
-            if (self.route_id() == -1) {
-                route_id = 0;
-            }
             $('#sele_inv-loading').show();
             $.ajax({
-                url: '?r=core/ar/form/select-inv-in-rcpt-by-route',
+                url: '?r=core/ar/form/select-inv-in-rcpt',
                 type: 'GET',
                 dataType: 'json',
                 data: {
@@ -299,8 +294,7 @@ typeof window.mcr == 'undefined' ? window.mcr = {} : '';
                     doc_date: self.doc_date,
                     account_id: cust_acc_id,
                     branch_id: self.branch_id,
-                    fc_type_id: self.fc_type_id,
-                    route_id: route_id
+                    fc_type_id: self.fc_type_id
                 },
                 complete: function () {
                     coreWebApp.stoploading();

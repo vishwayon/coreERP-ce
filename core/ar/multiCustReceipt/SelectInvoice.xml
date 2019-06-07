@@ -8,15 +8,6 @@
             <dataBinding>
                 <field id="sele_inv-loading" control="Label" label="Loading ..." />
                 <nextRow/>
-                <field label="Route: " type="string" control="Label" size="1" inline="true"/>
-                <field id="route_id" label="" type="int" control="SmartCombo" size="2" inline="true" >
-                    <lookup>
-                        <valueMember>route_id</valueMember>
-                        <displayMember>route_name</displayMember>
-                        <namedLookup>../sd/lookups/Route.xml</namedLookup>
-                        <filter>branch_id = {branch_id}</filter>
-                    </lookup>   
-                </field>
                 <field label="Customer: " type="string" control="Label" size="1" inline="true"/>
                 <field id="customer_account_id" label="" type="int" control="SmartCombo" size="4" inline="true" >
                     <lookup>

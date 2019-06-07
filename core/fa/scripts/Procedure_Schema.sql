@@ -154,10 +154,10 @@ BEGIN
 					
                                         -- insert record into asset_item
 					Insert Into fa.asset_item(asset_item_id, company_id, branch_id, asset_class_id, asset_code,  
-						asset_name, purchase_date, use_start_date, purchase_amt, asset_location_id,  
+						asset_name, asset_desc, purchase_date, use_start_date, purchase_amt, asset_location_id,  
 						asset_qty, voucher_id, voucher_tran_id, project_id, cost_head_id, last_updated)  
 					Select vAssetItem_ID, NEW.company_ID, a.branch_id, b.asset_class_id, b.asset_code ,  
-						b.asset_name, a.doc_date, b.use_start_date, b.bt_amt, b.asset_location_id,  
+						b.asset_name, b.asset_desc, a.doc_date, b.use_start_date, b.bt_amt, b.asset_location_id,  
 						b.asset_qty, vVoucher_ID, vAPTran_ID, a.project_id, b.cost_head_id, current_timestamp(0)  
 					From fa.ap_control a  
 					Inner Join fa.ap_tran b ON a.ap_id=b.ap_id  

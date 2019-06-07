@@ -21,7 +21,6 @@
             <clientJsCodeRef>../core/ac/ac_clientcode.js</clientJsCodeRef>
             <clientJsCodeRef>../core/fa/fa_clientcode.js</clientJsCodeRef>
             <clientJsCodeRef>../core/ap/ap_clientcode.js</clientJsCodeRef>
-            <clientJsCodeRef>../core/sm/poForAp/PoForAp_clientcode.js</clientJsCodeRef>
         </clientJsCodeRefs>
         <jsEvents>
             <afterLoadEvent>core_fa.ap.afterload</afterLoadEvent>
@@ -85,7 +84,6 @@
                     <field id="annex_info.gst_rc_info.rc_sec_id" label="Under Sec." type="int" control="Hidden" size="6" isOptional="true" readOnly="true"/>
                     <field id="note1" label="Note: GST Reverse Charge u/s 9(4)/5(4) would be posted at the end of the month only if it exceeds the daily threshold limit." 
                             type="string" control="Label" size="12" inline="true"/>
-                    <cButton id="btn_po_sel" onClick="core_fa.ap.po_sel" label="Select PO" size="3" inline="true"/> 
                     <cButton id="gl_distribution" onClick="core_fa.ap.view_gl" label="GL Distribution" cdata-visible-on="core_fa.ap.visible_gl_distribution"  inline="true"/>                   
                 <nextRow/>  
                 <xdivEnd/>  

@@ -42,64 +42,7 @@ Begin
             Inner Join st.stock_tran b On a.vch_tran_id = b.stock_tran_id
             Inner Join st.stock_tran_qc c On b.stock_tran_id = c.stock_tran_id 
             Where a.voucher_id = pvoucher_id;
-        End If;
-
-        If vdoc_type = 'SAN' Then   
-         	Declare 
-                vref_info jsonb = '{"tia_info":{}}'; vdesc character varying = '';
-                san_cursor Cursor For Select a.stock_id, a.stock_tran_id, b.*
-                                        from st.stock_tran a
-                                        Inner join md.ts_tran b on a.stock_tran_id = b.ts_tran_id
-                                        where a.stock_id = pvoucher_id;
-            Begin
-                For rec in san_cursor Loop
-                    Select jsonb_set(vref_info, '{tia_info, tia_101}', (rec.snf::varchar)::jsonb, true) into vref_info;
-
-                    Select jsonb_set(vref_info, '{tia_info, tia_102}', (rec.fat::varchar)::jsonb, true) into vref_info;
-
-                    Select jsonb_set(vref_info, '{tia_info, tia_103}', ('0')::jsonb, true) into vref_info;                
-
-                    with qc_info
-                    As (
-                        select rec.stock_tran_id, a.test_insp_attr_id,  a.test_insp_attr, 'FAT %' as test_desc, rec.fat as result
-                        From prod.test_insp_attr a
-                        where a.test_insp_attr_id = 102
-                        Union All
-                        select rec.stock_tran_id, a.test_insp_attr_id,  a.test_insp_attr, 'SNF %' as test_desc, rec.snf as result
-                        From  prod.test_insp_attr a
-                        where a.test_insp_attr_id = 101
-                        Union All 
-                        select rec.stock_tran_id, a.test_insp_attr_id,  a.test_insp_attr, 'CLR' as test_desc, 0 as result
-                        From  prod.test_insp_attr a
-                        where a.test_insp_attr_id = 103
-                    )
-                    Select jsonb_set(vref_info, '{data}', (json_agg(row_to_json(d)))::jsonb, true) into vref_info
-                    From qc_info d;
-
-                    with test_result
-                    As (
-                         select case test_insp_attr_id when 101 then 'SNF % : ' || rec.snf
-                                            When 102 then 'FAT % : ' || rec.fat
-                                            Else ''
-                                End info
-                        From prod.test_insp_attr a
-                        where a.test_insp_attr_id != 100
-                    )    
-                    Select ('"' || array_to_string(array(select x.info from test_result x), '; ') || '"') into vdesc;
-
-                    Select jsonb_set(vref_info, '{desc}', vdesc::jsonb, true) into vref_info;
-                    Insert Into st.sl_lot(sl_lot_id, sl_id, test_insp_id, test_insp_date, lot_no, lot_qty, mfg_date, exp_date, best_before, 
-                        lot_state_id, ref_info)
-                    Select md5(b.stock_tran_id || c.test_insp_id)::uuid, a.stock_ledger_id, c.test_insp_id, c.test_insp_date,
-                            c.lot_no, c.accept_qty + c.reject_qty, c.mfg_date, c.exp_date, c.best_before, 
-                            Case When c.accept_qty > 0 Then 101 Else 102 End as lot_state_id, vref_info
-                    From st.stock_ledger a
-                    Inner Join st.stock_tran b On a.vch_tran_id = b.stock_tran_id
-                    Inner Join st.stock_tran_qc c On b.stock_tran_id = c.stock_tran_id 
-                    Where b.stock_tran_id = rec.stock_tran_id;
-                End Loop;
-            End;
-        End If;
+        End If;        
     End If;
     
     If ptable_name = 'prod.doc_control' Then

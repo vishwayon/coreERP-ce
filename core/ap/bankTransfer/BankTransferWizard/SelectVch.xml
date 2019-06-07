@@ -21,19 +21,6 @@
                                 And a.account_id = :pbank_account_id 
                                 And a.voucher_id not in (select reference_id from ap.pymt_tran where voucher_id like 'BT%')
                                 And a.credit_amt > 0
-                        Union All 
-                        Select c.account_id, b.supplier, c.vch_tran_id, a.doc_date, c.net_payable_amt,
-                            a.annex_info->>'is_bt' as is_bt, (b.annex_info->>'pay_cycle_id')::bigint
-                        from ap.pymt_control a
-                        inner join md.msp_summary_tran c on a.voucher_id = c.voucher_id
-                        inner join ap.supplier b on c.account_id = b.supplier_id
-                        where a.company_id=:pcompany_id and a.branch_id=:pbranch_id
-                                And a.status = 5 
-                                And (a.annex_info->>'is_bt')::boolean
-                                And (b.annex_info->>'pay_cycle_id')::bigint = :ppay_cycle_id
-                                And a.account_id = :pbank_account_id 
-                                And c.vch_tran_id not in (select reference_id from ap.pymt_tran where voucher_id like 'BT%')
-                                And a.credit_amt > 0
                     ) a
                     order by a.supplier, a.doc_date, a.voucher_id
                 </command>

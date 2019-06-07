@@ -59,8 +59,6 @@
                             </lookup>   
                         </field>
                         <field id="issued_qty" label="Issued Qty" type="decimal" control="TextBox" size="2" scale="qty" />
-                        <cButton id="btnStAlloc" label="..." size="1" onClick="core_st.lot_alloc.select_lot($data, $parent.stock_tran)"                                
-                                cdata-enable-on="core_stockconsumption.enable_sl_lot" ignore-edit="true" />
                         <nextRow/>
                         <dummy size="1"/>
                         <xdiv colspan="4"/>
@@ -83,7 +81,6 @@
                         <field id="bal_qty" label="" type="string" control="TextBox" size="2" readOnly="true" inline="true" class="fg-total" style="font-style: italic; font-size: small;" 
                                 cdata-bind="style: { color: has_bal() ? 'green' : 'red' }"/>
                         <field id="has_bal" label="" type="bool" control="Hidden" readOnly="true" isOptional="true"/>
-                        <field id="has_qc" label="" type="bool" control="Hidden" size="1"/> 
                         <xdivEnd/>
                         <tranSection label="" editMode="Auto"  cdata-visible-on="core_st.show_sl_lot_alloc" >
                             <dataBinding dataProperty="sl_lot_alloc">

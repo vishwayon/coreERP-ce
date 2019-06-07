@@ -94,8 +94,6 @@
                         </field>                       
                         <field id="issued_qty" label="Issued Qty" type="decimal" control="TextBox" size="3" scale="qty" 
                                mdata-event="subscribe:core_stocktransfer.item_calc"/>
-                        <cButton id="btnStAlloc" label="..." size="1" onClick="core_st.lot_alloc.select_lot($data, $parent.stock_tran)"
-                                 cdata-bind="style: {backgroundColor: core_stocktransfer.lot_alloc_short($data) }"/>
                         <field id="rate" label="Rate" type="decimal" control="TextBox" size="3" scale="rate" isOptional="true"
                                mdata-event="subscribe:core_stocktransfer.item_calc"/>
                         <field id="bt_amt" label="Item Amt" type="decimal" control="TextBox" size="3" readOnly="true" isOptional="true"/>

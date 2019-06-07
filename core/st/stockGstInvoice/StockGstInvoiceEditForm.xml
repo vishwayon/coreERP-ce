@@ -21,7 +21,6 @@
         <dmFiles multipleFiles="true"/>
         <clientJsCode>stockGstInvoice/StockGstInvoice_clientcode.js</clientJsCode>
         <clientJsCodeRefs>
-            <clientJsCodeRef>../crm/soForSi/soForSi_clientcode.js</clientJsCodeRef>
             <clientJsCodeRef>../core/st/st_clientcode.js</clientJsCodeRef>
             <clientJsCodeRef>../core/ar/ar_clientcode.js</clientJsCodeRef>
             <clientJsCodeRef>../core/ac/ac_clientcode.js</clientJsCodeRef>
@@ -140,7 +139,7 @@
                             <lookup>
                                 <valueMember>uom_id</valueMember>
                                 <displayMember>uom_desc</displayMember>
-                                <namedLookup>../core/st/lookups/UoM.xml</namedLookup>
+                                <namedLookup>../core/st/lookups/UoMsu.xml</namedLookup>
                                 <filterEvent>core_st.sp_uom_combo_filter</filterEvent>
                             </lookup>
                         </field>                       

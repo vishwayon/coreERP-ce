@@ -86,14 +86,7 @@
                             <field id="has_ts" label="" type="bool" control="Hidden" readOnly="true" isOptional="true"/>
                             <field id="has_qc" label="" type="bool" control="Hidden" readOnly="true" isOptional="true"/>
                             <cButton id="btnStAlloc" label="..." size="1" cdata-enable-on="core_st.san.alloc_button_enable" ignore-edit="true"
-                                     onClick="core_st.lot_alloc.select_lot($data, $parent.stock_tran)"/>                        
-                            
-                            <field label="Fat %" type="string" control="Label" size="2" inline="true" cdata-visible-on="core_st.san.enable_ts_info"/>                                    
-                            <field id="ts_fat" label="" type="decimal" control="TextBox" isOptional="true" size="2"  scale="amt" cdata-visible-on="core_st.san.enable_ts_info"
-                                     cdata-enable-on="core_st.san.enable_ts_info" inline="true"/> 
-                            <field label="SNF %" type="string" control="Label" size="2" inline="true" cdata-visible-on="core_st.san.enable_ts_info"/>                                    
-                            <field id="ts_snf" label="" type="decimal" control="TextBox" isOptional="true" size="2" scale="amt" inline="true"
-                                     cdata-enable-on="core_st.san.enable_ts_info" cdata-visible-on="core_st.san.enable_ts_info"/> 
+                                     onClick="core_st.lot_alloc.select_lot($data, $parent.stock_tran)"/>  
                         <xdivEnd/>
                         <tranSection label="" editMode="Auto"  cdata-visible-on="core_st.show_sl_lot_alloc" >
                             <dataBinding dataProperty="sl_lot_alloc">

@@ -453,10 +453,4 @@ window.core_stocktransfer = {};
         });
     }
     core_stocktransfer.fetch_avl_qty = fetch_avl_qty;
-    
-    
-    function enable_ts_info(row) {
-        return row.has_ts();
-    }
-    core_stocktransfer.enable_ts_info = enable_ts_info;
 }(window.core_stocktransfer));

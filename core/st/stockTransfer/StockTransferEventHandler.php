@@ -111,24 +111,6 @@ class StockTransferEventHandler extends \app\cwf\vsla\xmlbo\EventHandlerBase {
                         $row['short_qty'] = $exrow['short_qty'];
                     }
                 }
-
-                if ($this->bo->st_str_qc_reqd && $row['has_qc']) {
-                    // Fetch qc FAT and SNF 
-//                    $dr = Enumerable::from($dtQc->Rows())->where('$a==>$a["material_id"]==' . $row["material_id"])->toList();
-                    foreach ($dtQc->Rows() as $qc_row) {
-                        if ($qc_row['material_id'] == $row['material_id'] && $qc_row['test_insp_attr_id'] == 101) {
-                            $row['qc_snf'] = $qc_row['result'];
-                        }
-                        if ($qc_row['material_id'] == $row['material_id'] && $qc_row['test_insp_attr_id'] == 102) {
-                            $row['qc_fat'] = $qc_row['result'];
-                        }
-                        if ($qc_row['material_id'] == $row['material_id'] && $qc_row['test_insp_attr_id'] == 103) {
-                            $row['qc_clr'] = $qc_row['result'];
-                        }
-                    }
-                }
-                $row['vfat_snf'] = number_format($row['ts_fat'], 2, ".", ",") . " / " . number_format($row['ts_snf'], 2, ".", ",");
-                $row['vqc_fat_snf'] = number_format($row['qc_fat'], 2, ".", ",") . " / " . number_format($row['qc_snf'], 2, ".", ",");
             }
         }
 

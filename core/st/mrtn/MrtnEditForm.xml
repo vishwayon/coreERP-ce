@@ -58,7 +58,6 @@
                                 <filterEvent>core_st.mrtn.sl_combo_filter</filterEvent>
                             </lookup>   
                         </field>
-                       <cButton id="btnStAlloc" label="..." size="1" onClick="core_st.lot_alloc.select_lot($data, $parent.stock_tran)" cdata-enable-on="core_st.mrtn.enable_mat_info"/>
                        <field id="issued_qty" label="Qty" type="decimal" control="TextBox" size="3" scale="qty" cdata-enable-on="core_st.mrtn.enable_mat_info"/>
                        <nextRow/>
                         <dummy/>

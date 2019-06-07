@@ -45,8 +45,6 @@
                 <delete>
                     <useEntity/>      
                 </delete>
-                <tableElongate id="ts" tableName="md.ts_tran" primaryKey="ts_tran_id" foreignKey="voucher_id"
-                               tranGroup="tran_group"/>
                 <tranTable id="sl_lot_alloc">
                     <tableName>st.sl_lot_alloc</tableName>
                     <primaryKey>sl_lot_alloc_id</primaryKey>

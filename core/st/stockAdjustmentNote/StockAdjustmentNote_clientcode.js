@@ -169,11 +169,6 @@ window.core_st.san = {};
     }
     san.fetch_avl_qty = fetch_avl_qty
     
-    function enable_ts_info(row) {
-        return (row.has_ts() && row.ir().toUpperCase() == 'R');
-    }
-    san.enable_ts_info = enable_ts_info;
-    
     function fetch_avl_qty_many() {
         if (coreWebApp.ModelBo.stock_tran().length != 0) {
             var mat_data = [];

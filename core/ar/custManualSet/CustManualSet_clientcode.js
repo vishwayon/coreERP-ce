@@ -9,7 +9,7 @@ window.core_cms = {};
 
     function afterload_wiz() {
         $('#bo-form').children().find("[id=cmd_addnew_receivable_ledger_alloc_tran]").each(function (e, i) {
-            $(this).hide();
+            $(this).detach();
         });
         total_calc();
     }

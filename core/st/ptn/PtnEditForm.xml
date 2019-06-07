@@ -88,11 +88,8 @@
                                 <filterEvent>core_ptn.source_stock_loc_combo_filter</filterEvent>
                             </lookup>   
                         </field>
-                        <cButton id="btnStAlloc" label="..." size="1" onClick="core_st.lot_alloc.select_lot($data, $parent.stock_tran)"                                 
-                                cdata-enable-on="core_ptn.enable_sl_lot" ignore-edit="true"/>
                         <field id="issued_qty" label="Qty" type="decimal" control="TextBox" size="3" scale="qty" cdata-enable-on="core_ptn.mat_info_enable"/>
                        
-                        <field id="has_qc" label="" type="bool" control="Hidden" size="1"/> 
                        <nextRow/>
                         <dummy/>
                         <dummy/>

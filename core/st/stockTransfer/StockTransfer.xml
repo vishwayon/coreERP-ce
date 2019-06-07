@@ -44,8 +44,6 @@
                     <customColumn name="receipt_sl_id" type="int"/>
                     <customColumn name="receipt_qty" type="numeric"/>
                     <customColumn name="short_qty" type="numeric"/>
-                    <customColumn name="vtax_desc" type="string"/>
-                    <customColumn name="vfat_snf" type="string"/>
                     <customColumn name="vqc_fat_snf" type="string"/>
                     <customColumn name="has_qc" type="bool"/>
                     <customColumn name="has_ts" type="bool"/>
@@ -65,8 +63,6 @@
                 </delete>
                 <tableElongate id="gtt" tableName="tx.gst_tax_tran" primaryKey="gst_tax_tran_id" foreignKey="voucher_id"
                     tranGroup="tran_group"/>
-                <tableElongate id="ts" tableName="md.ts_tran" primaryKey="ts_tran_id" foreignKey="voucher_id"
-                               tranGroup="tran_group"/>
                 <tranTable id="sl_lot_alloc">
                     <tableName>st.sl_lot_alloc</tableName>
                     <primaryKey>sl_lot_alloc_id</primaryKey>

@@ -83,10 +83,7 @@
                                 <namedLookup>../core/st/lookups/Material.xml</namedLookup>
                                  <filterEvent>core_st.mcn.mat_filter</filterEvent>
                             </lookup>   
-                        </field>                
-                        <cButton id="btnStAlloc" label="..." size="1" onClick="core_st.lot_alloc.select_lot($data, $parent.stock_tran)"
-                                cdata-enable-on="core_st.mcn.enable_sl_lot" ignore-edit="true"
-                                cdata-bind="enable: has_qc, style: {backgroundColor: sl_lot_short }" has-header="true"/>
+                        </field>      
                         <field id="issued_qty" label="Qty" type="decimal" control="TextBox" size="3" scale="qty"
                             mdata-event="subscribe: core_st.mcn.total_calc"/>
                         <nextRow/>
@@ -110,11 +107,9 @@
                             </field>
                             <field id="bal_qty" label="" type="string" control="TextBox" size="3" readOnly="true" inline="true" class="fg-total" 
                                     style="font-style: italic; font-size: small; cursor: pointer;" 
-                                    cdata-bind="style: { color: has_bal() ? 'green' : 'red' }, click: core_st.mcn.get_sl_mat_bal, attr: {title: sl_mat_bal}" 
+                                    cdata-bind="style: { color: has_bal() ? 'green' : 'red' }" 
                                     cdata-visible-on="core_st.mcn.sl_bal_qty_visible" tooltip="Click to View By Stock Location"/>
                             <field id="has_bal" label="" type="bool" control="Hidden" readOnly="true" isOptional="true"/>
-                            <field id="has_qc" label="" type="bool" control="Hidden" size="1"/>            
-                            <field id="sl_lot_short" label="" type="bool" control="Hidden" readOnly="true" isOptional="true"/>
                         <xdivEnd/>
                         <tranSection label="" editMode="Auto"  cdata-visible-on="core_st.show_sl_lot_alloc" >
                             <dataBinding dataProperty="sl_lot_alloc">

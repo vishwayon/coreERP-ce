@@ -57,7 +57,6 @@
                                 <filterEvent>core_locationtransfer.stock_loc_combo_filter</filterEvent>
                             </lookup>   
                         </field>
-                       <cButton id="btnStAlloc" label="..." size="1" onClick="core_st.lot_alloc.select_lot($data, $parent.stock_tran)"/>
                        <field id="issued_qty" label="Qty" type="decimal" control="TextBox" size="3" scale="qty"/>
                        <nextRow/>
                         <dummy/>

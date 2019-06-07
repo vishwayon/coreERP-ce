@@ -22,7 +22,6 @@
             <clientJsCodeRef>../core/tx/tx_clientcode.js</clientJsCodeRef>
             <clientJsCodeRef>../core/tx/ovrdGstRate/gst_rate_cc.js</clientJsCodeRef>
             <clientJsCodeRef>../core/ac/ac_clientcode.js</clientJsCodeRef>
-            <clientJsCodeRef>../core/sm/poForSp/poForSp_clientcode.js</clientJsCodeRef>
             <clientJsCodeRef>../core/ac/refAlloc/RefAlloc_cc.js</clientJsCodeRef>
         </clientJsCodeRefs>
         <jsEvents>

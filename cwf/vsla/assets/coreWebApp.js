@@ -1971,11 +1971,6 @@ coreWebApp.utils = {};
                         ko.cleanNode($('#cdialog')[0]);
                     },
                     open: function () {
-                        $(this).closest(".ui-dialog")
-                                .find(".ui-dialog-titlebar-close")
-                                .removeClass("ui-dialog-titlebar-close")
-                                .html("<span class='ui-button-icon-primary ui-icon-closethick' style='font-weight:bold;'>X</span>")
-                                .css('float', 'right').height('25px');
                         ReplaceComputedBinding($('#cdialog')[0]);
                         if (typeof dataitem === 'undefined') {
                             ko.applyBindings(coreWebApp.ModelBo, $('#cdialog')[0]);
@@ -2013,7 +2008,6 @@ coreWebApp.utils = {};
                 $(".ui-dialog .ui-dialog-title").css('color', 'teal');
                 $(".ui-dialog .ui-dialog-title").css('padding-left', '20px');
                 $(".ui-dialog-titlebar button").addClass('btn btn-default');
-                $(".ui-dialog-titlebar button").css('background-color', 'lightgray');
                 $(".ui-dialog-titlebar button").focus();
                 $('.ui-dialog').find('#cboformbodyin').css('border-bottom', '0');
                 $('#cdUpdate').css('padding', '6px 12px');
@@ -2105,12 +2099,6 @@ coreWebApp.utils = {};
                         }
                     },
                     open: function () {
-                        //$('#cdUpdate').attr('data-bind', 'visible: coreWebApp.ModelBo.__editMode()');
-                        $(this).closest(".ui-dialog")
-                                .find(".ui-dialog-titlebar-close")
-                                .removeClass("ui-dialog-titlebar-close")
-                                .html("<span class='ui-button-icon-primary ui-icon-closethick' style='font-weight:bold;'>X</span>")
-                                .css('float', 'right').height('25px');
                         ReplaceComputedBinding($('#cdialog')[0]);
                         if (typeof opts.model !== 'undefined') {
                             ko.applyBindings(opts.model, $('#cdialog')[0]);
@@ -2138,12 +2126,11 @@ coreWebApp.utils = {};
                 $(".ui-dialog .ui-dialog-title").css('color', 'teal');
                 $(".ui-dialog .ui-dialog-title").css('padding-left', '20px');
                 $(".ui-dialog-titlebar button").addClass('btn btn-default');
-                $(".ui-dialog-titlebar button").css('background-color', 'lightgray');
                 $(".ui-dialog-titlebar button").focus();
                 $('.ui-dialog').find('#cboformbodyin').css('border-bottom', '0');
                 $('#cdUpdate').css('padding', '6px 12px');
                 $('#cdUpdate').addClass('btn btn-success');
-                $('.ui-dialog .ui-dialog-buttonpane').css('border', '0');
+                $('.ui-dialog .ui-dialog-buttonpane').css('border', '0');                
             },
             error: function (data) {
                 toastmsg('error', 'Server Error', data.responseText, true);
@@ -2228,11 +2215,6 @@ coreWebApp.utils = {};
                         }
                     },
                     open: function () {
-                        $(this).closest(".ui-dialog")
-                                .find(".ui-dialog-titlebar-close")
-                                .removeClass("ui-dialog-titlebar-close")
-                                .html("<span class='ui-button-icon-primary ui-icon-closethick' style='font-weight:bold;'>X</span>")
-                                .css('float', 'right').height('25px');
                         ReplaceComputedBinding($('#cdialog')[0]);
                         if (typeof opts.model !== 'undefined') {
                             ko.applyBindings(opts.model, $('#cdialog')[0]);
@@ -2260,7 +2242,6 @@ coreWebApp.utils = {};
                 $(".ui-dialog .ui-dialog-title").css('color', 'teal');
                 $(".ui-dialog .ui-dialog-title").css('padding-left', '20px');
                 $(".ui-dialog-titlebar button").addClass('btn btn-default');
-                $(".ui-dialog-titlebar button").css('background-color', 'lightgray');
                 $(".ui-dialog-titlebar button").focus();
                 $('.ui-dialog').find('#cboformbodyin').css('border-bottom', '0');
                 $('#cdUpdate').css('padding', '6px 12px');

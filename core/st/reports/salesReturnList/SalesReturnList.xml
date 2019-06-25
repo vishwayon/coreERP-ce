@@ -4,7 +4,7 @@
 
     <reportView id="SalesReturnList" type="Report" rptPath="/core/st/reports/salesReturnList" rptName="SalesReturnList">
         <header>Sales Return List</header>
-        <clientJsCode>../sd/sd_cc.js</clientJsCode>
+        <clientJsCode>../core/st/st_clientcode.js</clientJsCode>
         <controlSection editMode="Edit">
             <dataBinding>  
                 <field id="pbranch_id" label="Branch" type="int" control="SmartCombo" size="ms" forConsolidated="true"> 
@@ -43,7 +43,7 @@
                         <valueMember>material_id</valueMember>
                         <displayMember>material_name</displayMember>
                         <namedLookup>../core/st/lookups/MaterialWithAll.xml</namedLookup>
-                        <filterEvent>sd.rpt_material_filter</filterEvent>
+                        <filterEvent>core_st.rpt_material_filter</filterEvent>
                     </lookup>   
                 </field>
                 <nextRow/>

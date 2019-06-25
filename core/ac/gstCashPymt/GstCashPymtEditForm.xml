@@ -61,8 +61,6 @@
                             <filterEvent>core_ac.gst_pymt.account_filter</filterEvent>
                         </lookup>   
                     </field>
-                    <cButton id="details" onClick="core_ac.gst_pymt.sub_head_alloc_click($data);" label="Details"/>      
-                    
                     <nextRow/>
                     <field id="annex_info.gst_input_info.supplier_state_id" label="GST State" type="int" control="SmartCombo" size="5"
                             mdata-event="subscribe: core_ac.gst_pymt.supplier_state_update"

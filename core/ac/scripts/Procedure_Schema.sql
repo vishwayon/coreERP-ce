@@ -246,6 +246,11 @@ Begin
                 Select a.company_id, a.branch_id, a.dc, a.account_id, a.debit_amt_fc, a.credit_amt_fc, a.debit_amt, a.credit_amt
                 from ar.fn_rcpt_info_for_gl_post_gns(pvoucher_id) a;
         End If;
+        If ptable_name = 'hr.payroll_control' then
+                Insert into vch_detail_temp2(company_id, branch_id, dc, account_id, debit_amt_fc, credit_amt_fc, debit_amt, credit_amt)
+                Select a.company_id, a.branch_id, a.dc, a.account_id, a.debit_amt_fc, a.credit_amt_fc, a.debit_amt, a.credit_amt
+                from hr.fn_payroll_info_for_gl_post(pvoucher_id) a;
+        End If;
         If ptable_name = 'pos.inv_control' Or ptable_name = 'pos.inv_bb' Then
                 Insert into vch_detail_temp2(company_id, branch_id, dc, account_id, debit_amt_fc, credit_amt_fc, debit_amt, credit_amt)
                 Select a.company_id, a.branch_id, a.dc, a.account_id, a.debit_amt_fc, a.credit_amt_fc, a.debit_amt, a.credit_amt

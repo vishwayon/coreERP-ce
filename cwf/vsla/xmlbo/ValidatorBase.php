@@ -178,6 +178,9 @@ abstract class ValidatorBase {
                 if(!$this->validateDateValue($val)) {
                     array_push($brules, $fld->label.' is not a valid date for selected financial year');
                 }
+                if($this->isFutureDate($val)) {
+                    array_push($brules, 'Future date not allowed for '.$fld->label);
+                }
                 if($this->docFiscalMonthClosed($val)) {
                      array_push($brules, 'Document date belongs to a closed fiscal month. Edit/post not allowed.');
                 }
@@ -228,6 +231,13 @@ abstract class ValidatorBase {
         } else {
             return true;
         }
+    }    
+    
+    protected function isFutureDate($datevalue){
+        if(strtotime($datevalue) > time()) {
+            return true;
+        }
+        return false;
     }
     
     protected function validateEmail($emailvalue){

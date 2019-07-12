@@ -1,0 +1,18 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    <allocView id="SeleCust" type="alloc" width="1000px">
+        <header>Select Customer</header>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="cust_id" label="Customer" type="int" control="SmartCombo" size="6">
+                    <lookup>
+                        <valueMember>customer_id</valueMember>
+                        <displayMember>customer</displayMember>
+                        <namedLookup>../core/ar/lookups/Customer.xml</namedLookup>
+                    </lookup>
+                </field>                      
+            </dataBinding>
+        </controlSection>
+    </allocView>
+</cwFramework>

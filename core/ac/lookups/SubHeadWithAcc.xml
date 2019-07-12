@@ -13,6 +13,7 @@
                 inner join ac.sub_head_dim b on a.sub_head_dim_id = b.sub_head_dim_id
                 inner join ac.account_head c on b.sub_head_dim_id = c.sub_head_dim_id
                 Where a.company_id={company_id}
+                        And a.is_closed = false
                 Order By a.sub_head
             </command>
         </sql>

@@ -1,0 +1,20 @@
+<wizardView>
+    <header>Select Date</header>
+    <sections>
+        <formSection id="SelectDate">
+            <displayFields>
+                <displayField id="to_date" label="To Date" type="date" control="Date" size="ms" editMode="edit" range="finYear">
+                    <value>
+                        <currentDate/>
+                    </value>
+                </displayField>  
+                <displayField id="ib_type" label="Branch Type" type="int" control="SimpleCombo" size="s" defaultValue = "0" editMode="edit" >
+                    <options>
+                        <option value="0">Normal</option>
+                        <option value="1">Inter Branch</option>
+                    </options>   
+                </displayField>  
+            </displayFields>
+        </formSection>
+    </sections>
+</wizardView>

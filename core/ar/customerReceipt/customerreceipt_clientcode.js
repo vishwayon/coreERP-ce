@@ -640,13 +640,15 @@ window.core_customereceipt = {};
     core_customereceipt.target_branch_enable = target_branch_enable;
 
     function adv_tran_add(row) {
-        core_tx.gst.item_gtt_reset({
-            txn_type: core_tx.gst.TXN_SALE,
-            origin_gst_state_id: coreWebApp.branch_gst_info.gst_state_id,
-            target_gst_state_id: coreWebApp.ModelBo.annex_info.gst_output_info.customer_state_id(),
-            gst_hsn_info: $.parseJSON(coreWebApp.ModelBo.adv_gst_hsn_info()),
-            row: row
-        });
+        if (coreWebApp.ModelBo.adv_gst_hsn_info() != '') {
+            core_tx.gst.item_gtt_reset({
+                txn_type: core_tx.gst.TXN_SALE,
+                origin_gst_state_id: coreWebApp.branch_gst_info.gst_state_id,
+                target_gst_state_id: coreWebApp.ModelBo.annex_info.gst_output_info.customer_state_id(),
+                gst_hsn_info: $.parseJSON(coreWebApp.ModelBo.adv_gst_hsn_info()),
+                row: row
+            });
+        }
     }
     core_customereceipt.adv_tran_add = adv_tran_add;
 

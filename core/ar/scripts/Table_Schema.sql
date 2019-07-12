@@ -301,3 +301,15 @@ insert into sys.settings(key, value)
 Select 'ar_inv_dispatch_remark_reqd', '0';
 
 ?==?
+CREATE TABLE ar.mcr_summary_tran
+(
+  sl_no smallint NOT NULL,
+  vch_tran_id varchar(50) NOT NULL,
+  voucher_id varchar(50) NOT NULL,
+  account_id bigint NOT NULL,
+  receivable_amt numeric(18,4) NOT NULL,
+  amt_in_words character varying not null,
+  CONSTRAINT pk_ar_mcr_summary_tran PRIMARY KEY (vch_tran_id)
+);
+
+?==?

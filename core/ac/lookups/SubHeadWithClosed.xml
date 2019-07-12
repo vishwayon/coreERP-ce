@@ -2,7 +2,7 @@
              xmlns='http://xml.coreerp.com/schema/CwFramework'
             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
 
-    <lookup id="SubHead">
+    <lookup id="SubHeadWithClosed">
         <connectionType>
             <companyDB/>
           </connectionType>
@@ -10,7 +10,6 @@
             <command>
                 select sub_head_id, sub_head, sub_head_dim_id 
                 from ac.sub_head 
-                Where is_closed = false
                 Order By sub_head
             </command>
         </sql>

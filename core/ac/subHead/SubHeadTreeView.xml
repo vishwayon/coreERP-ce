@@ -1,6 +1,13 @@
 <treeView id="SubHead">        
     <header>Sub Head</header>
     <relationKeyField>sub_head_dim_id</relationKeyField>
+    <search id="sub_head_id" label="Search" type="int" control="SmartCombo" size="m" >
+        <lookup>
+            <valueMember>sub_head_id</valueMember>
+            <displayMember>sub_head</displayMember>
+            <namedLookup>../core/ac/lookups/SubHeadWithClosed.xml</namedLookup>
+        </lookup>   
+    </search>
     <parentSection>
         <connectionType>
             <companyDB/>

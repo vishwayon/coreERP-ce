@@ -1,0 +1,17 @@
+<wizard id="MultiCustReceipt" name="Multi Customer Receipt Wizard">
+    <clientJsCodeRefs>
+        <clientJsCodeRef>../core/ar/multiCustReceipt/MultiCustReceipt_clientcode.js</clientJsCodeRef>
+    </clientJsCodeRefs>
+    <codeBehind>
+        <className>\app\core\ar\multiCustReceipt\MultiCustReceiptWiz</className>
+    </codeBehind>
+    <wizardStep id="SelectDate">
+        <path>multiCustReceipt/MultiCustReceiptWiz/SelectDate</path>
+    </wizardStep>
+    <wizardStep id="SelectCust">
+        <path>multiCustReceipt/MultiCustReceiptWiz/SelectCust</path>
+    </wizardStep>
+    <postWizard id="MultiCustReceipt">
+        <path>multiCustReceipt/MultiCustReceiptEditForm</path>
+    </postWizard>
+</wizard>

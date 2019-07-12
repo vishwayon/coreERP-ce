@@ -62,12 +62,6 @@ class MultiCustReceiptValidator extends \app\cwf\vsla\xmlbo\ValidatorBase {
             $refadvrow['sl_no'] = $tranrowNo;
         }
 
-//        // Update rcpt date in PL alloc
-//        foreach ($this->bo->payable_ledger_alloc_tran->Rows() as &$ref_plrow) {
-//            $ref_plrow['doc_date'] = $this->bo->doc_date;
-//            $ref_plrow['exch_rate'] = $this->bo->exch_rate;
-//        }
-
         $refrowNo = 0;
         foreach ($this->bo->receivable_ledger_alloc_tran->Rows() as &$refrow) {
             $refrowNo++;
@@ -80,26 +74,20 @@ class MultiCustReceiptValidator extends \app\cwf\vsla\xmlbo\ValidatorBase {
                 $refrow['tds_amt'] = round(($refrow['tds_amt_fc'] * $this->bo->exch_rate), \app\cwf\vsla\Math::$amtScale);
                 $refrow['gst_tds_amt'] = round(($refrow['gst_tds_amt_fc'] * $this->bo->exch_rate), \app\cwf\vsla\Math::$amtScale);
                 $refrow['other_exp'] = round(($refrow['other_exp_fc'] * $this->bo->exch_rate), \app\cwf\vsla\Math::$amtScale);
-                $refrow['net_credit_amt_fc'] = round($refrow['credit_amt_fc'], \app\cwf\vsla\Math::$amtScale) 
-                        + (round($refrow['write_off_amt_fc'], \app\cwf\vsla\Math::$amtScale)
-                        + round($refrow['tds_amt_fc'], \app\cwf\vsla\Math::$amtScale) 
-                        + round($refrow['gst_tds_amt_fc'], \app\cwf\vsla\Math::$amtScale) 
-                        + round($refrow['other_exp_fc'], \app\cwf\vsla\Math::$amtScale));
+                $refrow['net_credit_amt_fc'] = round($refrow['credit_amt_fc'], \app\cwf\vsla\Math::$amtScale) + (round($refrow['write_off_amt_fc'], \app\cwf\vsla\Math::$amtScale) + round($refrow['tds_amt_fc'], \app\cwf\vsla\Math::$amtScale) + round($refrow['gst_tds_amt_fc'], \app\cwf\vsla\Math::$amtScale) + round($refrow['other_exp_fc'], \app\cwf\vsla\Math::$amtScale));
             }
-            $refrow['net_credit_amt'] = round($refrow['credit_amt'], \app\cwf\vsla\Math::$amtScale) 
-                    + (round($refrow['write_off_amt'], \app\cwf\vsla\Math::$amtScale) 
-                    + round($refrow['tds_amt'], \app\cwf\vsla\Math::$amtScale) 
-                    + round($refrow['gst_tds_amt'], \app\cwf\vsla\Math::$amtScale) 
-                    + round($refrow['other_exp'], \app\cwf\vsla\Math::$amtScale)) 
-                    + round($refrow['credit_exch_diff'], \app\cwf\vsla\Math::$amtScale);
+            $refrow['net_credit_amt'] = round($refrow['credit_amt'], \app\cwf\vsla\Math::$amtScale) + (round($refrow['write_off_amt'], \app\cwf\vsla\Math::$amtScale) + round($refrow['tds_amt'], \app\cwf\vsla\Math::$amtScale) + round($refrow['gst_tds_amt'], \app\cwf\vsla\Math::$amtScale) + round($refrow['other_exp'], \app\cwf\vsla\Math::$amtScale)) + round($refrow['credit_exch_diff'], \app\cwf\vsla\Math::$amtScale);
             $refrow['doc_date'] = $this->bo->doc_date;
             $refrow['exch_rate'] = $this->bo->exch_rate;
         }
 
         if (!$this->bo->is_inter_branch) {
-            $cnt = Enumerable::from($this->bo->receivable_ledger_alloc_tran->Rows())->distinct('$a==>$a["branch_id"]')->count();
-            if ($cnt > 1) {
-                $this->bo->addBRule('Cannot select Invoices accross branches for Normal Receipt.');
+            foreach ($this->bo->mcr_summary_tran->Rows() as $row) {
+                $cnt = 0;
+                $cnt = Enumerable::from($this->bo->receivable_ledger_alloc_tran->Rows())->where('$a==>$a["account_id"]==' . $row['account_id'])->distinct('$a==>$a["branch_id"]')->count();
+                if ($cnt > 1) {
+                    $this->bo->addBRule('Row # ' . $row['sl_no'] . ': Not allowed to select interbranch invoices.');
+                }
             }
         }
 
@@ -134,7 +122,21 @@ class MultiCustReceiptValidator extends \app\cwf\vsla\xmlbo\ValidatorBase {
                 $this->bo->amt_in_words_fc = \app\cwf\vsla\utils\AmtInWords::GetAmtInWords($val, $dtfc->Rows()[0]['currency'], $dtfc->Rows()[0]['sub_currency'], $currency_system);
             }
         }
-
+        $sl_no = 0;
+        foreach ($this->bo->mcr_summary_tran->Rows() as &$refcu_row) {
+            // Set amt in words 
+            $sl_no = $sl_no + 1;
+            $refcu_row['sl_no'] = $sl_no;
+            if ($refcu_row['receivable_amt'] > 0) {
+                $val = sprintf("%." . \app\cwf\vsla\Math::$amtScale . "f", $refcu_row['receivable_amt']);
+                $refcu_row['amt_in_words'] = \app\cwf\vsla\utils\AmtInWords::GetAmtInWords($val, $currency, $subCurrency, $currency_system);
+            }
+        }
+        foreach ($this->bo->mcr_summary_tran->Rows() as $cu_row) {
+            if ($cu_row['receivable_amt'] == 0) {
+                $this->bo->addBRule('Receivable Allocations - Row[' . $cu_row['sl_no'] . ']: Net Received Amt cannot be zero');
+            }
+        }
         $RowNo = 0;
         foreach ($this->bo->receivable_ledger_alloc_tran->Rows() as $tran) {
             $RowNo++;
@@ -151,15 +153,6 @@ class MultiCustReceiptValidator extends \app\cwf\vsla\xmlbo\ValidatorBase {
                 if (round($tran['credit_amt'], \app\cwf\vsla\Math::$amtScale) < 0) {
                     $this->bo->addBRule('Receivable Allocations - Row[' . $RowNo . '] : Received amount cannot be negative');
                 }
-                if (round($tran['write_off_amt'], \app\cwf\vsla\Math::$amtScale) < 0) {
-                    $this->bo->addBRule('Receivable Allocations - Row[' . $RowNo . '] : Dis. cannot be negative');
-                }
-                if (round($tran['tds_amt'], \app\cwf\vsla\Math::$amtScale) < 0) {
-                    $this->bo->addBRule('Receivable Allocations - Row[' . $RowNo . '] : Tax Ded./With. cannot be negative');
-                }
-                if (round($tran['other_exp'], \app\cwf\vsla\Math::$amtScale) < 0) {
-                    $this->bo->addBRule('Receivable Allocations - Row[' . $RowNo . '] : Other Exp. cannot be negative');
-                }
                 if (round($tran['net_credit_amt'], \app\cwf\vsla\Math::$amtScale) < 0) {
                     $this->bo->addBRule('Receivable Allocations - Row[' . $RowNo . '] : Net Settled cannot be negative');
                 }
@@ -172,15 +165,6 @@ class MultiCustReceiptValidator extends \app\cwf\vsla\xmlbo\ValidatorBase {
                 }
                 if (round($tran['credit_amt_fc'], \app\cwf\vsla\Math::$amtScale) < 0) {
                     $this->bo->addBRule('Receivable Allocations - Row[' . $RowNo . '] : Received amount FC cannot be negative');
-                }
-                if (round($tran['write_off_amt_fc'], \app\cwf\vsla\Math::$amtScale) < 0) {
-                    $this->bo->addBRule('Receivable Allocations - Row[' . $RowNo . '] : Dis. FC cannot be negative');
-                }
-                if (round($tran['tds_amt_fc'], \app\cwf\vsla\Math::$amtScale) < 0) {
-                    $this->bo->addBRule('Receivable Allocations - Row[' . $RowNo . '] : Tax Ded./With. FC cannot be negative');
-                }
-                if (round($tran['other_exp_fc'], \app\cwf\vsla\Math::$amtScale) < 0) {
-                    $this->bo->addBRule('Receivable Allocations - Row[' . $RowNo . '] : Other Exp. FC cannot be negative');
                 }
                 if (round($tran['net_credit_amt_fc'], \app\cwf\vsla\Math::$amtScale) < 0) {
                     $this->bo->addBRule('Receivable Allocations - Row[' . $RowNo . '] : Net Settled FC cannot be negative');
@@ -312,7 +296,7 @@ class MultiCustReceiptValidator extends \app\cwf\vsla\xmlbo\ValidatorBase {
 
     public function validateBeforePost() {
         // Compulsory method named. No implementation currently required
-        
+
         bcscale(Math::$amtScale); // set scale to amtScale
         if ($this->bo->fc_type_id == 0) {
             $lefttot = bcadd($this->bo->credit_amt_total, "0");
@@ -324,16 +308,15 @@ class MultiCustReceiptValidator extends \app\cwf\vsla\xmlbo\ValidatorBase {
                 $this->bo->addBRule('Net Received + Advance Received + Other Adjustment (' . \app\cwf\vsla\utils\FormatHelper::FormatAmt($lefttot) . ') should match with Amount Received (' . \app\cwf\vsla\utils\FormatHelper::FormatNumber($netset) . ')');
             }
         } else {
-            
+
             $lefttotfc = bcadd($this->bo->credit_amt_total_fc, "0");
             $lefttotfc = bcadd($this->bo->adv_amt_fc, $lefttot);
             $lefttotfc = bcadd($this->bo->annex_info->value()->other_adj_fc, $lefttot);
             $netsetfc = bcadd($this->bo->net_settled_fc, "0");
-            
+
             if (bccomp($lefttotfc, $netsetfc) != 0) {
                 $this->bo->addBRule('Net Received FC + Advance Received FC + Other Adjustment FC (' . \app\cwf\vsla\utils\FormatHelper::FormatAmt($lefttotfc) . ') should match with Amount Received FC (' . \app\cwf\vsla\utils\FormatHelper::FormatNumber($netsetfc) . ')');
             }
-
         }
 
         if ($this->bo->rcpt_type == 2) {
@@ -346,6 +329,10 @@ class MultiCustReceiptValidator extends \app\cwf\vsla\xmlbo\ValidatorBase {
                     $this->bo->addBRule('Amount Received FC (' . \app\cwf\vsla\utils\FormatHelper::FormatAmt($this->bo->debit_amt_fc) . ') should match with Total Payable Settlements FC(' . \app\cwf\vsla\utils\FormatHelper::FormatNumber($this->bo->credit_amt_fc) . ')');
                 }
             }
+        }
+
+        if (count($this->bo->mcr_summary_tran->Rows()) == 0) {
+            $this->bo->addBRule('Select atleast one customer to post Receipt.');
         }
     }
 

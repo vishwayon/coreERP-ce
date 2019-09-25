@@ -276,6 +276,11 @@ class JReportHelper {
         $rptOption->rptParams['pcwf_qty_format'] = \app\cwf\vsla\utils\FormatHelper::GetQtyFormat();
         $rptOption->rptParams['pcwf_rate_format'] = \app\cwf\vsla\utils\FormatHelper::GetRateFormat();
         $rptOption->rptParams['pcwf_fc_rate_format'] = \app\cwf\vsla\utils\FormatHelper::GetFCRateFormat();
+        if (\app\cwf\vsla\security\SessionManager::getCCYSystem() == 'l') {
+            $rptOption->rptParams['pcwf_locale'] = "en-in";
+        } else {
+            $rptOption->rptParams['pcwf_locale'] = "en-us";
+        }
         $rptOption->rptParams['pcwf_base_path'] = \yii::$app->basePath;
 
         // Add Track Report And CoreERP Version

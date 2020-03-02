@@ -526,5 +526,9 @@ typeof window.core_ap == 'undefined' ? window.core_ap = {} : '';
     }
     core_ap.supp_type_enable = supp_type_enable;
 
+    function supp_branch_addr(row) {
+        alert('test code');
+    }
+    core_ap.supp_branch_addr = supp_branch_addr;
 
 }(window.core_ap));

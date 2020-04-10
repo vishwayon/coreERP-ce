@@ -10,7 +10,7 @@
                 <param id="pvoucher_id">voucher_id</param>
             </rptParams>
         </printView>
-        <newDocEnabled>
+        <newDocEnabled  wizard="multiCustReceipt/MultiCustReceiptWiz" step="SelectDate">
             <docType>MCR</docType>
         </newDocEnabled>
         <deleteDocEnabled/>
@@ -37,8 +37,6 @@
                     </options>
                 </field>
                 <dummy size="5"/>
-                <!--<field id="fc_type_id" label="Txn Ccy" type="int" control="FC" mdata-event="subscribe:mcr.fc_changed" readOnly="true" />
-                <field id="exch_rate" label="Amount" type="Hidden" control="Hidden" scale="fc" readOnly="true" isOptional="true"/>-->
                 <field id="is_inter_branch" label="" type="bool" control="Toggle" toggleOn="Inter Branch" toggleOff="Normal" size="C90"/>
                 <nextRow/>
                 <field id="account_id" label="Settlement Account" type="int" control="SmartCombo" size="4" >
@@ -49,61 +47,49 @@
                         <filterEvent>core_ar.rcpt_account_combo_filter</filterEvent>
                     </lookup>   
                 </field>
-                <cButton id="seleInv" onClick="mcr.SelectInvoice" label="Select Invoices" icon="glyphicon glyphicon-plus"/>
-                <dummy size="1"/>
+                <dummy size="3"/>
                 <field id="net_settled" label="Amount Received" type="decimal" control="TextBox" size="ms"   isOptional="true"
                        mdata-event="subscribe:mcr.net_settled_changed"/>
                 <field id="net_settled_fc" label="Amount Received FC" type="decimal" control="TextBox" size="ms"  isOptional="true"
                        data-fc-dependent="net_settled" mdata-event="subscribe:mcr.net_settled_changed"/> 
                 <nextRow/> 
-                <tranSection label="Receivable Allocations" editMode="Add|Edit|Delete"  fixedWidth="1200" fixedHeight="150"
-                             afterDeleteMethod="mcr.rl_tran_delete">
-                    <dataBinding dataProperty="receivable_ledger_alloc_tran">
-                        <field id="account_id" label="Customer" type="int" control="SmartCombo" size="5" readOnly="true">
+                <tranSection label="Receivables Allocations"  editMode="Add|Edit|Delete" fixedWidth="600" fixedHeight="240"
+                          beforeDeleteMethod="mcr.mcr_summary_tran_before_delete" afterDeleteMethod="mcr.mcr_summary_tran_after_delete" >
+                    <dataBinding dataProperty="mcr_summary_tran">
+                        <field id="sl_no" label="#" type="int" control="TextBox" size="1" inline="true" readOnly="true" isOptional="true" style="border: none; background: none;"/>                        
+                        <field id="account_id" label="Customer" type="int" control="SmartCombo" size="8" readOnly="true">
                             <lookup>
                                 <valueMember>customer_id</valueMember>
                                 <displayMember>customer</displayMember>
                                 <namedLookup>../core/ar/lookups/Customer.xml</namedLookup>
                             </lookup>   
-                        </field>
-                        <field id="invoice_id" label="Voucher No" type="string" control="TextBox" size="3" maxLength="50" readOnly="true"/>                        
-                        <field id="invoice_date" label="Date" type="date" control="Date" size="2" readOnly="true"/>
-                        <field id="balance" label="Balance" type="decimal" control="TextBox" size="2"  readOnly="true"  format="Amount" 
-                                cdata-visible-on="mcr.visible_balance"/>
-                        <field id="balance_fc" label="Balance FC" type="decimal" control="TextBox" size="1"  readOnly="true"  
-                               cdata-visible-on="mcr.visible_balance_fc"/>
-                        
-                        <field id="credit_amt" label="Net Received Amount" type="decimal" control="TextBox" size="3"  isOptional="true"   
-                               mdata-event="subscribe:mcr.amount_changed"/>
-                        <field id="credit_amt_fc" label="Net Received Amount FC" type="decimal" control="TextBox" size="1"   isOptional="true" 
-                               data-fc-dependent="credit_amt"  mdata-event="subscribe:mcr.amount_changed"/>
-                        
-                        <field id="write_off_amt" label="Dis." type="decimal" control="TextBox" size="2"  isOptional="true" 
-                               mdata-event="subscribe:mcr.disc_changed"/>
-                        <field id="write_off_amt_fc" label="Dis. FC" type="decimal" control="TextBox" size="1"   isOptional="true" 
-                               data-fc-dependent="write_off_amt" mdata-event="subscribe:mcr.disc_changed"/>
-                        
-                        <field id="tds_amt" label="Tax Ded./With." type="decimal" control="TextBox" size="2"   isOptional="true" 
-                               mdata-event="subscribe:mcr.disc_changed"/>
-                        <field id="tds_amt_fc" label="Tax Ded./With. FC" type="decimal" control="TextBox" size="1" isOptional="true"   
-                               data-fc-dependent="tds_amt" mdata-event="subscribe:mcr.disc_changed"/>
-                        
-                        <field id="gst_tds_amt" label="GST Tax Ded./With." type="decimal" control="TextBox" size="2"   isOptional="true" 
-                               mdata-event="subscribe:mcr.disc_changed"  cdata-enable-on="mcr.enable_gst_tds"/>
-                        <field id="gst_tds_amt_fc" label="GST Tax Ded./With. FC" type="decimal" control="TextBox" size="1" isOptional="true"   
-                               data-fc-dependent="gst_tds_amt" mdata-event="subscribe:mcr.disc_changed"/>
-                        
-                        <field id="other_exp" label="Other Exp." type="decimal" control="TextBox" size="2"    isOptional="true"
-                               mdata-event="subscribe:mcr.disc_changed"/>
-                        <field id="other_exp_fc" label="Other Exp. FC" type="decimal" control="TextBox" size="1"   isOptional="true" 
-                               data-fc-dependent="other_exp" mdata-event="subscribe:mcr.disc_changed"/>
-                        
-                        <field id="credit_exch_diff" label="Exch. Diff" type="decimal" control="TextBox" size="1"   isOptional="true" 
-                               readOnly="true" cdata-visible-on="core_ar.ar_enable_visible_fc"/>
-                        
-                        <field id="net_credit_amt" label="Gross Amount" type="decimal" control="TextBox" size="3" isOptional="true" readOnly="true" />
-                        <field id="net_credit_amt_fc" label="Gross Amount FC" type="decimal" control="TextBox" size="1"  isOptional="true"
-                               readOnly="true" cdata-visible-on="core_ar.ar_enable_visible_fc"/>
+                        </field>   
+                        <field id="balance" label="Balance" type="decimal" control="TextBox" size="3" isOptional="true" readOnly="true"/> 
+                        <cButton id="btnSelInv" label="..." size="1" onClick="mcr.select_inv($data)" ignore-edit="true"/>               
+                        <field id="receivable_amt" label="Net Received" type="decimal" control="TextBox" size="3" isOptional="true" readOnly="true"/>                                
+                    </dataBinding>
+                </tranSection>    
+                <cButton id="seleCusr" onClick="mcr.select_cust" label="Add" icon="glyphicon glyphicon-plus" inline="true"/> 
+                <tranSection label="Receivable Allocations" editMode="Auto"  fixedWidth="800" fixedHeight="150" cdata-visible-on="mcr.visible_tran" >
+                    <dataBinding dataProperty="receivable_ledger_alloc_tran">
+                        <field id="account_id" label="Customer" type="int" control="Hidden" size="5" readOnly="true"/>
+                        <field id="invoice_id" label="Voucher No" type="string" control="Hidden" size="3" maxLength="50" readOnly="true"/>                        
+                        <field id="invoice_date" label="Date" type="date" control="Hidden" size="2" readOnly="true"/>
+                        <field id="balance" label="Balance" type="decimal" control="Hidden" size="2"  readOnly="true"  format="Amount"/>
+                        <field id="balance_fc" label="Balance FC" type="decimal" control="Hidden" size="1"  readOnly="true"/>
+                        <field id="credit_amt" label="Net Received Amount" type="decimal" control="Hidden" size="3"  isOptional="true"/>
+                        <field id="credit_amt_fc" label="Net Received Amount FC" type="decimal" control="Hidden" size="1"   isOptional="true"/>                        
+                        <field id="write_off_amt" label="Dis." type="decimal" control="Hidden" size="2"  isOptional="true"/>
+                        <field id="write_off_amt_fc" label="Dis. FC" type="decimal" control="Hidden" size="1"   isOptional="true"/>                        
+                        <field id="tds_amt" label="Tax Ded./With." type="decimal" control="Hidden" size="2"   isOptional="true"/>
+                        <field id="tds_amt_fc" label="Tax Ded./With. FC" type="decimal" control="Hidden" size="1" isOptional="true"/>                        
+                        <field id="gst_tds_amt" label="GST Tax Ded./With." type="decimal" control="Hidden" size="2"   isOptional="true"/>
+                        <field id="gst_tds_amt_fc" label="GST Tax Ded./With. FC" type="decimal" control="Hidden" size="1" isOptional="true"/>                        
+                        <field id="other_exp" label="Other Exp." type="decimal" control="Hidden" size="2"    isOptional="true"/>
+                        <field id="other_exp_fc" label="Other Exp. FC" type="decimal" control="Hidden" size="1"   isOptional="true"/>
+                        <field id="credit_exch_diff" label="Exch. Diff" type="decimal" control="Hidden" size="1"   isOptional="true"/>
+                        <field id="net_credit_amt" label="Gross Amount" type="decimal" control="Hidden" size="3" isOptional="true" readOnly="true"/>
+                        <field id="net_credit_amt_fc" label="Gross Amount FC" type="decimal" control="Hidden" size="1"  isOptional="true"/>
                         <field id="rl_pl_id" label="rl_pl_id" type="Hidden" control="Hidden" size="xs"/>
                         <field id="branch_id" label="branch_id" type="Hidden" control="Hidden" size="xs"/>
                         
@@ -127,7 +113,8 @@
                                         <lookup>
                                             <valueMember>branch_id</valueMember>
                                             <displayMember>branch_name</displayMember>
-                                            <namedLookup>../cwf/sys/lookups/Branch.xml</namedLookup>
+                                            <namedLookup>../cwf/sys/lookups/BranchWithIBAccount.xml</namedLookup>
+                                            <filterEvent>mcr.ib_branch_filter</filterEvent>
                                         </lookup>   
                                     </field>
                                     <field id="adv_amt" label="Advance Amount" type="decimal" control="TextBox" size="2"  isOptional="true"   
@@ -137,17 +124,12 @@
                                         <field id="gtt_hsn_sc_code" label="HSN/SC" type="string" control="TextBox" size="2" class="fg-total" placeholder="HSN/SC" maxLength="8"/>
                                         <cButton id="btn_hsn_select" label="..." onClick="mcr.select_hsn($data)" />
                                         <field id="gtt_tax_amt_ov" type="bool" control="Hidden" size="1" style="text-align: right;"/>
-                                        <!--<field label="Ovrd" type="string" control="Hidden" size="1" style="border: none; margin-top: 5px;" inline="true" /> -->
-                                        <!--<field label="SGST" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true" />-->
                                         <field id="gtt_sgst_pcnt" type="decimal" control="Hidden" size="1" readOnly="true" class="fg-total"/>
                                         <field id="gtt_sgst_amt" type="decimal" control="Hidden" size="2" readOnly="true" class="fg-total"/>
-                                        <!--<field label="CGST" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true"/>-->
                                         <field id="gtt_cgst_pcnt" type="decimal" control="Hidden" size="1" readOnly="true" class="fg-total"/>
                                         <field id="gtt_cgst_amt" type="decimal" control="Hidden" size="2" readOnly="true" class="fg-total"/>
-                                        <!--<field label="IGST" type="string" control="Label" size="1" style="border: none; margin-top: 5px;" inline="true"/>-->
                                         <field id="gtt_igst_pcnt" type="decimal" control="Hidden" size="1" readOnly="true" class="fg-total"/>
                                         <field id="gtt_igst_amt" type="decimal" control="Hidden" size="2" readOnly="true" class="fg-total"/>
-                                        <!--<field label="Cess" type="string" control="Hidden" size="1" style="border: none; margin-top: 5px;" inline="true"/>-->
                                         <field id="gtt_cess_pcnt" type="decimal" control="Hidden" size="1" readOnly="true" class="fg-total"/>
                                         <field id="gtt_cess_amt" type="decimal" control="Hidden" size="2" readOnly="true" class="fg-total"/>
                                         <field id="gtt_hsn_sc_type" type="string" control="Hidden" />
@@ -213,14 +195,7 @@
                 <field id="annex_info.other_adj" label="" type="decimal" control="TextBox" size="4" inline="true"  isOptional="true" readOnly="true" class="fg-total"/>  
                 <field id="annex_info.other_adj_fc" label="" type="decimal" control="TextBox"  size="4" inline="true"  isOptional="true"  readOnly="true" class="fg-total"
                            cdata-visible-on="core_ar.ar_enable_visible_fc"/>       
-                <nextRow/>   
-                <!--<dummy size="1"/>
-                <field id="adv_amt_label" label="Advance Received" type="string" control="Label" size="3" inline="true" isOptional="true"/>
-                <field id="adv_amt" label="" type="decimal" control="TextBox" size="4" inline="true"  isOptional="true"
-                           mdata-event="subscribe: mcr.total_calc"/>  
-                <field id="adv_amt_fc" label="" type="decimal" control="TextBox"  size="4" inline="true"  isOptional="true"
-                           cdata-visible-on="core_ar.ar_enable_visible_fc"/>       
-                <nextRow/> -->  
+                <nextRow/> 
                 <dummy size="1"/>
                 <field id="credit_amt_total_label" label="Net Received Total" type="string" control="Label" size="3" inline="true" isOptional="true"/>
                 <field id="credit_amt_total" label="" type="decimal" control="TextBox" size="4" inline="true" readOnly="true" class="fg-total"/>  
@@ -228,80 +203,14 @@
                            cdata-visible-on="core_ar.ar_enable_visible_fc"/>     
                 <nextRow/> 
                 <dummy size="1"/>
-                <field id="write_off_amt_label" label="Disc. Total" type="string" control="Label" size="3" inline="true"  isOptional="true"/>
-                <field id="write_off_amt_total" label="" type="decimal" control="TextBox" allowNegative="true" size="4" inline="true" readOnly="true" class="fg-total"/>  
-                <field id="write_off_amt_total_fc" label="" type="decimal" control="TextBox" allowNegative="true" size="4" inline="true" readOnly="true" class="fg-total"
-                           cdata-visible-on="core_ar.ar_enable_visible_fc"/>         
-                <nextRow/> 
-                <dummy size="1"/>
-                <field id="tds_amt_label" label="Tax Ded./With. Total" type="string" control="Label" size="3" inline="true"  isOptional="true"/>
-                <field id="tds_amt" label="" type="decimal" control="TextBox" allowNegative="true" size="4" inline="true" readOnly="true" class="fg-total"/>  
-                <field id="tds_amt_fc" label="" type="decimal" control="TextBox" allowNegative="true" size="4" inline="true" readOnly="true" class="fg-total"
-                           cdata-visible-on="core_ar.ar_enable_visible_fc"/>            
-                <nextRow/> 
-                <dummy size="1"/>
-                <field id="annex_info.gst_tds_amt_label" label="GST Tax Ded./With. Total" type="string" control="Label" size="3" inline="true"  isOptional="true"/>
-                <field id="annex_info.gst_tds_amt" label="" type="decimal" control="TextBox" allowNegative="true" size="4" inline="true" readOnly="true" class="fg-total"/>  
-                <field id="annex_info.gst_tds_amt_fc" label="" type="decimal" control="TextBox" allowNegative="true" size="4" inline="true" readOnly="true" class="fg-total"
-                           cdata-visible-on="core_ar.ar_enable_visible_fc"/>                 
-                <nextRow/> 
-                <dummy size="1"/>
-                <field id="other_exp_label" label="Other Exp. Total" type="string" control="Label" size="3"  inline="true" isOptional="true"/>
-                <field id="other_exp_total" label="" type="decimal" control="TextBox" allowNegative="true" size="4" inline="true" readOnly="true" class="fg-total"/>  
-                <field id="other_exp_total_fc" label="" type="decimal" control="TextBox" allowNegative="true" size="4" inline="true" readOnly="true" class="fg-total"
-                           cdata-visible-on="core_ar.ar_enable_visible_fc"/>      
-                <nextRow/> 
-                <dummy size="1"/>
                 <field id="debit_amt_total" label="Gross Total" type="string" control="Label" size="3"  inline="true" isOptional="true"/>
                 <field id="debit_amt" label="" type="decimal" control="TextBox" allowNegative="true" size="4" inline="true" readOnly="true" class="fg-total"/>  
                 <field id="debit_amt_fc" label="" type="decimal" control="TextBox" allowNegative="true" size="4" inline="true" readOnly="true" class="fg-total"
                            cdata-visible-on="core_ar.ar_enable_visible_fc"/>                     
-                <xdivEnd/>
-                
-                <!--<nextRow/> 
-                <tranSection label="Payable Allocations"  editMode="Add|Edit|Delete" fixedWidth="1200" cdata-visible-on="mcr.pl_enable_visible"
-                             afterDeleteMethod="core_pymt.pl_tran_delete">
-                    <dataBinding dataProperty="payable_ledger_alloc_tran">
-                        <field id="bill_id" label="Voucher No" type="string" control="TextBox" size="2" maxLength="50" readOnly="true"/>
-                        <field id="bill_no" label="Bill No" type="string" control="TextBox" size="2" maxLength="50" readOnly="true" isOptional="true"/>
-                        <field id="bill_date" label="Bill Date" type="date" control="Date" size="xs" readOnly="true"/>
-                        <field columnName="balance" id="balance" label="Balance" type="decimal" control="TextBox" size="xs" readOnly="true"  
-                               cdata-visible-on="mcr.visible_balance"/>
-                        <field id="balance_fc" label="Balance FC" type="decimal" control="TextBox" size="ms" readOnly="true"  
-                               cdata-visible-on="mcr.visible_balance_fc"/>                        
-                        <field id="debit_amt" label="Settled Amount" type="decimal" control="TextBox" size="ms" isOptional="true"  
-                               mdata-event="subscribe:core_pymt.pymt_amount_changed"/>
-                        <field id="debit_amt_fc" label="Settled Amount FC" type="decimal" control="TextBox" size="ms" isOptional="true"  
-                               data-fc-dependent="debit_amt"  mdata-event="subscribe:core_pymt.pymt_amount_changed"/>
-                        <field id="write_off_amt" label="Discount" type="decimal" control="TextBox" size="xs" isOptional="true"
-                               mdata-event="subscribe:core_pymt.pymt_dis_changed"/>
-                        <field id="write_off_amt_fc" label="Discount FC" type="decimal" control="TextBox" size="xs" isOptional="true"   
-                               data-fc-dependent="write_off_amt" mdata-event="subscribe:core_pymt.pymt_dis_changed"/>
-                        
-                        <field id="debit_exch_diff" label="Exch. Diff" type="decimal" control="TextBox" size="xs"  readOnly="true" cdata-visible-on="core_ar.ar_enable_visible_fc"/>
-                        <field id="net_debit_amt" label="Net Settled" type="decimal" control="TextBox" size="ms" readOnly="true" />
-                        <field id="net_debit_amt_fc" label="Net Settled FC" type="decimal" control="TextBox" size="ms" 
-                               readOnly="true" cdata-visible-on="core_ar.ar_enable_visible_fc"/>
-                        <field id="rl_pl_id" label="rl_pl_id" type="Hidden" control="Hidden" size="xs"/>
-                        <field id="account_id" label="account_id" type="Hidden" control="Hidden" size="xs"/>
-                        <field id="branch_id" label="branch_id" type="Hidden" control="Hidden" size="xs"/>
-                    </dataBinding>
-                </tranSection>         
-                <cButton id="seleBill" onClick="mcr.SelectBill" label="Add" icon="glyphicon glyphicon-plus" inline="true" 
-                         cdata-visible-on="mcr.pl_enable_visible"/>-->    
-                
+                <xdivEnd/>                
                 <nextRow/>
                 <xdiv id="narration_div" size="6"/>            
                 <xdivEnd/>
-                <!--<xdiv id="total_div" size="6"/>
-                <dummy size="1"/>
-                <field id="credit_amt_total" label="Total Settelment" type="string" control="Label" size="3"  inline="true" isOptional="true"
-                           cdata-visible-on="mcr.pl_enable_visible"/>
-                <field id="credit_amt" label="" type="decimal" control="TextBox" allowNegative="true" size="4" inline="true" readOnly="true" class="fg-total"
-                           cdata-visible-on="mcr.pl_enable_visible"/>  
-                <field id="credit_amt_fc" label="" type="decimal" control="TextBox" allowNegative="true" size="4" inline="true" readOnly="true" class="fg-total"
-                           cdata-visible-on="mcr.pl_enable_visible_fc"/>             
-                <xdivEnd/>-->
                 <nextRow/>
                 <field id="entered_by" label="Entered By" type="string" control="TextBox" readOnly="true" size="m"  isOptional="true"/>  
                 <field id="posted_by" label="Posted By" type="string" control="TextBox" size="m" readOnly="True" isOptional="true"/> 

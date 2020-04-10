@@ -65,6 +65,12 @@ class VslaAsset extends AssetBundle {
         'flot/jquery.flot.pie.min.js',
         'flot/jquery.flot.stack.min.js',
         'flot/jquery.flot.orderBars.js',
+        // Table Export Libraries
+        'tableExport/tableExport.js',
+        'tableExport/jquery.base64.js',
+        'tableExport/jspdf/libs/sprintf.js',
+        'tableExport/jspdf/jspdf.js',
+        'tableExport/jspdf/libs/base64.js',
     ];
 
 }

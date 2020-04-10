@@ -47,7 +47,7 @@ SELECT (select max(menu_id) + 1 from sys.menu), sys.fn_get_menu_id_by_name('mnuA
 
 ?==?
 INSERT INTO sys.menu(menu_id, parent_menu_id, menu_key, menu_name, menu_text, menu_type, bo_id, is_hidden, last_updated, link_path, vch_type)
-SELECT (select max(menu_id) + 1 from sys.menu), sys.fn_get_menu_id_by_name('mnuApDocuments'), sys.sp_get_menu_key('mnuApDocuments'), 'mnuCreditNote', 'Credit Note', 1, md5('CreditNote')::uuid, false, current_timestamp(0), 'core/ap/form/collection&formName=creditNote/CreditNoteCollectionView', '{CN}';
+SELECT (select max(menu_id) + 1 from sys.menu), sys.fn_get_menu_id_by_name('mnuApDocuments'), sys.sp_get_menu_key('mnuApDocuments'), 'mnuCreditNote', 'Credit Note', 1, md5('CreditNote')::uuid, true, current_timestamp(0), 'core/ap/form/collection&formName=creditNote/CreditNoteCollectionView', '{CN}';
 
 ?==?
 INSERT INTO sys.menu(menu_id, parent_menu_id, menu_key, menu_name, menu_text, menu_type, bo_id, is_hidden, last_updated, link_path)
@@ -112,10 +112,6 @@ Select (select max(menu_id) + 1 from sys.menu), sys.fn_get_menu_id_by_name('mnuA
 ?==?
 INSERT INTO sys.menu(menu_id, parent_menu_id, menu_key, menu_name, menu_text, menu_type, bo_id, is_hidden, last_updated, link_path)
 Select (select max(menu_id) + 1 from sys.menu), sys.fn_get_menu_id_by_name('mnuApMasters'), sys.sp_get_menu_key('mnuApMasters'), 'mnuApPayTerm', 'Pay Term', 2, md5('SuppPayTerm')::uuid, false, current_timestamp(0), 'core/ap/form/collection&formName=suppPayTerm/SuppPayTermCollectionView';
-
-?==?
-INSERT INTO sys.menu(menu_id, parent_menu_id, menu_key, menu_name, menu_text, menu_type, bo_id, is_hidden, last_updated, link_path)
-Select (select max(menu_id) + 1 from sys.menu), sys.fn_get_menu_id_by_name('mnuApMasters'), sys.sp_get_menu_key('mnuApMasters'), 'mnuSuppToCust', 'Extend Supplier To Customer', 2, md5('SuppToCust')::uuid, false, current_timestamp(0), 'core/ap/form/collection&formName=suppToCust/SuppToCustCollectionView'; 
 
 ?==?
 INSERT INTO sys.menu(menu_id, parent_menu_id, menu_key, menu_name, menu_text, menu_type, bo_id, is_hidden, last_updated, link_path)

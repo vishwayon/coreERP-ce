@@ -35,6 +35,26 @@
             <delete>
                 <useEntity/>
             </delete>
+            <tranTable id="mcr_summary_tran">
+                <tableName>ar.mcr_summary_tran</tableName>
+                <primaryKey>vch_tran_id</primaryKey>  
+                <customColumns>
+                    <customColumn name="balance" type="numeric" />
+                </customColumns>    
+                <relation linkType="OneToMany">
+                    <foreignKey>voucher_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{voucher_id}:{RowID}</primaryKeyPattern>
+                </save>         
+                <delete>
+                    <useEntity/>      
+                </delete> 
+            </tranTable>
             <tranTable id="receivable_ledger_alloc_tran">
                 <tableName>ac.rl_pl_alloc</tableName>
                 <primaryKey>rl_pl_alloc_id</primaryKey>  

@@ -35,7 +35,8 @@ Create Table pos.terminal
         sale_account_id BigInt Not Null,
         cash_account_id BigInt Not Null,
         cheque_account_id BigInt Not Null,
-        cc_mac_id BigInt Not Null,
+        cc_mac_id BigInt Not Null,        
+	remote_server_id BigInt Not Null,
         annex_info JsonB Not Null Default('{}'),
 	last_updated Timestamp Not Null,
 	Constraint pk_pos_terminal Primary Key (terminal_id)

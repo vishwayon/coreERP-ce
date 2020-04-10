@@ -1,6 +1,21 @@
 // Declare prod Namespace
 typeof window.mcr == 'undefined' ? window.mcr = {} : '';
 (function (mcr) {
+    mcr.cust_id = -1;
+    mcr.sl_no = 1;
+
+    function after_load() {
+        $('#cmd_addnew_mcr_summary_tran').detach();
+        mcr.sl_no = coreWebApp.ModelBo.mcr_summary_tran().length;
+        if (coreWebApp.ModelBo.voucher_id() == "") {
+            total_calc();
+            ko.utils.arrayForEach(coreWebApp.ModelBo.rcpt_adv_tran(), function (row) {
+                mcr.fetch_cust_info(row);
+            });
+        }
+    }
+    mcr.after_load = after_load;
+
     function visible_balance(dataItem) {
         //applysmartcontrols(); 
         console.log('visible_balance');
@@ -141,12 +156,6 @@ typeof window.mcr == 'undefined' ? window.mcr = {} : '';
     function total_calc() {
         var item_amt_tot = new Number(0.00);
         var item_amt_tot_fc = new Number(0.00);
-        var write_off_amt = new Number(0.00);
-        var write_off_amt_fc = new Number(0.00);
-        var tds_amt = new Number(0.00);
-        var tds_amt_fc = new Number(0.00);
-        var other_exp = new Number(0.00);
-        var other_exp_fc = new Number(0.00);
         var net_credit_amt_tot = new Number(0.00);
         var net_credit_amt_tot_fc = new Number(0.00);
         var adv_amt_tot = new Number(0.00);
@@ -155,19 +164,26 @@ typeof window.mcr == 'undefined' ? window.mcr = {} : '';
         var other_adj_tot_fc = new Number(0.00);
         var gst_tds_amt = new Number(0.00);
         var gst_tds_amt_fc = new Number(0.00);
+        var cust_tot = new Number(0.00);
+        var cust_tot_fc = new Number(0.00);
 
+        ko.utils.arrayForEach(coreWebApp.ModelBo.mcr_summary_tran(), function (cust_row) {
+            cust_tot = new Number(0.00);
+            cust_tot_fc = new Number(0.00);
+            ko.utils.arrayForEach(coreWebApp.ModelBo.receivable_ledger_alloc_tran(), function (rl_row) {
+                if (cust_row.account_id() == rl_row.account_id()) {
+                    cust_tot += Number.parseFloat(rl_row.credit_amt());
+                    cust_tot_fc += Number.parseFloat(rl_row.credit_amt_fc());
+                }
+            });
+            cust_row.receivable_amt(cust_tot.toFixed(2));
+        });
         // Total each item
         ko.utils.arrayForEach(coreWebApp.ModelBo.receivable_ledger_alloc_tran(), function (row) {
             item_amt_tot += Number.parseFloat(row.credit_amt());
             item_amt_tot_fc += Number.parseFloat(row.credit_amt_fc());
-            write_off_amt += Number.parseFloat(row.write_off_amt());
-            write_off_amt_fc += Number.parseFloat(row.write_off_amt_fc());
-            tds_amt += Number.parseFloat(row.tds_amt());
-            tds_amt_fc += Number.parseFloat(row.tds_amt_fc());
             gst_tds_amt += Number.parseFloat(row.gst_tds_amt());
             gst_tds_amt_fc += Number.parseFloat(row.gst_tds_amt_fc());
-            other_exp += Number.parseFloat(row.other_exp());
-            other_exp_fc += Number.parseFloat(row.other_exp_fc());
             net_credit_amt_tot += Number.parseFloat(row.net_credit_amt());
             net_credit_amt_tot_fc += Number.parseFloat(row.net_credit_amt_fc());
         });
@@ -190,53 +206,25 @@ typeof window.mcr == 'undefined' ? window.mcr = {} : '';
 
         coreWebApp.ModelBo.credit_amt_total(item_amt_tot.toFixed(2));
         coreWebApp.ModelBo.credit_amt_total_fc(item_amt_tot_fc.toFixed(2));
-        coreWebApp.ModelBo.write_off_amt_total(write_off_amt.toFixed(2));
-        coreWebApp.ModelBo.write_off_amt_total_fc(write_off_amt_fc.toFixed(2));
-
         coreWebApp.ModelBo.annex_info.other_adj(other_adj_tot.toFixed(2));
         coreWebApp.ModelBo.annex_info.other_adj_fc(other_adj_tot_fc.toFixed(2));
 
         coreWebApp.ModelBo.adv_amt(adv_amt_tot.toFixed(2));
         coreWebApp.ModelBo.adv_amt_fc(adv_amt_tot_fc.toFixed(2));
-
-        coreWebApp.ModelBo.tds_amt(tds_amt.toFixed(2));
-        coreWebApp.ModelBo.tds_amt_fc(tds_amt_fc.toFixed(2));
         coreWebApp.ModelBo.annex_info.gst_tds_amt(gst_tds_amt.toFixed(2));
         coreWebApp.ModelBo.annex_info.gst_tds_amt_fc(gst_tds_amt_fc.toFixed(2));
-        coreWebApp.ModelBo.other_exp_total(other_exp.toFixed(2));
-        coreWebApp.ModelBo.other_exp_total_fc(other_exp_fc.toFixed(2));
         coreWebApp.ModelBo.debit_amt(net_credit_amt_tot.toFixed(2));
         coreWebApp.ModelBo.debit_amt_fc(net_credit_amt_tot_fc.toFixed(2));
-
-//        ko.utils.arrayForEach(coreWebApp.ModelBo.payable_ledger_alloc_tran(), function (row) {
-//            credit_amt_tot += Number.parseFloat(row.debit_amt());
-//            credit_amt_tot_fc += Number.parseFloat(row.debit_amt_fc());
-//        });
-//
-//        coreWebApp.ModelBo.credit_amt(credit_amt_tot.toFixed(2));
-//        coreWebApp.ModelBo.credit_amt_fc(credit_amt_tot_fc.toFixed(2));
-
     }
     mcr.total_calc = total_calc;
 
-    function after_load() {
-        console.log('test afterload for wizard');
-        if (coreWebApp.ModelBo.status() == 5) {
-            $('#seleInv').hide();
-        }
-        $('#bo-form').children().find("[id=cmd_addnew_receivable_ledger_alloc_tran]").each(function (e, i) {
-            $(this).hide();
-        });
-        total_calc();
-    }
-    mcr.after_load = after_load;
-
-    function SelectInvoice() {
+    function select_inv(row) {
         var opts = {
             voucher_id: coreWebApp.ModelBo.voucher_id(),
             doc_date: coreWebApp.ModelBo.doc_date(),
             branch_id: coreWebApp.ModelBo.is_inter_branch() ? 0 : coreWebApp.ModelBo.branch_id(),
             fc_type_id: coreWebApp.ModelBo.fc_type_id(),
+            customer_account_id: row.account_id(),
             rl_tran: coreWebApp.ModelBo.receivable_ledger_alloc_tran,
             after_update: select_inv_after_update
         };
@@ -246,7 +234,7 @@ typeof window.mcr == 'undefined' ? window.mcr = {} : '';
         opts.call_update = select_inv_alloc_update;
         coreWebApp.showAllocV2(opts);
     }
-    mcr.SelectInvoice = SelectInvoice;
+    mcr.select_inv = select_inv;
 
     function pr_sel_click(row) {
         console.log(row.is_select);
@@ -265,133 +253,131 @@ typeof window.mcr == 'undefined' ? window.mcr = {} : '';
         sel_inv.inv_temp = {};
         sel_inv.voucher_id = opts.voucher_id;
         sel_inv.doc_date = opts.doc_date;
-        sel_inv.customer_account_id = ko.observable(-1);
-        sel_inv.branch_id = opts.branch_id;
+        sel_inv.customer_account_id = opts.customer_account_id;
+        sel_inv.branch_id = coreWebApp.ModelBo.is_inter_branch() ? 0 : coreWebApp.ModelBo.branch_id();
         sel_inv.fc_type_id = opts.fc_type_id;
         sel_inv.rla_tran = opts.receivable_ledger_alloc_tran;
         sel_inv.item_tot = ko.observable(0);
+        sel_inv.select_all = ko.observable(false);
         opts.model = sel_inv;
-//        mcr.get_detail();
+        mcr.get_detail();
         $('#sele_inv-loading').hide();
     }
     mcr.select_inv_init = select_inv_init;
 
     function get_detail() {
-        if (self.customer_account_id() == -1) {
-            coreWebApp.toastmsg('warning', 'Filter', 'Select either Route or Customer to get invoices', false);
-        } else {
-            var cust_acc_id = self.customer_account_id();
-            if (self.customer_account_id() == -1) {
-                cust_acc_id = 0;
-            }
-            $('#sele_inv-loading').show();
-            $.ajax({
-                url: '?r=core/ar/form/select-inv-in-rcpt',
-                type: 'GET',
-                dataType: 'json',
-                data: {
-                    voucher_id: self.voucher_id,
-                    doc_date: self.doc_date,
-                    account_id: cust_acc_id,
-                    branch_id: self.branch_id,
-                    fc_type_id: self.fc_type_id
-                },
-                complete: function () {
-                    coreWebApp.stoploading();
-                },
-                success: function (jsonResult) {
-                    if (jsonResult.status === 'ok') {
+        var cust_acc_id = self.customer_account_id;
+        $('#sele_inv-loading').show();
+        $.ajax({
+            url: '?r=core/ar/form/select-inv-in-rcpt',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                voucher_id: self.voucher_id,
+                doc_date: self.doc_date,
+                account_id: cust_acc_id,
+                branch_id: self.branch_id,
+                fc_type_id: self.fc_type_id
+            },
+            complete: function () {
+                coreWebApp.stoploading();
+            },
+            success: function (jsonResult) {
+                if (jsonResult.status === 'ok') {
+                    self.inv_temp = jsonResult.inv_balance;
 
-//                    // Using a datatable to render data
-//                    if ($.fn.dataTable.isDataTable('#inv_temp')) {
-//                        var t = $('#inv_temp').DataTable();
-//                        t.destroy(true);
-//                        var p = $('#inv_temp-cont');
-//                        p.append('<table id="inv_temp" class="table table-hover table-condensed dataTable no-footer"></table>');
-//                    }
-                        self.inv_temp = jsonResult.inv_balance;
-                        self.inv_temp.forEach(itm => {
-                            itm.is_select = ko.observable(false);
-                            coreWebApp.ModelBo.receivable_ledger_alloc_tran().forEach(rl_tran => {
-                                if (rl_tran.rl_pl_id() == itm.rl_pl_id) {
-                                    itm.is_select(true);
-                                }
-                            });
-                            itm.is_select.subscribe(function () {
-                                do_inv_calc(self);
-                            });
+                    self.inv_temp.forEach(itm => {
+                        itm.is_select = ko.observable(false);
+                        itm.is_select.subscribe(inv_sel_click, itm);
+                        itm.alloc_amt = ko.observable(0);
+                        itm.alloc_amt.subscribe(function () {
+                            do_inv_calc(self);
                         });
-                        do_inv_calc(self);
-                        $('#sele_inv-loading').hide();
-                        // Using a datatable to render data
-                        if (coreWebApp.ModelBo.fc_type_id() != 0) {
-                            $('#inv_temp-cont').width(($('#inv_temp-cont').width() + 200).toString() + "px");
-                        }
-                        if ($.fn.dataTable.isDataTable('#inv_temp')) {
-                            var t = $('#inv_temp').DataTable();
-                            t.destroy();
-                        }
-                        var tbl = $('#inv_temp').DataTable({
-                            data: self.inv_temp,
-                            order: [],
-                            columns: [
-                                {data: "is_select", title: "...",
-                                    createdCell: function (td, cellData, rowData, row, col) {
-                                        $(td).html('<input type="checkbox" data-bind="checked: is_select">');
-                                        ko.applyBindings(rowData, $(td)[0]);
-                                        $(td).css('text-align', 'center');
-                                    }
-                                },
-                                {data: "account_head", title: "Customer"},
-                                {data: "voucher_id", title: "Document #"},
-                                {data: "doc_date", title: "Doc Dt.",
-                                    render: function (cellData) {
-                                        return coreWebApp.formatDate(cellData);
-                                    }
-                                },
-                                {data: "over_due", title: "Overdue", className: "dt-right",
-                                    render: function (cellData) {
-                                        return coreWebApp.formatNumber(cellData, 2);
-                                    }
-                                },
-                                {data: "not_due", title: "Not Due", className: "dt-right",
-                                    render: function (cellData) {
-                                        return coreWebApp.formatNumber(cellData, 2);
-                                    }
-                                },
-                                {data: "due_date", title: "Due Date", className: "dt-center",
-                                    render: function (cellData) {
-                                        return coreWebApp.formatDate(cellData);
-                                    }
-                                },
-                                {data: "fc_type", title: "FC Type", visible: coreWebApp.ModelBo.fc_type_id() != 0},
-                                {data: "over_due_fc", title: "Overdue FC", visible: coreWebApp.ModelBo.fc_type_id() != 0,
-                                    render: function (cellData) {
-                                        return coreWebApp.formatNumber(cellData, 2);
-                                    }
-                                },
-                                {data: "not_due_fc", title: "Not Due FC", visible: coreWebApp.ModelBo.fc_type_id() != 0,
-                                    render: function (cellData) {
-                                        return coreWebApp.formatNumber(cellData, 2);
-                                    }
-                                }
-                            ],
-                            deferRender: true,
-                            scrollY: '200px',
-                            scrollCollapse: true,
-                            scroller: true,
+                    });
+                    self.inv_temp.forEach(itm => {
+                        coreWebApp.ModelBo.receivable_ledger_alloc_tran().forEach(rl_tran => {
+                            if (rl_tran.rl_pl_id() == itm.rl_pl_id) {
+                                itm.is_select(true);
+                                itm.alloc_amt(rl_tran.credit_amt());
+                            }
                         });
-                        var l = $('#inv_temp_length');
-                        if (l !== 'undefined') {
-                            l.hide();
-                        }
+                    });
+
+                    $('#sele_inv-loading').hide();
+                    // Using a datatable to render data
+                    if (coreWebApp.ModelBo.fc_type_id() != 0) {
+                        $('#inv_temp-cont').width(($('#inv_temp-cont').width() + 200).toString() + "px");
                     }
-                },
-                error: function (data) {
-                    coreWebApp.toastmsg('error', 'Filter', 'Failed with errors on server', false);
+                    if ($.fn.dataTable.isDataTable('#inv_temp')) {
+                        var t = $('#inv_temp').DataTable();
+                        t.destroy();
+                    }
+                    var tbl = $('#inv_temp').DataTable({
+                        data: self.inv_temp,
+                        order: [],
+                        columns: [
+                            {data: "is_select", title: "...",
+                                createdCell: function (td, cellData, rowData, row, col) {
+                                    $(td).html('<input type="checkbox" data-bind="checked: is_select">');
+                                    ko.applyBindings(rowData, $(td)[0]);
+                                    $(td).css('text-align', 'center');
+                                }
+                            },
+                            {data: "branch_name", title: "Branch"},
+                            {data: "voucher_id", title: "Document #"},
+                            {data: "doc_date", title: "Doc Dt.",
+                                render: function (cellData) {
+                                    return coreWebApp.formatDate(cellData);
+                                }
+                            },
+                            {data: "over_due", title: "Overdue", className: "dt-right",
+                                render: function (cellData) {
+                                    return coreWebApp.formatNumber(cellData, 2);
+                                }
+                            },
+                            {data: "not_due", title: "Not Due", className: "dt-right",
+                                render: function (cellData) {
+                                    return coreWebApp.formatNumber(cellData, 2);
+                                }
+                            },
+                            {data: "due_date", title: "Due Date", className: "dt-center",
+                                render: function (cellData) {
+                                    return coreWebApp.formatDate(cellData);
+                                }
+                            },
+                            {data: "alloc_amt", title: "Received Amount", width: "15%",
+                                createdCell: function (td, cellData, rowData, row, col) {
+                                    $(td).html('<input type="textbox" data-bind="numericValue: alloc_amt, enable: is_select" class="textbox form-control">');
+                                    ko.applyBindings(rowData, $(td)[0]);
+                                }
+                            },
+                            {data: "fc_type", title: "FC Type", visible: coreWebApp.ModelBo.fc_type_id() != 0},
+                            {data: "over_due_fc", title: "Overdue FC", visible: coreWebApp.ModelBo.fc_type_id() != 0,
+                                render: function (cellData) {
+                                    return coreWebApp.formatNumber(cellData, 2);
+                                }
+                            },
+                            {data: "not_due_fc", title: "Not Due FC", visible: coreWebApp.ModelBo.fc_type_id() != 0,
+                                render: function (cellData) {
+                                    return coreWebApp.formatNumber(cellData, 2);
+                                }
+                            }
+                        ],
+                        deferRender: true,
+                        scrollY: '200px',
+                        scrollCollapse: true,
+                        scroller: true,
+                    });
+                    var l = $('#inv_temp_length');
+                    if (l !== 'undefined') {
+                        l.hide();
+                    }
                 }
-            });
-        }
+            },
+            error: function (data) {
+                coreWebApp.toastmsg('error', 'Filter', 'Failed with errors on server', false);
+            }
+        });
     }
     mcr.get_detail = get_detail;
 
@@ -399,42 +385,86 @@ typeof window.mcr == 'undefined' ? window.mcr = {} : '';
         var tot = 0;
         self.inv_temp.forEach(itm => {
             if (itm.is_select()) {
-                tot += (parseFloat(itm.over_due) + parseFloat(itm.not_due));
+                tot += parseFloat(itm.alloc_amt());
             }
         });
         self.item_tot(tot);
     }
+
+    function inv_sel_click() {
+        if (this.is_select()) {
+            this.alloc_amt(parseFloat(this.over_due) + parseFloat(this.not_due));
+        } else {
+            this.alloc_amt(0.00);
+        }
+    }
+
+    function inv_check_all(model) {
+        if (model.select_all()) {
+            for (var p = 0; p < model.inv_temp.length; ++p) {
+                model.inv_temp[p].is_select(true);
+            }
+        } else {
+            for (var p = 0; p < model.inv_temp.length; ++p) {
+                model.inv_temp[p].is_select(false);
+            }
+        }
+    }
+    mcr.inv_check_all = inv_check_all;
+
     //function to update tax detail pop up fields to tax_detail_tran
     function select_inv_alloc_update(opts) {
+        // Validate line items for excess allocation
+        var is_valid = true;
+        opts.model.inv_temp.forEach(poc => {
+            if (poc.is_select()) {
+                if (parseFloat(poc.alloc_amt()) > (parseFloat(poc.over_due) + parseFloat(poc.not_due))) {
+                    coreWebApp.toastmsg('warning', 'Select Invoices', 'Received amount cannot be greater than Balance for [' + poc.voucher_id + ']');
+                    is_valid = false;
+                    return;
+                }
+            }
+        });
+
+        var cust_bal = new Number(0.0);
+        opts.model.inv_temp.forEach(poc => {
+            cust_bal = cust_bal + (parseFloat(poc.over_due) + parseFloat(poc.not_due));
+        });
+        // Return without updating when validations fail
+        if (!is_valid) {
+            return false;
+        }
+
+        // Update customer balance based on interbranch status
+        coreWebApp.ModelBo.mcr_summary_tran().forEach(mcr_row => {
+            if (mcr_row.account_id() == opts.customer_account_id) {
+                mcr_row.balance(cust_bal);
+            }
+        });
+
+        coreWebApp.ModelBo.receivable_ledger_alloc_tran.remove(function (rt) {
+            return opts.customer_account_id == rt.account_id();
+        });
         opts.model.inv_temp.forEach(rlt => {
-            if (rlt.is_select()) {
-                var row_exists = false;
-                for (var q = 0; q < coreWebApp.ModelBo.receivable_ledger_alloc_tran().length; q++) {
-                    if (rlt['rl_pl_id'] == coreWebApp.ModelBo.receivable_ledger_alloc_tran()[q]['rl_pl_id']()) {
-                        row_exists = true;
-                        break;
-                    }
-                }
-                if (row_exists == false) {
-                    var nr = coreWebApp.ModelBo.addNewRow('receivable_ledger_alloc_tran', coreWebApp.ModelBo, true);
-                    nr.branch_id(rlt['branch_id']);
-                    nr.invoice_id(rlt['voucher_id']);
-                    nr.doc_date(opts.doc_date);
-                    nr.invoice_date(rlt['doc_date']);
-                    nr.account_id(rlt['account_id']);
-                    coreWebApp.trigger_change('account_id', rlt['account_id'], rlt['account_head']);
-                    nr.balance(parseFloat(rlt['over_due']) + parseFloat(rlt['not_due']));
-                    nr.balance_fc(parseFloat(rlt['over_due_fc']) + parseFloat(rlt['not_due_fc']));
-                    nr.credit_amt(parseFloat(rlt['over_due']) + parseFloat(rlt['not_due']));
-                    nr.credit_amt_fc(parseFloat(rlt['over_due_fc']) + parseFloat(rlt['not_due_fc']));
-                    nr.net_credit_amt(parseFloat(rlt['over_due']) + parseFloat(rlt['not_due']));
-                    nr.net_credit_amt_fc(parseFloat(rlt['over_due_fc']) + parseFloat(rlt['not_due_fc']));
-                    nr.write_off_amt(0);
-                    nr.write_off_amt_fc(0);
-                    nr.rl_pl_id(rlt['rl_pl_id']);
-                    nr.is_opbl(rlt['is_opbl']);
-                    coreWebApp.afterNewRowAdded(false);
-                }
+            if (rlt.is_select() && parseFloat(rlt['alloc_amt']()) > 0) {
+                var nr = coreWebApp.ModelBo.addNewRow('receivable_ledger_alloc_tran', coreWebApp.ModelBo, true);
+                nr.branch_id(rlt['branch_id']);
+                nr.invoice_id(rlt['voucher_id']);
+                nr.doc_date(opts.doc_date);
+                nr.invoice_date(rlt['doc_date']);
+                nr.account_id(rlt['account_id']);
+                coreWebApp.trigger_change('account_id', rlt['account_id'], rlt['account_head']);
+                nr.balance(parseFloat(rlt['over_due']) + parseFloat(rlt['not_due']));
+                nr.balance_fc(parseFloat(rlt['over_due_fc']) + parseFloat(rlt['not_due_fc']));
+                nr.credit_amt(parseFloat(rlt['alloc_amt']()));
+                nr.credit_amt_fc(0);
+                nr.net_credit_amt(parseFloat(rlt['alloc_amt']()));
+                nr.net_credit_amt_fc(0);
+                nr.write_off_amt(0);
+                nr.write_off_amt_fc(0);
+                nr.rl_pl_id(rlt['rl_pl_id']);
+                nr.is_opbl(rlt['is_opbl']);
+                coreWebApp.afterNewRowAdded(false);
             }
         });
         delete opts.model; // remove the temporary model created
@@ -519,4 +549,174 @@ typeof window.mcr == 'undefined' ? window.mcr = {} : '';
         }
     }
     mcr.target_branch_enable = target_branch_enable;
+
+
+    function mcr_summary_tran_before_delete(pr, prop, rw) {
+        mcr.cust_id = rw.account_id();
+        return true;
+    }
+    mcr.mcr_summary_tran_before_delete = mcr_summary_tran_before_delete;
+
+
+    function mcr_summary_tran_after_delete() {
+        coreWebApp.ModelBo.receivable_ledger_alloc_tran.remove(function (pt) {
+            return mcr.cust_id == pt.account_id();
+        });
+
+        mcr.cust_id = -1;
+        
+        mcr.sl_no = 0;
+        coreWebApp.ModelBo.mcr_summary_tran().forEach(function (row) {
+            mcr.sl_no += 1;
+            row.sl_no(mcr.sl_no);
+        });
+        
+        total_calc();
+    }
+    mcr.mcr_summary_tran_after_delete = mcr_summary_tran_after_delete;
+
+    function visible_tran() {
+        return false;
+    }
+    mcr.visible_tran = visible_tran;
+
+    function select_cust(row) {
+        var opts = {
+        };
+        opts.module = 'core/ar';
+        opts.alloc_view = 'multiCustReceipt/SelectCust';
+        opts.call_init = select_cust_init;
+        opts.call_update = select_cust_alloc_update;
+        coreWebApp.showAllocV2(opts);
+    }
+    mcr.select_cust = select_cust;
+
+    // function to set default values for Tax Detail
+    function select_cust_init(opts, after_init) {
+        var sel_cust = new function () {
+            self = this;
+        };
+        sel_cust.cust_id = ko.observable(-1);
+        opts.model = sel_cust;
+    }
+    mcr.select_cust_init = select_cust_init;
+
+    //function to update tax detail pop up fields to tax_detail_tran
+    function select_cust_alloc_update(opts) {
+        if (opts.model.cust_id() == -1) {
+            coreWebApp.toastmsg('warning', 'Select Customer', 'Select Customer');
+            is_valid = false;
+            return;
+        }
+
+        // Validate line items for excess allocation
+        var is_valid = true;
+        coreWebApp.ModelBo.mcr_summary_tran().forEach(poc => {
+            if (poc.account_id() == opts.model.cust_id()) {
+                coreWebApp.toastmsg('warning', 'Select Customer', 'Customer already selected in current Multi Customer Receipt');
+                is_valid = false;
+                return;
+            }
+        });
+        // Return without updating when validations fail
+        if (!is_valid) {
+            return false;
+        }
+
+        // get balance for selected customer
+        $.ajax({
+            url: '?r=core/ar/form/select-inv-in-rcpt',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                voucher_id: coreWebApp.ModelBo.voucher_id,
+                doc_date: coreWebApp.ModelBo.doc_date,
+                account_id: opts.model.cust_id(),
+                branch_id: coreWebApp.ModelBo.branch_id,
+                fc_type_id: coreWebApp.ModelBo.fc_type_id
+            },
+            complete: function () {
+                coreWebApp.stoploading();
+            },
+            success: function (jsonResult) {
+                if (jsonResult.status === 'ok') {
+                    var cust_balance = new Number(0.00);
+                    jsonResult.inv_balance.forEach(itm => {
+                        cust_balance = cust_balance + parseFloat(itm.over_due) + parseFloat(itm.not_due);
+                    });
+
+                    var nr = coreWebApp.ModelBo.addNewRow('mcr_summary_tran', coreWebApp.ModelBo, true);
+                    mcr.sl_no = mcr.sl_no + 1;
+                    nr.sl_no(mcr.sl_no);
+                    nr.voucher_id('');
+                    nr.vch_tran_id('');
+                    nr.account_id(opts.model.cust_id());
+                    nr.payable_amt(0);
+                    nr.receivable_amt(0);
+                    nr.adv_amt(0);
+                    nr.net_payable_amt(0);
+                    nr.balance(cust_balance);
+
+                    coreWebApp.afterNewRowAdded(false);
+                    delete opts.model; // remove the temporary model created 
+                }
+            },
+            error: function (data) {
+                coreWebApp.toastmsg('error', 'Filter', 'Failed with errors on server', false);
+            }
+        });
+        return true;
+    }
+    mcr.select_cust_alloc_update = select_cust_alloc_update;
+
+    function ib_branch_filter(fltr) {
+        fltr += " gst_state_id = " + coreWebApp.branch_gst_info.gst_state_id;
+        return fltr;
+    }
+    mcr.ib_branch_filter = ib_branch_filter;
+
 }(window.mcr));
+
+// GST Methods and utils that are part of tx
+window.mcr.mcr_wiz = {};
+(function (mcr_wiz) {
+
+    function select_cust_init(args) {
+        $('#tbl-SelectCust').DataTable({
+            data: args.model.SelectCust(),
+            order: [],
+            columns: [
+                {data: "is_select", title: "...",
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        $(td).html('<input type="checkbox" data-bind="checked: is_select">');
+                        ko.applyBindings(rowData, $(td)[0]);
+                        $(td).css('text-align', 'center');
+                    }
+                },
+                {data: "account_head", title: "Customer"},
+                {data: "over_due", title: "Overdue", className: "dt-right",
+                    render: function (cellData) {
+                        return coreWebApp.formatNumber(cellData(), 2);
+                    }
+                },
+                {data: "not_due", title: "Not Due", className: "dt-right",
+                    render: function (cellData) {
+                        return coreWebApp.formatNumber(cellData(), 2);
+                    }
+                },
+                {data: "credit_amt", title: "Net Receivable Amt",
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        $(td).html('<input type="textbox" data-bind="numericValue: credit_amt, enable: is_select" class="textbox form-control">');
+                        ko.applyBindings(rowData, $(td)[0]);
+                    }
+                }
+            ],
+            deferRender: true,
+            scrollY: '400px',
+            scrollCollapse: true,
+            scroller: true,
+        });
+    }
+    mcr_wiz.select_cust_init = select_cust_init;
+
+}(window.mcr.mcr_wiz));

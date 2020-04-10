@@ -5481,20 +5481,13 @@ Begin
     inner join st.cons_type c on COALESCE((b.annex_info->>'cons_type_id')::bigint, -1) = c.cons_type_id
     where a.voucher_id = b.stock_id;
     
-    Update sm_detail a
-    set cons_type_id = COALESCE((b.annex_info->>'cons_type_id')::bigint, -1),
-    	cons_type_desc = c.cons_type_desc
-    From prod.doc_control b
-    inner join st.cons_type c on COALESCE((b.annex_info->>'cons_type_id')::bigint, -1) = c.cons_type_id
-    where a.voucher_id = b.voucher_id;
-    
     Return Query
     Select a.voucher_id, a.doc_date, a.branch_id, a.stock_movement_type_id, a.stock_movement_type, a.material_id, a.material_name, a.material_type_id, a.material_type, 
             a.mat_qty, a.mat_value, a.uom_desc, a.cons_type_id, a.cons_type_desc
     From sm_detail a;
 End;
 $BODY$
-  LANGUAGE plpgsql;
+LANGUAGE plpgsql;
 
 ?==?
 CREATE OR REPLACE FUNCTION st.fn_stock_move_type_report(

@@ -12,10 +12,14 @@
                 <nextRow/> 
                 <field id="month_begin" label="Month Begins From" type="date" control="Date" size="s" readOnly="True"/>
                 <field id="month_end" label="Month Ends On" type="date" control="Date" size="s" readOnly="True"/>
-                <nextRow/> 
                 <field id="month_close" label="Month is Closed" type="bool" control="CheckBox" size="s"/>
-                
-                <nextRow/>
+                <field id="annex_info.doc_group_ids" label="" type="string" control="Hidden" size="1" isOptional="true"/>
+                <tranSection label="Document Group(s)" editMode="Edit" fixedWidth="300">
+                    <dataBinding dataProperty="doc_group_temp">
+                        <field id="doc_group" label="Document Group" type="string" control="TextBox" size="10" maxLength="50" readOnly="true"/>
+                        <field id="select" label="Closed" type="bool" control="CheckBox" size="2" cdata-enable-on="core_sys.fm_enable_sel"/>
+                    </dataBinding>
+                </tranSection>
                 <field id="note1" label="Note : Fiscal months can only be edited for Close/Open." type="string" control="Label" size="l"/>
 
             </dataBinding> 

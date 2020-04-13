@@ -23,6 +23,7 @@ class DocBo extends BoBase {
     
     //put your code here
     private $docSecurity = [];
+    private $userPref = [];
     
     private $docWfOption = [
         'user_id_to' => -1,
@@ -191,4 +192,13 @@ class DocBo extends BoBase {
     public function getDocDate(){
         return $this->doc_date;
     }
+    
+    public function getUserPref() {
+        return $this->userPref;
+    }
+
+    public function setUserPref($user_pref) {
+        $this->userPref = $user_pref;
+    }
+
 }

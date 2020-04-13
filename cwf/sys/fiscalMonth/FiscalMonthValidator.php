@@ -26,8 +26,22 @@ class FiscalMonthValidator extends \app\cwf\vsla\xmlbo\ValidatorBase {
     }
     
     private function validateBusinessRules() {        
-        // Possible validations could include display warning for pending documents.
+         // Possible validations could include display warning for pending documents.
         // However, we do not know how many tables are involved.
+        $dg_ids = '';
+        foreach ($this->bo->doc_group_temp->Rows() as $dr) {
+            if ($dr['select']) {
+                if ($dg_ids == '') {
+                    $dg_ids = $dr['doc_group_id'];                    
+                }
+                else{
+                    $dg_ids .= ',' . $dr['doc_group_id'];
+                }
+            }
+        }
         
+//        if($dg_ids != ''){
+            $this->bo->annex_info->Value()->doc_group_ids = "{" . $dg_ids . "}";
+//        }
     }
 }

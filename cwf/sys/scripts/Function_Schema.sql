@@ -164,6 +164,10 @@ Begin
 		Select a.menu_id, a.role_id, cast(a.en_access_level_report as integer), a.branch_id, 3 as menu_type
 		from sys.role_access_level_report a
                 where a.en_access_level_report <>0 and a.branch_id=pbranch_id and a.menu_id=vmenu_id
+                union all
+		Select a.menu_id, a.role_id, cast(a.en_access_level_dataset as integer), a.branch_id, 3 as menu_type
+		from sys.role_access_level_dataset a
+                where a.en_access_level_dataset <>0 and a.branch_id=pbranch_id and a.menu_id=vmenu_id
 		union all
 		Select a.menu_id, a.role_id, cast(a.en_access_level_ui_form as integer), a.branch_id, 4 as menu_type
 		from sys.role_access_level_ui_form a
@@ -245,5 +249,182 @@ BEGIN
 END
 $BODY$
   LANGUAGE plpgsql;
+
+?==?
+Create OR REPLACE function sys.fn_branch_in_gst_state(pbranch_id bigint)
+RETURNS TABLE
+(   branch_id bigint,
+	branch_name varchar(100),
+	branch_code varchar(2)
+) 
+As
+$BODY$
+	declare vGstState_ID int; vGstStateName character varying;
+Begin
+	Select a.gst_state_id into vGstState_ID 
+	from sys.branch a
+	Where a.branch_id = pbranch_id;
+	
+	Select a.gst_state_code || ' - ' ||a.state_name into vGstStateName
+	from tx.gst_state a
+	Where a.gst_state_id = vGstState_ID;
+	
+	return query
+	select a.branch_id, a.branch_name, a.branch_code 
+	from (        
+		Select 0 as branch_id, vGstStateName as branch_name, vGstState_ID::varchar as branch_code
+		union All
+		(
+			select a.branch_id, a.branch_name, a.branch_code 
+			from sys.branch a
+			where gst_state_id = vGstState_ID
+			order by a.branch_name asc
+		)
+	) a;
+	
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+?==?
+CREATE OR REPLACE FUNCTION sys.pending_docs(
+	pcompany_id bigint,
+	pbranch_id bigint,
+	pdoc_bo_id character varying,
+	pdoc_action_id character varying, 
+	pfrom_user_id bigint,
+	pto_user_id bigint,
+        pfrom_date date,
+	pto_date date)
+    RETURNS TABLE(doc_id character varying, doc_date date, doc_sender_comment character varying, 
+                  user_id_from bigint, doc_sent_on date, doc_action character varying, 
+                  user_id_to bigint, doc_stage_id character varying, doc_stage_id_from character varying,
+                  branch_id bigint, branch_name character varying, bo_id character varying,
+                  menu_text character varying, from_user character varying, to_user character varying) 
+    
+AS
+$BODY$
+Begin  
+    DROP TABLE IF EXISTS pending_docs_temp;	
+    Create temp TABLE pending_docs_temp
+    (doc_id character varying, doc_date date, doc_sender_comment character varying, 
+    user_id_from bigint, doc_sent_on date, doc_action character varying, 
+    user_id_to bigint, doc_stage_id character varying, doc_stage_id_from character varying,
+    branch_id bigint, branch_name character varying, bo_id character varying,
+    menu_text character varying, from_user character varying, to_user character varying) ;
+                  
+    If pdoc_action_id = 'O' Then            
+   	Insert into pending_docs_temp (doc_id, doc_date, doc_sender_comment, user_id_from, doc_sent_on, 
+        doc_action, user_id_to, doc_stage_id, doc_stage_id_from,
+        branch_id, branch_name, bo_id, menu_text, from_user, to_user)
+        select a.doc_id, a1.doc_date, 'Saved' as doc_sender_comment, a.user_id_created as user_id_from, 
+        a.last_updated::date as doc_sent_on, 'Saved' as doc_action,-1 as user_id_to, 
+        'saved' as doc_stage_id, 'new' as doc_stage_id_from, a.branch_id,
+        b.branch_name, a.bo_id, c.menu_text, '' as from_user,'' as to_user
+        from sys.doc_created a
+        inner join sys.doc_es a1 on a.doc_id = a1.voucher_id
+        inner join sys.branch b on a.branch_id = b.branch_id 
+        inner join sys.menu c on md5(a.bo_id)::uuid = c.bo_id
+        where (pdoc_action_id = 'O') 
+        and (a.branch_id = pbranch_id or pbranch_id=0) 
+        and a1.doc_date between pfrom_date and pto_date
+        and (a.bo_id = pdoc_bo_id or pdoc_bo_id = 'All') 
+        and (a.user_id_created = pfrom_user_id or pfrom_user_id=-99);
+     Else
+        Insert into pending_docs_temp (doc_id, doc_date, doc_sender_comment, user_id_from, doc_sent_on, 
+        doc_action, user_id_to, doc_stage_id, doc_stage_id_from,
+        branch_id, branch_name, bo_id, menu_text, from_user, to_user)
+        select a.doc_id, a.doc_date, a.doc_sender_comment, a.user_id_from, a.doc_sent_on::date, 
+        case when a.doc_action = 'S' then 'Sent' 
+             when a.doc_action = 'A' then 'Approved'
+             when a.doc_action = 'R' then 'Rejected'
+             when a.doc_action = 'U' then 'Unposted'
+             when a.doc_action = 'I' then 'Assigned'
+             when a.doc_action = 'O' then 'Saved'
+             else 'UnKnown'
+        end as doc_action, 
+        a.user_id_to, a.doc_stage_id, a.doc_stage_id_from, a.branch_id, b.branch_name, a.bo_id, c.menu_text,
+        '' as from_user,'' as to_user from sys.doc_wf a                
+        inner join sys.branch b on a.branch_id = b.branch_id 
+        inner join sys.menu c on md5(a.bo_id)::uuid = c.bo_id
+        where a.doc_action != 'P' 
+        and (case when pdoc_action_id <> 'W' then a.doc_action = pdoc_action_id else pdoc_action_id = 'W' end) 
+        and (a.branch_id = pbranch_id or pbranch_id=0) 
+        and (a.doc_date between pfrom_date and pto_date)       
+        and (a.bo_id = pdoc_bo_id or pdoc_bo_id = 'All')
+        and (a.user_id_from = pfrom_user_id or pfrom_user_id=-99) 
+        and (a.user_id_to = pto_user_id or pto_user_id=-99) ;
+     End If;
+       
+	Update pending_docs_temp a
+        set from_user = b.full_user_name
+        From sys.user b
+        Where a.user_id_from = b.user_id;
+            
+    Update pending_docs_temp a
+    	set to_user = b.full_user_name
+    	From sys.user b
+    	Where a.user_id_to = b.user_id;         
+        
+    RETURN query 
+    Select a.doc_id, a.doc_date, a.doc_sender_comment, a.user_id_from, a.doc_sent_on, 
+        a.doc_action, a.user_id_to, a.doc_stage_id, a.doc_stage_id_from,
+        a.branch_id, a.branch_name, a.bo_id, a.menu_text, a.from_user, a.to_user
+    From pending_docs_temp a;
+                    
+End
+$BODY$
+Language plpgsql;
+
+?==?
+CREATE or replace Function sys.get_months(pfrom_date Date, pto_date date) 
+Returns table
+(
+   month_name varchar(20),
+   start_date date,
+   end_date date	
+) 
+AS
+$BODY$
+    Declare vstart_date Date; vend_date Date;
+Begin
+
+    Drop Table If Exists mth_temp;
+    Create Temp Table mth_temp
+    (
+       month_name varchar(20),
+       start_date date,
+       end_date date	
+    );
+
+   If (pto_date>=pfrom_date) Then
+		
+        vstart_date = pfrom_date;
+        SELECT (date_trunc('month', vstart_date) + interval '1 month' - interval '1 day')::date into vend_date;
+
+        WHILE  1 = 1 LOOP
+        
+          Insert into mth_temp(month_name, start_date, end_date)     
+          Values (left(to_char(to_timestamp (date_part('month', vstart_date)::text, 'MM'), 'Month'),3), vstart_date, vend_date);
+          
+          Select (date_trunc('month', vstart_date) + interval '1 month')::date into vstart_date;
+          Select (date_trunc('month', vstart_date) + interval '1 month' - interval '1 day')::date into vend_date;
+
+          if  (vend_date >= pto_date) Then
+              vend_date = pto_date;
+          End if;
+
+	  Exit When vstart_date > pto_date;
+          
+   	End loop;
+     
+    End If;
+        
+    return Query
+    select a.month_name, a.start_date, a.end_date from mth_temp a;
+
+End;
+$BODY$
+language plpgsql;
 
 ?==?

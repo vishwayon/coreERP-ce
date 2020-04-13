@@ -55,9 +55,9 @@ class treeviewrenderer {
 
     function renderheader() {
         $headerstring = <<<hdr
-            <h3 class="col-md-6">
+            <h3 class="col-sm-8">
                 {$this->treeviewparser->header}
-            </h3>{$this->addinfo()}<div class="col-md-4 cformheaderbuttons">
+            </h3>{$this->addinfo()}<div class="col-sm-4 cformheaderbuttons">
 hdr;
         if ($this->treeviewparser->formType == 'Master') {
             $headerstring .= <<<filter
@@ -117,7 +117,10 @@ filter;
         //$collectiondata.='</table>';
         $collectiondata .= '</tbody></table><table id="header-fixed"></table>';
         $collectiondata .= '</div>';
-
+        if ($this->treeviewparser->clientCode !== NULL && trim($this->treeviewparser->clientCode) !== '') {
+            \Yii::trace(\yii\helpers\VarDumper::dumpAsString($this->treeviewparser->clientCode));
+            $collectiondata .= '<script src="' . \app\cwf\vsla\utils\ScriptHelper::registerScript('@app/' . $this->treeviewparser->clientCode) . '"></script>';
+        }
         return $collectiondata;
     }
 
@@ -203,7 +206,7 @@ filter;
         return $fielddata;
     }
 
-    private function resolveEditLink($access_level, $options) {
+    protected function resolveEditLink($access_level, $options) {
         $options ['style'] = 'border:none;padding-left:5px;padding-right:5px;background-color:white;';
         switch ($access_level) {
             case AccessLevels::DATAENTRY :
@@ -231,7 +234,7 @@ filter;
                             <button style="width:70px;float:right;margin-left:-15px;padding:3px;background-color:grey;color:white;" type="button" 
                                     onclick="coreWebApp.findInTree($(\'#' . $this->treeviewparser->searchbox->id . '\'))" class=btn btn-default">Find</button>
                             <div style="width:370px;float:right;margin-top:5px;" class=" field-' . $this->treeviewparser->searchbox->id . '">
-                                <input type="text" id="' . $this->treeviewparser->searchbox->id . '" class="smartcombo col-md-11" name="account_id"
+                                <input type="text" id="' . $this->treeviewparser->searchbox->id . '" class="smartcombo col-sm-11" name="account_id"
                                  data-NamedLookup="' . $this->treeviewparser->searchbox->lookup->namedLookup . '" 
                                  data-DisplayMember="' . $this->treeviewparser->searchbox->lookup->displayMember . '" 
                                  data-ValueMember="' . $this->treeviewparser->searchbox->lookup->valueMember . '" 

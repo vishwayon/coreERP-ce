@@ -122,7 +122,7 @@ class JreportController extends WebController {
                             ($params['bo_id'], $params['pvoucher_id'], $params['status']);
             $requested_print = \app\cwf\vsla\security\AccessManager::check_pending_print_request($params['pvoucher_id']);
             if ($allow_print || $requested_print) {
-                $jr = new JReportHelper();
+                $jr = new JReportHelper(isset(\yii::$app->params['cwf_config']['reportServer']) ? \yii::$app->params['cwf_config']['reportServer'] : []);
                 $jrResult = $jr->renderReport($params, $outputType);
                 \app\cwf\vsla\security\AccessManager::log_doc_print
                         ($params['bo_id'], $params['pvoucher_id'], $params['status']);
@@ -141,7 +141,7 @@ class JreportController extends WebController {
                 return '<h3>Error</h3><p>Print limit has been exceeded for this document.</p>';
             }
         } else {
-            $jr = new JReportHelper();
+            $jr = new JReportHelper(isset(\yii::$app->params['cwf_config']['reportServer']) ? \yii::$app->params['cwf_config']['reportServer'] : []);
             $jrResult = $jr->renderReport($params, $outputType);
             if ($jrResult['status'] == 'OK') {
                 \Yii::$app->response->headers->add('Output-Type', 'application/json');
@@ -199,7 +199,7 @@ class JreportController extends WebController {
                 $vchrptparams = json_decode($req->bodyParams, TRUE);
             }
         }
-        $jr = new JReportHelper();
+        $jr = new JReportHelper(isset(\yii::$app->params['cwf_config']['reportServer']) ? \yii::$app->params['cwf_config']['reportServer'] : []);
         $jrResult = $jr->renderReport($vchrptparams, JReportHelper::OUTPUT_PDF);
         if (array_key_exists('bo_id', $vchrptparams)) {
             $boid = $vchrptparams['bo_id'];
@@ -228,6 +228,27 @@ class JreportController extends WebController {
             $jrResult['msg'] = 'Invalid e-mail id. Failed to mail report.';
         }
         return json_encode($jrResult);
+    }
+    
+    public function actionGetUserPref() {
+        
+    }
+    
+    public function actionSetUserPref() {
+        $rptID = \yii::$app->request->post('rpt_id');
+        $data = \yii::$app->request->post('user_pref');
+        $cmm = new \app\cwf\vsla\data\SqlCommand();
+        $sql = "Insert Into sys.rpt_user_pref(rpt_user_pref_id, rpt_id, user_id, jdata, last_updated)
+                Values(md5(:prpt_id || :pu_id)::uuid, :prpt_id, :puser_id, :pjdata, current_timestamp(0))
+                On Conflict (rpt_user_pref_id)
+                Do Update Set jdata = :pjdata, last_updated = current_timestamp(0);";
+        $cmm->setCommandText($sql);
+        $cmm->addParam('prpt_id', $rptID);
+        $cmm->addParam('pu_id', (string)\app\cwf\vsla\security\SessionManager::getInstance()->getUserInfo()->getUser_ID());
+        $cmm->addParam('puser_id', \app\cwf\vsla\security\SessionManager::getInstance()->getUserInfo()->getUser_ID());
+        $cmm->addParam('pjdata', $data);
+        \app\cwf\vsla\data\DataConnect::exeCmm($cmm);
+        return 'OK';
     }
 
 }

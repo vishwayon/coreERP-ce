@@ -14,7 +14,7 @@ namespace app\cwf\sys\company;
  * @author Ravindra
  */
 class CompanyEventHandler extends \app\cwf\vsla\xmlbo\EventHandlerBase {
-    
+
     public function afterFetch($criteriaparam) {
         parent::afterFetch($criteriaparam);
 
@@ -32,6 +32,7 @@ class CompanyEventHandler extends \app\cwf\vsla\xmlbo\EventHandlerBase {
         $this->bo->fin_year_begin = date("Y-m-d", time());
         $this->bo->fin_year_end = date("Y-m-d", time());
         $this->bo->br_gst_state_id = -1;
+        $this->bo->br_gstin = '';
 
         if ($this->bo->company_id == -1) {
             $this->bo->database = "";
@@ -162,6 +163,7 @@ class CompanyEventHandler extends \app\cwf\vsla\xmlbo\EventHandlerBase {
                 $branchboInst->branch_description = $this->bo->branch_description;
                 $branchboInst->branch_address = $this->bo->company_address;
                 $branchboInst->gst_state_id = $this->bo->br_gst_state_id;
+                $branchboInst->gstin = $this->bo->br_gstin;
                 $branchboInst->currency = $this->bo->currency;
                 $branchboInst->sub_currency = $this->bo->sub_currency;
                 $branchboInst->currency_displayed = $this->bo->currency_displayed;
@@ -172,6 +174,12 @@ class CompanyEventHandler extends \app\cwf\vsla\xmlbo\EventHandlerBase {
                 $branchboInst->has_work_flow = true;
                 $branchboInst->company_group_id = -1;
 
+                foreach($branchboInst->branch_tax_info->Rows() as &$br_row){
+                    if($br_row['tax_info_type_id'] == ($this->bo->company_id * 1000000) + 7){
+                        $br_row['branch_tax_info_desc'] = $this->bo->br_gstin;
+                    }
+                }
+                
 //                $branchboInst->branch_address_tran=$this->bo->branch_address_tran;
 
                 $branchBo->saveBO($branchboInst, null);

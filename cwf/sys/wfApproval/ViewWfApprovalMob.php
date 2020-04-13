@@ -61,6 +61,7 @@
                             litem += '<span class="col-xs-5" style="padding: 5px; font-weight:bold;">' + jsonResult.jsondata.dt_request[i].doc_id + '</span>';
                             litem += '<span class="col-xs-5" style="padding: 5px; text-align: right;">'
                                     + coreWebApp.formatDate(jsonResult.jsondata.dt_request[i].doc_date) + '</span>';
+                            litem += '<span class="col-xs-12" style="padding: 5px;;"> Customer: <strong>' + jsonResult.jsondata.dt_request[i].customer + '</strong></span>';
                             litem += '<span class="col-xs-12" style="padding: 5px;">' + jsonResult.jsondata.dt_request[i].bo_id + ' Sent on <strong>'
                                     + jsonResult.jsondata.dt_request[i].added_on + '</strong></span>';
                             litem += '<span class="col-xs-12" style="padding: 5px;"> by ' + jsonResult.jsondata.dt_request[i].from_user + '</span>';

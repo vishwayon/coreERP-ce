@@ -55,6 +55,10 @@ class CwfXmlLoader {
                 $reportView = self::parseReportView($cwfXml->reportView, $modulePath);
                 self::$loadedViews[$xmlFilePath] = $reportView;
                 return $reportView;
+            } else if (isset($cwfXml->datasetView)) {
+                $datasetView = self::parseDatasetView($cwfXml->datasetView, $modulePath);
+                self::$loadedViews[$xmlFilePath] = $datasetView;
+                return $datasetView;
             }
         } else {
             return self::$loadedViews[$xmlFilePath];
@@ -82,6 +86,9 @@ class CwfXmlLoader {
             case \app\cwf\vsla\design\CwFrameworkType::REPORT_VIEW :
                 $formView = new \app\cwf\vsla\design\ReportView();
                 break;
+            case \app\cwf\vsla\design\CwFrameworkType::DATASET_VIEW :
+                $formView = new \app\cwf\vsla\design\DatasetView();
+                break;
             default :
                 $formView = new \app\cwf\vsla\design\FormView();
         }
@@ -92,6 +99,7 @@ class CwfXmlLoader {
         $formView->modulePath = $modulePath;
         $formView->bindingBO = (string) $xformView->attributes()->bindingBO;
         $formView->helpLink = isset($xformView->attributes()->helpLink) ? (string) $xformView->attributes()->helpLink : '';
+        $formView->exportView = isset($xformView->attributes()->exportView) ? (string) $xformView->attributes()->exportView : 'tcons';
 
         // Get simple elements
         $formView->header = (string) $xformView->header;
@@ -145,6 +153,9 @@ class CwfXmlLoader {
         if (isset($xformView->jsEvents->afterPostEvent)) {
             $formView->afterPostEvent = (string) $xformView->jsEvents->afterPostEvent;
         }
+        if (isset($xformView->jsEvents->afterSaveEvent)) {
+            $formView->afterSaveEvent = (string) $xformView->jsEvents->afterSaveEvent;
+        }
         if (isset($xformView->jsEvents->afterUnpostEvent)) {
             $formView->afterUnpostEvent = (string) $xformView->jsEvents->afterUnpostEvent;
         }
@@ -191,6 +202,12 @@ class CwfXmlLoader {
     private static function parseReportView(\SimpleXMLElement $xreportView, $modulePath) {
         $reportView = self::parseFormView($xreportView, $modulePath, \app\cwf\vsla\design\CwFrameworkType::REPORT_VIEW);
         return $reportView;
+    }
+    
+    private static function parseDatasetView(\SimpleXMLElement $xdatasetView, $modulePath) {
+        $datasetView = self::parseFormView($xdatasetView, $modulePath, \app\cwf\vsla\design\CwFrameworkType::DATASET_VIEW);
+        $datasetView->description = (string) $xdatasetView->description;
+        return $datasetView;
     }
 
     private static function parseFormPrintView(\SimpleXMLElement $xprintView, $modulePath, $bo_id) {
@@ -641,6 +658,9 @@ class CwfXmlLoader {
         if (isset($fattrs['on-change-event'])) {
             $field->on_change_event = (string) $fattrs['on-change-event'];
         }
+        if (isset($fattrs['noRender'])) {
+            $field->noRender = filter_var((string) $fattrs['noRender'], FILTER_VALIDATE_BOOLEAN);
+        }
 
         return $field;
     }
@@ -768,6 +788,13 @@ class CwfXmlLoader {
         }
         if (isset($xtranSection->attributes()->fixedWidth)) {
             $tranSection->fixedWidth = (int) $xtranSection->attributes()->fixedWidth;
+            // tw is applicable only when fixedwidth exists
+            // load if found, else fallback to fixedwidth
+            if (isset($xtranSection->attributes()->tw)) {
+                $tranSection->tw = (int) $xtranSection->attributes()->tw;
+            } else {
+                $tranSection->tw = (int) $xtranSection->attributes()->fixedWidth;
+            }
         }
         if (isset($xtranSection->attributes()->fixedHeight)) {
             $tranSection->fixedHeight = (int) $xtranSection->attributes()->fixedHeight;
@@ -793,6 +820,9 @@ class CwfXmlLoader {
         if (isset($sattrs['mdata-event'])) {
             $tranSection->mdata_events = (string) $sattrs['mdata-event'];
         }
+        if (isset($sattrs['noRender'])) {
+            $tranSection->noRender = filter_var((string) $sattrs['noRender'], FILTER_VALIDATE_BOOLEAN);
+        }
         $tranSection->dataBinding = self::parseFormDataBinding($xtranSection->dataBinding);
         return $tranSection;
     }
@@ -810,6 +840,19 @@ class CwfXmlLoader {
         } elseif (isset($xrptParam->currentDate)) {
             $rptParam = new \app\cwf\vsla\design\BaseParamCurrentDate();
             $rptParam->id = (string) $xrptParam->attributes()->id;
+            if(isset($xrptParam->currentDate->attributes()->offsetMonth)) {
+                if(\app\cwf\vsla\utils\ValidationHelper::validateDuration((string)($xrptParam->currentDate->attributes()->offsetMonth))) {
+                    $rptParam->offsetMonth = (string)($xrptParam->currentDate->attributes()->offsetMonth);
+                } else {
+                    $rptParam->offsetMonth = 'P1M';
+                }
+            } elseif (isset($xrptParam->currentDate->attributes()->offsetDate)) {
+                if(\app\cwf\vsla\utils\ValidationHelper::validateDuration((string)($xrptParam->currentDate->attributes()->offsetDate))) {
+                    $rptParam->offsetDate = (string)($xrptParam->currentDate->attributes()->offsetDate);
+                } else {
+                    $rptParam->offsetDate = 'P1M';
+                }
+            }
         } elseif (isset($xrptParam->preset)) {
             $rptParam = new \app\cwf\vsla\design\ReportParamPreset();
             $rptParam->id = (string) $xrptParam->attributes()->id;
@@ -970,6 +1013,19 @@ class CwfXmlLoader {
                 } elseif (isset($nodeDef->currentDate)) {
                     $sqlParam = new \app\cwf\vsla\design\BaseParamCurrentDate();
                     $sqlParam->id = (string) $nodeDef->attributes()->id;
+                    if (isset($nodeDef->currentDate->attributes()->offsetMonth)) {
+                        if (\app\cwf\vsla\utils\ValidationHelper::validateDuration((string) ($nodeDef->currentDate->attributes()->offsetMonth))) {
+                            $sqlParam->offsetMonth = (string) ($nodeDef->currentDate->attributes()->offsetMonth);
+                        } else {
+                            $sqlParam->offsetMonth = 'P1M';
+                        }
+                    } elseif (isset($nodeDef->currentDate->attributes()->offsetDate)) {
+                        if (\app\cwf\vsla\utils\ValidationHelper::validateDuration((string) ($nodeDef->currentDate->attributes()->offsetDate))) {
+                            $sqlParam->offsetDate = (string) ($nodeDef->currentDate->attributes()->offsetDate);
+                        } else {
+                            $sqlParam->offsetDate = 'P1M';
+                        }
+                    }
                 }
                 $sqlCommand->params[] = $sqlParam;
             }

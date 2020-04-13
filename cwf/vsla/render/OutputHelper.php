@@ -28,6 +28,8 @@ class OutputHelper {
                 return self::output_FormBody($inputView);
             case design\CwFrameworkType::WIZARD_VIEW :
                 return self::output_WIZARD_VIEW($inputView);
+            case design\CwFrameworkType::DATASET_VIEW :
+                return self::output_DATASET_VIEW($inputView);
         }
     }
 
@@ -77,7 +79,7 @@ class OutputHelper {
         if ($formView instanceof design\AllocView) {
             $str_width = 'width:' . $formView->width . ';';
         }
-        $form = '<div id="cboformwrapper" class="row"><div id="cboformbody" class="col-md-12" style="overflow-y: auto;' . $str_width . ';padding:0 10px 0 0;">
+        $form = '<div id="cboformwrapper" class="row"><div id="cboformbody" class="col-sm-12" style="overflow-y: auto;' . $str_width . ';padding:0 10px 0 0;">
                     <div id="cboformbodyin" style="padding:0;">
                         <div class="row">
                             <div id="divbrule" name="divbrule" style="display:none;">
@@ -179,6 +181,11 @@ class OutputHelper {
             </button>';
         $content .= '</div>';
         return $content;
+    }
+
+    private static function output_DATASET_VIEW(design\CwFrameworkType $datasetView) {
+        $options = self::output_FormBody($datasetView);
+        return $options;
     }
 
     private static function output_WIZARD_VIEW(design\CwFrameworkType $wizardView) {
@@ -313,6 +320,9 @@ class OutputHelper {
     }
 
     private static function output_TYPE_TRAN_SECTION(design\FormTranSection $section, $intran, $accessLevel) {
+        if ($section->noRender) {
+            return '';
+        }
         self::$trans[] = $section;
         $tran = '';
         // ** '. $this->renderSectionOptions($section).' not fully implemented 
@@ -343,7 +353,7 @@ class OutputHelper {
             $tran .= '<div id="' . $section->dataBinding->dataProperty . '-cont"'
                     . ($section->fixedWidthExists() ? (' style="overflow-x: auto"') : '') . '>';
             $tran .= '<table class="table table-hover table-condensed" id="' . $section->dataBinding->dataProperty . '" style="border-bottom: 1px solid teal;'
-                    . ($section->fixedWidthExists() ? ('width:' . $section->fixedWidth . 'pt; max-width: ' . $section->fixedWidth . 'pt;"') : '"');
+                    . ($section->fixedWidthExists() ? ('width:' . $section->tw . 'pt; max-width: ' . $section->fixedWidth . 'pt;"') : '"');
             if ($section->noColHeader) {
                 $tran .= '><thead style="display:none;">';
             } else {
@@ -458,6 +468,7 @@ class OutputHelper {
             $tran .= '<script type="text/html" id="' . $section->dataBinding->dataProperty . '-template">'
                     . '<tr>';
             $fieldcount = 0;
+            $isNextRow = false;
             foreach ($section->dataBinding->items as $item) {
                 if ($item instanceof design\FormField) {
                     $style = '';
@@ -492,6 +503,7 @@ class OutputHelper {
                 } else if ($item instanceof design\Dummy) {
                     $tran .= '<td></td>' . "\n";
                 } else if ($item instanceof design\NextRow) {
+                    $isNextRow = TRUE;
                     $tran .= '</tr><tr>' . "\n";
                 } else if ($item instanceof design\Xdiv) {
                     $tran .= '<td colspan="' . $item->colspan . '"><table ';
@@ -521,7 +533,8 @@ class OutputHelper {
                 $tran .= '<button id="cmd_editrow" type="button" tabindex="-1" class="btn btn-default" 
                     style="border:none;padding-left:5px;padding-right:5px;" 
                     data-bind="click: function() 
-                                { ' . $section->editMethod . '($parent, \'' . $section->dataBinding->dataProperty . '\', $data); }">
+                                { ' . $section->editMethod . '($parent, \'' . $section->dataBinding->dataProperty . '\', $data); },
+                                visible: $root.__editMode()">
                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                 </button>';
                 $tran .= '</td>';
@@ -716,7 +729,7 @@ class OutputHelper {
         if ($intran) {
             return '';
         } else {
-            return '<div class="col-md-12" style="margin:2em 0 1em 0; padding:0;">
+            return '<div class="col-sm-12" style="margin:2em 0 1em 0; padding:0;">
                         <div style="border-bottom:1px solid lightgray;"></div>
                         <div style="position:relative;">
                                 <span class="cSectionHeader">' . $sectionHeader->label . '</span>
@@ -833,6 +846,9 @@ class OutputHelper {
     }
 
     private static function output_TYPE_FIELD(design\FormField $field, $intran, $tranName = '', $accessLevel) {
+        if ($field->noRender) {
+            return '';
+        }
         if ($field->control == design\ControlType::SPAN) {
             $htmlattr = [];
             if ($field->class != '') {
@@ -994,7 +1010,7 @@ class OutputHelper {
         }
 
         if ($field->lookupExists()) {
-            $htmlattr['data-NamedLookup'] = $field->lookup->namedLookup;
+            $htmlattr['data-NamedLookup'] = str_replace('../', '@app/', $field->lookup->namedLookup);
             $htmlattr['data-DisplayMember'] = $field->lookup->displayMember;
             $htmlattr['data-ValueMember'] = $field->lookup->valueMember;
             $htmlattr['data-Filter'] = $field->lookup->filter;
@@ -1008,7 +1024,7 @@ class OutputHelper {
         }
 
         if ($field->control == design\ControlType::FC) {
-            $htmlattr['data-NamedLookup'] = '../core/ac/lookups/FCType.xml';
+            $htmlattr['data-NamedLookup'] = '@app/core/ac/lookups/FCType.xml';
             $htmlattr['data-ValueMember'] = 'fc_type_id';
             $htmlattr['data-DisplayMember'] = 'fc_type';
             $htmlattr['data-Filter'] = '';
@@ -1222,9 +1238,9 @@ class OutputHelper {
         $labelstyle = '';
         if ($label->inline) {
             if (key_exists('style', $htmlattr)) {
-                $labelstyle .= 'margin-top:15px;' . $htmlattr['style'];
+                $labelstyle .= ($intran ? 'margin-top:5px;' : 'margin-top:15px;') . $htmlattr['style'];
             } else {
-                $labelstyle .= 'margin-top:15px;" ';
+                $labelstyle .= ($intran ? 'margin-top:5px;' : 'margin-top:15px;');
             }
         } else {
             if (key_exists('style', $htmlattr)) {
@@ -1408,27 +1424,27 @@ class OutputHelper {
     private static function output_FieldSize($size) {
         switch ($size) {
             case design\FieldSize::XS_COL_1 :
-                return 'col-md-1 col-xs-12';
+                return 'col-sm-1 col-xs-12';
             case design\FieldSize::MS_COL_2 :
-                return 'col-md-2 col-xs-12';
+                return 'col-sm-2 col-xs-12';
             case design\FieldSize::M_COL_6 :
-                return 'col-md-6 col-xs-12';
+                return 'col-sm-6 col-xs-12';
             case design\FieldSize::L_COL_9 :
-                return 'col-md-9 col-xs-12';
+                return 'col-sm-9 col-xs-12';
             case design\FieldSize::XL_COL_12 :
-                return 'col-md-12 col-xs-12';
+                return 'col-sm-12 col-xs-12';
             default :
                 if (is_numeric($size)) {
                     $temp = intval($size);
                     if ($temp > 12) {
-                        $res = 'col-md-12 col-xs-12';
+                        $res = 'col-sm-12 col-xs-12';
                     } else if ($temp < 1) {
-                        $res = 'col-md-1 col-xs-12';
+                        $res = 'col-sm-1 col-xs-12';
                     } else {
-                        $res = 'col-md-' . $temp . ' col-xs-12';
+                        $res = 'col-sm-' . $temp . ' col-xs-12';
                     }
                 } else {
-                    $res = 'col-md-3 col-xs-12';
+                    $res = 'col-sm-3 col-xs-12';
                 }
                 return $res;
         }

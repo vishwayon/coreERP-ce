@@ -6,7 +6,7 @@ use yii\base\Model;
 use \app\cwf\vsla\security\SessionManager;
 
 class Login extends Model {
-
+    
     public $username;
     public $password;
     public $userinfo;
@@ -14,16 +14,15 @@ class Login extends Model {
     public $msg = '';
     private $_user = false;
     public $is_mobile = false;
+    public $full_user_name;
 
     /**
      * @return array the validation rules.
      */
     public function rules() {
         return [
-            // username and password are both required
+            // username and password are both required for login
             [['username', 'password'], 'required'],
-            // password is validated by validatePassword()
-            ['password', 'validatePassword'],
         ];
     }
 
@@ -49,13 +48,11 @@ class Login extends Model {
      * @return boolean whether the user is logged in successfully
      */
     public function login() {
-        $mdetect = new \Mobile_Detect;
-        $this->is_mobile = ($mdetect->isMobile() && !$mdetect->isTablet());
         if ($this->validate()) {
             $authInfo = new \app\cwf\vsla\security\AuthInfo();
             $authInfo->userName = $this->username;
             $authInfo->userPass = $this->password;
-            $authInfo->is_mobile = $this->is_mobile;
+            $authInfo->is_mobile = false;
             SessionManager::getInstance($authInfo);
             $this->userinfo = SessionManager::getInstance()->getUserInfo();
             $this->msg = $this->userinfo->getFailedMessage();

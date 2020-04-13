@@ -39,3 +39,8 @@ set finyear = '1819'
 where doc_id ~ '^[A-Z0-9]{2,4}18';
 
 ?==?
+update sys.fiscal_month
+set annex_info = jsonb_set(annex_info, '{doc_group_ids}', ('"{}"')::jsonb, true)
+Where annex_info->>'doc_group_ids' is null;
+
+?==?

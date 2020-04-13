@@ -1,15 +1,15 @@
 <div id="contentholder" logonselect="true" class="view-min-width view-window1" 
      style="min-height: 90%;padding-top: 15px;">
-    <div class="col-md-4">
+    <div class="col-sm-4">
         <div id="companyinfo" class="list-group">
             <?= $model->getCompanyList() ?>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-sm-4">
         <div id="branchinfo" class="list-group">
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-sm-4">
         <div id="finyearinfo" class="list-group">
         </div>
     </div>

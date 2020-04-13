@@ -297,4 +297,60 @@ typeof window.core_sys === 'undefined' ? window.core_sys = {} : '';
     }
     core_sys.en_otp_req_type_enable = en_otp_req_type_enable;
 
+    function fm_enable_sel(dataItem) {
+        return coreWebApp.ModelBo.month_close() == false;
+    }
+    core_sys.fm_enable_sel = fm_enable_sel;
+    
+    function get_role_user_branch() {
+        if (parseInt(coreWebApp.ModelBo.role_id()) !== -1) {
+            $('#get_user_branch').text('Checking ...');
+            $('#get_user_branch').attr('disabled', true);
+            $.ajax({
+                url: '?r=cwf/fwShell/main/get-role-user-branch',
+                type: 'GET',
+                dataType: 'json',
+                data: {role_id: coreWebApp.ModelBo.role_id()},
+                success: function (json_result) {
+                    var msg = '<div><table class="table"><tbody>';
+                    if (json_result.status === 'OK') {
+                        msg += '<tr style="border:none;"><td class="col-md-5" style="text-align:center;font-weight: bold;border: none;">User</td><td class="col-md-5" style="text-align:center;font-weight: bold;border: none;">Branch</td></tr>';
+                        msg += '</tbody></table><table id="tbl_rbu" class="table table-condensed"><tbody>';
+                        var cinfo = json_result.rub_list;
+                        var prev_user = '';
+                        $.each(cinfo, function (i, v) {
+                            var c_user = (v.full_user_name === prev_user ? '' : v.full_user_name);
+                            prev_user = v.full_user_name;
+                            msg += '<tr><td class="col-md-5">' + c_user + '</td><td class="col-md-5">' + v.branch_name + '</td></tr>';
+                        });
+                    } else {
+                        msg += 'Role not used';
+                    }
+                    msg += '</tbody></table></div>';
+
+                    var dialog = BootstrapDialog.show({
+                        title: 'Role usage',
+                        message: $(msg),
+                        buttons: [{
+                                label: 'OK',
+                                action: function (di) {
+                                    di.close();
+                                }
+                            }]
+                    });
+                },
+                error: function () {
+                    coreWebApp.toastmsg('warning', 'Role usage', 'Unable to connect to server!');
+                },
+                complete: function () {
+                    $('#get_user_branch').text('Role Use info');
+                    $('#get_user_branch').attr('disabled', false);
+                }
+            });
+        } else {
+            coreWebApp.toastmsg('message', 'Role usage details', 'Role not saved yet !');
+        }
+    }
+    core_sys.get_role_user_branch = get_role_user_branch;
+    
 }(window.core_sys));

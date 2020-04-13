@@ -29,6 +29,7 @@ namespace app\cwf\vsla\ui {
         public $searchbox = NULL;
         private $connectionType = DataConnect::COMPANY_DB;
         public $formType;
+        public $clientCode = '';
 
         function __construct($rootview, $viewname, $modulePath, $filters) {
             $this->xtreeview = $rootview;
@@ -90,6 +91,14 @@ namespace app\cwf\vsla\ui {
             if (isset($this->xtreeview->childSection)) {
                 $this->initsect('child');
             }
+            if (isset($this->xtreeview->clientJsCode)) {
+                $clientcodepath = (string) $this->xtreeview->clientJsCode;
+                if ($modulePath != '') {
+                    $this->clientCode = $modulePath . '/' . $clientcodepath;
+                } else {
+                    $this->clientCode = str_ireplace('../', '@app/', $clientcodepath);
+                }
+            }
         }
 
         function setSearchbox() {
@@ -107,7 +116,7 @@ namespace app\cwf\vsla\ui {
             $lookup = new \app\cwf\vsla\design\FieldLookupType();
             $lookup->valueMember = (string) $xlookup->valueMember;
             $lookup->displayMember = (string) $xlookup->displayMember;
-            $lookup->namedLookup = (string) $xlookup->namedLookup;
+            $lookup->namedLookup = str_replace('../', '@app/',(string) $xlookup->namedLookup);
             if (isset($xlookup->filter)) {
                 $lookup->filter = (string) $xlookup->filter;
             }

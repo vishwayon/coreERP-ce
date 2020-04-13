@@ -15,6 +15,7 @@ namespace app\cwf\vsla\workflow;
  */
 class WfOption {
     public $doc_id = '';
+    public $doc_date;
     public $branch_id = -1;
     public $bo_id = '';
     public $edit_view = '';

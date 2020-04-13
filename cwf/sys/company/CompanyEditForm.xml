@@ -32,7 +32,7 @@
                 <field id="branch_name" label="Branch Name" type="string" control="TextBox" size="s" maxLength="100" 
                        cdata-visible-on="cwf_company.enable_visible" isOptional="true"/>   
                 <nextRow/>  
-                <field id="branch_description" label="Branch Description" type="string" control="TextBox" size="m" maxLength="100" 
+                <field id="branch_description" label="Branch Description" type="string" control="TextBox" size="4" maxLength="100" 
                        cdata-visible-on="cwf_company.enable_visible" isOptional="true"/>   
                 <field id="br_gst_state_id" label="Branch GST State" type="int" control="SmartCombo" size="2">
                     <lookup>
@@ -41,6 +41,7 @@
                         <namedLookup>../cwf/sys/lookups/GstState.xml</namedLookup>
                     </lookup>   
                 </field>
+                <field id="br_gstin" label="Branch GSTIN" type="string" control="TextBox" size="s" maxLength="15" cdata-visible-on="cwf_company.enable_visible"/> 
                 <nextRow/>  
                 <field id="currency" label="Currency" type="string" control="TextBox" size="s" maxLength="50" isOptional="true"/>
                 <field id="sub_currency" label="Sub Currency" type="string" control="TextBox" size="s" maxLength="50" isOptional="true"/>

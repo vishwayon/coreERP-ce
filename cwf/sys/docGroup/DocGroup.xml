@@ -1,0 +1,40 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <businessObject id="DocGroup" type="Master">
+        <controlTable>
+            <tableName>sys.doc_group</tableName>
+            <primaryKey>doc_group_id</primaryKey>   
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save>
+            <delete>
+                <useEntity/>
+            </delete>
+            <tranTable id="doc_group_tran">
+                <tableName>sys.doc_group_tran</tableName>
+                <primaryKey>doc_group_tran_id</primaryKey>
+                <relation linkType="OneToMany">
+                    <foreignKey>doc_group_id</foreignKey>
+                </relation>
+                <fetchOrCreate>
+                    <useEntity orderby="doc_group_tran_id"/>
+                </fetchOrCreate>
+                <save>
+                    <useEntity/>
+                    <primaryKeyPattern>{doc_group_id}:{RowID}</primaryKeyPattern>
+                </save>
+                <delete>
+                    <useEntity/>
+                </delete>
+            </tranTable>   
+        </controlTable> 
+        <codeBehind>
+            <className>\app\cwf\sys\docGroup\DocGroupEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

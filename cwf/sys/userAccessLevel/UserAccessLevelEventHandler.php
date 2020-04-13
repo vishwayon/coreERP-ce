@@ -15,14 +15,6 @@ namespace app\cwf\sys\userAccessLevel;
  */
 class UserAccessLevelEventHandler extends \app\cwf\sys\user\UserEventHandler {
 
-    public function beforeFetch(&$criteriaparam) {
-        parent::beforeFetch($criteriaparam);
-
-        if ($this->bo->user_id == '' or $this->bo->user_id == -1) {
-            $this->bo->is_active = true;
-        }
-    }
-
     public function afterFetch($criteriaparam) {
         parent::afterFetch($criteriaparam);
         $this->bo['menuItems'] = NULL;

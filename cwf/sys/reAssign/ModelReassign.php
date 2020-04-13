@@ -22,11 +22,11 @@ class ModelReassign {
         $this->from_user_id = $filter['from_user_id'] == '' ? -1 : (int) $filter['from_user_id'];
         $this->to_user_id = $filter['to_user_id'] == '' ? -1 : (int) $filter['to_user_id'];
         $this->find_vch_id = $filter['find_vch_id'];
-            if ($this->branch_id != -1 && ($this->doc_bo_id != '' || $this->from_user_id != -1 || $this->to_user_id != -1 || $this->find_vch_id != '')) {
-                $this->getData();
-            } else {
-                $this->brokenrules[] = 'Please select <strong>Branch</strong> and at least one option - <strong>Document Type / From User / To User</strong>';
-            }
+        if ($this->branch_id != -1 && ($this->doc_bo_id != '' || $this->from_user_id != -1 || $this->to_user_id != -1 || $this->find_vch_id != '')) {
+            $this->getData();
+        } else {
+            $this->brokenrules[] = 'Please select <strong>Branch</strong> and at least one option - <strong>Document Type / From User / To User</strong>';
+        }
     }
 
     public function getData() {
@@ -100,9 +100,11 @@ class ModelReassign {
             $this->logAction($model);
             return 'OK';
         } catch (\Exception $ex) {
-            if ($cn->inTransaction()) {
-                $cn->rollBack();
-                $cn = null;
+            if ($cn != null) {
+                if ($cn->inTransaction()) {
+                    $cn->rollBack();
+                    $cn = null;
+                }
             }
             return $ex->getMessage();
         }

@@ -3,10 +3,15 @@
     <script type="application/javascript" src="<?php echo \app\cwf\vsla\utils\ScriptHelper::registerScript('@app/cwf/fwShell/views/jrpt_clientcode.js') ?>"></script>
     <?php $viewerurl = '?r=cwf%2FfwShell%2Fjreport'; ?>
     <div class="row" id="rptrow1">
-        <button  id="btnoptions" onclick="cwf_jrpt.expandOptions();" class="col-md-1 btn btn-default" style="margin-left: 15px">Options</button>
-        <h3 class="col-md-6" style="margin-top: 2px" id="rptCaption"><?= $viewForRender->getHeader() ?></h3>
-        <h6 class="col-md-6" style="margin-top: 6px; color: red; display: none;" id="print-limit-msg">Warning! Partial report rendered</h6>
-        <div class="btn-group" role="group" style="float: right; margin-right: 20px;">
+        <div class="col-sm-9">
+            <div class="btn-group" style="float: left; " >
+                <button  id="btnoptions" onclick="cwf_jrpt.expandOptions();" class="btn btn-default">Options</button>
+                <button  id="btnUserPref" onclick="cwf_jrpt.setUserPref();" class="btn btn-default" >...</button>
+            </div>
+            <h3 class="col-sm-9" style="margin-top: 2px;" id="rptCaption"><?= $viewForRender->getHeader() ?></h3>   
+            <h6 class="col-sm-9" style="margin-top: 6px; color: red; display: none;" id="print-limit-msg">Warning! Partial report rendered</h6>
+        </div> 
+        <div class="btn-group pull-right" role="group" style="margin-right: 20px;">
             <input type="hidden" id="modelData" value="<?php echo \yii\helpers\BaseHtml::encode($rptOptions) ?>"/>
             <i id="afterRefreshEventHandler" value="<?php echo $viewForRender->getProperty('afterRefreshEvent') ?>" />
             <button  id="btnrefresh" class="btn btn-default" onclick="cwf_jrpt.refreshClick();">
@@ -127,4 +132,23 @@
                style="float: right; padding: 3px 6px; width: 50px;"><span>OK</span></a>
         </div>
     </div>
+    <script type="text/html" id="dialog-user-pref-tmpl">
+        <div class="row">
+            <div id="dialog-user-pref" class="col-md-12">
+                <div class="row col-md-12">
+                    <h3>Decimal Scale</h3>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-2" style="margin-left: 20px;">
+                        <label class="control-label" for="rate_scale">For Rate</label>
+                        <input type="number" class="form-control" name="rate_scale" min="0" max="4" data-bind="value: rate_scale"/>
+                    </div>
+                    <div class="form-group col-md-2" style="margin-left: 20px;">
+                        <label class="control-label" for="qty_scale">For Qty</label>
+                        <input type="number" class="form-control" name="qty_scale" min="0" max="3" data-bind="value: qty_scale"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
 </div>

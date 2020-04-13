@@ -25,7 +25,8 @@ class TwigReportController extends WebController {
         $twigOptions = &\yii::$app->view->renderers['twig'];
         // Register yii classes that you plan to use in twig
         $twigOptions['globals'] = [
-            'formatHelper' => ['class' => \app\cwf\vsla\utils\FormatHelper::class]
+            'formatHelper' => ['class' => \app\cwf\vsla\utils\FormatHelper::class],
+            'ScriptHelper' => ['class' => \app\cwf\vsla\utils\ScriptHelper::class]
         ];
     }
 

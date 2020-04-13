@@ -152,6 +152,11 @@ class BoParser {
             $mtable->basePrimaryKey = (string) $table->basePrimaryKey;
         }
         $mtable->fetchOrCreate = $this->getmethodinfo($table->fetchOrCreate);
+        if (($mtable instanceof MetaTranTable) &&
+                ($mtable->fetchOrCreate->orderby === NULL || $mtable->fetchOrCreate->orderby === '')) {
+            //$mtable->fetchOrCreate->orderby = $mtable->primaryKey;
+//            throw new \Exception('Order by attribute is not set in fetchOrCreate for ' . $mtable->tableName);
+        }
         $mtable->save = $this->getmethodinfo($table->save);
         if (isset($table->delete)) {
             $mtable->delete = $this->getmethodinfo($table->delete);

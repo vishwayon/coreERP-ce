@@ -305,7 +305,7 @@ namespace app\cwf\vsla\ui {
 
             if ((string) $fld->attributes()['control'] == 'SmartCombo' || (string) $fld->attributes()['control'] == 'FC') {
                 $opts['class'] = ' smartcombo form-control ';
-                $opts['data-NamedLookup'] = (string) $fld->lookup->namedLookup;
+                $opts['data-NamedLookup'] = str_replace('../', '@app/', (string) $fld->lookup->namedLookup);
                 $opts['data-DisplayMember'] = (string) $fld->lookup->displayMember;
                 $opts['data-ValueMember'] = (string) $fld->lookup->valueMember;
                 $opts['notyetsmart'] = true;

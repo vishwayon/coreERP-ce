@@ -11,17 +11,18 @@
  *
  * @author girish
  */
+
 namespace app\cwf\sys\controllers;
 
 use app\cwf\vsla\base\WebFormController;
 
-
 class FormController extends WebFormController {
+
     //put your code here
     public function actionConnectcompany() {
-        return $this->renderPartial('@app/cwf/fwShell/views/LogonSelectionView',['model'=>new \app\cwf\fwShell\models\LogonSelection()]);
-    }       
-    
+        return $this->renderPartial('@app/cwf/fwShell/views/LogonSelectionView', ['model' => new \app\cwf\fwShell\models\LogonSelection()]);
+    }
+
     public function actionFiscalmonth($formName) {
         // Find if fiscal months for connected finyear are created
         $finyear = \app\cwf\vsla\security\SessionManager::getSessionVariable('finyear');
@@ -29,20 +30,20 @@ class FormController extends WebFormController {
         $cmm->setCommandText('Select count(*) as fmcount From sys.fiscal_month Where finyear=:pfinyear;');
         $cmm->addParam('pfinyear', $finyear);
         $dt = \app\cwf\vsla\data\DataConnect::getData($cmm);
-        if($dt->Rows()[0]['fmcount']==0) {
+        if ($dt->Rows()[0]['fmcount'] == 0) {
             return $this->renderPartial('@app/cwf/sys/fiscalMonth/FiscalMonthWizView.twig', ['model' => ['finyear' => $finyear]]);
         } else {
             return $this->runAction('collection', ['formName' => $formName]);
         }
     }
-    
+
     public function actionFiscalMonthCreate() {
         $finyear = \app\cwf\vsla\security\SessionManager::getSessionVariable('finyear');
         $fm = new \app\cwf\sys\fiscalMonth\FiscalMonthCreator($finyear);
         $result = $fm->create();
         return json_encode($result);
     }
-    
+
     public function actionFetchBranchAddr($branch_id) {
         $cmm = new \app\cwf\vsla\data\SqlCommand();
         $sql = "Select a.gst_state_id, 
@@ -55,16 +56,16 @@ class FormController extends WebFormController {
         $cmm->setCommandText($sql);
         $cmm->addParam('pbranch_id', $branch_id);
         $dt = \app\cwf\vsla\data\DataConnect::getData($cmm);
-        if(count($dt->Rows())==1) {
+        if (count($dt->Rows()) == 1) {
             return json_encode($dt->Rows()[0]);
         }
         return json_encode([]);
-    }    
-    
+    }
+
     public function actionFetchBranchJwAddr($branch_id) {
         $cmm = new \app\cwf\vsla\data\SqlCommand();
         $sql = "Select a.gst_state_id, 
-                    a.gstin, coalesce(b.state_name, '') gst_state,
+                    a.gstin, Coalesce(b.state_name, '') gst_state,
                     a.address as addr
                 From sys.address a
                 Left Join tx.gst_state b On a.gst_state_id = b.gst_state_id
@@ -73,11 +74,11 @@ class FormController extends WebFormController {
         $cmm->setCommandText($sql);
         $cmm->addParam('pbranch_id', ($branch_id * -1));
         $dt = \app\cwf\vsla\data\DataConnect::getData($cmm);
-        if(count($dt->Rows())==1) {
+        if (count($dt->Rows()) == 1) {
             return json_encode($dt->Rows()[0]);
         }
         return json_encode([]);
-    }  
+    }
 
     public function actionUserAccessRights($rptOptions = "") {
         $viewOption = new \app\cwf\vsla\render\FormViewOptions();
@@ -91,7 +92,7 @@ class FormController extends WebFormController {
     public function actionGetUserAccessRightsData() {
         $rptParams = \yii::$app->request->getBodyParams();
         $cmm = new \app\cwf\vsla\data\SqlCommand();
-        $cmmText= "select a.user_id, user_name, full_user_name, email, mobile, is_active, 
+        $cmmText = "select a.user_id, user_name, full_user_name, email, mobile, is_active, 
                     is_admin, is_owner, b.branch_id, c.branch_name, b.role_id,d.role_name,
                     e.menu_id, f.menu_text, f.menu_type,
                     case f.menu_type
@@ -130,21 +131,33 @@ class FormController extends WebFormController {
         $cmm->addParam('pmenu_id', $rptParams['pmenu_id']);
         $dt = \app\cwf\vsla\data\DataConnect::getData($cmm);
         $columns = [
-             ['data' => 'branch_name', 'type' => 'string', 'title' => 'Branch'],
-             ['data' => 'user_name', 'type' => 'string', 'title' => 'User'],
-             ['data' => 'role_name', 'type' => 'string', 'title' => 'Role'],
-             ['data' => 'menu_type_text', 'type' => 'string', 'title' => 'Menu Type'],
-             ['data' => 'menu_text', 'type' => 'string', 'title' => 'Menu Text'],
-             ['data' => 'access_level', 'type' => 'string', 'title' => 'Access Level'],
-             ['data' => 'doc_stages', 'type' => 'string', 'title' => 'Doc Stage']
-            ];
+            ['data' => 'branch_name', 'type' => 'string', 'title' => 'Branch'],
+            ['data' => 'user_name', 'type' => 'string', 'title' => 'User'],
+            ['data' => 'role_name', 'type' => 'string', 'title' => 'Role'],
+            ['data' => 'menu_type_text', 'type' => 'string', 'title' => 'Menu Type'],
+            ['data' => 'menu_text', 'type' => 'string', 'title' => 'Menu Text'],
+            ['data' => 'access_level', 'type' => 'string', 'title' => 'Access Level'],
+            ['data' => 'doc_stages', 'type' => 'string', 'title' => 'Doc Stage']
+        ];
 
         $result = [
-         'columns' => $columns,
-         'data' => $dt->Rows()
+            'columns' => $columns,
+            'data' => $dt->Rows()
         ];
-        
+
         return json_encode($result);
     }
-   
+
+    public function actionListDocGroup() {
+        $cmm = new \app\cwf\vsla\data\SqlCommand();
+        $cmm->setCommandText("select false as select, doc_group_id, doc_group
+                                from sys.doc_group
+                                order by doc_group");
+        $dt = \app\cwf\vsla\data\DataConnect::getData($cmm);
+        $result = array();
+        $result['dt_doc_group'] = $dt;
+        $result['status'] = 'OK';
+        return json_encode($result);
+    }
+
 }

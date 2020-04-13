@@ -23,6 +23,7 @@ abstract class CwFrameworkType {
     const CWF_CONFIG = 'cwfConfig';
     const ALLOC_VIEW = 'alloc';
     const WIZARD_VIEW = 'wizard';
+    const DATASET_VIEW = 'datasetView';
     
     public function getType() {
         

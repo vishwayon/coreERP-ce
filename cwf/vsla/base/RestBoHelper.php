@@ -28,6 +28,8 @@ class RestBoHelper {
         $boInst = $xBo->buildBO($helperOption->inParam);
         if ($boInst instanceof \app\cwf\vsla\xmlbo\DocBo) {
             \app\cwf\vsla\security\AccessManager::applySecurity($boInst);
+            // get user preferences related to the BO
+            $boInst->setUserPref(\app\cwf\vsla\security\AccessManager::check_user_pref($boInst['__bo']));
             $xBo->callEventHandlerMethod('afterApplySecurity');
             if ($xBo->access_level > 1) {
                 $boInst->setAllowArchive(true);
@@ -47,15 +49,16 @@ class RestBoHelper {
                 }
             }
         }
-
-        if ($xBo->access_level == -1 || $xBo->access_level == 0) {
+        
+         if ($xBo->access_level == -1 || $xBo->access_level == 0) {
             $result['status'] = 'NOACCESS';
         } else {
             // prepare response
             $result['boData'] = $boInst->BOPropertyBag();
             $result['docSecurity'] = $boInst->getDocSecurity();
-
+            
             if ($boInst instanceof \app\cwf\vsla\xmlbo\DocBo) {
+                $result['userPref'] = $boInst->getUserPref();
                 $result['docStageInfo'] = $boInst->getDocStageInfo();
                 $result['docComments'] = \app\cwf\vsla\workflow\DocWorkflow::getWfHistory($boInst['__doc_id']);
                 $result['docArchiveStatus'] = \app\cwf\vsla\workflow\DocWorkflow::getArchiveStatus($boInst['__doc_id']);
@@ -132,12 +135,14 @@ class RestBoHelper {
             $boInst = $xBo->buildBO($helperOption->inParam);
             if (!$xBo->isNewDocument($boInst)) {
                 // If not new document, try to match last_updated
-                if (strtotime($boInst->last_updated) != strtotime($helperOption->postData->last_updated)) {
-                    // Do not allow save if the timestamps do not match
-                    $boInst->addBRule('Timestamp mismatch. Please re-open to edit');
-                    $result->SaveStatus = "FAILED";
-                    $result->BrokenRules = $boInst->getBRules();
-                    return $result;
+                if (array_key_exists('last_updated', $boInst->BOPropertyBag()) && property_exists($helperOption->postData, 'last_updated')) {
+                    if (strtotime($boInst->last_updated) != strtotime($helperOption->postData->last_updated)) {
+                        // Do not allow save if the timestamps do not match
+                        $boInst->addBRule('Timestamp mismatch. Please re-open to edit');
+                        $result->SaveStatus = "FAILED";
+                        $result->BrokenRules = $boInst->getBRules();
+                        return $result;
+                    }
                 }
             }
         }
@@ -239,6 +244,7 @@ class RestBoHelper {
                         $result->docStageInfo = $boInst->getDocStageInfo();
                         $result->docComments = \app\cwf\vsla\workflow\DocWorkflow::getWfHistory($boInst['__doc_id']);
                         $result->docArchiveStatus = \app\cwf\vsla\workflow\DocWorkflow::getArchiveStatus($boInst['__doc_id']);
+                        $result->userPref = $boInst->getUserPref();
                     }
                     // Fetch Pre-lookup text
                     \yii::beginProfile('PreLookup');

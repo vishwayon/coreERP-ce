@@ -35,8 +35,8 @@ class FiscalMonthCreator {
         $date_to = new \DateTime();
         $date_to->setDate(intval($date_from->format('Y')), intval($date_from->format('m')) + 1, 1);
         $date_to->sub(new \DateInterval('P1D'));
-        $sql = 'Insert Into sys.fiscal_month(fiscal_month_id, company_id, finyear, fiscal_month_desc, month_begin, month_end, month_close, last_updated)
-                Values(:pid, :pcompany_id, :pfinyear, :pfiscal_month_desc, :pmonth_begin, :pmonth_end, :pmonth_close, current_timestamp(0))';
+        $sql = "Insert Into sys.fiscal_month(fiscal_month_id, company_id, finyear, fiscal_month_desc, month_begin, month_end, month_close, last_updated, annex_info)
+                Values(:pid, :pcompany_id, :pfinyear, :pfiscal_month_desc, :pmonth_begin, :pmonth_end, :pmonth_close, current_timestamp(0), '{\"doc_group_ids\": \"{}\"}')";
         $cn = \app\cwf\vsla\data\DataConnect::getCn(\app\cwf\vsla\data\DataConnect::COMPANY_DB);
         try {            
             $cn->beginTransaction();

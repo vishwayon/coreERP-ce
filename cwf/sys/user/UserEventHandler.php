@@ -15,14 +15,6 @@ namespace app\cwf\sys\user;
  */
 class UserEventHandler extends \app\cwf\vsla\xmlbo\EventHandlerBase {
 
-    public function beforeFetch(&$criteriaparam) {
-        parent::beforeFetch($criteriaparam);
-
-        if ($this->bo->user_id == '' or $this->bo->user_id == -1) {
-            $this->bo->is_active = true;
-        }
-    }
-
     public function afterFetch($criteriaparam) {
         parent::afterFetch($criteriaparam);
         if ($this->bo->user_id != -1) {
@@ -30,6 +22,10 @@ class UserEventHandler extends \app\cwf\vsla\xmlbo\EventHandlerBase {
             $this->bo->user_pass_confirm = 'aaaaa';
         } else {
             $this->bo->user_pass_confirm = '';
+        }
+        
+        if ($this->bo->user_id == '' or $this->bo->user_id == -1) {
+            $this->bo->is_active = true;
         }
         $this->bo->is_admin = false;
         $this->createBranchTran();

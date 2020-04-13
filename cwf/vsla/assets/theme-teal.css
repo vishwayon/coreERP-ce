@@ -29,15 +29,15 @@ table caption h5{
     font-weight: normal;
 }
 
-form table thead tr {
+#bo-form table thead tr {
     border-top: 1px solid teal;
-    color: lightslategray;     
-    border-radius: 5px;
+    color: darkslategray;
 }
 
-form .table thead tr th {
+form .dataTable thead tr th {
     border-bottom: 1px solid teal;
     font-weight: normal;
+    color: white;
 }
 
 .ch5 {

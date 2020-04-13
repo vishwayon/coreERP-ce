@@ -113,12 +113,6 @@ class SessionManager {
     }
 
     public function isMobile() {
-        $mdetect = new \Mobile_Detect;
-        $isMobile = $mdetect->isMobile();
-        $isTablet = $mdetect->isTablet();
-        if(!$isTablet && $isMobile){
-            return TRUE;
-        }
         return FALSE;
     }
 
@@ -154,8 +148,9 @@ class SessionManager {
             // Auth info would contain core-session id if it is available
             self::getInstance($authInfo);
         }
+        \yii::$app->session->close();
     }
-    
+
     /**
      * Handles the specified request.
      * @param Request $request the request to be handled 
@@ -210,7 +205,7 @@ class SessionManager {
     }
 
     private static $branch_gst_state_info = null;
-    
+
     /**
      * Returns an Array of Connected Branch GST Information
      * 
@@ -221,7 +216,7 @@ class SessionManager {
      * 'state_name' => Branch State Name<br>
      * 'gst_state' => gst_state_code - state_name
      */
-    public static function getBranchGstInfo() : array {
+    public static function getBranchGstInfo(): array {
         if (self::$branch_gst_state_info == null) {
             $branch_id = self::getSessionVariable('branch_id');
             if ($branch_id != -1) {

@@ -13,5 +13,5 @@ class ReportView extends CwFrameworkType {
     }
     
     public $afterRefreshEvent = '';
+    public $exportView = '';
 }
-

@@ -1,0 +1,29 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="DocGroup" type="Master"  bindingBO="docGroup/DocGroup">
+        <header>Document Group</header>
+        <keyField>doc_group_id</keyField>
+        <newDocEnabled/>
+        <deleteDocEnabled/>
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="doc_group" label="Document Group" type="string" control="TextBox" size="s" maxLength="50"/>
+                <nextRow/> 
+                <tranSection label="Document(s)" editMode="Add|Edit|Delete">
+                    <dataBinding dataProperty="doc_group_tran">
+                        <field id="bo_id" label="Document Type" type="string" control="SmartCombo" size="s" isOptional="true">
+                            <lookup> 
+                                <valueMember>bo_id</valueMember>
+                                <displayMember>menu_text</displayMember>
+                                <namedLookup>../cwf/sys/lookups/BoWithPath.xml</namedLookup>
+                                <filter>menu_type in (0, 1)</filter>
+                            </lookup>    
+                        </field>
+                    </dataBinding>
+                </tranSection>  
+            </dataBinding> 
+        </controlSection>
+    </formView>
+</cwFramework>

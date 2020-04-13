@@ -16,14 +16,14 @@ class FormHelper {
         }
         $rndformopt = ' <div class="row cformheader">
                             <div class="row">
-                            <h3 id="hdr-form" class="col-md-4"><span id="span-hdr-form">'
+                            <h3 id="hdr-form" class="col-sm-7"><span id="span-hdr-form">'
                 . $formView->header . '</span>'
                 . self::addHelp($formView->helpLink)
                 . self::addDMFile($formView)
                 . ($formView->type == design\BusinessObject::TYPE_DOCUMENT ? self::addCommentInfo() : '')
                 . ($formView->type == design\BusinessObject::TYPE_MASTER ? self::addAudittrail() : '')
                 . '     </h3>
-                            <div class="col-md-8 cformheaderbuttons"><div class="btn-toolbar" role="toolbar">';
+                            <div class="col-sm-5 cformheaderbuttons"><div class="btn-toolbar" role="toolbar">';
         $rndformopt .= self::addclose($formView);
         if ($noActions == TRUE) {
             $rndformopt .= '    </div></div></div>';
@@ -95,7 +95,7 @@ class FormHelper {
                                     <div class="btn-toolbar" role="toolbar">
                                         <div class="btn-group" role="group" style="float:right;">
                                             <button id="cmdsave" class="btn btn-primary" 
-                                            data-bind="visible: $root.docSecurity.allowSave && $root.__editMode(), click: coreWebApp.DocSave.bind($data, '
+                                            data-bind="visible: $root.docSecurity.allowSave() && $root.__editMode(), click: coreWebApp.DocSave.bind($data, '
                 . $eventArg . ')" name="cmdsave" type="submit">
                                                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                                             </button>
@@ -122,19 +122,20 @@ class FormHelper {
     private static function addsave($formView) {
         $eventArg = '{
             formName: \'' . $formView->formName . '\',
+            afterSave: \'' . $formView->afterSaveEvent . '\',
             afterPost: \'' . $formView->afterPostEvent . '\',
             afterUnpost: \'' . $formView->afterUnpostEvent . '\'
             }';
         $res = '<div class="btn-group" role="group" style="float:right;">
                     <button id="cmdsave" class="btn btn-primary formoptions" 
-                        data-bind="visible: $root.docSecurity.allowSave && $root.__editMode(), click: coreWebApp.DocSave.bind($data, ' . $eventArg . ')"
+                        data-bind="visible: $root.docSecurity.allowSave() && $root.__editMode(), click: coreWebApp.DocSave.bind($data, ' . $eventArg . ')"
                         name="save-button" type="submit">
                         <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save
                     </button>
                 </div>
                 <div class="btn-group" role="group" style="float:right;">
                     <button id="cmdedit" class="btn btn-success formoptions" 
-                        data-bind="visible: !$root.__editMode() && $root.docSecurity.allowSave, click: coreWebApp.toggleEdit"
+                        data-bind="visible: !$root.__editMode() && $root.docSecurity.allowSave(), click: coreWebApp.toggleEdit"
                         name="edit-button" type="button">
                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit
                     </button>
@@ -189,7 +190,7 @@ class FormHelper {
             } elseif ($formView->type == design\BusinessObject::TYPE_MASTER) {
                 $archlabel = 'Archive';
             }
-            $res .= '   <li><a href="#" id="btn-archive" name="btn-archive" data-bind="visible: $root.docSecurity.allowArchive, click: $root.Archive.bind(\'bo-form\')"><span><i class="fa fa-archive" style="margin-right: 10px;"></i>  ' . $archlabel . '</span></a></li>
+            $res .= '   <li><a href="#" id="btn-archive" name="btn-archive" data-bind="visible: $root.docSecurity.allowArchive, click: $root.Archive.bind(\'bo-form\')"><span><i class="glyphicon glyphicon-ban-circle" style="margin-right: 10px;"></i>  ' . $archlabel . '</span></a></li>
                         <li role="separator" class="divider" data-bind="visible: $root.docSecurity.allowArchive"></li>';
         }
         if ($formView->printViewExists()) {

@@ -35,8 +35,12 @@ class SiteController extends Controller {
                 'class' => 'yii\web\ErrorAction',
             ],
             'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+                'class' => 'app\cwf\vsla\extendYii\CaptchaAction', //'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? '12345' : null,
+                'width' => 150,
+                'maxLength' => 5,
+                'minLength' => 5,
+                'offset' => 3
             ],
             'auth' => [
                 'class' => 'yii\authclient\AuthAction',
@@ -64,7 +68,31 @@ class SiteController extends Controller {
     }
 
     public function actionIndex() {
-        return $this->actionLogin();
+        return $this->actionAuthUser();
+        //return $this->actionLogin();
+    }    
+    
+    public function actionAuthUser() {
+        // Check if user has already logged in then use existing auth info          
+        // This is already set in app_start event
+        if (\app\cwf\vsla\security\SessionManager::getAuthStatus()) {
+            return $this->redirect(\yii\helpers\Url::toRoute('/cwf/fwShell/main/index'));
+        }
+        
+        $model = new \app\cwf\fwShell\models\UserCaptcha();
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->validUser()) {
+            \yii::$app->session->open();
+            \yii::$app->session->addFlash('username', $model->username);
+            \yii::$app->session->close();
+            $login = new \app\cwf\fwShell\models\Login();
+            $login->full_user_name = $model->full_user_name;
+            return $this->render('auth/user-pass', ['model' => $login]);
+        } else {
+            if ($model->username != '') {
+                $model->addError('username', 'Invalid Username');
+            }
+            return $this->render('auth/user', ['model' => $model]);
+        }
     }
 
     public function actionLogin() {
@@ -74,9 +102,8 @@ class SiteController extends Controller {
             return $this->redirect(\yii\helpers\Url::toRoute('/cwf/fwShell/main/index'));
         }
 
-        $model = new \app\cwf\fwShell\models\Login();
-
-        if ($model->load(Yii::$app->request->post())) {
+        $model = new \app\cwf\fwShell\models\Login(['username' => \yii::$app->session->getFlash('username', [''])[0]]);
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             // User is logging in for first time, try to authenticate
             if ($model->login()) {
                 // Gets the authentication session id and adds it to the cookie
@@ -95,8 +122,9 @@ class SiteController extends Controller {
                 \yii::$app->session['authid'] = $uinfo->getAuth_ID();
                 return $this->redirect(\yii\helpers\Url::toRoute(['/cwf/fwShell/main/index', 'core-sessionid' => $uinfo->getSession_ID()]));
             } else {
+                \yii::info('Login failed');
                 \yii::$app->response->clear();
-                return $this->render('login', ['model' => $model]);
+                return $this->render('auth/user', ['model' => new \app\cwf\fwShell\models\UserCaptcha(['msg' => $model->msg])]);
             }
         } else {
             // provide the login screen to the user (with any oauth messages)
@@ -106,7 +134,7 @@ class SiteController extends Controller {
                 \yii::$app->session->removeAllFlashes();
             }
             \Yii::$app->session->destroy(); // This would destroy any cached session
-            return $this->render('login', ['model' => $model]);
+            return $this->render('auth/user', ['model' => new \app\cwf\fwShell\models\UserCaptcha(['msg' => $model->msg])]);
         }
     }
 
@@ -136,8 +164,8 @@ class SiteController extends Controller {
         }
         // Validate new password
         $pwr->validate();
-        if (count($pwr->error) > 0) {
-            return $this->render("@app/views/site/pwd-force-change", ['token' => $token, 'msg' => $pwr->error[0], 'redirect' => false]);
+        if (count($pwr->errors) > 0) {
+            return $this->render("@app/views/site/pwd-force-change", ['token' => $token, 'msg' => $pwr->errors[0], 'redirect' => false]);
         } else {
             PassReset::validateResetRequest($token);
             $pwdHash = \Yii::$app->getSecurity()->generatePasswordHash($pwr->passkey);
@@ -157,7 +185,6 @@ class SiteController extends Controller {
             \Yii::$app->cache->flush();
             \Yii::$app->session->destroy();
         } else {
-            \Yii::$app->cache->flush();
             \Yii::$app->session->destroy();
         }
         return $this->redirect(\yii\helpers\Url::home(true));

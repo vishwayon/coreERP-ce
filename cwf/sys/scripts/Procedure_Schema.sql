@@ -342,6 +342,7 @@ $BODY$
 ?==?
 CREATE OR REPLACE FUNCTION sys.sp_status_update_es(
     pvoucher_id character varying,
+    pdoc_date date,
     pcurrent_status smallint,
     pnew_status smallint,
     pfull_user_name character varying,
@@ -350,21 +351,23 @@ CREATE OR REPLACE FUNCTION sys.sp_status_update_es(
 $BODY$
 Begin
 	if not exists (Select * from sys.doc_es where voucher_id=pvoucher_id) Then
-		Insert into sys.doc_es(voucher_id, entered_by, entered_user, entered_on, posted_by, posted_user, posted_on)
-		Select pvoucher_id, pfull_user_name, puser_name, current_timestamp(0), '', '', NULL;
+		Insert into sys.doc_es(voucher_id, doc_date, entered_by, entered_user, entered_on, posted_by, posted_user, posted_on)
+		Select pvoucher_id, pdoc_date, pfull_user_name, puser_name, current_timestamp(0), '', '', NULL;
 	End If;
 
 	IF pnew_status = 5 Then 
 		Update sys.doc_es 
 		Set posted_by=pfull_user_name,
 		    posted_user=puser_name,
-		    posted_on=current_timestamp(0)
+		    posted_on=current_timestamp(0),
+                    doc_date=pdoc_date
 		where voucher_id=pvoucher_id;
 	Else
 		Update sys.doc_es 
 		Set posted_by='',
 		    posted_user='',
-		    posted_on=NULL
+		    posted_on=NULL,
+                    doc_date=pdoc_date
 		where voucher_id=pvoucher_id;
 	End If;
 END;
@@ -425,6 +428,10 @@ Begin
 		Select a.menu_id, a.role_id, cast(a.en_access_level_report as integer), a.branch_id, 3 as menu_type
 		from sys.role_access_level_report a
                 where a.en_access_level_report <>0 and a.branch_id=pbranch_id
+                union all
+		Select a.menu_id, a.role_id, cast(a.en_access_level_dataset as integer), a.branch_id, 3 as menu_type
+		from sys.role_access_level_dataset a
+                where a.en_access_level_dataset <>0 and a.branch_id=pbranch_id
 		union all
 		Select a.menu_id, a.role_id, cast(a.en_access_level_ui_form as integer), a.branch_id, 4 as menu_type
 		from sys.role_access_level_ui_form a
@@ -567,6 +574,11 @@ Begin
 		Select a.branch_id, a.role_id
 		from sys.role_access_level_report a
                 where a.en_access_level_report <>0
+                GROUP BY a.branch_id, a.role_id
+                union all
+		Select a.branch_id, a.role_id
+		from sys.role_access_level_dataset a
+                where a.en_access_level_dataset <>0
                 GROUP BY a.branch_id, a.role_id
 		union all
 		Select a.branch_id, a.role_id
@@ -722,6 +734,7 @@ CREATE OR REPLACE FUNCTION sys.sp_doc_wf_move(
     pdoc_id character varying,
     pbranch_id BigInt,
     pfinyear character varying,
+    pdoc_date date,
     pbo_id character varying,
     pedit_view character varying,
     pdoc_name character varying,
@@ -740,9 +753,9 @@ Begin
 
 	If Exists(Select doc_id from sys.doc_wf where doc_id=pdoc_id) Then
 		-- Move existing record to history (current action sent_on time becomes acted_on for previous record)
-		Insert Into sys.doc_wf_history (doc_wf_history_id, doc_id, branch_id, finyear, bo_id, edit_view, doc_name, 
+		Insert Into sys.doc_wf_history (doc_wf_history_id, doc_id, branch_id, finyear, doc_date, bo_id, edit_view, doc_name, 
 			doc_sender_comment, user_id_from, doc_sent_on, doc_action, user_id_to, doc_acted_on, doc_stage_id_from, doc_stage_id, last_updated)
-		Select md5(a.doc_id || a.doc_sent_on)::uuid, a.doc_id, a.branch_id, a.finyear, a.bo_id, a.edit_view, a.doc_name, 
+		Select md5(a.doc_id || a.doc_sent_on)::uuid, a.doc_id, a.branch_id, a.finyear, pdoc_date, a.bo_id, a.edit_view, a.doc_name, 
 			a.doc_sender_comment, a.user_id_from, a.doc_sent_on, a.doc_action, a.user_id_to, pdoc_sent_on, a.doc_stage_id_from, a.doc_stage_id, a.last_updated
 		From sys.doc_wf a 
 		Where a.doc_id=pdoc_id;
@@ -750,6 +763,7 @@ Begin
 		Update sys.doc_wf a
 		Set 	branch_id = pbranch_id,
                         finyear = pfinyear,
+                        doc_date = pdoc_date,
                         bo_id = pbo_id,
 			edit_view = pedit_view,
 			doc_name = pdoc_name,
@@ -764,18 +778,18 @@ Begin
 		Where a.doc_id=pdoc_id;
 	Else
 		-- Is a first time insert
-		Insert Into sys.doc_wf (doc_id, branch_id, finyear, bo_id, edit_view, doc_name, 
+		Insert Into sys.doc_wf (doc_id, branch_id, bo_id, finyear, doc_date, edit_view, doc_name, 
 			doc_sender_comment, user_id_from, doc_sent_on, doc_action, user_id_to, doc_stage_id_from, doc_stage_id, last_updated)
-		Values (pdoc_id, pbranch_id, pfinyear, pbo_id, pedit_view, pdoc_name, 
+		Values (pdoc_id, pbranch_id, pbo_id, pfinyear, pdoc_date, pedit_view, pdoc_name, 
 			pdoc_sender_comment, puser_id_from, pdoc_sent_on, pdoc_action, puser_id_to, pdoc_stage_id_from, pdoc_stage_id, current_timestamp(0));
 	End If;
 
                 
         -- Move the record if Action is Post
         If pdoc_action = 'P' Then
-                Insert Into sys.doc_wf_history (doc_wf_history_id, doc_id, branch_id, finyear, bo_id, edit_view, doc_name, 
+                Insert Into sys.doc_wf_history (doc_wf_history_id, doc_id, branch_id, finyear, doc_date, bo_id, edit_view, doc_name, 
                         doc_sender_comment, user_id_from, doc_sent_on, doc_action, user_id_to, doc_acted_on, doc_stage_id_from, doc_stage_id, last_updated)
-                Select md5(a.doc_id || a.doc_sent_on)::uuid, a.doc_id, a.branch_id, a.finyear, a.bo_id, a.edit_view, a.doc_name, 
+                Select md5(a.doc_id || a.doc_sent_on)::uuid, a.doc_id, a.branch_id, a.finyear, pdoc_date, a.bo_id, a.edit_view, a.doc_name, 
                         a.doc_sender_comment, a.user_id_from, a.doc_sent_on, a.doc_action, a.user_id_to, pdoc_sent_on, a.doc_stage_id_from, a.doc_stage_id, a.last_updated
                 From sys.doc_wf a 
                 Where a.doc_id=pdoc_id;
@@ -984,7 +998,7 @@ Begin
 	Inner Join sys.role_access_level b on a.role_id = b.role_id
 	Inner Join sys.user_branch_role c on a.role_id = c.role_id
 	Inner Join sys.menu d on b.menu_id = d.menu_id
-	where b.en_access_level <> 0 and c.branch_id = pbranch_id and c.user_id = puser_id and d.menu_type in (1,4)
+	where b.en_access_level <> 0 and c.branch_id = pbranch_id and c.user_id = puser_id and d.menu_type in (1,2,4)
 	Group By b.menu_id, c.branch_id, d.menu_type;
 	
 	with recursive menu_parts(menu_id, en_access_level, branch_id, menu_type)
@@ -1017,6 +1031,7 @@ CREATE OR REPLACE FUNCTION sys.sp_doc_wf_archive(
     pdoc_id character varying,
     pbranch_id BigInt,
     pfinyear character varying,
+    pdoc_date date,
     pbo_id character varying,
     pedit_view character varying,
     pdoc_name character varying,
@@ -1032,18 +1047,18 @@ Declare
 Begin
 
     if exists (select * from  sys.doc_wf a Where a.doc_id=pdoc_id) Then 
-        Insert Into sys.doc_wf_history (doc_wf_history_id, doc_id, branch_id, finyear, bo_id, edit_view, doc_name, 
+        Insert Into sys.doc_wf_history (doc_wf_history_id, doc_id, branch_id, finyear, doc_date, bo_id, edit_view, doc_name, 
                 doc_sender_comment, user_id_from, doc_sent_on, doc_action, user_id_to, doc_acted_on, doc_stage_id_from, doc_stage_id, last_updated)
-        Select md5(a.doc_id || a.doc_sent_on)::uuid, a.doc_id, a.branch_id, a.finyear, a.bo_id, a.edit_view, a.doc_name, 
+        Select md5(a.doc_id || a.doc_sent_on)::uuid, a.doc_id, a.branch_id, a.finyear, pdoc_date, a.bo_id, a.edit_view, a.doc_name, 
                 pdoc_sender_comment, puser_id_from, a.doc_sent_on, pdoc_action, puser_id_to, a.doc_sent_on, a.doc_stage_id_from, a.doc_stage_id, current_timestamp(0)
         From sys.doc_wf a 
         Where a.doc_id=pdoc_id;
         -- Remove the record
         Delete From sys.doc_wf Where doc_id=pdoc_id;
     Else
-        Insert Into sys.doc_wf_history (doc_wf_history_id, doc_id, branch_id, finyear, bo_id, edit_view, doc_name, 
+        Insert Into sys.doc_wf_history (doc_wf_history_id, doc_id, branch_id, finyear, doc_date, bo_id, edit_view, doc_name, 
                 doc_sender_comment, user_id_from, doc_sent_on, doc_action, user_id_to, doc_acted_on, doc_stage_id_from, doc_stage_id, last_updated)
-        values(md5(pdoc_id || ((current_timestamp(0))::varchar))::uuid, pdoc_id, pbranch_id, pfinyear, pbo_id, pedit_view, pdoc_name, 
+        values(md5(pdoc_id || ((current_timestamp(0))::varchar))::uuid, pdoc_id, pbranch_id, pfinyear, pdoc_date, pbo_id, pedit_view, pdoc_name, 
                 pdoc_sender_comment, puser_id_from, current_timestamp(0), pdoc_action, puser_id_to, current_timestamp(0), pdoc_stage_id_from, pdoc_stage_id, current_timestamp(0));
     End If;
 End;

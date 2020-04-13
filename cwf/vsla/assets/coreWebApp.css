@@ -197,7 +197,7 @@ html,body{height:100%;}
 }
 
 small, .small {font-size: 60%;}
-.navbar-header {width: 20%;}
+
 .wrap{padding-bottom: 0px; background-color: #FAFAFA;}
 .kv-sidenav li a {
     border-bottom: none;
@@ -233,11 +233,12 @@ aside {
     display: block;
     float: left;
     height: 68px;
-    width: 204px;
+    width: 180px;
 }
 
 .navbar-header a{
-    padding: 0px 0px 0px 15px; margin-top: -5px;
+    padding: 0px 0px 0px 15px; 
+    margin-top: -5px;
 }
 .container{left: 0px;}
 a:focus{outline: none;}
@@ -518,7 +519,7 @@ form .row{
 
 @media only screen and (min-device-width: 768px) {
     .view-min-width {
-        min-width: 819px;
+        /*min-width: 819px;*/
     }
 }
 .view-window1 {    
@@ -783,3 +784,12 @@ tr.shown td.details-control {
     background-color: teal;
     color: white;
 }
+
+/* Spin glyphicons */
+.glyphicon-spin {
+  -webkit-animation: spin 2s infinite linear;
+  -moz-animation: spin 2s infinite linear;
+  -o-animation: spin 2s infinite linear;
+  animation: spin 2s infinite linear;
+}
+

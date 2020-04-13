@@ -6,6 +6,7 @@ namespace app\cwf\vsla\utils;
 class FormatHelper {
     
     private static $nf = null;
+    private static $nfq = null;
     
     /*
      * Returns a string representation of the number with format e.g. 2,678.98
@@ -35,7 +36,19 @@ class FormatHelper {
     }
     
     public static function FormatQty($value) {
-        return number_format($value, \app\cwf\vsla\Math::$qtyScale, "." , ",");
+        //return number_format($value, \app\cwf\vsla\Math::$amtScale, "." , ",");
+        if(self::$nfq == null) {
+            if(\app\cwf\vsla\security\SessionManager::getCCYSystem() == 'l') {
+                self::$nfq = new \NumberFormatter($locale = 'en_IN', \NumberFormatter::DECIMAL);
+                self::$nfq->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, \app\cwf\vsla\Math::$qtyScale);
+                self::$nfq->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, \app\cwf\vsla\Math::$qtyScale);
+            } else {
+                self::$nfq = new \NumberFormatter($locale = 'en_US', \NumberFormatter::DECIMAL);
+                self::$nfq->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, \app\cwf\vsla\Math::$qtyScale);
+                self::$nfq->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, \app\cwf\vsla\Math::$qtyScale);
+            }
+        }
+        return self::$nfq->format($value); 
     }
     
     public static function FormatFC($value) {

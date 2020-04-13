@@ -69,30 +69,17 @@ class DbUtilities {
             array_push($outFiles, $fileInfo);
         }
         
-        // compress output (if required)
+        // tar output (if required)
         if ($this->cwfConfig->dbBackup->compress=="singleFile") {
             $tarFileName = $this->cwfConfig->dbBackup->path."data-".$this->cwfConfig->dbInfo->suName."-backup_".date("Ymd_Hi", time()).".tar";
             $tar = new \PharData($tarFileName);
             foreach($outFiles as $outFile) {
                 $tar->addFile($tmpBkupPath.$outFile->outFile, $outFile->outFile);
             }
-            $tar->compress(\Phar::GZ);
-            
-            // remove the temp tar file
-            unlink($tarFileName);
             // remove the temp directory
             $this->removeDir($tmpBkupPath);
-        } else if ($this->cwfConfig->dbBackup->compress=="multiFile") {
-            foreach($outFiles as $outFile) {
-                $tarFileName = $this->cwfConfig->dbBackup->path.$outFile->dbName."/".str_replace(".backup", "", $outFile->outFile).".tar";
-                $bkupFileName = $this->cwfConfig->dbBackup->path.$outFile->dbName."/".$outFile->outFile;
-                $tar = new \PharData($tarFileName);
-                $tar->addFile($bkupFileName, $outFile->outFile);
-                $tar->compress(\Phar::GZ);
-                unlink($tarFileName);
-                unlink($bkupFileName);
-            }
         }
+        // no action required for multiFile as it is already in separate folders
     }
     
     private function removeDir($dirPath) {

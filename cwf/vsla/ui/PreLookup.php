@@ -104,7 +104,7 @@ class PreLookup {
 
     private function getLookupResult($fieldDef, $valueid) {
         $result = new PreLookupResult();
-        $result->lookupid = (string) $fieldDef->lookup->namedLookup . "|" . (string) $fieldDef->lookup->displayMember . "|" . (string) $fieldDef->lookup->valueMember . "|" . $fieldDef->attributes()->id;
+        $result->lookupid = str_replace('../', '@app/', (string) $fieldDef->lookup->namedLookup) . "|" . (string) $fieldDef->lookup->displayMember . "|" . (string) $fieldDef->lookup->valueMember . "|" . $fieldDef->attributes()->id;
         $result->valueid = $valueid;
         // First try to find in existing array
         foreach ($this->lookupResults as $oldr) {

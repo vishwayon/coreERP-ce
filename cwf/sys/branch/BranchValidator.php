@@ -70,9 +70,9 @@ class BranchValidator extends \app\cwf\vsla\xmlbo\ValidatorBase {
             $this->bo->addBRule('GSTIN does not belong to GST State.');
         }
         if($this->bo->gstin != substr($this->bo->gst_state_id, 0, 2)){
-            if(!preg_match("/^[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9A-Za-z]{1}[Z]{1}[0-9a-zA-Z]{1}$/", $this->bo->gstin)){
+            if (!\app\cwf\vsla\utils\ValidationHelper::validateGSTIN($this->bo->gstin)) {
                 $this->bo->addBRule('Tax Regn Details : Invalid GSTIN.');
-            }        
+            }
         }
     }
 }

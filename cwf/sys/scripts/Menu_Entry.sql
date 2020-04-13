@@ -56,3 +56,19 @@ insert INTO sys.menu(menu_id, parent_menu_id, menu_key, menu_name, menu_text, me
 Select (select max(menu_id) + 1 from sys.menu), sys.fn_get_menu_id_by_name('mnuSystem'), sys.sp_get_menu_key('mnuSystem'), 'mnuAttView', 'Audit Trail', 4, NULL, false, current_timestamp(0), 'cwf/sys/main/view-audit-trail';
 
 ?==?
+insert into sys.menu(menu_id, parent_menu_id, menu_key, menu_name, menu_text, menu_type, bo_id, is_hidden, last_updated, link_path)
+Select (select max(menu_id) + 1 from sys.menu), sys.fn_get_menu_id_by_name('mnuSystem'), sys.sp_get_menu_key('mnuSystem'), 'mnuPendingDocsPrint', 'Pending Docs Print', 3, md5('PendingDocs')::uuid, false, current_timestamp(0), 'cwf/fwShell/jreport/viewer&xmlPath=../cwf/sys/pendingDocs/PendingDocs';
+
+?==?
+INSERT INTO sys.menu(menu_id, parent_menu_id, menu_key, menu_name, menu_text, menu_type, bo_id, is_hidden, last_updated, link_path)
+Select (select max(menu_id) + 1 from sys.menu), sys.fn_get_menu_id_by_name('mnuSystem'), sys.sp_get_menu_key('mnuSystem'), 'mnuDocGroup', 'Document Group', 2, md5('DocGroup')::uuid, false, current_timestamp(0),'cwf/sys/form/collection&formName=docGroup/DocGroupCollectionView';
+
+?==?
+INSERT INTO sys.menu(menu_id, parent_menu_id, menu_key, menu_name, menu_text, menu_type, bo_id, is_hidden, last_updated, link_path)
+Select (select max(menu_id) + 1 from sys.menu), sys.fn_get_menu_id_by_name('mnuSystem'), sys.sp_get_menu_key('mnuSystem'), 'mnuFiscalMonth', 'Fiscal Month', 2, md5('FiscalMonth')::uuid, false, current_timestamp(0), 'cwf/sys/form/fiscalmonth&formName=fiscalMonth/FiscalMonthCollectionView';
+
+?==?
+INSERT INTO sys.menu(menu_id, parent_menu_id, menu_key, menu_name, menu_text, menu_type, bo_id, is_hidden, last_updated, link_path)
+Select (select max(menu_id) + 1 from sys.menu), sys.fn_get_menu_id_by_name('mnuSystem'), sys.sp_get_menu_key('mnuSystem'), 'mnuUserPref', 'User Preference', 2, md5('UserPref')::uuid, false, current_timestamp(0), 'cwf/sys/form/collection&formName=userPref/UserPrefCollectionView';
+
+?==?

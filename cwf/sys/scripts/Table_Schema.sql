@@ -139,6 +139,7 @@ CREATE TABLE sys.doc_seq
 ?==?
 Create table sys.doc_es(
 	voucher_id varchar(50) not null primary key,	
+        doc_date date not null default '1970-01-01',
 	entered_by varchar(100) not null default '',
 	entered_user varchar(20) not null default '',
 	entered_on timestamp null,
@@ -162,6 +163,7 @@ Create Table sys.doc_created
 ?==?
 Create Table sys.doc_wf
 (	doc_id Varchar(50) Not Null,
+        doc_date date NOT NULL default '1970-01-01',
         branch_id BigInt Not Null,
         finyear varchar(4) not null default '',
 	bo_id Varchar(250) Not Null,
@@ -183,6 +185,7 @@ Create Table sys.doc_wf
 Create Table sys.doc_wf_history
 (	doc_wf_history_id uuid NOT NULL, 
 	doc_id Varchar(50) Not Null,
+        doc_date date NOT NULL default '1970-01-01',
         branch_id BigInt,
         finyear varchar(4) not null default '',
 	bo_id Varchar(250) Not Null,
@@ -316,6 +319,7 @@ Create Table sys.fiscal_month
 	month_end Date Not Null, 
 	month_close boolean Not Null, 
 	last_updated timestamp Not Null,
+        annex_info jsonb not null default '{}',
 	Constraint pk_sys_fiscal_month Primary Key
 	(fiscal_month_id)
 );
@@ -673,6 +677,16 @@ Create Table sys.rpt_option
 Insert into sys.mast_seq values('sys.rpt_option', 0);
 
 ?==?
+Create Table sys.rpt_user_pref
+(	rpt_user_pref_id uuid Not Null, 
+ 	rpt_id Text Not Null, 
+ 	user_id BigInt Not Null, 
+ 	jdata JsonB Not Null, 
+ 	last_updated TimeStamp Not Null,
+ 	Constraint pk_sys_rpt_user_pref Primary Key (rpt_user_pref_id)
+);
+
+?==?
 CREATE TABLE sys.import_log
 (
 	import_log_id bigint NOT NULL,
@@ -1020,5 +1034,84 @@ Values('IO', '{"min":"0","max":"10","user_to":"-1"}'),
         ('IO', '{"min":"10","max":"30","user_to":"-1"}'),
         ('CL', '{"min":"0","max":"10","user_to":"-1"}'),
         ('CL', '{"min":"10","max":"25","user_to":"-1"}');
+
+?==?
+create table sys.data_set
+(
+	ds_id serial not null,
+	ds_name varchar(100) not null,
+	ds_desc varchar(500) not null,
+	ds_path varchar(500) not null,
+	last_updated timestamp without time zone NOT NULL,
+	CONSTRAINT pk_st_data_set PRIMARY KEY (ds_id),
+	CONSTRAINT uk_st_data_set UNIQUE (ds_name)
+);
+
+?==?
+CREATE TABLE sys.role_access_level_dataset
+(
+	role_access_level_dataset_id varchar(50) NOT NULL,
+	role_id bigint NOT NULL,
+	menu_id bigint NOT NULL,
+	en_access_level_dataset smallint NOT NULL,
+	branch_id bigint NOT NULL,
+
+	CONSTRAINT pk_sys_role_access_level_dataset PRIMARY KEY (role_access_level_dataset_id),
+	CONSTRAINT uk_sys_role_access_level_dataset UNIQUE (role_id, branch_id, menu_id),
+	CONSTRAINT fk_sys_role_access_level_dataset_role FOREIGN KEY (role_id)
+		REFERENCES sys.role (role_id) MATCH SIMPLE
+		ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+
+?==?
+CREATE TABLE sys.doc_group
+(
+  doc_group_id bigint NOT NULL,
+  doc_group varchar(50) NOT NULL,
+  company_id bigint NOT NULL,
+  last_updated timestamp Not Null default current_timestamp(0),
+  CONSTRAINT pk_sys_doc_group PRIMARY KEY (doc_group_id)
+);
+
+?==?
+Insert into sys.mast_seq(mast_seq_type, seed)
+Select 'sys.doc_group', 0;
+
+?==?
+create table sys.doc_group_tran
+(
+  doc_group_tran_id varchar(50),
+  doc_group_id bigint not null,
+  bo_id uuid NOT NULL,
+  last_updated timestamp without time zone not null DEFAULT now(),
+  CONSTRAINT pk_doc_group_tran PRIMARY KEY (doc_group_tran_id),
+  CONSTRAINT uk_doc_group_tran UNIQUE (bo_id)
+);
+
+?==?
+create table sys.user_pref
+(
+	user_pref_id bigint not null,
+	company_id bigint not null,
+	user_id bigint not null,
+	pref_info jsonb not null default '{}',
+	last_updated timestamp without time zone NOT NULL DEFAULT current_timestamp(0),
+	Constraint pk_sys_user_pref Primary Key	(user_pref_id),
+	Constraint uk_sys_user_pref Unique (user_id)
+);
+
+?==?
+Insert into sys.mast_seq(mast_seq_type, seed)
+Select 'sys.user_pref', 0;
+
+?==?
+create foreign table sys.user_to_company
+(
+  user_to_company_id varchar(50),
+  user_id bigint not null,
+  company_id bigint not null,
+  last_updated timestamp not null
+)
+server {dbMain} options(table_name 'user_to_company' );
 
 ?==?

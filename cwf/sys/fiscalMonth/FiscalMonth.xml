@@ -6,6 +6,9 @@
         <controlTable>
             <tableName>sys.fiscal_month</tableName>
             <primaryKey>fiscal_month_id</primaryKey>
+            <jsonField id="annex_info">
+                <jfield name="doc_group_ids" type="string"/>
+            </jsonField>
             <fetchOrCreate>
                 <useEntity/>
             </fetchOrCreate>

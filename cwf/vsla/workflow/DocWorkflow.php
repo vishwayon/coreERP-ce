@@ -39,12 +39,13 @@ class DocWorkflow {
         }
         
         $cmm = new \app\cwf\vsla\data\SqlCommand();
-        $cmm->setCommandText('Select * From sys.sp_doc_wf_move(:pdoc_id, :pbranch_id, :pfinyear, :pbo_id, :pedit_view, :pdoc_name, 
+        $cmm->setCommandText('Select * From sys.sp_doc_wf_move(:pdoc_id, :pbranch_id, :pfinyear, :pdoc_date, :pbo_id, :pedit_view, :pdoc_name, 
             :pdoc_sender_comment, :puser_id_from, :pdoc_sent_on, :pdoc_action, :puser_id_to, :pdoc_stage_id_from, :pdoc_stage_id)');
         $acted_on = date('Y-m-d H:i:s', time());
         $cmm->addParam('pdoc_id', $wfOption->doc_id);
         $cmm->addParam('pbranch_id', $wfOption->branch_id);
         $cmm->addParam('pfinyear', \app\cwf\vsla\security\SessionManager::getInstance()->getSessionVariable('finyear'));
+        $cmm->addParam('pdoc_date', $wfOption->doc_date);
         $cmm->addParam('pbo_id', $wfOption->bo_id);
         $cmm->addParam('pedit_view', $wfOption->edit_view);
         $cmm->addParam('pdoc_name', $wfOption->doc_name);
@@ -159,7 +160,7 @@ class DocWorkflow {
                 $cmmrej = new \app\cwf\vsla\data\SqlCommand();
                 $sqlrej = 'Select a.user_id_from, b.full_user_name as user_id_from_name, b.email as user_id_from_email, a.doc_stage_id_from From sys.doc_wf a
                         Inner Join sys.user b On a.user_id_from = b.user_id
-                        Where a.doc_id=:pdoc_id And a.user_id_to=:puser_id';
+                        Where a.doc_id=:pdoc_id And a.user_id_to=:puser_id And b.is_active';
                 $cmmrej->setCommandText($sqlrej);
                 $cmmrej->addParam('pdoc_id', $doc_id);
                 $cmmrej->addParam('puser_id', $user_id);
@@ -175,7 +176,7 @@ class DocWorkflow {
                 $cmmrej = new \app\cwf\vsla\data\SqlCommand();
                 $sqlrej = 'Select a.user_id_from, b.full_user_name as user_id_from_name, b.email as user_id_from_email, a.doc_stage_id_from From sys.doc_wf_history a
                         Inner Join sys.user b On a.user_id_from = b.user_id
-                        Where a.doc_id=:pdoc_id And a.user_id_to=:puser_id And doc_action in (\'S\', \'A\')
+                        Where a.doc_id=:pdoc_id And a.user_id_to=:puser_id And doc_action in (\'S\', \'A\') And b.is_active
                         Order by a.last_updated desc Limit 1';
                 $cmmrej->setCommandText($sqlrej);
                 $cmmrej->addParam('pdoc_id', $doc_id);
@@ -188,6 +189,7 @@ class DocWorkflow {
                 }
             }
         }
+        return [];
     }
     
     public static function getWfHistory($doc_id) {
@@ -195,12 +197,14 @@ class DocWorkflow {
         $sql = 'With doc_wf
                 As
                 (
-                    Select b.full_user_name, a.doc_action, a.doc_sender_comment, doc_sent_on
+                    Select b.full_user_name, a.doc_action, a.doc_sender_comment, 
+                        to_char(a.doc_sent_on, \'YYYY-MM-DD"T"HH24:MI:SS\') doc_sent_on
                     From sys.doc_wf a 
                     Inner Join sys.user b On a.user_id_from = b.user_id
                     Where a.doc_id = :pdoc_id            
                     Union All
-                    Select b.full_user_name, a.doc_action, a.doc_sender_comment, doc_sent_on
+                    Select b.full_user_name, a.doc_action, a.doc_sender_comment, 
+                        to_char(a.doc_sent_on, \'YYYY-MM-DD"T"HH24:MI:SS\') doc_sent_on
                     From sys.doc_wf_history a 
                     Inner Join sys.user b On a.user_id_from = b.user_id
                     Where a.doc_id = :pdoc_id
@@ -246,7 +250,7 @@ class DocWorkflow {
     public static function getArchiveStatus($doc_id){
         $isArchived = FALSE;
         $cmm = new \app\cwf\vsla\data\SqlCommand();
-        $sql = 'Select doc_action, doc_sender_comment, doc_sent_on
+        $sql = 'Select doc_action, doc_sender_comment, to_char(doc_sent_on, \'YYYY-MM-DD"T"HH24:MI:SS\') doc_sent_on
                     From sys.doc_wf_history
                     Where doc_id = :pdoc_id
                     Order By last_updated Desc limit 1';

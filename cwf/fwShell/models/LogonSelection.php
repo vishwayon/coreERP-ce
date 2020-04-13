@@ -39,7 +39,7 @@ class LogonSelection {
         if (count($dtcompany->Rows()) === 0) {
             $linkitem = '<span>You do not have access to any company.<br> Please contact system administrator for granting access.<span>';
         } else {
-            $linkitem = '<span>Select a company</span><br><br>'
+            $linkitem = '<span>Select Company</span><br><br>'
                     . '<div id="ccompanyinfo" style="overflow: auto;">';
             foreach ($dtcompany->Rows() as $rw) {
                 if ($rw['database'] == '') {
@@ -106,7 +106,7 @@ lnkitm;
         }
         $cmm = new \app\cwf\vsla\data\SqlCommand();
         if ($this->userinfo->isOwner() || $this->userinfo->isAdmin()) {
-            $cmmtext = 'select a.branch_id, a.branch_name, a.branch_address, a.date_format '
+            $cmmtext = 'select a.branch_id, a.branch_name, a.branch_address, a.date_format, a.branch_code '
                     . 'from  sys.branch a order by branch_name asc';
         } else {
             $cmmtext = 'Select * From sys.branch Where branch_id in (
@@ -128,15 +128,15 @@ lnkitm;
         if (count($dtbranch->Rows()) === 0) {
             $br = 'No branch available.';
         } else if ($br_search == TRUE) {
-            $br = '<div class="col-md-12 nopadding">'
-                    . '<span class="col-md-12 nopadding" style="padding-top:10px;">Select a branch</span>'
-                    . '<input id="srbrname" type="text" class="col-md-9 nopadding" style="margin-bottom:10px;padding:5px;" onkeyup="search_branch()"/>'
+            $br = '<div class="col-sm-12 nopadding">'
+                    . '<span class="col-sm-9 nopadding" style="padding-top:10px;">Select Branch</span>'
+                    . '<input id="srbrname" type="text" class="col-sm-9 nopadding" style="margin-bottom:10px;padding:5px;" onkeyup="search_branch()"/>'
                     . '</div><br><br>'
-                    . '<div id="cbranchinfo" style="overflow: auto;" class="col-md-12 nopadding">';
+                    . '<div id="cbranchinfo" style="overflow: auto;" class="col-sm-12 nopadding">';
             foreach ($dtbranch->Rows() as $rw) {
                 $br .= <<<br
                         <a href="#" class="list-group-item" onclick="getFinyearList(this,{$rw['branch_id']});">
-                            <h4 class="list-group-item-heading lsbrname" style="font-weight:bold;">{$rw['branch_name']}</h4>
+                            <h4 class="list-group-item-heading lsbrname" style="font-weight:bold;">{$rw['branch_name']} <span style="font-weight:normal !important;font-size:small;">({$rw['branch_code']})</span></h4>
                             <p class="list-group-item-text">
                                 {$rw['branch_address']}
                             </p>
@@ -145,14 +145,14 @@ br;
             }
             $br .= '</div>';
         } else {
-            $br = '<div class="col-md-12 nopadding">'
-                    . '<span class="col-md-12 nopadding">Select a branch</span>'
+            $br = '<div class="col-sm-12 nopadding">'
+                    . '<span class="col-sm-9 nopadding">Select Branch</span>'
                     . '</div><br><br>'
-                    . '<div id="cbranchinfo" style="overflow: auto;" class="col-md-12 nopadding">';
+                    . '<div id="cbranchinfo" style="overflow: auto;" class="col-sm-12 nopadding">';
             foreach ($dtbranch->Rows() as $rw) {
                 $br .= <<<br
                         <a href="#" class="list-group-item" onclick="getFinyearList(this,{$rw['branch_id']});">
-                            <h4 class="list-group-item-heading" style="font-weight:bold;">{$rw['branch_name']}</h4>
+                            <h4 class="list-group-item-heading" style="font-weight:bold;">{$rw['branch_name']} <span style="font-weight:normal !important;font-size:small;">({$rw['branch_code']})</span></h4>
                             <p class="list-group-item-text">
                                 {$rw['branch_address']}
                             </p>
@@ -198,13 +198,13 @@ br;
             $fy = 'No financial years available.';
         } else {
             $sessionid = $this->userinfo->getSession_ID();
-            $fy = '<span>Select a financial year</span><br><br>'
+            $fy = '<span>Select Financial Year</span><br><br>'
                     . '<input type="hidden" id="logoncsrf" value="' . \Yii::$app->request->csrfToken . '">'
                     . '<div id="cfinyearinfo" style="overflow: auto;">';
             foreach ($fy2 as $rw) {
                 $fy .= '<a href="#" onclick="postFinYear(this, ' . $rw['finyear_id'] . ')" class="list-group-item" >
-                            <div class="col-md-12" style="padding:0;">
-                                <h4 class="list-group-item-heading col-md-6" style="font-weight:bold;padding:0;">' . $rw['finyear_code'] . '</h4>' .
+                            <div class="col-sm-12" style="padding:0;">
+                                <h4 class="list-group-item-heading col-sm-6" style="font-weight:bold;padding:0;">' . $rw['finyear_code'] . '</h4>' .
                         ($rw['year_close'] == "true" ? ('<span class="glyphicon glyphicon-lock" style="color:darkgray;float:right;" aria-hidden="true">') : '')
                         . '</span>
                             </div>

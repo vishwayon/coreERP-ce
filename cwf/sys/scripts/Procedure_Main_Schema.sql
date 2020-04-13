@@ -166,23 +166,23 @@ $BODY$
   LANGUAGE plpgsql;
 
 ?==?
-CREATE FUNCTION sys.sp_user_logout_set(puser_session_id character varying)
+CREATE or REPLACE FUNCTION sys.sp_user_logout_set(puser_session_id character varying)
   RETURNS void AS
 $BODY$
 Begin
 	-- Move all user sessions with same auth id to logout
-	Insert into sys.user_logout(user_session_id, user_id, login_time, last_refresh_time, session_variables)
-	Select user_session_id, user_id, login_time, last_refresh_time, session_variables
-	From sys.user_session
-	where auth_id=( Select auth_id 
-			from sys.user_session 
-			Where user_session_id=puser_session_id Limit 1);
+	Insert into sys.user_logout(user_session_id, auth_id, user_id, login_time, last_refresh_time, user_ip, session_variables)
+	Select a.user_session_id, a.auth_id, a.user_id, a.login_time, a.last_refresh_time, a.user_ip, a.session_variables
+	From sys.user_session a
+	where a.auth_id=( Select x.auth_id 
+			from sys.user_session x
+			Where x.user_session_id=puser_session_id Limit 1);
 
 	--  delete from user session
 	Delete from sys.user_session
-	where auth_id=( Select auth_id 
-			from sys.user_session 
-			Where user_session_id=puser_session_id Limit 1);
+	where auth_id=( Select x.auth_id 
+			from sys.user_session x
+			Where x.user_session_id=puser_session_id Limit 1);
 
 End;
 $BODY$
@@ -204,8 +204,8 @@ Begin
 	From sys.user_logout a;
 
 	-- Do cleanup of invalid sessions
-	Insert Into sys.user_session_history(user_session_id, user_id, login_time, last_refresh_time, session_variables)
-	Select a.user_session_id, b.user_id, b.login_time, b.last_refresh_time, b.session_variables
+	Insert Into sys.user_session_history(user_session_id, auth_id, user_id, login_time, last_refresh_time, user_ip, session_variables)
+	Select a.user_session_id, b.auth_id, b.user_id, b.login_time, b.last_refresh_time, b.user_ip, b.session_variables
 	From session_temp a
 	Inner Join sys.user_logout b On a.user_session_id=b.user_session_id;
 
@@ -238,8 +238,8 @@ Begin
 	Where a.last_refresh_time < (current_timestamp(0) - ptimeInterval::Interval);
 
 	-- Do cleanup of invalid sessions
-	Insert Into sys.user_session_history(user_session_id, user_id, login_time, last_refresh_time, session_variables)
-	Select a.user_session_id, b.user_id, b.login_time, b.last_refresh_time, b.session_variables
+	Insert Into sys.user_session_history(user_session_id, auth_id, user_id, login_time, last_refresh_time, user_ip, session_variables)
+	Select a.user_session_id, b.auth_id, b.user_id, b.login_time, b.last_refresh_time, b.user_ip, b.session_variables
 	From session_temp a
 	Inner Join sys.user_session b On a.user_session_id=b.user_session_id;
 

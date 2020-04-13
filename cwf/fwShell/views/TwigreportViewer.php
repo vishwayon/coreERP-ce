@@ -2,9 +2,13 @@
 <div id="contents" style="margin: 10px 10px 10px; padding-right: 5px;">
 <?php ?>
     <div class="row" id="rptrow1">
-        <button  id="btnoptions" onclick="expandOptions();" class="col-md-1 btn btn-default" style="margin-left: 15px">Options</button>
-        <h3 class="col-md-6" style="margin-top: 2px" id="rptCaption"><?=$viewForRender->getHeader()?></h3>
-        <div class="btn-group" role="group" style="float: right; margin-right: 20px;">
+        <div class="col-sm-8">
+            <div class="btn-group" style="float: left; " >
+                <button  id="btnoptions" onclick="cwf_jrpt.expandOptions();" class="btn btn-default">Options</button>
+            </div>
+            <h3 class="col-sm-9" style="margin-top: 2px;" id="rptCaption"><?= $viewForRender->getHeader() ?></h3>
+        </div>
+        <div class="btn-group pull-right" role="group" style="margin-right: 20px;">
             <button  id="btnrefresh" class="btn btn-default" onclick="refreshClick();">
                 <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Refresh
             </button>
@@ -16,8 +20,8 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right">
-                    <li><a href="#" onclick="exportClick('excel')">XLSX(visible)</a></li>
-                    <li><a href="#" onclick="exportClick('excel_all')">XLSX(all)</a></li>
+                    <li><a href="#" onclick="exportClick('excel')">XLS(visible)</a></li>
+                    <li><a href="#" onclick="exportClick('excel_all')">XLS(all)</a></li>
                     <!--<li><a href="#" onclick="exportClick('pdf')">PDF</a></li>-->
                 </ul>
             </div>
@@ -127,22 +131,22 @@
         }
 
         function exportClick(etype) {
-            $('#rptParent table').each(function() {
+            $('#tcons').each(function() {
                 if (etype == 'excel') {
                     var outdata = $(this).tableExport({type: etype, escape: true, returnOutput: true, visibleOnly: true});
                     var link = document.createElement('a');                    
-                    link.setAttribute("href", 'data:application/vnd.ms-excel;' + outdata);
+                    link.setAttribute("href", 'data:application/vnd.ms-excel; ' + outdata);
                     link.setAttribute("id", "rpt_file_link");
-                    link.setAttribute("download", 'exportData.xlsx');
+                    link.setAttribute("download", 'exportData.xls');
                     var cnt = document.getElementById('content-root');
                     cnt.appendChild(link);                    
                     link.click();
                 } else if (etype == 'excel_all') {
                     var outdata = $(this).tableExport({type: 'excel', escape: true, returnOutput: true, visibleOnly: false});
                     var link = document.createElement('a');                    
-                    link.setAttribute("href", 'data:application/vnd.ms-excel;' + outdata);
+                    link.setAttribute("href", 'data:application/vnd.ms-excel; ' + outdata);
                     link.setAttribute("id", "rpt_file_link");
-                    link.setAttribute("download", 'exportData.xlsx');
+                    link.setAttribute("download", 'exportData.xls');
                     var cnt = document.getElementById('content-root');
                     cnt.appendChild(link);                    
                     link.click();

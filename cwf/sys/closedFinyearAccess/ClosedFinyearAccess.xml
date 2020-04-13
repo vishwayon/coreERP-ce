@@ -22,7 +22,7 @@
                     <foreignKey>finyear_id</foreignKey>
                 </relation>
                 <fetchOrCreate>
-                    <useEntity/>
+                    <useEntity orderby="user_to_clfinyear_id"/>
                 </fetchOrCreate>
                 <save>
                     <useEntity/>

@@ -225,20 +225,36 @@ class MainController extends WebController {
     }
 
     public function actionRoleUsers($role_id) {
-        $cmm = new \app\cwf\vsla\data\SqlCommand();
-        $sql = 'Select false as selected, a.user_id, a.full_user_name, a.email 
+        $cmm_ru = new \app\cwf\vsla\data\SqlCommand();
+        $sql = 'Select false as selected, a.user_id, a.full_user_name, a.email,
+                (a.user_id = :puser_id) as is_cuser, false as is_online
                 From sys.user a
                 Inner Join sys.user_branch_role b On a.user_id=b.user_id
+                Inner Join sys.user_to_company c on a.user_id=c.user_id
                 Where b.role_id = Any (:prole_id::BigInt[])
                     And b.branch_id = :pbranch_id
                     And a.is_active
+                    And c.company_id = {company_id}
                 group by a.user_id, a.full_user_name, a.email
                 Order By a.full_user_name';
-        $cmm->setCommandText($sql);
-        $cmm->addParam('prole_id', '{' . $role_id . '}');
-        $cmm->addParam('pbranch_id', \app\cwf\vsla\security\SessionManager::getInstance()->getSessionVariable('branch_id'));
-        $dt = \app\cwf\vsla\data\DataConnect::getData($cmm);
-        $result = ['user_list' => $dt, 'doc_sender_comment' => ''];
+        $cmm_ru->setCommandText($sql);
+        $cmm_ru->addParam('prole_id', '{' . $role_id . '}');
+        $cmm_ru->addParam('pbranch_id', \app\cwf\vsla\security\SessionManager::getInstance()->getSessionVariable('branch_id'));
+        $cmm_ru->addParam('puser_id', \app\cwf\vsla\security\SessionManager::getInstance()->getUserInfo()->getUser_ID());
+        $dt_users = \app\cwf\vsla\data\DataConnect::getData($cmm_ru);
+
+        $cmm_ol = new \app\cwf\vsla\data\SqlCommand();
+        $cmm_ol->setCommandText("select distinct user_id from sys.user_session");
+        $dt_online = \app\cwf\vsla\data\DataConnect::getData($cmm_ol, \app\cwf\vsla\data\DataConnect::MAIN_DB);
+        foreach ($dt_users->Rows() as &$usr) {
+            foreach ($dt_online->Rows() as $rw) {
+                if ($rw['user_id'] === $usr['user_id']) {
+                    $usr['is_online'] = TRUE;
+                    break;
+                }
+            }
+        }
+        $result = ['user_list' => $dt_users, 'doc_sender_comment' => ''];
         return json_encode($result);
     }
 
@@ -248,8 +264,8 @@ class MainController extends WebController {
 
     public function actionAssignUsers($bo_id, $branch_id) {
         // Extract list of users who have edit rights to a document
-        $cmm = new \app\cwf\vsla\data\SqlCommand();
-        $sql = 'Select false as selected, a.user_id, a.full_user_name, a.email 
+        $cmm_ru = new \app\cwf\vsla\data\SqlCommand();
+        $sql = 'Select false as selected, a.user_id, a.full_user_name, a.email, false as is_online 
                 From sys.user a 
                 Inner join sys.user_branch_role b on a.user_id = b.user_id
                 Inner Join sys.role_access_level c On b.role_id = c.role_id
@@ -257,13 +273,27 @@ class MainController extends WebController {
                     And b.branch_id = :pbranch_id
                     And en_access_level in (2, 3)
                     And a.user_id != :puser_id
+                    And a.is_active
                 Group by a.user_id, a.full_user_name, a.email
                 Order By a.full_user_name';
-        $cmm->setCommandText($sql);
-        $cmm->addParam('puser_id', \app\cwf\vsla\security\SessionManager::getInstance()->getUserInfo()->getUser_ID());
-        $cmm->addParam('pbo_id', $bo_id);
-        $cmm->addParam('pbranch_id', $branch_id);
-        $dt = \app\cwf\vsla\data\DataConnect::getData($cmm);
+        $cmm_ru->setCommandText($sql);
+        $cmm_ru->addParam('puser_id', \app\cwf\vsla\security\SessionManager::getInstance()->getUserInfo()->getUser_ID());
+        $cmm_ru->addParam('pbo_id', $bo_id);
+        $cmm_ru->addParam('pbranch_id', $branch_id);
+        $dt = \app\cwf\vsla\data\DataConnect::getData($cmm_ru);
+
+        $cmm_ol = new \app\cwf\vsla\data\SqlCommand();
+        $cmm_ol->setCommandText("select distinct user_id from sys.user_session");
+        $dt_online = \app\cwf\vsla\data\DataConnect::getData($cmm_ol, \app\cwf\vsla\data\DataConnect::MAIN_DB);
+        foreach ($dt->Rows() as &$usr) {
+            foreach ($dt_online->Rows() as $rw) {
+                if ($rw['user_id'] === $usr['user_id']) {
+                    $usr['is_online'] = TRUE;
+                    break;
+                }
+            }
+        }
+
         $result = ['user_list' => $dt, 'doc_sender_comment' => ''];
         return json_encode($result);
     }
@@ -296,6 +326,22 @@ class MainController extends WebController {
             $print_mail = FALSE;
         }
         return json_encode(['print_access' => $res_print, 'export_access' => $res_export, 'report_mail_access' => $print_mail]);
+    }
+    
+    public function actionGetRoleUserBranch($role_id) {
+        //$params = json_decode($jsonParams);
+        $cmm = new \app\cwf\vsla\data\SqlCommand();
+        $cmm->setCommandText("select a.branch_id, a.user_id, case when COALESCE(b.is_active, false) = false Then b.full_user_name || ' (Inactive)' Else b.full_user_name End full_user_name, c.branch_name from sys.user_branch_role a
+                                left join sys.user b on a.user_id = b.user_id
+                                left join sys.branch c on a.branch_id = c.branch_id
+                                where role_id = :prole_id order by b.full_user_name, c.branch_name");
+        $cmm->addParam('prole_id', $role_id);
+        $dt = \app\cwf\vsla\data\DataConnect::getData($cmm);
+        if (count($dt->Rows()) > 0) {
+            return json_encode(['status' => 'OK', 'rub_list' => $dt]);
+        } else {
+            return json_encode(['status' => 'Not used']);
+        }
     }
 
 }

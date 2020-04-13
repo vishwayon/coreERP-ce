@@ -127,32 +127,6 @@ class UserInfo {
                     $this->setFailedMessage('Username or password is incorrect. Login failed.');
                     \app\cwf\vsla\security\PreAuth::logFailedLogin($authInfo->userName, $this->failedMessage);
                 }
-
-                // look for ip restrictions (deprecated with merger of security\PreAuth)
-                /* if($validUser && !(bool)$dr['is_admin'] && !(bool)$dr['is_owner']) {
-                  if(\yii::$app->has('restrictIP')) {
-                  $rip = \Yii::$app->get('restrictIP');
-                  } else {
-                  $rip = new RestrictIP();
-                  }
-                  if(!$rip->validateRequest($dr['user_id'])) {
-                  $validUser = false;
-                  $this->setFailedMessage('User not allowed access from the current IP. Login failed.');
-                  }
-                  }
-                  // If non Token auth, look if mac id is required
-                  if($authInfo->person_id == '' && $authInfo->token == '') {
-                  $cmmMac = new SqlCommand();
-                  $cmmMac->setCommandText('Select is_mac_addr from sys.user Where user_name=:puser_name');
-                  $cmmMac->addParam("puser_name", $authInfo->userName);
-                  $dtMac = DataConnect::getData($cmmMac, DataConnect::MAIN_DB);
-                  if(count($dtMac->Rows())==1) {
-                  if(boolval($dtMac->Rows()[0]['is_mac_addr'])) {
-                  $validUser = false;
-                  $this->setFailedMessage('User login restricted by MAC address. Login failed. Use CoreERP Auth App to login.');
-                  }
-                  }
-                  } */
                 // Finally, if the user is valid, then create a session
                 if ($validUser) {
                     $this->Auth_ID = uniqid(); // Create a default auth id to start with
@@ -389,12 +363,13 @@ class UserInfo {
     protected function persistToDB() {
         // First persist to Database
         $cmm = new SqlCommand();
-        $cmmText = "Insert Into sys.user_session(user_session_id, auth_id, user_id, login_time, last_refresh_time, session_variables)"
-                . " values (:puser_session_id, :pauth_id, :puser_id, current_timestamp(0), current_timestamp(0), :psession_variables); ";
+        $cmmText = "Insert Into sys.user_session(user_session_id, auth_id, user_id, login_time, last_refresh_time, user_ip, session_variables)"
+                . " values (:puser_session_id, :pauth_id, :puser_id, current_timestamp(0), current_timestamp(0), :puser_ip , :psession_variables); ";
         $cmm->setCommandText($cmmText);
         $cmm->addParam("puser_session_id", $this->Session_ID);
         $cmm->addParam("pauth_id", $this->Auth_ID);
         $cmm->addParam("puser_id", $this->User_ID);
+        $cmm->addParam('puser_ip', \yii::$app->request->getUserIP());
         $cmm->addParam("psession_variables", json_encode($this->SessionVariables));
         DataConnect::exeCmm($cmm, null, DataConnect::MAIN_DB);
 

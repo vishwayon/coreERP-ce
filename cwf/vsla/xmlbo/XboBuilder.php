@@ -26,7 +26,7 @@ class XboBuilder {
     private $isnew = FALSE;
     private $connectionType = DataConnect::COMPANY_DB;
     private $boEventHandler;
-    private $generatedKeys;
+    private $generatedKeys = [];
     public $logAction;
 
     function __construct($boxmlpath) {
@@ -390,6 +390,7 @@ class XboBuilder {
                 $dtStatus = DataConnect::getData($cmm, $this->connectionType, $cn);
                 $bo->status = DataAdapter::getDBtoPHPDataValue('int2', $dtStatus->Rows()[0]['status']);
                 $bo->last_updated = DataAdapter::getDBtoPHPDataValue('timestamp', $dtStatus->Rows()[0]['last_updated']);
+                $this->generatedKeys[$this->boparser->bometa->controlTable->primaryKey] = $bo[$this->boparser->bometa->controlTable->primaryKey];
                 if (array_key_exists('doc_stage_id', $dtStatus->Rows()[0])) {
                     $bo->doc_stage_id = $dtStatus->Rows()[0]['doc_stage_id'];
                 }
@@ -516,8 +517,9 @@ class XboBuilder {
             if ($this->boparser->bometa->type === BoType::DOCUMENT) {
                 // Update ES table
                 $cmm = new \app\cwf\vsla\data\SqlCommand();
-                $cmm->setCommandText('select * from sys.sp_status_update_es(:pvoucher_id, :pcurrent_status, :pnew_status, :pfull_user_name, :puser_name)');
+                $cmm->setCommandText('select * from sys.sp_status_update_es(:pvoucher_id, :pdoc_date, :pcurrent_status, :pnew_status, :pfull_user_name, :puser_name)');
                 $cmm->addParam('pvoucher_id', $bo[$this->boparser->bometa->controlTable->primaryKey]);
+                $cmm->addParam('pdoc_date', $bo['doc_date'] == NULL ? '1970-01-01' : $bo['doc_date']);
                 $cmm->addParam('pcurrent_status', $cstatus);
                 $cmm->addParam('pnew_status', $newStatus);
                 $cmm->addParam('pfull_user_name', \app\cwf\vsla\security\SessionManager::getInstance()->getUserInfo()->getFullUserName());
@@ -574,11 +576,6 @@ class XboBuilder {
                         $this->boEventHandler->afterUnPost($this->generatedKeys);
                     }
                 }
-            }
-
-            // Set the master as dirty
-            if ($bo instanceof MastBo) {
-                LookupCache::markDirty($this->boparser->bometa->id);
             }
         } catch (\Exception $ex) {
             if ($cn != null && $cn->inTransaction()) {
@@ -1108,10 +1105,12 @@ class XboBuilder {
 
             return TRUE;
         } catch (\Exception $ex) {
-            if ($cn->inTransaction()) {
-                $cn->rollBack();
-                $cn = null;
-                return false;
+            if ($cn != null) {
+                if ($cn->inTransaction()) {
+                    $cn->rollBack();
+                    $cn = null;
+                    return false;
+                }
             }
             throw $ex;
         }
@@ -1263,13 +1262,14 @@ class XboBuilder {
                     $msg = 'Document unarchived';
                 }
             }
-
             $cmm = new\app\cwf\vsla\data\SqlCommand();
-            $cmmtext = 'select * from sys.sp_doc_wf_archive(:pdoc_id, :pbranch_id, :pbo_id, :pedit_view, :pdoc_name, :pdoc_sender_comment, :puser_id_from, 
+            $cmmtext = 'select * from sys.sp_doc_wf_archive(:pdoc_id, :pbranch_id, :pfinyear, :pdoc_date::date, :pbo_id, :pedit_view, :pdoc_name, :pdoc_sender_comment, :puser_id_from, 
                             :pdoc_action, :puser_id_to, :pdoc_stage_id_from, :pdoc_stage_id);';
             $cmm->setCommandText($cmmtext);
             $cmm->addParam('pdoc_id', $bo[$this->boparser->bometa->controlTable->primaryKey]);
             $cmm->addParam('pbranch_id', $bo->branch_id);
+            $cmm->addParam('pfinyear', \app\cwf\vsla\security\SessionManager::getInstance()->getSessionVariable('finyear'));
+            $cmm->addParam('pdoc_date', $bo['doc_date'] == NULL ? '1970-01-01' : $bo['doc_date']);
             $cmm->addParam('pbo_id', $this->boparser->bometa->id);
             $cmm->addParam('pedit_view', $helperOption->modulePath . DIRECTORY_SEPARATOR . $helperOption->formName . '.xml');
             $cmm->addParam('pdoc_name', $this->boparser->bometa->id);
@@ -1293,10 +1293,12 @@ class XboBuilder {
 
             return TRUE;
         } catch (\Exception $ex) {
-            if ($cn->inTransaction()) {
-                $cn->rollBack();
-                $cn = null;
-                return false;
+            if ($cn != null) {
+                if ($cn->inTransaction()) {
+                    $cn->rollBack();
+                    $cn = null;               
+                    return false;
+                }
             }
             throw $ex;
         }
@@ -1402,6 +1404,7 @@ class XboBuilder {
         $wfOption->branch_id = $bo->branch_id;
         $wfOption->bo_id = $this->boparser->bometa->id;
         $wfOption->doc_id = $bo[$this->boparser->bometa->controlTable->primaryKey];
+        $wfOption->doc_date = $bo['doc_date'] == NULL ? '1970-01-01' : $bo['doc_date'];
         $wfOption->doc_name = $this->boparser->bometa->id;
         $wfOption->doc_sent_on = date('Y-m-d H:i:s');
         $wfOption->user_id_from = \app\cwf\vsla\security\SessionManager::getInstance()->getUserInfo()->getUser_ID();

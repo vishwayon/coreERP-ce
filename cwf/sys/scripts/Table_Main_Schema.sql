@@ -99,6 +99,7 @@ CREATE TABLE sys.user_session
   auth_id varchar(32) NOT NULL,
   login_time timestamp without time zone NOT NULL,
   last_refresh_time timestamp without time zone NOT NULL,
+  user_ip inet default '0.0.0.0'::inet,
   session_variables varchar(2500) NOT NULL,
   CONSTRAINT pk_sys_user_session PRIMARY KEY (user_session_id)
 );
@@ -108,8 +109,10 @@ CREATE TABLE sys.user_logout
 (
   user_session_id character varying(32) NOT NULL,
   user_id bigint NOT NULL,
+  auth_id varchar(32) NOT NULL,
   login_time timestamp without time zone NOT NULL,
   last_refresh_time timestamp without time zone NOT NULL,
+  user_ip inet default '0.0.0.0'::inet,
   session_variables character varying(2500) NOT NULL,
   CONSTRAINT pk_sys_user_logout PRIMARY KEY (user_session_id)
 );
@@ -239,8 +242,10 @@ CREATE TABLE sys.user_session_history
 (
   user_session_id varchar(32) NOT NULL,
   user_id bigint NOT NULL,
+  auth_id varchar(32) NOT NULL,
   login_time timestamp without time zone NOT NULL,
   last_refresh_time timestamp without time zone NOT NULL,
+  user_ip inet default '0.0.0.0',
   session_variables varchar(2500) NOT NULL,
   CONSTRAINT pk_sys_user_session_history PRIMARY KEY (user_session_id)
 );

@@ -1,0 +1,24 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <collectionView id="UserPref" type="Master" bindingBO="UserPref" editView="userPref/UserPrefEditForm">    
+        <header>User Preference</header>
+        <collectionSection>
+            <connectionType>
+                <companyDB/>
+            </connectionType>
+            <sql>
+                <command>
+                    select COALESCE(b.user_pref_id, -1) user_pref_id, a.user_id, a.user_name, a.full_user_name
+                    From sys.user a
+                    Left Join sys.user_pref b on a.user_id = b.user_id
+                    where a.user_id = {user_id}
+                </command>  
+            </sql>
+            <displayFields>
+                <displayField columnName="full_user_name" displayName="Full User Name"/>
+            </displayFields>
+        </collectionSection>
+    </collectionView>
+</cwFramework>

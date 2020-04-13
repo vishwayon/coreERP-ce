@@ -24,7 +24,6 @@ class ConfigReader {
     /** @var DbBackup */
     public $dbBackup;
     public $mailer = [];
-    public $restrictIP = true;
 
     public function __construct() {
         // Extract config from params
@@ -58,11 +57,6 @@ class ConfigReader {
         // Load Mailer
         if (isset($cwfConfig['mailer'])) {
             $this->mailer = $cwfConfig['mailer'];
-        }
-
-        // Load restrict ip
-        if (isset($cwfConfig['restrictIP'])) {
-            $this->restrictIP = $cwfConfig['restrictIP'];
         }
     }
 

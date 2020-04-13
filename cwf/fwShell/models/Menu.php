@@ -120,7 +120,7 @@ class Menu {
             if ((string) $rw['parent_menu_id'] == $parentkey) {
                 $mi = array();
                 $mi['label'] = (string) $rw['menu_text'];
-                $mi['label'] .= ' <span id="pc_' . $rw['menu_id'] . '" class="badge pull-right inbox-badge menu-cnt-badge" title="Pending Documents" style="display:none;"></span>';
+                $mi['label'] .= ' <span id="pc_' . $rw['menu_id'] . '" menu-name="' . $rw['menu_name'] . '" class="badge pull-right inbox-badge menu-cnt-badge" title="Pending Documents" style="display:none;"></span>';
                 if ($parentkey == '-1') {
                     $ip = strtoupper($rw['menu_code']);
 //                    $mi['label'] = '<span style="width:22px; height:22px; float:left; font-family:Arial Narrow; font-weight:bold;margin-right:10px;">'.$ip.'</span>'.$mi['label'];
@@ -140,14 +140,15 @@ class Menu {
                     }
                 } else {
                     if (strpos($rw['link_path'], 'javascript:coreWebApp.rendercontents(') !== FALSE) {
-                        $mi['url'] = \yii\helpers\Html::encode($rw['link_path']);
+                        $mi['url'] = \yii\helpers\Html::encode(str_replace('../', '@app/', $rw['link_path']));
                     } else {
                         $mi['url'] = \yii\helpers\Html::encode('javascript:coreWebApp.rendercontents(\'?r='
-                                        . $rw['link_path'] . '&menuid=' . (string) $rw['menu_id'] . '\')');
+                                        . str_replace('../', '@app/', $rw['link_path']) . '&menuid=' . (string) $rw['menu_id'] . '\')');
                     }
                     $mi['options'] = ['class' => 'nonroot-item'];
                 }
                 $mi['bo_id'] = (int) $rw['bo_id'];
+                $mi['menu_name'] = $rw['menu_name'];
                 $mi['items'] = array();
                 $this->setmenu((string) $mi['menu_id'], $mi);
                 if ($refparent == NULL) {

@@ -36,6 +36,7 @@ coreWebApp.utils = {};
                 coreWebApp.ModelBo.preLookupData = jsonResult['preLookupData'];
                 coreWebApp.ModelBo.docSecurity = ko.mapping.fromJS(jsonResult['docSecurity']);
                 coreWebApp.ModelBo.docStageInfo = ko.mapping.fromJS(jsonResult['docStageInfo']);
+                coreWebApp.ModelBo.userPref = ko.mapping.fromJS(jsonResult['userPref']);
                 coreWebApp.ModelBo.docComments = ko.mapping.fromJS(jsonResult['docComments']);
                 coreWebApp.ModelBo.docArchiveStatus = ko.mapping.fromJS(jsonResult['docArchiveStatus']);
                 coreWebApp.ModelBo.tranDef = [];
@@ -165,6 +166,7 @@ coreWebApp.utils = {};
             url: postPath,
             type: 'POST',
             dataType: 'json',
+            contentType: 'application/json',
             data: JSON.stringify(data),
             beforeSend: function () {
                 startloading();
@@ -185,6 +187,7 @@ coreWebApp.utils = {};
                     $('#divbrule').hide();
                     ko.mapping.fromJS(jsonResult['BOPropertyBag'], coreWebApp.ModelBo);
                     ko.mapping.fromJS(jsonResult['docSecurity'], coreWebApp.ModelBo.docSecurity);
+                    ko.mapping.fromJS(jsonResult['userPref'], coreWebApp.ModelBo.userPref);
                     if (typeof jsonResult['docStageInfo'] != 'undefined') {
                         ko.mapping.fromJS(jsonResult['docStageInfo'], coreWebApp.ModelBo.docStageInfo);
                     }
@@ -205,11 +208,11 @@ coreWebApp.utils = {};
                         coreWebApp.setFileList(coreWebApp.dmfiles);
                         $('#attcnt').html(coreWebApp.dmfiles.length).show();
                     }
+                    if (typeof opts.afterSave !== 'undefined' && opts.afterSave != '') {
+                            var func = new Function('{' + opts.afterSave + '();}');
+                        func();
+                    }
                     if (Object.prototype.hasOwnProperty.call(coreWebApp.ModelBo, 'status')) {
-                        if (typeof opts.afterSave !== 'undefined') {
-                            var func = opts.afterSave;
-                            func();
-                        }
                         if (coreWebApp.ModelBo.status() === 5) {
                             if (typeof opts.afterPost != 'undefined' && opts.afterPost != '') {
                                 var func = new Function('{' + opts.afterPost + '();}');
@@ -303,7 +306,7 @@ coreWebApp.utils = {};
     //delete docmaster
     function Delete(formid) {
         //if (confirm("Are you sure you want to delete?") === false) {
-        var res = bs_prompt('error', 'Are you sure you want to delete?', function () {
+        var res = bs_prompt('error', 'Confirm Delete', 'Are you sure you want to delete?', function () {
             var deletePath = formid.BoPath;
             deletePath += '&params=' + formid.Params;
             deletePath += '&formName=' + $('#formName').val();
@@ -356,7 +359,7 @@ coreWebApp.utils = {};
             msg2 = 'Enter reason for unarchiving';
             archaction = 'O';
         }
-        var res = bs_prompt('error', msg1, function () {
+        var res = bs_prompt('error', 'Confirm Archive', msg1, function () {
             var up_reason = window.prompt(msg2, "");
             if (up_reason == null || up_reason == '') {
                 return;
@@ -996,7 +999,7 @@ coreWebApp.utils = {};
 
     function docPost(opts) {
         if (coreWebApp.check_confirm_post()) {
-            bs_prompt('warning', 'This action will post this document.<br/>Proceed to post?', function () {
+            bs_prompt('warning', 'Confirm Action', 'This action will post this document.<br/>Proceed to post?', function () {
                 opts.action = 'P';
                 opts.next_stage_id = coreWebApp.ModelBo.docSecurity.next_stage_id();
                 opts.wfOption = {user_id_to: -1, doc_sender_comment: 'Document posted'};
@@ -1023,7 +1026,7 @@ coreWebApp.utils = {};
 
     function docUnpost(opts) {
         if (coreWebApp.check_confirm_post()) {
-            bs_prompt('warning', 'This action will unpost this document.<br/>Proceed to unpost?', function () {
+            bs_prompt('warning', 'Confirm Action', 'This action will unpost this document.<br/>Proceed to unpost?', function () {
                 var up_reason = window.prompt("Enter reason for unposting", "");
                 if (up_reason == null || up_reason == '') {
                     return;
@@ -1055,12 +1058,27 @@ coreWebApp.utils = {};
                 var raw = $.parseJSON(resultdata);
                 var data = ko.mapping.fromJS(raw);
                 coreWebApp.RoleUsers = data;
+                coreWebApp.RoleUsers.selected_user_id = ko.observable(-1);
+                if (coreWebApp.ModelBo.wf_next_user_id !== undefined) {
+                    // make sure that the wf_next_user is in role_access
+                    $.each(data.user_list(), function(idx, idt) {
+                       if (idt.user_id() == coreWebApp.ModelBo.wf_next_user_id()) {
+                           coreWebApp.RoleUsers.selected_user_id(coreWebApp.ModelBo.wf_next_user_id());
+                       }
+                    });
+                } else {
+                    var res = checkSelfAssign(opts);
+                    if (res) {
+                        return;
+                    }
+                }
                 ko.applyBindings(coreWebApp.RoleUsers, $(dlg)[0]);
                 var dinst = $(dlg).dialog({
                     closeOnEscape: false,
                     height: 400,
                     width: 550,
                     modal: true,
+                    title: "Send/Approve",
                     buttons: [
                         {
                             text: "Send/Approve",
@@ -1082,13 +1100,11 @@ coreWebApp.utils = {};
                             style: "padding: .25em"
                         }
                     ],
-                    open: function (ui) {
+                    open: function (event, ui) {
                         $(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
-                        $('#tbl-role-users').dataTable({
-                            paging: false,
-                            scrollY: "130px",
-                        });
-                        $('#tbl-role-users_info').hide();
+                    },
+                    close: function( event, ui ) {
+                        dinst.dialog("destroy").remove();
                     }
                 });
             },
@@ -1112,12 +1128,14 @@ coreWebApp.utils = {};
             success: function (resultdata) {
                 var data = ko.mapping.fromJS(resultdata);
                 coreWebApp.RoleUsers = data;
+                coreWebApp.RoleUsers.selected_user_id = ko.observable(-1);
                 ko.applyBindings(coreWebApp.RoleUsers, $(dlg)[0]);
                 var dinst = $(dlg).dialog({
                     closeOnEscape: false,
                     height: 400,
                     width: 550,
                     modal: true,
+                    title: "Assign To",
                     buttons: [
                         {
                             text: "Assign",
@@ -1141,11 +1159,6 @@ coreWebApp.utils = {};
                     ],
                     open: function (ui) {
                         $(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
-                        $('#tbl-role-users').dataTable({
-                            paging: false,
-                            scrollY: "130px",
-                        });
-                        $('#tbl-role-users_info').hide();
                     }
                 });
             },
@@ -1167,15 +1180,38 @@ coreWebApp.utils = {};
     }
     coreWebApp.SelectRoleUser = selectRoleUser;
 
+    function checkSelfAssign(opts) {
+        var result = false;
+        if (coreWebApp.ModelBo.userPref.wf_auto_adv()) {
+            for (let i = 0; i < coreWebApp.RoleUsers.user_list().length; ++i) {
+                if (coreWebApp.RoleUsers.user_list()[i].is_cuser()) {
+                    opts.wfOption = {user_id_to: coreWebApp.RoleUsers.user_list()[i].user_id(), doc_sender_comment: 'assigned as per preference'};
+                    coreWebApp.ModelBo.Submit(opts);
+                    result = true;
+                }
+            }
+        }
+        return result;
+    }
+    coreWebApp.checkSelfAssign = checkSelfAssign;
+
     function submitWf(opts) {
         var result = false;
-        ko.utils.arrayForEach(coreWebApp.RoleUsers.user_list(), function (data) {
-            if (data.selected()) {
-                opts.wfOption = {user_id_to: data.user_id(), doc_sender_comment: coreWebApp.RoleUsers.doc_sender_comment()};
-                coreWebApp.ModelBo.Submit(opts);
-                result = true;
-            }
-        });
+        if (coreWebApp.RoleUsers.selected_user_id() != -1) {
+            result = true;
+            opts.wfOption = {
+                user_id_to: coreWebApp.RoleUsers.selected_user_id(), 
+                doc_sender_comment: coreWebApp.RoleUsers.doc_sender_comment()
+            };
+            coreWebApp.ModelBo.Submit(opts);
+        }
+//        ko.utils.arrayForEach(coreWebApp.RoleUsers.user_list(), function (data) {
+//            if (data.selected()) {
+//                opts.wfOption = {user_id_to: data.user_id(), doc_sender_comment: coreWebApp.RoleUsers.doc_sender_comment()};
+//                coreWebApp.ModelBo.Submit(opts);
+//                result = true;
+//            }
+//        });
         return result;
     }
     coreWebApp.SubmitWf = submitWf;
@@ -1291,7 +1327,7 @@ coreWebApp.utils = {};
 
     function RemoveRow(tranName, tranItem) {
         //if (confirm("Are you sure you want to delete this row?") === true) {
-        var res = bs_prompt('warning', 'Are you sure you want to delete this row?', function () {
+        var res = bs_prompt('warning', 'Confirm Delete', 'Are you sure you want to delete this row?', function () {
             var obj = coreWebApp.ModelBo[tranName];
             obj.removeRow(tranItem);
             $('#cmd_addnew_' + tranName).focus();
@@ -1971,6 +2007,11 @@ coreWebApp.utils = {};
                         ko.cleanNode($('#cdialog')[0]);
                     },
                     open: function () {
+                        $(this).closest(".ui-dialog")
+                                .find(".ui-dialog-titlebar-close")
+                                .removeClass("ui-dialog-titlebar-close")
+                                .html("<span class='ui-button-icon-primary ui-icon-closethick' style='font-weight:bold;'>X</span>")
+                                .css('float', 'right').height('25px');
                         ReplaceComputedBinding($('#cdialog')[0]);
                         if (typeof dataitem === 'undefined') {
                             ko.applyBindings(coreWebApp.ModelBo, $('#cdialog')[0]);
@@ -2008,6 +2049,7 @@ coreWebApp.utils = {};
                 $(".ui-dialog .ui-dialog-title").css('color', 'teal');
                 $(".ui-dialog .ui-dialog-title").css('padding-left', '20px');
                 $(".ui-dialog-titlebar button").addClass('btn btn-default');
+                $(".ui-dialog-titlebar button").css('background-color', 'lightgray');
                 $(".ui-dialog-titlebar button").focus();
                 $('.ui-dialog').find('#cboformbodyin').css('border-bottom', '0');
                 $('#cdUpdate').css('padding', '6px 12px');
@@ -2064,7 +2106,7 @@ coreWebApp.utils = {};
                 }
                 if (typeof opts.call_update !== 'undefined') {
                     btns = [];
-                    if (coreWebApp.ModelBo.__editMode()) {
+                    if (coreWebApp.ModelBo.__editMode() || (opts.allowEdit != undefined && opts.allowEdit)) {
                         btns = [{text: "Update", id: "cdUpdate",
                                 click: function () {
                                     var isvalid = opts.call_update(opts);
@@ -2099,6 +2141,12 @@ coreWebApp.utils = {};
                         }
                     },
                     open: function () {
+                        //$('#cdUpdate').attr('data-bind', 'visible: coreWebApp.ModelBo.__editMode()');
+                        $(this).closest(".ui-dialog")
+                                .find(".ui-dialog-titlebar-close")
+                                .removeClass("ui-dialog-titlebar-close")
+                                .html("<span class='ui-button-icon-primary ui-icon-closethick' style='font-weight:bold;'>X</span>")
+                                .css('float', 'right').height('25px');
                         ReplaceComputedBinding($('#cdialog')[0]);
                         if (typeof opts.model !== 'undefined') {
                             ko.applyBindings(opts.model, $('#cdialog')[0]);
@@ -2126,11 +2174,12 @@ coreWebApp.utils = {};
                 $(".ui-dialog .ui-dialog-title").css('color', 'teal');
                 $(".ui-dialog .ui-dialog-title").css('padding-left', '20px');
                 $(".ui-dialog-titlebar button").addClass('btn btn-default');
+                $(".ui-dialog-titlebar button").css('background-color', 'lightgray');
                 $(".ui-dialog-titlebar button").focus();
                 $('.ui-dialog').find('#cboformbodyin').css('border-bottom', '0');
                 $('#cdUpdate').css('padding', '6px 12px');
                 $('#cdUpdate').addClass('btn btn-success');
-                $('.ui-dialog .ui-dialog-buttonpane').css('border', '0');                
+                $('.ui-dialog .ui-dialog-buttonpane').css('border', '0');
             },
             error: function (data) {
                 toastmsg('error', 'Server Error', data.responseText, true);
@@ -2215,6 +2264,11 @@ coreWebApp.utils = {};
                         }
                     },
                     open: function () {
+                        $(this).closest(".ui-dialog")
+                                .find(".ui-dialog-titlebar-close")
+                                .removeClass("ui-dialog-titlebar-close")
+                                .html("<span class='ui-button-icon-primary ui-icon-closethick' style='font-weight:bold;'>X</span>")
+                                .css('float', 'right').height('25px');
                         ReplaceComputedBinding($('#cdialog')[0]);
                         if (typeof opts.model !== 'undefined') {
                             ko.applyBindings(opts.model, $('#cdialog')[0]);
@@ -2242,6 +2296,7 @@ coreWebApp.utils = {};
                 $(".ui-dialog .ui-dialog-title").css('color', 'teal');
                 $(".ui-dialog .ui-dialog-title").css('padding-left', '20px');
                 $(".ui-dialog-titlebar button").addClass('btn btn-default');
+                $(".ui-dialog-titlebar button").css('background-color', 'lightgray');
                 $(".ui-dialog-titlebar button").focus();
                 $('.ui-dialog').find('#cboformbodyin').css('border-bottom', '0');
                 $('#cdUpdate').css('padding', '6px 12px');
@@ -2372,7 +2427,7 @@ coreWebApp.utils = {};
             redraw == undefined ? redraw = false : redraw = true;
             var img = $('#collrefresh_image');
             if (typeof img !== undefined) {
-                $(img).addClass('fa-spin');
+                $(img).addClass('glyphicon-spin');
             }
             var qpRoute = $('#qp').attr('qp-route');
             var qpColl = $('#qp').attr('qp-CollName');
@@ -2400,7 +2455,7 @@ coreWebApp.utils = {};
                 complete: function () {
                     var img = $('#collrefresh_image');
                     if (typeof img !== undefined) {
-                        $(img).removeClass('fa-spin');
+                        $(img).removeClass('glyphicon-spin');
                     }
                 }
             });
@@ -2462,8 +2517,7 @@ coreWebApp.utils = {};
                             break;
                         case 'Datetime':
                             colDef.createdCell = function (td, cellData, rowData, crow, ccol) {
-                                var dtm = moment(new Date(cellData));
-                                $(td).html(dtm.tz(coreWebApp.userTimeZone).format((coreWebApp.dateFormat).toUpperCase() + ' HH:mm:ss z'));
+                                $(td).html(coreWebApp.formatDateTime(cellData));
                             };
                             break;
                         case 'Status':
@@ -2647,38 +2701,29 @@ coreWebApp.utils = {};
         var lnk = '?r=/' + qpRoute + '/form/wizard&formName=' + qpWiz + '&step=' + qpStep;
         rendercontents(lnk, 'details', 'contentholder');
     }
-
     coreWebApp.collectionView.getWiz = getWiz;
 
-    coreWebApp.lastka = Date.now();
     function KeepAlive() {
         if (typeof coreWebApp.branch_gst_info.gstin !== 'undefined') {
-            if ((Date.now() - coreWebApp.lastka) > 120000) {
-                coreWebApp.lastka = Date.now();
-                $.ajax({
-                    url: '?r=/cwf/fwShell/main/keepalive',
-                    type: 'GET',
-                    data: {
-                        reqt: Date.now() 
-                    },
-                    success: function (resultdata, status, jqXHR) {
-                        if (jqXHR.statusText == 'OK' && resultdata != '') {
-                            var jsonResult = $.parseJSON(resultdata);
-                            if (jsonResult.status == 'OK') {
-                                // Do nothing
-                            } else {
-                                window.location.replace('index.php');
-                            }
+            $.ajax({
+                url: '?r=/cwf/fwShell/main/keepalive',
+                type: 'GET',
+                success: function (resultdata, status, jqXHR) {
+                    if (jqXHR.statusText == 'OK' && resultdata != '') {
+                        var jsonResult = $.parseJSON(resultdata);
+                        if (jsonResult.status == 'OK') {
+                            // Do nothing
                         } else {
                             window.location.replace('index.php');
                         }
-                    },
-                    error: function (data) {
-                        toastmsg('warning', 'Server Error', 'Could not connect to server.', true);
+                    } else {
+                        window.location.replace('index.php');
                     }
-                });
-                
-            }
+                },
+                error: function (data) {
+                    toastmsg('warning', 'Server Error', 'Could not connect to server.', true);
+                }
+            });
         }
     }
     coreWebApp.keepAlive = KeepAlive;
@@ -2915,7 +2960,7 @@ coreWebApp.utils = {};
             toastmsg('warning', '', 'Could not delete attachment from posted document.');
             return;
         }
-        bs_prompt('error', 'Are you sure you want to remove ' + $(ctrl).attr('filename') + '?', function () {
+        bs_prompt('error', 'Confirm Action', 'Are you sure you want to remove ' + $(ctrl).attr('filename') + '?', function () {
             if (typeof coreWebApp === typeof undefined) {
                 return;
             }
@@ -2974,12 +3019,6 @@ coreWebApp.utils = {};
         coreWebApp.ccySystem = $('#ccysystem').val();
         coreWebApp.updateKOhandlers();
         $('.container-fluid').css('padding-left', '5px');
-        $('.navbar-header').width(parseInt($('.container-fluid').width() * 0.16));
-//            $('.headerlogo').width(parseInt($('.container-fluid').width()*0.125));
-//            $('.headerlogo').height((parseInt($('.container-fluid').width()*0.125))*(64/204));
-//            $('#sfver').css('left' ,$('.headerlogo').width());
-//            var rt = ($('.container-fluid').width() - ($('#sfver').offset().left + $('#sfver').outerWidth()));
-//            $('#cname').css('left',(rt+20));
         if ($('#content-root').length !== 0 && (($('#content-root').html()).trim()).length === 0) {
             rendercontents('?r=cwf/fwShell/main/dashboard&dbd=home', 'content-root');
         }
@@ -3113,7 +3152,10 @@ coreWebApp.utils = {};
             },
             update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
                 var val = ko.unwrap(valueAccessor());
-                $(element).select2("val", val);
+                var smdat = $(element).select2("data");
+                if (smdat !== null && smdat.id != val) {
+                    $(element).select2("val", val);
+                }
             }
         };
 
@@ -3196,6 +3238,9 @@ coreWebApp.utils = {};
                     $(element).val(coreWebApp.formatDate(underlyingObservable())).datepicker('update');
                 }
                 ko.applyBindingsToNode(element, {value: interceptor, text: interceptor});
+            },
+            update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+                $(element).datepicker('update');
             }
         };
 
@@ -3243,14 +3288,10 @@ coreWebApp.utils = {};
     coreWebApp.formatDate = formatDate;
 
     function formatDateTime(dateval) {
-        if (dateval == '1970-01-01 00:00:00 UTC') {
+        if (dateval == '1970-01-01T00:00:00') {
             return '';
         }
-        var fxdt = (dateval).replace(/-/g, '/');
-        if (fxdt.indexOf('UTC') == -1) {
-            fxdt += ' UTC';
-        }
-        var dtm = moment(new Date(fxdt));
+        var dtm = moment(new Date(dateval + 'Z'));
         return dtm.tz(coreWebApp.userTimeZone).format((coreWebApp.dateFormat).toUpperCase() + ' HH:mm:ss z');
     }
     coreWebApp.formatDateTime = formatDateTime;
@@ -3381,13 +3422,13 @@ coreWebApp.utils = {};
                         text: 'Select an option'
                     };
                     callback(data);
-                    return false;
+                    return;
                 }
                 // try lookup cache
                 var lcitm = coreWebApp.lookupCache.get($(element).attr('id'), $(element).val());
                 if (lcitm !== undefined) {
                     callback(lcitm);
-                    return false;
+                    return;
                 }
                 if (typeof coreWebApp.ModelBo !== 'undefined' && typeof coreWebApp.ModelBo.preLookupData !== 'undefined') {
                     $.each(coreWebApp.ModelBo.preLookupData, function (index, pld) {
@@ -3398,13 +3439,16 @@ coreWebApp.utils = {};
                             };
                             callback(data);
                             valfound = true;
-                            return false;
+                            return false; // exits loop:$.each
                         }
                     });
+                    if (valfound) {
+                        return;
+                    }
                 }
                 if (!valfound) {
                     $.getJSON(lnk + '&filter=' + cfilter + "&id=" + (element.val()), function (data) {
-                        return callback(data);
+                        callback(data);
                     });
                 }
             },
@@ -3420,17 +3464,15 @@ coreWebApp.utils = {};
                 return object.text;
             }
         });
-        selctr.on('change', function (e) {
-            newval = $(this).val();
-            var onvalchange = $(this).attr('on-change-event');
-            if (typeof onvalchange != 'undefined' && onvalchange != '') {
-                var func = new Function("newval", '{return ' + onvalchange + '(newval);}');
-                var onvalchangeResult = func(newval);
-                if (typeof (onvalchangeResult) != 'undefined' && onvalchangeResult == false) {
-                    return false;
-                }
-            }
-        });
+        // Bind on-change-event required in report view where the element is not bound to model
+        var onchevnt = $(element).attr('on-change-event');
+        if (onchevnt !== undefined && onchevnt != '') {
+            $(element).on('change', function (e) {
+                var newval = $(this).select2("val");
+                var func = new Function("newval", '{' + onchevnt + '(newval);}');
+                func(newval);
+            });
+        }
     }
     coreWebApp.applySmartCombo = applySmartCombo;
 
@@ -4455,7 +4497,7 @@ coreWebApp.utils = {};
     }
     coreWebApp.toastmsg = toastmsg;
 
-    function bs_prompt(ntype, nmsg, truefunction, falsefunction) {
+    function bs_prompt(ntype, title, nmsg, truefunction, falsefunction) {
         var mtype = BootstrapDialog.TYPE_DEFAULT;
         switch (ntype) {
             case 'error':
@@ -4471,7 +4513,7 @@ coreWebApp.utils = {};
         var bsres = false;
         BootstrapDialog.confirm({
             type: mtype,
-            title: '',
+            title: title,
             message: nmsg,
             animate: false,
             callback: function (result) {
@@ -4546,7 +4588,7 @@ coreWebApp.utils = {};
     coreWebApp.maximiseside = maximiseside;
 
     function applogout() {
-        var res = bs_prompt('warning', 'Are you sure you want to logout?', function () {
+        var res = bs_prompt('error', 'Confirm Logout', 'Are you sure you want to logout?', function () {
             $.ajax({
                 url: '?r=site/logout',
                 type: 'POST',
@@ -4567,7 +4609,7 @@ coreWebApp.utils = {};
     coreWebApp.applogout = applogout;
 
     function searchVoucher() {
-        vchId = $('#srchVchId').val();
+        vchId = $('#srchVchId').val().trim();
         $.ajax({
             url: '?r=cwf/sys/main/search-doc',
             type: 'GET',
@@ -4585,7 +4627,7 @@ coreWebApp.utils = {};
                     toastmsg('warning', 'Search', jsonResult['status'], false);
                     return;
                 } else {
-                    var res = bs_prompt('success', 'Document found.<br/> Do you want to replace current screen with ' + vchId + ' ?', function () {
+                    var res = bs_prompt('success', 'Confirm Display', 'Document found.<br/> Do you want to replace current screen with ' + vchId + ' ?', function () {
                         $('#srchVchId').val('');
                         lnk = '?r=/' + jsonResult['qpRoute'] + 'form&formName=' + jsonResult['qpForm'] + '&formParams={"' + jsonResult['qpKey'] + '":"' + jsonResult['qpid'] + '"}';
                         if ($('#details').length == 0) {

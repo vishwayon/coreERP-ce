@@ -79,6 +79,7 @@ class FormView extends CwFrameworkType {
     public $codeBehind;
     public $afterLoadEvent = '';
     public $afterPostEvent = '';
+    public $afterSaveEvent = '';
     public $afterUnpostEvent = '';
     public $beforeSaveEvent = '';
     public $beforeCloseEvent = '';
@@ -231,6 +232,7 @@ class FormTranSection implements IDataBindingItem {
             return false;
         }
     }
+    public $tw;
 
     /** @var FormDataBinding */
     public $dataBinding;
@@ -264,5 +266,7 @@ class FormTranSection implements IDataBindingItem {
             return false;
         }
     }
+    
+    public $noRender = false;
 
 }

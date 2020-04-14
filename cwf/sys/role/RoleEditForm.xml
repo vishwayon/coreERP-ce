@@ -13,8 +13,9 @@
         </jsEvents>
         <controlSection editMode="Edit">
             <dataBinding>
-                <field id="role_name" label="Role Name" type="string" control="TextBox" size="4" maxLength="50" />
-                <field id="role_description" label="Description" type="string" control="TextBox" size="8" maxLength="250" />         
+                <field id="role_name" label="Role Name" type="string" control="TextBox" size="3" maxLength="50" />
+                <field id="role_description" label="Description" type="string" control="TextBox" size="7" maxLength="250" />
+                <cButton id="get_user_branch" onClick="core_sys.get_role_user_branch" label="Role Use info" ignore-edit="true"/>         
                 <field id="menu_items" label="Menu" type="string" control="Hidden" size="s" readOnly="True"/>
                 <nextRow/>
                 <cHtml id="accesslevels" label="Access Levels">

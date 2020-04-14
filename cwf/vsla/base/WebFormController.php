@@ -57,16 +57,17 @@ class WebFormController extends Controller {
     }
 
     public function actionWizard($operation = NULL) {
-        if (\Yii::$app->request->getIsPost()) { // Called by wizard step
-            $formName = \Yii::$app->request->getBodyParam('formName');
-            $step = \Yii::$app->request->getBodyParam('step');
-            $oldFormParams = \Yii::$app->request->getBodyParam('oldStepData', []);
-            $formParams = json_decode(\Yii::$app->request->getBodyParam('formdata'));
-            $operation = \Yii::$app->request->getBodyParam('operation');
-        } else { // First call from menu click
+        if (\Yii::$app->request->getIsPost()) {
+            $formName = \Yii::$app->request->getBodyParams()['formName'];
+            $step = \Yii::$app->request->getBodyParams()['step'];
+            $oldFormParams = isset(\Yii::$app->request->getBodyParams()['oldStepData']) ?
+                    \Yii::$app->request->getBodyParams()['oldStepData'] : [];
+            $formParams = json_decode(\Yii::$app->request->getBodyParams()['formdata']);
+            $operation = \Yii::$app->request->getBodyParams()['operation'];
+        } else {
             $formName = \Yii::$app->request->get('formName');
             $step = \Yii::$app->request->get('step');
-            $oldFormParams = []; // This is the first step hence empty array
+            $oldFormParams = \Yii::$app->request->get('oldStepData');
             $formParams = json_decode(\Yii::$app->request->get('formdata'));
         }
 
@@ -76,6 +77,7 @@ class WebFormController extends Controller {
         $currdata = NULL;
         if ($operation == 'next') {
             if ($formParams) {
+                $oldFormParams = $oldFormParams == NULL ? [] : $oldFormParams;
                 $wizparser->processStepData($wizparser->currentStep, $formParams, $oldFormParams);
             }
             $wizparser->setSteps($wizparser->currentStep, $operation);
@@ -181,7 +183,7 @@ class WebFormController extends Controller {
         \yii::$app->response->getHeaders()->set('Content-Type', "application/json");
         return \app\cwf\vsla\render\CollectionHelper::getCollection($design, $filter_array);
     }
-
+    
     public function actionGetCollData($formName, $filters) {
         $filter_array = array();
         parse_str($filters, $filter_array);
@@ -195,6 +197,7 @@ class WebFormController extends Controller {
             \yii::$app->response->setStatusCode(401); // unauthorised access
             return ['fail-msg' => 'Requested data not available to logon user.'];
         }
+        
     }
 
     public function getViewPath() {

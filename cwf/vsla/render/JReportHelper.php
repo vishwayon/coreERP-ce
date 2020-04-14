@@ -26,14 +26,14 @@ class JReportHelper {
     const OUTPUT_HTML_SINGLE_FILE = 'html_single_file';
 
     private $config = [];
-    public static $reportHost = 'http://localhost:8080';
 
     public function __construct($config = []) {
-        $this->config = array_merge($config, [
+        $this->config = array_merge([
             'baseUrl' => \Yii::$app->getUrlManager()->getBaseUrl(),
             'sessionID' => \app\cwf\vsla\security\SessionManager::getInstance()->getUserInfo()->getSession_ID(),
             'renderTo' => 'web',
-        ]);
+            'reportHost' => 'http://localhost:8080'
+        ], $config);
     }
 
     /*
@@ -89,7 +89,7 @@ class JReportHelper {
             $rptCompanyInfoPrefix = "";
             // Add Data export options
             $rptOptions->rptParams['pcwf_data_only'] = FALSE;
-            if(array_key_exists('pcwf_data_only', $params)){
+            if (array_key_exists('pcwf_data_only', $params)) {
                 $rptOptions->rptParams['pcwf_data_only'] = $params['pcwf_data_only'];
             }
             // Add params from report xml to optionxml
@@ -118,7 +118,7 @@ class JReportHelper {
                             $rptOptions->rptParams[(string) $fld['id']] = \app\cwf\vsla\utils\FormatHelper::GetDBDate($params[(string) $fld['id']]);
                         } elseif ($fld['type'] == 'array') {
                             // This converts to array syntax for postgreSQL
-                            $rptOptions->rptParams[(string)$fld['id']] = '{'.$params[(string) $fld['id']].'}';
+                            $rptOptions->rptParams[(string) $fld['id']] = '{' . $params[(string) $fld['id']] . '}';
                         } else {
                             $rptOptions->rptParams[(string) $fld['id']] = $params[(string) $fld['id']];
                         }
@@ -163,7 +163,11 @@ class JReportHelper {
                 $branch_id = $rptOptions->rptParams['pbranch_id'];
             }
 
-            self::getPresetValues($branch_id, $rptOptions);
+            if (array_key_exists('xmlPath', $params)) {
+                self::getPresetValues($branch_id, $rptOptions, $params['xmlPath']);
+            } else {
+                self::getPresetValues($branch_id, $rptOptions);
+            }
             self::getCustomCodePath($rptOptions);
             if ($rptCompanyInfoPrefix != '') {
                 self::getCompanyDefaults($rptCompanyInfoPrefix, $rptOptions);
@@ -196,7 +200,7 @@ class JReportHelper {
             $printParam = $printSettings->addChild('param', 'true');
             $printParam->addAttribute('name', 'html_in_point');
         }
-        
+
         if (array_key_exists('max_pages', $params)) {
             $printParam = $printSettings->addChild('param', $params['max_pages']);
             $printParam->addAttribute('name', 'max_pages');
@@ -209,7 +213,7 @@ class JReportHelper {
         $client = new \GuzzleHttp\Client();
 
         try {
-            $resp = $client->post(self::$reportHost . '/CoreJSReportServer/RenderReport?reqtime=' . time(), ['body' => $content]);
+            $resp = $client->post($this->config['reportHost'] . '/CoreJSReportServer/RenderReport?reqtime=' . time(), ['body' => $content]);
             $result = $resp->getBody();
             if ($outputType == self::OUTPUT_HTML) {
                 $rptResult = $this->modifyHtmlRef($result);
@@ -231,7 +235,7 @@ class JReportHelper {
         }
     }
 
-    public static function getPresetValues($branch_id, $rptOption) {
+    public static function getPresetValues($branch_id, $rptOption, $rptXmlPath = '') {
         if ($branch_id == '') {
             $branch_id = '-1';
         }
@@ -269,12 +273,38 @@ class JReportHelper {
                 }
             }
         }
+        // fetch rpt_user_pref
+        if ($rptXmlPath != '') {
+            $cmmUp = new \app\cwf\vsla\data\SqlCommand();
+            $cmmUp->setCommandText("Select jdata From sys.rpt_user_pref Where rpt_user_pref_id = :prup_id::uuid");
+            $cmmUp->addParam('prup_id', md5($rptXmlPath . \app\cwf\vsla\security\SessionManager::getInstance()->getUserInfo()->getUser_ID()));
+            $dtUp = DataConnect::getData($cmmUp);
+            if (count($dtUp->Rows()) > 0) {
+                $jdata = json_decode($dtUp->Rows()[0]['jdata']);
+                if (intval($jdata->rate_scale) == 0) {
+                    $rptOption->rptParams['pcwf_rate_format'] = '#,##0';
+                } else {
+                    $rptOption->rptParams['pcwf_rate_format'] = str_pad('#,##0.', 6 + intval($jdata->rate_scale), '0');
+                }
+                if (intval($jdata->qty_scale) == 0) {
+                    $rptOption->rptParams['pcwf_qty_format'] = '#,##0';
+                } else {
+                    $rptOption->rptParams['pcwf_qty_format'] = str_pad('#,##0.', 6 + intval($jdata->qty_scale), '0');
+                }
+            } else {
+                $rptOption->rptParams['pcwf_qty_format'] = \app\cwf\vsla\utils\FormatHelper::GetQtyFormat();
+                $rptOption->rptParams['pcwf_rate_format'] = \app\cwf\vsla\utils\FormatHelper::GetRateFormat();
+            }
+        } else {
+            $rptOption->rptParams['pcwf_qty_format'] = \app\cwf\vsla\utils\FormatHelper::GetQtyFormat();
+            $rptOption->rptParams['pcwf_rate_format'] = \app\cwf\vsla\utils\FormatHelper::GetRateFormat();
+        }
+
+
         // Add other default parameters
         $rptOption->rptParams['pcwf_date_format'] = \app\cwf\vsla\utils\FormatHelper::GetDateFormatForReport();
         $rptOption->rptParams['pcwf_ccy_format'] = \app\cwf\vsla\utils\FormatHelper::GetNumberFormat();
         $rptOption->rptParams['pcwf_amt_format'] = \app\cwf\vsla\utils\FormatHelper::GetAmtFormat();
-        $rptOption->rptParams['pcwf_qty_format'] = \app\cwf\vsla\utils\FormatHelper::GetQtyFormat();
-        $rptOption->rptParams['pcwf_rate_format'] = \app\cwf\vsla\utils\FormatHelper::GetRateFormat();
         $rptOption->rptParams['pcwf_fc_rate_format'] = \app\cwf\vsla\utils\FormatHelper::GetFCRateFormat();
         if (\app\cwf\vsla\security\SessionManager::getCCYSystem() == 'l') {
             $rptOption->rptParams['pcwf_locale'] = "en-in";
@@ -296,7 +326,7 @@ class JReportHelper {
     }
 
     public static function getCustomCodePath(RptOption $rptOption) {
-        // resolve custom code path
+        /*// resolve custom code path 
         if (array_key_exists('customCode', \yii::$app->params['cwf_config'])) {
             if (substr(\yii::$app->params['cwf_config']['customCode']['path'], 0, 1) == '/') {
                 $customCodePath = \yii::$app->params['cwf_config']['customCode']['path'] . DIRECTORY_SEPARATOR . 'C' . \app\cwf\vsla\security\SessionManager::getInstance()->getUserInfo()->getCompany_ID();
@@ -337,6 +367,27 @@ class JReportHelper {
                 } else {
                     $rptOption->rptParams['pcwf_company_logo'] = \yii::$app->basePath . $customCodePath . DIRECTORY_SEPARATOR . $dt->Rows()[0]['rpt_header_image'];
                 }
+            }
+        }*/
+        // Get Custom Report information
+        $cmm = new \app\cwf\vsla\data\SqlCommand();
+        $cmm->setCommandText('Select * From sys.rpt_option Where rpt_name=:prpt_name and rpt_path=:prpt_path');
+        $cmm->addParam('prpt_name', $rptOption->rptName);
+        $cmm->addParam('prpt_path', $rptOption->rptPath);
+        $dt = \app\cwf\vsla\data\DataConnect::getData($cmm);
+        if (count($dt->Rows()) == 1) {
+            if ($dt->Rows()[0]['rpt_replace_path'] != '') {
+                $rptOption->rptPath = $dt->Rows()[0]['rpt_replace_path'];
+            }
+            // Template and letterhead logo are mutually exclusive. Both cannot exist together
+            if ($dt->Rows()[0]['rpt_header_template'] != '') {
+                // use template if template exists
+                $rptOption->rptParams['pcwf_header_template'] = $dt->Rows()[0]['rpt_header_template'];
+            } elseif ($dt->Rows()[0]['rpt_header_image'] != '') {
+                // use default custom template and set letterhead logo
+                $rptOption->rptParams['pcwf_header_template'] = 'cwf/report-templates/custom-header-template.jrxml';
+                // Image path always requires complete path
+                $rptOption->rptParams['pcwf_company_logo'] = \yii::$app->basePath . $dt->Rows()[0]['rpt_header_image'];
             }
         }
     }
@@ -460,8 +511,8 @@ class JReportHelper {
 
         $pageCount = intval($rptInfo->PageCount);
         if ($this->config['renderTo'] == 'web') {
-            // Outputs the http scheme path
-            $basePath = \Yii::$app->getUrlManager()->hostInfo . \Yii::$app->getUrlManager()->getBaseUrl() . $rptInfo->ReportRenderedPath;
+            // Outputs the http relative path
+            $basePath = substr($rptInfo->ReportRenderedPath, 1);
         } else {
             // Outputs the physical base path
             $basePath = \Yii::$app->getBasePath() . $rptInfo->ReportRenderedPath;
@@ -477,8 +528,8 @@ class JReportHelper {
         $rptResult = new rptResult();
 
         if ($this->config['renderTo'] == 'web') {
-            // Outputs the http scheme path
-            $rptResult->ReportRenderedPath = \Yii::$app->getUrlManager()->hostInfo . \Yii::$app->getUrlManager()->getBaseUrl() . $rptInfo->ReportRenderedPath;
+            // Outputs the http relative path
+            $rptResult->ReportRenderedPath = substr($rptInfo->ReportRenderedPath, 1);
         } else {
             // Outputs the physical base path
             $rptResult->ReportRenderedPath = \Yii::$app->getBasePath() . $rptInfo->ReportRenderedPath;
@@ -504,7 +555,7 @@ class JReportHelper {
         $extn = substr($src_name, strrpos($src_name, '.'), strlen($src_name) - 1);
         $src_name = substr($src_name, 0, strrpos($src_name, '.'));
         $src_name .= '_' . date('Y_m_d_H_i_s') . $extn;
-        $res = \copy(\yii::getAlias('@app') . '/web' . $src, \yii::getAlias('@runtime/attachments') . $src_name);
+        $res = \copy(\yii::getAlias('@app') . '/web/' . $src, \yii::getAlias('@runtime/attachments') . $src_name);
         if ($res) {
             return \yii::getAlias('@runtime/attachments') . $src_name;
         } else {
@@ -513,10 +564,14 @@ class JReportHelper {
     }
 
     public static function createSessionPath() {
+        $reportHost = 'http://localhost:8080';
+        if (isset(\yii::$app->params['cwf_config']['reportServer']) && isset(\yii::$app->params['cwf_config']['reportServer']['reportHost'])) {
+            $reportHost = \yii::$app->params['cwf_config']['reportServer']['reportHost'];
+        }
         $pathName = \yii::getAlias('@webroot') . '/reportcache/' . \app\cwf\vsla\security\SessionManager::getInstance()->getUserInfo()->getSession_ID() . '/';
         if (!file_exists($pathName)) {
             $client = new \GuzzleHttp\Client();
-            $resp = $client->get(self::$reportHost . '/CoreJSReportServer/CreateSessionPath?session_id=' . \app\cwf\vsla\security\SessionManager::getInstance()->getUserInfo()->getSession_ID());
+            $resp = $client->get($reportHost . '/CoreJSReportServer/CreateSessionPath?session_id=' . \app\cwf\vsla\security\SessionManager::getInstance()->getUserInfo()->getSession_ID());
             $result = $resp->getBody();
         }
     }

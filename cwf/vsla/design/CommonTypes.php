@@ -225,6 +225,9 @@ class BaseParamCurrentDate implements IReportParamItem {
     }
     
     public $id = '';
+    public $offsetMonth = '';
+    public $offsetDate = '';
+
 }
 
 class ReportParamPreset implements IReportParamItem {
@@ -302,6 +305,7 @@ class FormField implements IDataBindingItem {
     public $style = '';
     public $multiple = false;
     public $placeholder = '';
+    public $noRender = false;
         
     // Elements
     public $value;

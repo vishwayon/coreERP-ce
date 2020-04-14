@@ -537,6 +537,28 @@ class AccessManager {
         }
         return $allow;
     }
+    
+    public static function check_user_pref($bo_id) {
+        $user_pref = [];
+
+        // check if the user preference is set for the document
+        $cmm = new \app\cwf\vsla\data\SqlCommand();
+        $cmmtext = "select a.user_id, (a.pref_info->>'wf_auto_adv')::uuid[]
+                from sys.user_pref a
+        Where a.user_id = :puser_id
+ 	And md5(:pbo_id)::uuid = Any ((a.pref_info->>'wf_auto_adv')::uuid[])";
+        $cmm->setCommandText($cmmtext);
+        $cmm->addParam('pbo_id', $bo_id);
+        $cmm->addParam('puser_id', SessionManager::getInstance()->getUserInfo()->getUser_ID());
+        $res = \app\cwf\vsla\data\DataConnect::getData($cmm);
+        $wf_auto_adv = FALSE;
+        if (count($res->Rows()) > 0) {
+            $wf_auto_adv = TRUE;
+        }
+        $user_pref['wf_auto_adv'] = $wf_auto_adv;
+
+        return $user_pref;
+    }
 
 }
 

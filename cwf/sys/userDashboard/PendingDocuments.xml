@@ -5,11 +5,13 @@
         <label>Pending Documents</label>
         <sql>
             <command>
+                <![CDATA[
                 select a.doc_id, a.doc_sender_comment, a.user_id_from, a.doc_sent_on::date, a.doc_action, 
                 a.user_id_to, a.doc_stage_id, a.doc_stage_id_from, a.branch_id, b.branch_name, a.bo_id,
                 '' as from_user from sys.doc_wf a
                 inner join sys.branch b on a.branch_id = b.branch_id 
-                where a.user_id_to &lt;&gt; -1 and a.user_id_to = {user_id}
+                where a.user_id_to <> -1 and a.user_id_to = {user_id} and a.finyear = '{finyear}'
+                ]]>
             </command>
         </sql>
         <seriesType>grid</seriesType>

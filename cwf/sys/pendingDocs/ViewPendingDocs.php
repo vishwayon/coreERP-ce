@@ -1,8 +1,20 @@
 <?php
 
 use yii\helpers\Html;
+use app\cwf\vsla\utils\FormatHelper;
 
 $viewerurl = '?r=cwf%2Fsys%2Fpending-docs%2Fgetdata';
+
+$form_date_format = \app\cwf\vsla\utils\FormatHelper::GetDateFormatForHtml();
+$from_date = FormatHelper::FormatDateForDisplay(app\cwf\vsla\security\SessionManager::getSessionVariable('year_begin'));
+$to_date = FormatHelper::FormatDateForDisplay(app\cwf\vsla\security\SessionManager::getSessionVariable('year_end'));
+$as_on_date = FormatHelper::FormatDateForDisplay(date("Y-m-d", time()));
+if (strtotime(date("Y-m-d", time())) > strtotime(app\cwf\vsla\security\SessionManager::getSessionVariable('year_end'))) {
+    $as_on_date = FormatHelper::FormatDateForDisplay(app\cwf\vsla\security\SessionManager::getSessionVariable('year_end'));
+    $to_date = FormatHelper::FormatDateForDisplay(app\cwf\vsla\security\SessionManager::getSessionVariable('year_end'));
+    $from_date = FormatHelper::FormatDateForDisplay(app\cwf\vsla\security\SessionManager::getSessionVariable('year_begin'));
+}
+
 ?>
 
 <div id="contentholder"  class="view-min-width view-window1">
@@ -24,7 +36,7 @@ $viewerurl = '?r=cwf%2Fsys%2Fpending-docs%2Fgetdata';
                         'data-filter' => '',
                         'data-valuemember' => 'branch_id',
                         'data-displaymember' => 'branch_name',
-                        'data-namedlookup' => '../cwf/sys/lookups/BranchWithAll.xml',
+                        'data-namedlookup' => '@app/cwf/sys/lookups/BranchWithAll.xml',
                         'data-validations' => 'number',
                         'style' => 'padding:0px;', 'notyetsmart' => true,
                         'data-validation-error-msg' => 'Please select branch'])
@@ -39,7 +51,7 @@ $viewerurl = '?r=cwf%2Fsys%2Fpending-docs%2Fgetdata';
                         'data-filter' => '',
                         'data-valuemember' => 'bo_id',
                         'data-displaymember' => 'menu_text',
-                        'data-namedlookup' => '../cwf/sys/lookups/WfBOlist.xml',
+                        'data-namedlookup' => '@app/cwf/sys/lookups/WfBOlist.xml',
                         'data-validations' => 'string',
                         'style' => 'padding:0px;', 'notyetsmart' => true,
                         'data-validation-error-msg' => 'Please select doc type'])
@@ -54,7 +66,7 @@ $viewerurl = '?r=cwf%2Fsys%2Fpending-docs%2Fgetdata';
                         'data-filter' => '',
                         'data-valuemember' => 'user_id',
                         'data-displaymember' => 'full_user_name',
-                        'data-namedlookup' => '../cwf/sys/lookups/UserWithAll.xml',
+                        'data-namedlookup' => '@app/cwf/sys/lookups/UserWithAll.xml',
                         'data-validations' => 'number',
                         'style' => 'padding:0px;', 'notyetsmart' => true,
                         'data-validation-error-msg' => 'Please select user'])
@@ -69,7 +81,7 @@ $viewerurl = '?r=cwf%2Fsys%2Fpending-docs%2Fgetdata';
                         'data-filter' => '',
                         'data-valuemember' => 'user_id',
                         'data-displaymember' => 'full_user_name',
-                        'data-namedlookup' => '../cwf/sys/lookups/UserWithAll.xml',
+                        'data-namedlookup' => '@app/cwf/sys/lookups/UserWithAll.xml',
                         'data-validations' => 'number',
                         'style' => 'padding:0px;', 'notyetsmart' => true,
                         'data-validation-error-msg' => 'Please select user'])
@@ -86,6 +98,30 @@ $viewerurl = '?r=cwf%2Fsys%2Fpending-docs%2Fgetdata';
                         <option value="I">Assigned (in WF)</option>
                         <option value="O">Saved (not in WF)</option>
                     </select>
+                </div>
+                 <div class=" col-md-2 form-group required" style="margin-top: 0px;">
+                    <label class="control-label" for="from_date">Doc Date From</label>
+                    <?=
+                    Html::input('Date', 'from_date', $from_date, ['class' => ' datetime form-control required',
+                        'type' => 'Text',
+                        'data-validation-format' => $form_date_format,
+                        'data-validation' => 'date',
+                        'data-validation-error-msg' => 'Doc Date From is required.',
+                        'id' => 'from_date', 'name' => 'from_date']
+                    )
+                    ?>
+                </div>
+                <div class=" col-md-2 form-group required" style="margin-top: 0px;">
+                    <label class="control-label" for="to_date">Doc Date To</label>
+                    <?=
+                    Html::input('Date', 'to_date', $as_on_date, ['class' => ' datetime form-control required',
+                        'type' => 'Text',
+                        'data-validation-format' => $form_date_format,
+                        'data-validation' => 'date',
+                        'data-validation-error-msg' => 'Doc Date To  is required.',
+                        'id' => 'to_date', 'name' => 'to_date']
+                    )
+                    ?>
                 </div>
             </form>
             <div class="col-md-1" style="float: right;margin-top:16px;">
@@ -160,6 +196,7 @@ $viewerurl = '?r=cwf%2Fsys%2Fpending-docs%2Fgetdata';
                                 columns: [                                    
                                     {data: "branch_name", title: "Branch"},
                                     {data: "menu_text", title: "Doc Type"},
+                                    {data: {_: "doc_date", display: "doc_date.display", sort: "doc_date.sort"}, title: "Doc Date", type: "num"},
                                     {data: "doc_id", title: "Voucher ID"},
                                     {data: {_: "doc_sent_on", display: "doc_sent_on.display", sort: "doc_sent_on.sort"}, title: "Assign Date", type: "num"},
                                     {data: "doc_action", title: "Status",

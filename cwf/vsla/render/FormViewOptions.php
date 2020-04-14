@@ -6,7 +6,7 @@ use app\cwf\vsla\security\AccessLevels;
 class FormViewOptions {
     public $xmlViewPath = '';
     public $callingModulePath = '';
-    public $params = array(); 
+    public $params = ''; 
     /**Set the Original Action Route for  */
     public $actionViewRoute = '';
     

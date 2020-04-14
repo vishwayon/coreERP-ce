@@ -37,8 +37,8 @@ class ModelPullDoc {
                         And (case when :puser_id_to <> -1 then user_id_to = :puser_id_to else :puser_id_to = -1 end) 
                         And (case when :pdoc_id <> '' then doc_id = :pdoc_id else :pdoc_id = '' end) 
                         And (case when :pbo_id <> '' then bo_id = :pbo_id else :pbo_id = '' end)
-                        And branch_id = :pbranch_id and 
-                        finyear = :pfinyear";
+                        And branch_id = :pbranch_id
+                        And finyear = :pfinyear" ;
         $cmm->addParam('puser_id_from', $this->from_user_id);
         $cmm->addParam('puser_id_to', $this->to_user_id);
         $cmm->addParam('pdoc_id', $this->find_vch_id);

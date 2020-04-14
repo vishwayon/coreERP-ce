@@ -8,7 +8,10 @@
         </connectionType>
         <sql>
             <command>
-                SELECT bo_id, menu_type, menu_text, link_path FROM sys.menu where menu_type in (1,2) 
+                SELECT bo_id, menu_type, menu_text, link_path 
+                FROM sys.menu
+                where menu_type in (1,2) 
+                        And is_hidden = false
                 ORDER BY menu_text
             </command>
         </sql>

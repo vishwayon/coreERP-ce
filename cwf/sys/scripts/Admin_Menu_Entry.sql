@@ -79,3 +79,7 @@ INSERT INTO sys.menu_admin(menu_id, parent_menu_id, menu_key, menu_name, menu_te
 Select (select max(menu_id) + 1 from sys.menu_admin), sys.fn_get_admin_menu_id_by_name('mnuAdminSystem'), sys.sp_get_admin_menu_key('mnuAdminSystem'), 'mnuAdminUserClfyAccess', 'Closed Finyear Access', 2, md5('ClosedFinyearAccess')::uuid, false, current_timestamp(0),'cwf/sys/form/collection&formName=closedFinyearAccess/ClosedFinyearAccessCollectionView';
 
 ?==?
+INSERT INTO sys.menu_admin(menu_id, parent_menu_id, menu_key, menu_name, menu_text, menu_type, bo_id, is_hidden, last_updated, link_path)
+Select (select max(menu_id) + 1 from sys.menu_admin), sys.fn_get_admin_menu_id_by_name('mnuAdminSystem'), sys.sp_get_admin_menu_key('mnuAdminSystem'), 'mnuAdminDocGroup', 'Document Group', 2, md5('DocGroup')::uuid, false, current_timestamp(0),'cwf/sys/form/collection&formName=docGroup/DocGroupCollectionView';
+
+?==?

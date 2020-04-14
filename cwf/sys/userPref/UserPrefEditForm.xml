@@ -1,0 +1,36 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+
+    <formView id="UserPref" type="Master"  bindingBO="userPref/UserPref">
+        <header>User Preference</header>
+        <keyField>user_pref_id</keyField> 
+        <controlSection editMode="Edit">
+            <dataBinding>
+                <field id="user_id" label="User Name" type="int" control="SmartCombo" size="s" readOnly="true">
+                    <lookup> 
+                        <valueMember>user_id</valueMember>
+                        <displayMember>user_name</displayMember>
+                        <namedLookup>../cwf/sys/lookups/User.xml</namedLookup>
+                    </lookup>    
+                </field>
+                <nextRow/> 
+                <field id="pref_info.wf_auto_adv" label="" type="string" control="Hidden" size="1" isOptional="true"/>
+                <tranSection label="Auto progress Document(s) to yourself" editMode="Edit" fixedWidth="300">
+                    <dataBinding dataProperty="bo_temp">
+                        <field id="bo_id" label="Document" type="string" control="SmartCombo" size="s" isOptional="true" readOnly="true">
+                            <lookup> 
+                                <valueMember>bo_id</valueMember>
+                                <displayMember>menu_text</displayMember>
+                                <namedLookup>../cwf/sys/lookups/BOlist.xml</namedLookup>
+                            </lookup>    
+                        </field>
+                        <field id="select" label="Select" type="bool" control="CheckBox" size="2"/>
+                    </dataBinding>
+                </tranSection>
+                <nextRow/>
+                <field id="note1" label="Note : If you have access to the next stage for the selected document(s), you will not be required to select user for next stage. The Send/Approve popup will be skipped." type="string" control="Label" size="l"/>
+            </dataBinding> 
+        </controlSection>
+    </formView>
+</cwFramework>

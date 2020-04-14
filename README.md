@@ -11,9 +11,9 @@ Current list of commands mentioned, have been tested on Ubuntu 18.04. If you pla
 
 External Dependencies
 ---------------------
-1. Postgresql Server 10. (detailed instructions at http://help.coreerp.net/docs/setup-guide/server-setup.html#install-postgresql)
-2. Apache2 (proxy_fcgi, mpm_event are optional) (detailed instructions at http://help.coreerp.net/docs/setup-guide/server-setup.html#install-apache2)
-3. PHP 7.3 or higher ::
+1. Postgresql Server 12. (detailed instructions at https://help.coreerp.in/setup-guide/server-setup.html#install-postgresql)
+2. Apache2 (proxy_fcgi, mpm_event are optional) (detailed instructions at https://help.coreerp.in/setup-guide/server-setup.html#install-apache2)
+3. PHP 7.3 ::
     ```$ sudo apt-get install php7.3 php7.3-fpm php7.3-mbstring php7.3-xml php7.3-pgsql```
 4. Java 1.8 (required for rendering reports) ::
     ```$ sudo apt-get install openjdk-8-jre-headless```
@@ -32,8 +32,8 @@ Setup Steps
 2. Make the following folders writable
     - runtime
     - web/assets
-3. Create cwfconfig.php. Refer http://help.coreerp.net/docs/setup-guide/install-coreerp.html#editing-the-config-file
-4. Create initial database. Refer http://help.coreerp.net/docs/setup-guide/install-coreerp.html#setting-up-the-database
+3. Create cwfconfig.php. Refer https://help.coreerp.in/setup-guide/install-coreerp.html#editing-the-config-file
+4. Create initial database. Refer https://help.coreerp.in/setup-guide/install-coreerp.html#setting-up-the-database
 
 Verify Installation
 -------------------
@@ -41,4 +41,4 @@ Verify Installation
 If everything went off successfully, you should be able to open coreERP login screen using the following link:
     http://localhost/core-erp
 
-Proceed to the topic Getting Started (http://help.coreerp.net/docs/setup-guide/getting-started.html)
+Proceed to the topic Getting Started (https://help.coreerp.in/setup-guide/getting-started.html)

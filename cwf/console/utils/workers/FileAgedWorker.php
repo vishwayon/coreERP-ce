@@ -7,7 +7,7 @@ use YaLinqo\Enumerable;
 
 class FileAgedWorker {
     private $basePath = '';
-    private $pattern = "/^[a-zA-Z0-9_-]{1,}_\d{8}_\d{4}/i";
+    private $pattern = "/^[a-zA-Z0-9_-]{1,}_\d{8}_[0-9]{4}\.tar|[a-zA-Z0-9_-]{1,}_\d{8}_[0-9]{4}\.backup$/";
     private $removeCount = 0;
     
     public function __construct($basePath) {
@@ -69,7 +69,10 @@ class FileAgedWorker {
     
     private function removePhysicalFiles($sortedFiles) {
         foreach($sortedFiles as $file) {
-            if(!$file->required) {
+            if($file->moveFile) {
+                rename($file->filePath.$file->fileName, $file->filePath.$file->moveFileName);
+                echo "Renamed File: ".$file->filePath.$file->fileName." to ".$file->moveFileName.PHP_EOL;
+            } elseif(!$file->required) {
                 unlink($file->filePath.$file->fileName);
                 $this->removeCount += 1;
                 echo "Removed File: ".$file->dump();
@@ -91,6 +94,7 @@ class FileAgedWorker {
             $lastPart = count($nameParts) - 1;
             $fileInfo->createTime = strtotime($nameParts[$lastPart-1].substr($nameParts[$lastPart], 0, strpos($nameParts[$lastPart], ".")));
             $fileInfo->createDate = date("Y-m-d H:i", $fileInfo->createTime);
+            $fileInfo->moveFileName = str_replace($nameParts[$lastPart-1]."_".$nameParts[$lastPart], '', $file) . date("MY", $fileInfo->createTime) . substr($nameParts[$lastPart], strpos($nameParts[$lastPart], "."));
             $sortedFiles[$fileInfo->createTime] = $fileInfo;
         }
         ksort($sortedFiles);        
@@ -115,6 +119,7 @@ class FileAgedWorker {
         foreach($list as $groupKey => $groupData) {
             $maxItem = Enumerable::from($groupData)->max('$b==>$b->createTime');
             $sortedFiles[$maxItem]->required = TRUE;
+            $sortedFiles[$maxItem]->moveFile = TRUE;
         }
         
         // Always retain the last 10 files (This is required if the backup failed)
@@ -122,7 +127,8 @@ class FileAgedWorker {
         foreach($sortedFiles as $key => $file) {
             $fileCount -= 1;
             if ($fileCount<10) {
-                $file->required=TRUE;
+                $file->required = TRUE;
+                $file->moveFile = FALSE;
             }
         }
     }
@@ -180,8 +186,14 @@ class FileInfo {
     public $createDate;
     public $createMonth;
     public $required = FALSE;
+    public $moveFile = FALSE;
+    public $moveFileName = '';
     
     public function dump() {
+        return $this->fileName.": ".$this->filePath."|".$this->createDate."|".$this->required."\n";
+    }
+    
+    public function setMoveFileName() {
         return $this->fileName.": ".$this->filePath."|".$this->createDate."|".$this->required."\n";
     }
 }

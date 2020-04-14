@@ -207,10 +207,6 @@ include_once getcwd() . '/../cwf/fwShell/models/MenuTree.php';
                 $field->formula = (string) $fld->computedField;
             }
 
-            if ((string) $fld->attributes()['data-fc-dependent']) {
-                $section->fc_fields[(string) $fld->attributes()->id] = (string) $fld->attributes()['data-fc-dependent'];
-            }
-
             if ($fld->getName() === 'customField') {
                 $field->isCustom = TRUE;
             } else {

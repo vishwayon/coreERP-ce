@@ -62,8 +62,8 @@ class CollectionHelper {
             // User does not have access to this document.
             return '<h3>' . $design->header . '</h3>';
         }
-        $headerHtml = '<h3 class="col-md-6">' . $design->header . '</h3>
-            <div class="col-md-4 cformheaderbuttons">
+        $headerHtml = '<h3 class="col-sm-8">' . $design->header . '</h3>
+            <div class="col-sm-4 cformheaderbuttons">
                 <div id="qp" 
                     qp-route="' . \yii\helpers\Html::encode(str_replace('@app/', '', $design->option->callingModulePath)) . '" 
                     qp-formName="' . \yii\helpers\Html::encode($design->editView) . '" 
@@ -129,16 +129,16 @@ class CollectionHelper {
         if ($design->option->accessLevel <= AccessLevels::NOACCESS) {
             return '<span style="margin:15px;">Access Denied. You do not have access to this collection.</span>';
         } else if ($design->type == \app\cwf\vsla\design\BusinessObject::TYPE_DOCUMENT) {
-            $filterstring = '<form class="col-md-10 form-horizontal" id="collectionfilter" name ="collectionfilter" 
+            $filterstring = '<form class="col-sm-10 form-horizontal" id="collectionfilter" name ="collectionfilter" 
                         target="collectiondata" style="padding-right:0px;">
                     <div>   
                         <input type="hidden" id="_csrf" name="_csrf" value="' . \Yii::$app->request->csrfToken . '">';
 
             $dateFormat = (string) SessionManager::getSessionVariable('date_format');
-            $filterstring .= '<div class=" col-md-3 form-group" style="margin-top: 0px;">' .
+            $filterstring .= '<div class=" col-sm-3 form-group" style="margin-top: 0px;">' .
                     '<label class="control-label" for="docstatus">Status</label>';
             $filterstring .= Html::dropDownList('docstatus', self::STATUS_FILTER_AwaitMyAction, $status_options, ['class' => 'form-control', 'id' => 'docstatus']);
-            $filterstring .= '</div><div class=" col-md-3 form-group" style="margin-top: 0px;">' .
+            $filterstring .= '</div><div class=" col-sm-3 form-group" style="margin-top: 0px;">' .
                     '<label class="control-label" for="from_date">From</label>';
 
             // Default the dates to current 2 months. Ensures, not too much data is pulled on refresh
@@ -146,6 +146,11 @@ class CollectionHelper {
             $from_date = date_format(date_sub(new \DateTime($to_date), new \DateInterval('P2M')), "Y-m-01");
             if (strtotime($from_date) < strtotime(\app\cwf\vsla\security\SessionManager::getSessionVariable('year_begin'))) {
                 $from_date = \app\cwf\vsla\security\SessionManager::getSessionVariable('year_begin');
+            }   
+            
+            if (strtotime($from_date) > strtotime(\app\cwf\vsla\security\SessionManager::getSessionVariable('year_end'))) {
+                $year_end = new \DateTime(\app\cwf\vsla\security\SessionManager::getSessionVariable('year_end'));
+                $from_date = date_format(date_sub($year_end, new \DateInterval('P2M')), "Y-m-01");
             }
 
             $filterstring .= Html::input('DateTime', 'from_date', \app\cwf\vsla\utils\FormatHelper::FormatDateForDisplay($from_date), ['class' => ' datetime form-control ',
@@ -159,7 +164,7 @@ class CollectionHelper {
                                 \app\cwf\vsla\security\SessionManager::getSessionVariable('year_end')),
                         'name' => 'from_date', 'id' => 'from_date']
             );
-            $filterstring .= '</div><div class=" col-md-3 form-group" style="margin-top: 0px;">' .
+            $filterstring .= '</div><div class=" col-sm-3 form-group" style="margin-top: 0px;">' .
                     '<label class="control-label" for="to_date">To</label>';
 
             if (strtotime($to_date) > strtotime(\app\cwf\vsla\security\SessionManager::getSessionVariable('year_end'))) {
@@ -176,7 +181,7 @@ class CollectionHelper {
                                 \app\cwf\vsla\security\SessionManager::getSessionVariable('year_end')),
                         'name' => 'to_date', 'id' => 'to_date']
             );
-            $filterstring .= '</div><div class=" col-md-3 form-group" style="margin-top: 0px;">' .
+            $filterstring .= '</div><div class=" col-sm-3 form-group" style="margin-top: 0px;">' .
                     '<label class="control-label" for="voucher_id">Voucher ID</label>';
             $filterstring .= Html::input('text', 'voucher_id', '', ['class' => 'form-control', 'id' => 'voucher_id']);
             $filterstring .= '</div></div>';
@@ -184,7 +189,7 @@ class CollectionHelper {
                 $filterstring .= '<div id="cfilters" name="cfilters">' . $filters . '</div>';
             }
             $filterstring .= '</form>
-        <div class=" col-md-2 form-group" style="margin-top: 24px; padding-left: 0px; 
+        <div class=" col-sm-2 form-group" style="margin-top: 24px; padding-left: 0px; 
                 padding-right: 0px; margin-bottom: 5px;">
             <div style="white-space: nowrap"></div>
             <button class="btn btn-sm btn-default" id="collrefresh" style="font-size:10px; padding:3px 6px;"
@@ -494,7 +499,7 @@ class CollectionHelper {
             case self::STATUS_FILTER_ParticipatedIn:
                 return "Select a.*, 
                         Coalesce(c.full_user_name, 'Me') from_user, 
-                        Coalesce(b.doc_sent_on, current_timestamp(0)) doc_sent_on
+                        Coalesce(b.doc_sent_on, current_timestamp(0))::timestamp doc_sent_on
                     From doc_data a
                     Left Join sys.doc_wf b On a.$keyField=b.doc_id
                     Left Join sys.user c On b.user_id_from = c.user_id";
@@ -504,7 +509,7 @@ class CollectionHelper {
                         Case When b.doc_sent_on Is Null Then d.entered_on Else b.doc_sent_on End doc_sent_on
                     From doc_data a
                     Left Join sys.doc_wf b On a.$keyField = b.doc_id
-                    Left Join sys.user c On b.user_id_from = c.user_id
+                    Left Join sys.user c On b.user_id_to = c.user_id
                     Left Join sys.doc_es d On a.$keyField = d.voucher_id";
             case self::STATUS_FILTER_All:
                 return "Select a.*

@@ -78,5 +78,15 @@ class MailHelper {
         }
         return true;
     }
+    
+    public static function SendWarningMail($subject, $body) {
+        $to = \yii::$app->params['cwf_config']['exceptionMail']['to'];
+        $from = \yii::$app->params['cwf_config']['exceptionMail']['from'];
+
+        $dtm = new \DateTime();
+        $dtz = new \DateTimeZone("Asia/Kolkata");
+        $dtm->setTimezone($dtz);
+        MailHelper::SendMail($to, $from, $body, $subject.' : '.$dtm->format('Y-m-d H:i:s T'), '', '', '');
+    }
 
 }

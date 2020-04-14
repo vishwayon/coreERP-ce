@@ -17,7 +17,8 @@ $config = [
     ],
     'components' => [
         'cache' => [
-            'class' => 'app\cwf\vsla\utils\FileCache',
+            'class' => 'yii\caching\FileCache',
+            'directoryLevel' => 0
         ],
         'view' => [
             'class' => 'yii\web\View',
@@ -97,5 +98,8 @@ if (isset($cwf_config['components'])) {
     $config['components'] = array_merge($config['components'], $cwf_config['components']);
 }
 $config['params']['cwf_config'] = $cwf_config;
+
+// Override yii classmap for custom objects
+Yii::$classMap['yii\helpers\Json'] = '@app/cwf/vsla/extendYii/Json.php';
 
 return $config;

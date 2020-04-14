@@ -28,6 +28,7 @@ $form_date_format = \app\cwf\vsla\utils\FormatHelper::GetDateFormatForHtml();
                         <th>Doc Type</th>
                         <th>Voucher id</th>
                         <th>Doc Date</th>
+                        <th>Customer</th>
                         <th>From User</th>
                         <th>Request Date</th>
                         <th></th>  
@@ -49,7 +50,9 @@ $form_date_format = \app\cwf\vsla\utils\FormatHelper::GetDateFormatForHtml();
                 <td data-bind="text: doc_id">
                 </td>
                 <td data-bind="dateValue: doc_date, attr:{'data-sort': doc_date_sort}">
-                </td>                
+                </td> 
+                <td data-bind="text: customer">
+                </td>                  
                 <td data-bind="text: from_user">
                 </td>
                 <td data-bind="dateValue: added_on, attr:{'data-sort': req_date_sort}">

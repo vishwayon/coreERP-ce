@@ -25,7 +25,7 @@
                     <foreignKey>branch_id</foreignKey>
                 </relation>
                 <fetchOrCreate>
-                    <useEntity/>
+                    <useEntity orderby="user_to_branch_id"/>
                 </fetchOrCreate>
                 <save>
                     <useEntity/>

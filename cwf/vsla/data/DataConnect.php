@@ -43,6 +43,80 @@ namespace app\cwf\vsla\data {
             return $dt;
         }
         
+        /**
+         * Gets data in SplFixedArray. This is a memory efficient array. 
+         * Use this method if you do not plan to remove/add rows in the result
+         * 
+         * @param \app\cwf\vsla\data\SqlCommand $cmm    The command object
+         * @param const $dbType                         The DB to connect (Main/Company/Audit)
+         * @param \PDO $cn                              The Connection Object (if already open)
+         * @param resource $fhandle                     The writable file handle
+         * @return \stdClass                            Returns the a stdClass with cols and rows (Index only rows)
+         */
+        public static function getDataSplArray(SqlCommand $cmm, $dbType=self::COMPANY_DB, \PDO $cn = null) {
+            $selfCn = false;
+            if($cn == null) {
+                $selfCn = true;
+                $cn = DataConnect::getCn($dbType);
+            }
+            $query = $cn->prepare($cmm->getCommandText());
+            $query->execute($cmm->getParamsForBind());
+            $resultData = new \SplFixedArray($query->rowCount());
+            $i = 0;
+            while ($row = $query->fetch(\PDO::FETCH_NUM)) {
+                $resultData[$i] = \SplFixedArray::fromArray($row);
+                $i++;
+            }
+            $resultCols = new \SplFixedArray($query->columnCount());
+            for($ci=0; $ci<$query->columnCount(); $ci++) {
+                $colMeta = $query->getColumnMeta($ci);
+                $resultCols[$ci] = $colMeta['name'];
+            }
+            $query = null;
+            $result = new \stdClass();
+            $result->cols = $resultCols;
+            $result->rows = $resultData;
+            if($selfCn) {
+                $cn = null;
+            }
+            return $result;
+        }
+        
+        /**
+         * Directly writes the results into a csv file. 
+         * @param \app\cwf\vsla\data\SqlCommand $cmm    The command object
+         * @param const $dbType                         The DB to connect (Main/Company/Audit)
+         * @param \PDO $cn                              The Connection Object (if already open)
+         * @param resource $fhandle                     The writable file handle
+         * @return int                                  Returns the number of rows affected by the query
+         */
+        public static function getDataInCsvFile(SqlCommand $cmm, $dbType=self::COMPANY_DB, \PDO $cn = null, $fhandle = null) {
+            $selfCn = false;
+            if($cn == null) {
+                $selfCn = true;
+                $cn = DataConnect::getCn($dbType);
+            }
+            $query = $cn->prepare($cmm->getCommandText());
+            $query->execute($cmm->getParamsForBind());
+            $rowCount = $query->rowCount();
+            // put columns as header row in file
+            $cols = [];
+            for($ci=0; $ci<$query->columnCount(); $ci++) {
+                $colMeta = $query->getColumnMeta($ci);
+                $cols[] = $colMeta['name'];
+            }
+            fputcsv($fhandle, $cols, ',', '"');
+            // put row data into file
+            while ($row = $query->fetch(\PDO::FETCH_NUM)) {
+                fputcsv($fhandle, $row, ',', '"');
+            }
+            $query = null;
+            if($selfCn) {
+                $cn = null;
+            }
+            return $rowCount;
+        }
+        
         public static function getAuditData(SqlCommand $cmm, $dbType=self::COMPANY_DB) {
             $cn = DataConnect::getCnAuditDB($dbType);
             $query = $cn->prepare($cmm->getCommandText());

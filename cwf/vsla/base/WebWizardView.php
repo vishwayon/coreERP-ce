@@ -34,7 +34,7 @@
     </div>
 <?php ActiveForm::end(); ?>
     <script type="text/javascript">
-        var oldStepData=<?= $wizparser->stepData == NULL ? json_encode([]) : json_encode($wizparser->stepData)?>;
+        var oldStepData=<?=  json_encode($wizparser->stepData)?>;
         var stepdata=<?= json_encode($wizparser->xsteps[$step]->stepWizData)?>;
         var brule=<?= json_encode($wizparser->codeBehind->brokenrules)?>;
         var currdata=<?= isset($currentdata)?json_encode($currentdata):'null'?>;

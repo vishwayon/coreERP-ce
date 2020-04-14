@@ -502,6 +502,49 @@ window.cwf_jrpt = {};
         return false;
     }
     cwf_jrpt.subscrClick = subscrClick;
+    
+    cwf_jrpt.rpt_user_pref = new function() {
+        this.rate_scale = ko.observable(3),
+        this.qty_scale = ko.observable(4)
+    };
+    
+    function setUserPref() {
+        BootstrapDialog.show({
+            title: 'Report Preferences',
+            message: $($('#dialog-user-pref-tmpl').html()),
+            buttons: [{
+                    label: 'Apply',
+                    action: function (dialog) {
+                        cwf_jrpt.saveUserPref();
+                        dialog.close();
+                    }
+                }],
+            onshown: function (dialogRef) {
+                // todo: load events
+                ko.applyBindings(cwf_jrpt.rpt_user_pref, $('#dialog-user-pref')[0]);
+            }
+        });
+    }
+    cwf_jrpt.setUserPref = setUserPref;
+    
+    function saveUserPref() {
+        $.ajax({
+           url: '?r=cwf/fwShell/jreport/set-user-pref',
+           method: 'POST',
+           data: {
+               rpt_id: $('#rptOptions > #xmlPath').val(),
+               user_pref: ko.toJSON(cwf_jrpt.rpt_user_pref)
+           },
+           success: function (res) {
+               
+           },
+           error: function (err) {
+               alert(err);
+           }
+        });
+    }
+    cwf_jrpt.saveUserPref = saveUserPref; 
+    
 }(window.cwf_jrpt));
 
 

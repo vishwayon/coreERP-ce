@@ -25,7 +25,7 @@
                     <foreignKey>company_id</foreignKey>
                 </relation>
                 <fetchOrCreate>
-                    <useEntity/>
+                    <useEntity orderby="user_to_company_id"/>
                 </fetchOrCreate>
                 <save>
                     <useEntity/>

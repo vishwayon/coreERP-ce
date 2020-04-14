@@ -12,6 +12,7 @@ class MenuTypes {
     const MASTER = 2;
     const REPORT = 3;
     const UIFORM = 4;
+    const DATASET = 5;
 
 }
 
@@ -38,6 +39,7 @@ class MenuTree implements \app\cwf\vsla\xmlbo\CustomBase {
     public $reportAccess = [AccessLevels::NOACCESS, AccessLevels::READONLY, AccessLevels::CONSOLIDATED];
     public $uiformAccess = [AccessLevels::NOACCESS, AccessLevels::READONLY];
     public $docStageAccess = [AccessLevels::NOACCESS, AccessLevels::READONLY, AccessLevels::DATAENTRY];
+    public $datasetAccess = [AccessLevels::NOACCESS, AccessLevels::READONLY, AccessLevels::CONSOLIDATED];
 
     public function __construct($params) {
         $paramz = is_array($params) ? $params : json_decode($params);

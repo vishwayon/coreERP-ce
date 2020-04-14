@@ -37,7 +37,7 @@ $year_end = date_format($enddate, \app\cwf\vsla\utils\FormatHelper::GetDateForma
                         'data-filter' => '',
                         'data-valuemember' => 'branch_id',
                         'data-displaymember' => 'branch_name',
-                        'data-namedlookup' => '../cwf/sys/lookups/BranchWithAll.xml',
+                        'data-namedlookup' => '@app/cwf/sys/lookups/BranchWithAll.xml',
                         'data-validations' => 'number',
                         'style' => 'padding:0px;', 'notyetsmart' => true,
                         'data-validation-error-msg' => 'Please select branch'])
@@ -52,7 +52,7 @@ $year_end = date_format($enddate, \app\cwf\vsla\utils\FormatHelper::GetDateForma
                         'data-filter' => '',
                         'data-valuemember' => 'bo_id',
                         'data-displaymember' => 'menu_text',
-                        'data-namedlookup' => '../cwf/sys/lookups/WfBOlist.xml',
+                        'data-namedlookup' => '@app/cwf/sys/lookups/WfBOlist.xml',
                         'data-validations' => 'string',
                         'style' => 'padding:0px;', 'notyetsmart' => true,
                         'data-validation-error-msg' => 'Please select doc type'])
@@ -67,7 +67,7 @@ $year_end = date_format($enddate, \app\cwf\vsla\utils\FormatHelper::GetDateForma
                         'data-filter' => '',
                         'data-valuemember' => 'user_id',
                         'data-displaymember' => 'full_user_name',
-                        'data-namedlookup' => '../cwf/sys/lookups/UserCompany.xml',
+                        'data-namedlookup' => '@app/cwf/sys/lookups/UserCompany.xml',
                         'data-validations' => 'number',
                         'style' => 'padding:0px;', 'notyetsmart' => true,
                         'data-validation-error-msg' => 'Please select user'])
@@ -82,7 +82,7 @@ $year_end = date_format($enddate, \app\cwf\vsla\utils\FormatHelper::GetDateForma
                         'data-filter' => '',
                         'data-valuemember' => 'user_id',
                         'data-displaymember' => 'full_user_name',
-                        'data-namedlookup' => '../cwf/sys/lookups/UserCompany.xml',
+                        'data-namedlookup' => '@app/cwf/sys/lookups/UserCompany.xml',
                         'data-validations' => 'number',
                         'style' => 'padding:0px;', 'notyetsmart' => true,
                         'data-validation-error-msg' => 'Please select user'])

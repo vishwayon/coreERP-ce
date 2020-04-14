@@ -10,13 +10,15 @@
             </connectionType>
             <sql>
                 <command>
-                    SELECT finyear_id,finyear_code,year_begin,year_end,year_close FROM sys.finyear order by year_begin desc
+                    SELECT finyear_id,finyear_code,year_begin,year_end,
+                    case when year_close::boolean then 'Closed' else 'Open' end year_close FROM sys.finyear order by year_begin desc
                 </command>
             </sql>
             <displayFields>
                 <displayField columnName="finyear_code" displayName="Financial Year"/>
                 <displayField columnName="year_begin" displayName="Year Begins From" format="Date"/>
                 <displayField columnName="year_end" displayName="Year Ends On" format="Date"/>
+                <displayField columnName="year_close" displayName="Closed"/>
             </displayFields>
         </collectionSection>
     </collectionView>   

@@ -73,15 +73,30 @@ class ReportHelper {
         $param = $field->value;
         switch ($param->getType()) {
             case design\IReportParamItem::TYPE_CURRENT_DATE :
+                $op_date = time();
+                 if ($param->offsetDate != '') {
+                    $interval = new \DateInterval($param->offsetDate);
+                    $interval->invert = 1;
+                    $op_date = strtotime((new \DateTime())->add($interval)->format('Y-m-d'));
+                } elseif ($param->offsetMonth != '') {
+                    $interval = new \DateInterval($param->offsetMonth);
+                    $interval->invert = 1;
+                    $date = (new \DateTime())->add($interval);
+                    $op_date = strtotime($date->format("Y-m-01"));
+                }
+
                 if ($field->range == 'finYear') {
                     $yearEnd = strtotime(\app\cwf\vsla\security\SessionManager::getSessionVariable(design\BaseParamSession::SESSION_YEAR_END));
-                    if (time() > $yearEnd) {
+                    $yearBegin = strtotime(\app\cwf\vsla\security\SessionManager::getSessionVariable(design\BaseParamSession::SESSION_YEAR_BEGIN));
+                    if ($op_date > $yearEnd) {
                         $returnValue = \app\cwf\vsla\utils\FormatHelper::FormatDateForDisplay(date("Y-m-d", $yearEnd));
+                    } elseif ($op_date < $yearBegin) {
+                        $returnValue = \app\cwf\vsla\utils\FormatHelper::FormatDateForDisplay(date("Y-m-d", $yearBegin));
                     } else {
-                        $returnValue = \app\cwf\vsla\utils\FormatHelper::FormatDateForDisplay(date("Y-m-d", time()));
+                        $returnValue = \app\cwf\vsla\utils\FormatHelper::FormatDateForDisplay(date("Y-m-d", $op_date));
                     }
                 } else {
-                    $returnValue = \app\cwf\vsla\utils\FormatHelper::FormatDateForDisplay(date("Y-m-d", time()));
+                    $returnValue = \app\cwf\vsla\utils\FormatHelper::FormatDateForDisplay(date("Y-m-d", $op_date));
                 }
                 break;
             case design\IReportParamItem::TYPE_SESSION :
@@ -107,7 +122,18 @@ class ReportHelper {
         $returnValue = NULL;
         switch ($param->getType()) {
             case design\IReportParamItem::TYPE_CURRENT_DATE :
-                $returnValue = \app\cwf\vsla\utils\FormatHelper::FormatDateForDisplay(date("Y-m-d", time()));
+                $op_date = time();
+                 if ($param->offsetDate != '') {
+                    $interval = new \DateInterval($param->offsetDate);
+                    $interval->invert = 1;
+                    $op_date = strtotime((new \DateTime())->add($interval)->format('Y-m-d'));
+                } elseif ($param->offsetMonth != '') {
+                    $interval = new \DateInterval($param->offsetMonth);
+                    $interval->invert = 1;
+                    $date = (new \DateTime())->add($interval);
+                    $op_date = strtotime($date->format("Y-m-01"));
+                }
+                $returnValue = \app\cwf\vsla\utils\FormatHelper::FormatDateForDisplay(date("Y-m-d", $op_date));
                 break;
             case design\IReportParamItem::TYPE_SESSION :
                 $returnValue = self::output_paramvalue_session($param);

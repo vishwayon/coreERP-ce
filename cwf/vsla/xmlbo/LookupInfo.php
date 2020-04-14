@@ -20,7 +20,7 @@ namespace app\cwf\vsla\xmlbo {
         public $noDefault = FALSE;
 
         public function __construct($namedlookup, $displaymember, $valuemember, $filter = '', $id = NULL, $term = '', $nodefault = FALSE) {
-            $this->namedLookup = $namedlookup;
+            $this->namedLookup = \Yii::getAlias($namedlookup);
             $this->displayMember = $displaymember;
             $this->valueMember = $valuemember;
             $this->ifilter = $filter;

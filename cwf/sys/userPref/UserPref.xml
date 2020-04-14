@@ -1,0 +1,29 @@
+<cwFramework xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+             xmlns='http://xml.coreerp.com/schema/CwFramework'
+             xsi:schemaLocation='http://xml.coreerp.com/schema/CwFramework http://coreerp.com/cwFramework.xsd'>
+    
+    <businessObject id="UserPref" type="Master">
+        <connectionType>
+            <companyDB/>
+        </connectionType>
+        <controlTable>
+            <tableName>sys.user_pref</tableName>
+            <primaryKey>user_pref_id</primaryKey>  
+            <jsonField id="pref_info">
+                <jfield name="wf_auto_adv" type="string"/>
+            </jsonField> 
+            <fetchOrCreate>
+                <useEntity/>
+            </fetchOrCreate>
+            <save>
+                <useEntity/>
+            </save> 
+            <delete>
+                <useOnDelete/>
+            </delete>
+        </controlTable> 
+        <codeBehind>
+            <className>\app\cwf\sys\userPref\UserPrefEventHandler</className>
+        </codeBehind>
+    </businessObject>
+</cwFramework>

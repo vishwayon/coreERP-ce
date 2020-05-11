@@ -79,7 +79,7 @@ class CompanyValidator extends \app\cwf\vsla\xmlbo\ValidatorBase {
                 $this->bo->addBRule('Year Begin should be less than Year End.');    
             }
             // validate branch gst state code with branch gstin
-            $state_code = substr(\app\cwf\vsla\utils\LookupHelper::GetLookupText('../core/tx/lookups/GstState.xml', 'gst_state_with_code', 'gst_state_id', $this->bo->br_gst_state_id), 0, 2);
+            $state_code = substr(\app\cwf\vsla\utils\LookupHelper::GetLookupText('../cwf/sys/lookups/GstState.xml', 'gst_state_with_code', 'gst_state_id', $this->bo->br_gst_state_id), 0, 2);
 
             if (substr($this->bo->br_gstin, 0, 2) != $state_code && $state_code != "98") {
                 $this->bo->addBRule('Branch GSTIN does not belong to Branch GST State.');

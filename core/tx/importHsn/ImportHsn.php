@@ -14,7 +14,7 @@ class ImportHsn {
 
             $cmmtbl = 'insert into sys.hsn_sc (hsn_sc_id, hsn_sc_ch, hsn_sc_code, 
                 hsn_sc_desc, hsn_sc_type, last_updated) 
-            values (:phsn_sc_id, :phsn_sc_ch, :phsn_sc_code, 
+            values (:phsn_sc_id, :phsn_sc_ch, trim(:phsn_sc_code), 
                 :phsn_sc_desc, :phsn_sc_type, current_timestamp(0))';
             $query = $cn->prepare($cmmtbl);
 

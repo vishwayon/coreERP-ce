@@ -25,7 +25,7 @@ $purl = '?r=core%2Far%2Fcust-info-update%2Fsetdata';
                         'data-filter' => '',
                         'data-valuemember' => 'customer_id',
                         'data-displaymember' => 'customer',
-                        'data-namedlookup' => '../core/ar/lookups/CustomerWithAll.xml',
+                        'data-namedlookup' => '@app/core/ar/lookups/CustomerWithAll.xml',
                         'data-validations' => 'number',
                         'style' => 'padding:0px;', 'notyetsmart' => true,
                         'data-validation-error-msg' => 'Please select customer'])
@@ -49,7 +49,7 @@ $purl = '?r=core%2Far%2Fcust-info-update%2Fsetdata';
                         'data-filter' => '',
                         'data-valuemember' => 'pay_term_id',
                         'data-displaymember' => 'pay_term',
-                        'data-namedlookup' => '../core/ar/lookups/CustPayTermWithAll.xml',
+                        'data-namedlookup' => '@app/core/ar/lookups/CustPayTermWithAll.xml',
                         'data-validations' => 'number',
                         'style' => 'padding:0px;', 'notyetsmart' => true,
                         'data-validation-error-msg' => 'Please select Pay Term'])

@@ -48,7 +48,7 @@ $year_end = date_format($enddate, \app\cwf\vsla\utils\FormatHelper::GetDateForma
                         'data-valuemember' => 'supplier_id',
                         'data-displaymember' => 'supplier',
                         'data-filter' => '',
-                        'data-namedlookup' => '../core/ap/lookups/SupplierWithAll.xml',
+                        'data-namedlookup' => '@app/core/ap/lookups/SupplierWithAll.xml',
                         'data-validations' => 'number',
                         'style' => 'padding:0px;', 'notyetsmart' => true,
                         'data-validation-error-msg' => 'Please select Supplier'])

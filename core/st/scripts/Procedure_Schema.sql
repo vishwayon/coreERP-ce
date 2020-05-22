@@ -1385,9 +1385,8 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-
 ?==?
-create or replace function st.sp_get_st_for_part_post(pstatus smallint, pyear_begin date, pyear_end date, ptarget_branch_id bigint, pdoc_type character varying = 'ST')
+create or replace function st.sp_get_st_for_part_post(pstatus smallint, pyear_begin date, pyear_end date, ptarget_branch_id bigint)
 RETURNS TABLE  
 (
 	stock_id varchar(50),
@@ -1398,8 +1397,7 @@ RETURNS TABLE
 	doc_date date,
 	finyear varchar(4),
 	reference varchar(50),
-	authorised_by varchar(50),
-    qc_status character varying
+	authorised_by varchar(50)
 )
 AS
 $BODY$ 
@@ -1414,78 +1412,33 @@ Begin
 		doc_date date,
 		finyear varchar(4),
 		reference varchar(50),
-		authorised_by varchar(50),
-        qc_status character varying
+		authorised_by varchar(50)
 	);
 
 	If pstatus = 1 Then
 		Insert into st_temp(stock_id, st_date, source_branch_id, target_branch_id, 
-				posted, doc_date, 
-                finyear, reference, authorised_by, qc_status)
+				posted, doc_date, finyear, reference, authorised_by)
 		Select a.stock_id, b.doc_date, a.source_branch_id, a.target_branch_id, 
-			case a.status when 0 then 0 else 1 End as status, case when a.doc_date is null then '1970-01-01' else a.doc_date end, 
-            a.finyear, a.reference, a.authorised_by, '--'
+			case a.status when 0 then 0 else 1 End as status, case when a.doc_date is null then '1970-01-01' else a.doc_date end, a.finyear, a.reference, a.authorised_by
 		From st.stock_transfer_park_post a
 		inner Join st.stock_control b on a.stock_id = b.stock_id
 		Where a.status = 5 
 			and a.doc_date between pyear_begin and pyear_end
-			and a.target_branch_id = ptarget_branch_id
-                        And b.doc_type = pdoc_type;
+			and a.target_branch_id = ptarget_branch_id;
 	Else
 		Insert into st_temp(stock_id, st_date, source_branch_id, target_branch_id, 
-				posted, doc_date, finyear, reference, authorised_by, qc_status)
+				posted, doc_date, finyear, reference, authorised_by)
 		Select a.stock_id, b.doc_date, a.source_branch_id, a.target_branch_id, 
-			case a.status when 0 then 0 else 1 End as status, case when a.doc_date is null then '1970-01-01' else a.doc_date end, a.finyear, a.reference, a.authorised_by, '--'
+			case a.status when 0 then 0 else 1 End as status, case when a.doc_date is null then '1970-01-01' else a.doc_date end, a.finyear, a.reference, a.authorised_by
 		From st.stock_transfer_park_post a
 		Inner Join st.stock_control b on a.stock_id = b.stock_id 
 		Where a.status = 0
 			and b.doc_date <= pyear_end
-			and a.target_branch_id = ptarget_branch_id
-                        And b.doc_type = pdoc_type;
+			and a.target_branch_id = ptarget_branch_id;
 	End If;
-    
-    With test_insp
-    As
-    (   Select a.test_insp_id, a.annex_info->'doc_ref_info'->>'doc_ref_tran_id' doc_ref_tran_id
-        from prod.test_insp_control a
-        Inner Join prod.test_plan b On a.test_plan_id = b.test_plan_id
-     	Inner join st_temp c on a.annex_info->'doc_ref_info'->>'doc_ref_id' = c.stock_id
-        Where a.status = 5
-            And (b.annex_info->>'tp_type_id')::BigInt = 101
-    ),
-    doc_tran
-    As
-    (   Select a.annex_info->'doc_ref_info'->>'doc_ref_id' doc_ref_id, 
-            a.annex_info->'doc_ref_info'->>'doc_ref_tran_id' doc_ref_tran_id,
-            (a.annex_info->>'tested_qty')::Numeric(18,3) as tested_qty
-        From prod.test_insp_control a
-        Inner Join test_insp b On a.test_insp_id = b.test_insp_id
-        Union All        
-        Select a.stock_id doc_ref_id, a.stock_tran_id doc_ref_tran_id, -d.receipt_qty
-        From st.stock_tran a
-        Inner join st.stock_tran_extn d on a.stock_tran_id = d.stock_tran_id
-        Inner Join st.material b On a.material_id = b.material_id
-        Inner join st.stock_control c on a.stock_id = c.stock_id
-        Inner join st.stock_transfer_park_post e on a.stock_id = e.stock_id
-     	Inner join st_temp f on c.stock_id = f.stock_id
-        Where (b.annex_info->'qc_info'->>'has_qc')::Boolean
-            And e.status != 5
-            And c.doc_type = 'ST'
-    ),
-    qc_stat
-    As
-    ( 
-        Select a.doc_ref_id as stock_id, Case When Sum(a.tested_qty) >= 0 Then 'Clear' Else 'Pending' End as qc_status
-        From doc_tran a
-        Group by a.doc_ref_id       
-    )    
-    Update st_temp a
-    set qc_status = b.qc_status
-    From qc_stat b
-    Where b.stock_id = a.stock_id;
 	
 	return query 
-	select a.stock_id, a.st_date, a.source_branch_id, a.target_branch_id, a.posted, a.doc_date, a.finyear, a.reference, a.authorised_by, a.qc_status
+	select a.stock_id, a.st_date, a.source_branch_id, a.target_branch_id, a.posted, a.doc_date, a.finyear, a.reference, a.authorised_by
 	from st_temp a;
 END;
 $BODY$

@@ -24,7 +24,7 @@ $viewerurl = '?r=core%2Fst%2Fwarranty-info%2Fgetdata';
                         'data-filter' => '',
                         'data-valuemember' => 'material_type_id',
                         'data-displaymember' => 'material_type',
-                        'data-namedlookup' => '../core/st/lookups/MaterialType.xml',
+                        'data-namedlookup' => '@app/core/st/lookups/MaterialType.xml',
                         'data-validations' => 'number',
                         'style' => 'padding:0px;', 'notyetsmart' => true,
                         'data-validation-error-msg' => 'Please select material type'])
@@ -40,7 +40,7 @@ $viewerurl = '?r=core%2Fst%2Fwarranty-info%2Fgetdata';
                         'filterevent' => 'coreWebApp.wrInfo.material_filter',
                         'data-valuemember' => 'material_id',
                         'data-displaymember' => 'material_name',
-                        'data-namedlookup' => '../core/st/lookups/Material.xml',
+                        'data-namedlookup' => '@app/core/st/lookups/Material.xml',
                         'data-validations' => 'number',
                         'style' => 'padding:0px;', 'notyetsmart' => true,
                         'data-validation-error-msg' => 'Please select material'])

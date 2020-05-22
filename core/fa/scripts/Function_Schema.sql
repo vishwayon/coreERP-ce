@@ -1094,7 +1094,7 @@ Begin
 
 	-- Fetch Net Consideration (Sale Amt) from control
 	Insert into as_vch_detail(company_id, branch_id, dc, account_id, debit_amt_fc, credit_amt_fc, debit_amt, credit_amt)
-	Select a.company_id, a.branch_id, 'C', vAssetAccount_ID, 0, 0, 0, sum(b.purchase_amt)
+	Select a.company_id, a.branch_id, 'C', vAssetAccount_ID, 0, 0, 0, sum(b.credit_amt)
 	from fa.as_control a
 	Inner join fa.as_tran b on a.as_id=b.as_id
 	where a.as_id = pvoucher_id

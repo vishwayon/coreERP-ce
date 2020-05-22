@@ -25,7 +25,7 @@ $purl = '?r=core%2Fst%2Fsale-rate-update%2Fsetdata';
                         'data-filter' => '',
                         'data-valuemember' => 'material_type_id',
                         'data-displaymember' => 'material_type',
-                        'data-namedlookup' => '../core/st/lookups/MaterialTypeWithAll.xml',
+                        'data-namedlookup' => '@app/core/st/lookups/MaterialTypeWithAll.xml',
                         'data-validations' => 'number',
                         'style' => 'padding:0px;', 'notyetsmart' => true,
                         'data-validation-error-msg' => 'Please select stock type'])
@@ -40,7 +40,7 @@ $purl = '?r=core%2Fst%2Fsale-rate-update%2Fsetdata';
                         'data-filter' => '',
                         'data-valuemember' => 'material_id',
                         'data-displaymember' => 'material_name',
-                        'data-namedlookup' => '../core/st/lookups/Material.xml',
+                        'data-namedlookup' => '@app/core/st/lookups/Material.xml',
                         'filterevent' => 'core_st.saleRateUpdate.material_filter',
                         'data-validations' => 'number',
                         'style' => 'padding:0px;', 'notyetsmart' => true,

@@ -18,10 +18,13 @@ class GstInvoiceEventHandler extends \app\cwf\vsla\xmlbo\EventHandlerBase {
     
     public function afterFetch($criteriaparam) {
         parent::afterFetch($criteriaparam);
-        
-        
         $this->bo->trigger_id='core';
-                
+        
+        // Set round_off decimal from settings        
+        $this->bo->invoice_rf_to = 0;
+        if (\app\cwf\vsla\utils\SettingsHelper::HasKey('invoice_rf_to')) {
+            $this->bo->invoice_rf_to = floatval(\app\cwf\vsla\utils\SettingsHelper::GetKeyValue('invoice_rf_to'));
+        }
         
         // Create GL temp to view GL Distribution
         \app\core\ac\glDistribution\GLDistributionHelper::CreateGLTemp($this->bo);

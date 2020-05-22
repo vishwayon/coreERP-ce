@@ -651,10 +651,7 @@ typeof window.mcr == 'undefined' ? window.mcr = {} : '';
                     nr.voucher_id('');
                     nr.vch_tran_id('');
                     nr.account_id(opts.model.cust_id());
-                    nr.payable_amt(0);
                     nr.receivable_amt(0);
-                    nr.adv_amt(0);
-                    nr.net_payable_amt(0);
                     nr.balance(cust_balance);
 
                     coreWebApp.afterNewRowAdded(false);

@@ -44,7 +44,7 @@ class ModelStockTransferParkPost {
 
     function GetPostedStockTransferData() {
         $cmm = new \app\cwf\vsla\data\SqlCommand();
-        $cmm->setCommandText("select a.*, b.branch_name, c.branch_name as target_branch from st.sp_get_st_for_part_post(:pstatus, :pyear_begin, :pyear_end, :ptarget_branch_id, 'ST') a 
+        $cmm->setCommandText("select a.*, b.branch_name, c.branch_name as target_branch from st.sp_get_st_for_part_post(:pstatus, :pyear_begin, :pyear_end, :ptarget_branch_id) a 
                             Inner join sys.branch b on a.source_branch_id = b.branch_id
                             Inner join sys.branch c on a.target_branch_id = c.branch_id");
         $cmm->addParam('pstatus', $this->status);

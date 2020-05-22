@@ -37,7 +37,7 @@ $year_end = date_format($enddate, \app\cwf\vsla\utils\FormatHelper::GetDateForma
                         'data-filter' => '',
                         'data-valuemember' => 'material_type_id',
                         'data-displaymember' => 'material_type',
-                        'data-namedlookup' => '../core/st/lookups/MaterialType.xml',
+                        'data-namedlookup' => '@app/core/st/lookups/MaterialType.xml',
                         'data-validations' => 'number',
                         'style' => 'padding:0px;', 'notyetsmart' => true,
                         'data-validation-error-msg' => 'Please select material type'])

@@ -205,8 +205,8 @@ window.core_gst_inv = {};
  
         invoice_amt = Number.parseFloat(coreWebApp.ModelBo.annex_info.bt_amt()) + Number.parseFloat(coreWebApp.ModelBo.annex_info.tax_amt());
         invoice_amt_fc = Number.parseFloat(coreWebApp.ModelBo.annex_info.bt_amt_fc()) + Number.parseFloat(coreWebApp.ModelBo.annex_info.tax_amt_fc());
-        var rf_amt = Number.parseFloat(invoice_amt.toFixed(0)) - invoice_amt;
-        var rf_amt_fc = Number.parseFloat(invoice_amt_fc.toFixed(0)) - invoice_amt_fc;
+        var rf_amt = Number.parseFloat(invoice_amt.toFixed(coreWebApp.ModelBo.invoice_rf_to())) - invoice_amt;
+        var rf_amt_fc = Number.parseFloat(invoice_amt_fc.toFixed(coreWebApp.ModelBo.invoice_rf_to())) - invoice_amt_fc;
         coreWebApp.ModelBo.annex_info.round_off_amt(rf_amt.toFixed(2));
         coreWebApp.ModelBo.annex_info.round_off_amt_fc(rf_amt_fc.toFixed(2));
 

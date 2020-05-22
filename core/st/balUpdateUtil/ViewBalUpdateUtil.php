@@ -35,7 +35,7 @@ $post_url = '?r=core/st/bal-update-util/update';
                         'data-filter' => '',
                         'data-valuemember' => 'material_type_id',
                         'data-displaymember' => 'material_type',
-                        'data-namedlookup' => '../core/st/lookups/MaterialType.xml',
+                        'data-namedlookup' => '@app/core/st/lookups/MaterialType.xml',
                         'data-validations' => 'number',
                         'style' => 'padding:0px;', 'notyetsmart' => true,
                         'data-validation-error-msg' => 'Please select material type'])
@@ -50,7 +50,7 @@ $post_url = '?r=core/st/bal-update-util/update';
                         'data-filter' => '',
                         'data-valuemember' => 'stock_location_id',
                         'data-displaymember' => 'stock_location_name',
-                        'data-namedlookup' => '../core/st/lookups/StockLocation.xml',
+                        'data-namedlookup' => '@app/core/st/lookups/StockLocation.xml',
                         'data-validations' => 'number',
                         'style' => 'padding:0px;', 'notyetsmart' => true,
                         'data-validation-error-msg' => 'Please select Stock Location'])

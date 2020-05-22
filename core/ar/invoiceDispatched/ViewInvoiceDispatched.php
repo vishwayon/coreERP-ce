@@ -46,7 +46,7 @@ $year_end = date_format($enddate, \app\cwf\vsla\utils\FormatHelper::GetDateForma
                         'data-valuemember' => 'customer_id',
                         'data-displaymember' => 'customer',
                         'data-filter' => '',
-                        'data-namedlookup' => '../core/ar/lookups/CustomerWithAll.xml',
+                        'data-namedlookup' => '@app/core/ar/lookups/CustomerWithAll.xml',
                         'data-validations' => 'number',
                         'style' => 'padding:0px;', 'notyetsmart' => true,
                         'data-validation-error-msg' => 'Please select Customer'])

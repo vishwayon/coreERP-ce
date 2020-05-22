@@ -16,6 +16,7 @@
                                 sum(a.balance) balance
                             from ar.fn_receivable_ledger_balance(:pcompany_id, (case when :pis_inter_branch then 0 else :pbranch_id  end), :paccount_id, :pto_date, :pvoucher_id, :pdc) a
                             inner Join ac.account_head b on a.account_id = b.account_id
+                            Where b.account_type_id = 7
                             group by a.account_id, b.account_head, a.due_date
                     ) a
                     group by a.account_id, a.account_head

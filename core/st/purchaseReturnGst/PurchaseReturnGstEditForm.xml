@@ -89,7 +89,7 @@
                             <lookup>
                                 <valueMember>uom_id</valueMember>
                                 <displayMember>uom_desc</displayMember>
-                                <namedLookup>../core/st/lookups/UoM.xml</namedLookup>
+                                <namedLookup>../core/st/lookups/UoMpu.xml</namedLookup>
                                 <filterEvent>core_st.sp_uom_combo_filter</filterEvent>
                             </lookup>   
                         </field>                

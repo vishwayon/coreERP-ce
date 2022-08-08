@@ -46,7 +46,7 @@ $year_end = date_format($enddate, \app\cwf\vsla\utils\FormatHelper::GetDateForma
                         'data-filter' => 'account_type_id = 1',
                         'data-valuemember' => 'account_id',
                         'data-displaymember' => 'account_head',
-                        'data-namedlookup' => '../core/ac/lookups/Account.xml',
+                        'data-namedlookup' => '@app/core/ac/lookups/Account.xml',
                         'data-validations' => 'number',
                         'style' => 'padding:0px;', 'notyetsmart' => true,
                         'data-validation-error-msg' => 'Please select Bank'])

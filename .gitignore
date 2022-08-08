@@ -2,5 +2,6 @@
 config/cwfconfig*.php
 runtime/*
 web/assets/*
+web/reportcache
 vendor
 **/*.jasper

@@ -313,3 +313,7 @@ CREATE TABLE ar.mcr_summary_tran
 );
 
 ?==?
+insert into sys.settings
+Select 'invoice_rf_to', 0;
+
+?==?

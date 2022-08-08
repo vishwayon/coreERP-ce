@@ -58,6 +58,11 @@ $cwf_config = [
             'class' => 'app\cwf\vsla\utils\ClamScan',
             'tmpPath' => '/pathtoscan/'  //Ensure that daemon or www-data has access to this folder. also include user: clamav in the daemon/www-data group 
         ],
+        'authClientCollection' => [
+            'class' => 'yii\authclient\Collection',
+            'clients' => [
+            ],
+        ]
     ]
 ];
 
